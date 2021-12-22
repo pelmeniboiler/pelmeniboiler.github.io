@@ -9,15 +9,31 @@
         background-color: #727d74;
     }    
 </style>
-<audio id="player" width="2" height="0" loop="true" autostart="true">
-  <source src="telstar.ogg" type="audio/ogg">
-  <source src="telstar.mp3" type="audio/mpeg">
-</audio>
+
+<script type="text/javascript">
+var playing = false;
+function play() {
+	if(!playing) {
+		playing=true;
+		var music = document.createElement('iframe');
+		music.type="text/html";
+		music.src="telstar.mp3;
+		music.frameborder="0";
+		music.allow="autoplay";
+		music.style="display:none;";
+		document.body.appendChild(music);
+		music.onload = function() {
+			document.getElementById('strider').className = 'strider';
+		}
+	}
+}
+
+</script>
 <head>
 	<title>test</title>
 </head>
 <body>
-<h1>UGH</h1>
-<p>I sure hope telstar embeds this time and i didnt mess up the file path.</p>
+<h1>test</h1>
+<p>Google pwease bwing back autopway uwu</p>
 </body>
 </html>
