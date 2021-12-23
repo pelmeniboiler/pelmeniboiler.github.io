@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
     html {
         height: 100%;
@@ -12,30 +14,26 @@
         text-align:center;
     }
 </style>
-
-<script type="applicationx/javascript">
-var playing = false;
-	function play() {
-		if(!playing) {
-			playing=true;
-			var music = document.createElement('iframe');
-			music.type="text/html";
-			music.src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1183227601&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false";
-			music.frameborder="0";
-			music.allow="autoplay";
-			music.style="display:none;";
-			document.body.appendChild(music);
-		}
-	};
-
+<script type="application/javascript">
+    let playing = false;
+    function play() {
+        if(!playing) {
+            playing=true;
+            const music = document.createElement('iframe');
+            music.type="text/html";
+            music.src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1183227601&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false";
+            music.frameborder="0";
+            music.allow="autoplay";
+            music.style="display:none;";
+            document.body.appendChild(music);
+        }
+    };
 </script>
-<canvas id='canvas'></canvas>
-<head>
-	<title></title>
+<title></title>
 </head>
 <body>
 <h1>Welcome</h1>
-<button type="button" name="Hello">Click me!</button>
+<button type="button" name="Hello" onclick="play()">Click me!</button>
 <p>Google pwease bwing back autopway uwu</p>
 </body>
 </html>
