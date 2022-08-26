@@ -56,7 +56,7 @@ a:active {
 </head>
 <body>
   
-  <h1>Sunshine Experimental Keyboard</h1>
+  <h1>Sunshine Experimental Keyboard - INCOMPLETE PLEASE DON'T READ THIS YET ;_;</h1>
   <img src="sunshine.png" alt="All is in your hands." height="300" >
   <p>A unique and ergonomic column stagger split keyboard developed to comfortably utilize the entire hand by way of palm and wristrest keys. Also, up to four solenoids because I like loud noises (Not pictured).</p>
   <p>Feel free to use this table of contents to skim the sections you're interested in!</p>
@@ -65,11 +65,12 @@ a:active {
     <tr><td><a href="#TLDR">&ensp;00. Abstract 	&emsp;</a></td></tr>
     <tr><td><a href="#Intro">&ensp;0. Background 	&emsp;</a></td></tr>
     <tr><td><a href="#Objectives">&ensp;1. Objectives 	&emsp;</a></td></tr>
-    <tr><td><a href="#Design">&ensp;2. Design Overview 	&emsp;</a></td></tr>
-    <tr><td><a href="#Development">&ensp;3. Development Process 	&emsp;</a></td></tr>
-    <tr><td><a href="#Keymap">&emsp;&emsp;3b. My Keymap 	&emsp;</a></td></tr>
+    <tr><td><a href="#Design">&ensp;2. Design Process 	&emsp;</a></td></tr>
+    <tr><td><a href="#CAD">&emsp;&emsp;2.1. Cardboard Aided Design	&emsp;</a></td></tr>
+    <tr><td><a href="#Development">&ensp;3. Final Design 	&emsp;</a></td></tr>
+    <tr><td><a href="#Keymap">&emsp;&emsp;3.1. My Keymap 	&emsp;</a></td></tr>
     <tr><td><a href="#Discoveries">&ensp;4. Discoveries	&emsp;</a></td></tr>
-    <tr><td><a href="#Plans">&ensp;5. Plans for future versions	&emsp;</a></td></tr>
+    <tr><td><a href="#Plans">&emsp;&emsp;4b. Plans for future versions	&emsp;</a></td></tr>
 </table>
  <h2 id="TLDR">Abstract, a fancy term for T.L.D.R.</h2>
   <p>Using the most scuffed, path-of-least-resistance strategies, I developed a the best keyboard ever. That's right, the best. Until I make the second version, I mean. Following is an overly-detailed explanation of everything I did and why I did it. Don't worry, there's pictures.</p>
@@ -84,24 +85,25 @@ a:active {
      <img src="lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" height="300" >
       <br>This meant there were<b> twenty-two </b>unusable keys on the Lily, and twenty on the Iris, but only because it was missing two of those unusable keys in the first place. 
       
- While I loved the knobs on the Iris, I missed having four thumb keys like on the Lily. Except that fourth thumb key on the Lily was somewhat uncomfortable to reach. There needed to be a different way to lay them out. Though I saw keyboards like the <a href="https://www.ergodox.io/">Ergodox</a> had multiple rows of thumb keys, I didn't like the idea. It seemed inelegant. The <a href="https://github.com/splitkb/kyria">Kyria</a> seemed to have a good way of handling it that could work if cut down to just four keys, and later it would serve as a starting-off point for my own design.
+ While I loved the knobs on the Iris, I missed having four thumb keys like on the Lily. 
+     —Except that fourth thumb key on the Lily was somewhat uncomfortable to reach.— There needed to be a different way to lay them out. Though I saw keyboards like the <a href="https://www.ergodox.io/">Ergodox</a> had multiple rows of thumb keys, I didn't like the idea. It seemed inelegant. The <a href="https://github.com/splitkb/kyria">Kyria</a> seemed to have a good way of handling it that could work if cut down to just four keys, and later it would serve as a starting-off point for my own design.
    <br>What's more, I needed some sort of wrist rest to keep my wrists straight due to the height of the keyboards. I had seen some people solve this with weird squishy memory foam things, and others by switching from Cherry MX <a href="https://www.gboards.ca/">to Kailh Choc and having no case for the pcb.</a><br> I had a different idea, however, that would allow me to offset my hands exactly as much as I needed for key switches, without losing the 4mm travel distance afforded by MX switches.
    
  </p>
  <h2 id="Objectives">Objectives and Considerations</h2>
-  
+  <p>As I used the aforementioned keyboards, and did research on others (read: lurked r/olkb) and came to learn what I liked and disliked, I started to adopt a few ideas on what should be considered in keyboard designs.</p>
   
   
   <h3>My theories on design.</h3>
-  <h4>You aren't unique, so don't try to design for others.</h4>  
+  <h4>It's okay to design for yourself.</h4>  
   <p>The first tenet of design for this keyboard was that designing with other people in mind is undesirable.
   Too often, designing for others ends up meaning designing something and constantly making concessions to options you like less. This is a fallacy, because if you came
   to like that design, then it means it's possible for others to learn to like it too. There's assuredly people just like you
-  who, if you tamed your design, would be missing out. That's not to say my design ended up particularly niche or inaccessible, it fits quite
+  who, if you tamed your design, would be missing out. <br> An exaggerated example of this would be someone who likes columnar staggered split keyboards opting for an orthagonal monoblock layout because they assume such a thing would be at least more appealing to someone who is expecting a keyboard to look a certain way. A less drastic example would be including a useless number row on the assumption that people would find it annoying to use layers to access them. That's not to say my design ended up particularly niche or inaccessible, it fits quite
   boringly alongside every other split ergonomic keyboard minus a few quirks.</p>
   <h4>Phalanges aren't the only useful part of the hand.</h4>
    <img src="hand anatomy.png" alt="diagram of the hand" height="300">
-  <p>On the foot, the end of the metatarsals forms a landmark known as the 'ball' of the foot. There is a similar landmark on the hands at the end of the metacarpals that I will refer to as the ball of the hand because I don't know anything about anatomy and have no idea if there is a proper name for it. <br>If you know what it's called, please tell me.<br> Equally, I will refer to the landmark at the bottom of the palm containing the carpals as the heel. Thankfully this at least seems to be accepted terminology.<br>It is my belief that these two landmarks are underutilized when it comes to keyboards, especially when the position of the heel itself is highly important to achieving a straight wrist to avoid pain. With the appropriate layout, these can be used to grant <i>at least</i> four more keys.</p>
+  <p>On the foot, the muscles at end of the metatarsals form a landmark known as the 'ball' of the foot. There is a similar landmark on the hands at the end of the metacarpals that I will refer to as the ball of the hand because I don't know anything about anatomy and have no idea if there is a proper name for it. <br>If you know what it's called, please tell me.<br> Equally, I will refer to the landmark at the bottom of the palm containing the carpals as the heel. Thankfully this at least seems to be accepted terminology.<br>It is my belief that these two landmarks are underutilized when it comes to keyboards, especially when the position of the heel itself is highly important to achieving a straight wrist to avoid pain. With the appropriate layout, these can be used to grant <i>at least</i> four more keys.</p>
   
   
   
@@ -126,9 +128,12 @@ a:active {
  <h2 id="Development">The Joys of KiCad</h2>
     <p></p>
  <h2 id="Keymap">My Keymap, and other personal adjustments</h2>
-    <p>aernistm</p>
+    <p>I won't bore you with another sanctimonious over-explanatory rant about the superiority and unassailable holiness of Colemak-DH over QWERTY. I think that's entirely unnecessary. In an incredibly interesting way, QWERTY+horizontal stagger has been self-optimized by the way most people have naturally begun using it. Despite the typewriter skeuomorph being such an unergonomic design, users largely manage to avoid pitfalls of the design it by adapting a typing style that does not respect official textbook typing. Notice how in world record wpm videos typists' hands gravitate to specific areas and do not really rest in the homerow at all. The movement is not in their fingers but rather in their elbows. Am I saying that QWERTY belongs on monoblock keyboards? No, it doesn't really belong anywhere, but it's totally inoffensive. However I do not think QWERTY lends itself at all to <i>any</i> physical layout other than perhaps the typewriter skeuomorph. And then only barely. My issue is when it's used on split keyboards. I won't lie, my heart breaks when I see ergonomic keyboards using QWERTY keymaps. What was the point of all the effort of assembly and design?</p>
  <h2 id="Discoveries">The things I found out along the way</h2>
-    <p>amet</p>
+  <h3>Going between pointing tools and the right side of the keyboard makes combinations harder.</h3>
+  <h3>My pinkies STILL have a hard time.</h3>
+  <h3>The <kbd>BALL</kbd> Key needs to be taller.</h3>
+  <p>amet</p>
  <h2 id="Plans">My plans for the next version.</h2>
     <p>consectur</p>
 </body>
