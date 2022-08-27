@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>sunsine</title>
+    <title>sunshine</title>
   <style>
     
     body {
         background: #000000;
         color: #FFFFFF;
         text-align:left;
-        filter: drop-shadow(5px 2px 8px #000000);
+    }
+    footer {
+      text-align:center;
     }
     p {
         margin-left: 30px;
@@ -27,7 +29,7 @@
          background-color: white;
     }
 a:link {
-  color: green;
+  color: rgb(0, 0, 0);
   background-color: white;
   text-decoration: none;
 }
@@ -35,13 +37,14 @@ a:link {
 a:visited {
   color: black;
   background-color: white;
-  text-decoration: none;
+  text-decoration: line-through solid currentcolor;
 }
 
 a:hover {
-  color: red;
+  color: black;
   background-color: white;
   text-decoration: underline;
+  filter: drop-shadow(5px 2px 8px #ffffff);
 }
 
 a:active {
@@ -80,26 +83,28 @@ a:active {
     <tr><td><a href="#Plans">&emsp;&emsp;4b. Plans for future versions	&emsp;</a></td></tr>
 </table>
 <!-- #####################################Abstract########################################### --> 
- <h2 id="TLDR">Abstract, a fancy term for T.L.D.R.</h2>
+  <h2 id="TLDR">&ensp;Abstract, a fancy term for T.L.D.R.</h2>
   <p>Using the most scuffed, path-of-least-resistance strategies, I developed a the best keyboard ever. That's right, the best. Until I make the second version, I mean. Following is an overly-detailed explanation of everything I did and why I did it. Don't worry, there's pictures.</p>
+  <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kSz5plE_5Rc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <!-- ###########################################Background###################################################### -->   
- <h2 id="Intro">Background</h2>
-    <p>I have always been interested in keyboards. When I was six, I meticulously dismantled my mother's non-functioning 	
-<a href="http://herculesworkshop.com/images/d/4717/Hercules_Workshop_Smith_Corona_SD_300.jpg">Smith Corona SD 300</a> beyond any possible repair or reassembly. I just wanted to know how it worked!<br> 
+  <h2 id="Intro">&ensp;Background</h2>
+  <p>I have always been interested in keyboards. When I was six, I meticulously dismantled my mother's non-functioning 	
+<a href="http://herculesworkshop.com/images/d/4717/Hercules_Workshop_Smith_Corona_SD_300.jpg">Smith&nbsp;Corona&nbsp;SD&nbsp;300</a> beyond any possible repair or reassembly. I just wanted to know how it worked...<br> 
   As I grew up, I eventually learned about mechanical keyboards from the internet. Inevitably, I came across the hobby scene for it and bought a few kits to put together.
-  The <a href="https://github.com/kata0510/Lily58">Lily58</a> became my first ever split keyboard, and I loved it. I eventually moved on to Keeb.io's 
-   <a href="https://keeb.io/collections/iris-split-ergonomic-keyboard">Iris</a> and after using it for a few months I decided I wanted to make my own keyboard, one that was perfect for me. <br>
+  The <a href="https://github.com/kata0510/Lily58">Lily58</a> became my first ever split keyboard, and I loved it. After learning about circuits to discover how I had botched adding a rotary encoder I eventually moved on to Keeb.io's 
+   <a href="https://keeb.io/collections/iris-split-ergonomic-keyboard">Iris</a> for twice the knobs. <br>
    Despite my love for ergonomic keyboards, I had a few problems with them. While I have big hands, my fingers are proportionally rather short. The uppermost of the 4 rows felt like a big waste of space to me; and my pinkies could not reach the second row without moving my whole hand for them, let alone the second row in the outermost columns.<br>
      <img src="lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" height="300" >
       <br>This meant there were<b> twenty-two </b>unusable keys on the Lily, and twenty on the Iris, but only because it was missing two of those unusable keys in the first place. 
       
  While I loved the knobs on the Iris, I missed having four thumb keys like on the Lily. 
-     —Except that fourth thumb key on the Lily was somewhat uncomfortable to reach.— There needed to be a different way to lay them out. Though I saw keyboards like the <a href="https://www.ergodox.io/">Ergodox</a> had multiple rows of thumb keys, I didn't like the idea. It seemed inelegant. The <a href="https://github.com/splitkb/kyria">Kyria</a> seemed to have a good way of handling it that could work if cut down to just four keys, and later it would serve as a starting-off point for my own design.
-   <br>What's more, I needed some sort of wrist rest to keep my wrists straight due to the height of the keyboards. I had seen some people solve this with weird squishy memory foam things, and others by switching from Cherry MX <a href="https://www.gboards.ca/">to Kailh Choc and having no case for the pcb.</a><br> I had a different idea, however, that would allow me to offset my hands exactly as much as I needed for key switches, without losing the 4mm travel distance afforded by MX switches.
+—Except that fourth thumb key on the Lily was somewhat uncomfortable to reach.— 
+<br>There needed to be a different way to lay them out. Though I saw keyboards like the <a href="https://www.ergodox.io/">Ergodox</a> had multiple rows of thumb keys, I didn't like the idea. It seemed inelegant and just as hard to reach. The <a href="https://github.com/splitkb/kyria">Kyria</a> seemed to have a better way of handling it.
+   <br>What's more, I needed some sort of wrist rest to keep my wrists straight due to the height of the keyboards. I had seen some people solve this with weird squishy memory foam things, and others by switching from Cherry MX <a href="https://www.gboards.ca/">to&nbsp;Kailh&nbsp;Choc&nbsp;and&nbsp;having&nbsp;no&nbsp;case&nbsp;for&nbsp;the&nbsp;pcb.</a><br> I had a different idea, however, that would allow me to offset my hands exactly as much as I needed for key switches, without losing the 4mm travel distance afforded by MX switches. As I used keyboards, observed strategies employed by others, and read writeups about design rationales, I would begin to develop my own ideas of what I wanted.
    
  </p>
 <!-- #########################################Objectives########################################### --> 
- <h2 id="Objectives">Objectives and Considerations</h2>
+ <h2 id="Objectives">&ensp;Objectives and Considerations</h2>
   <p>As I used the aforementioned keyboards, and did research on others (read: lurked r/olkb) and came to learn what I liked and disliked, I started to adopt a few ideas on what should be considered in keyboard designs.</p>
   
   
@@ -108,7 +113,7 @@ a:active {
   <p>The first tenet of design for this keyboard was that designing with other people in mind is undesirable.
   Too often, designing for others ends up meaning designing something and constantly making concessions to options you like less. This is a fallacy, because if you came
   to like that design, then it means it's possible for others to learn to like it too. There's assuredly people just like you
-  who, if you tamed your design, would be missing out. <br> An exaggerated example of this would be someone who likes columnar staggered split keyboards opting for an orthagonal monoblock layout because they assume such a thing would be at least more appealing to someone who is expecting a keyboard to look a certain way. A less drastic example would be including a useless number row on the assumption that people would find it annoying to use layers to access them. That's not to say my design ended up particularly niche or inaccessible, it fits quite
+  who, if you tamed your design, would be missing out. <br> An exaggerated example of this would be someone who likes columnar staggered split keyboards opting for an orthagonal monoblock layout because they assume such a thing would be at least more appealing to someone who is expecting a keyboard to look a certain way. A less drastic example would be including a useless number row on the assumption that people would find it annoying to use layers. That's not to say my design ended up particularly niche or inaccessible, it fits quite
   boringly alongside every other split ergonomic keyboard minus a few quirks.</p>
   <h4>Phalanges aren't the only useful part of the hand.</h4>
    <img src="hand anatomy.png" alt="diagram of the hand" height="300">
@@ -129,22 +134,28 @@ a:active {
  <!-- ##########################################Design####################################### -->    
   
     
- <h2 id="Design">Creating the perfect keyboard, the easy way</h2>
-  <p>dolor</p>
+ <h2 id="Design">&ensp;Creating the perfect keyboard, the easy way</h2>
+  <p>Design began properly some time around March 11, 2022 after I returned to the United States from a long trip to Ireland. Though I had been experimenting with <a href="http://www.keyboard-layout-editor.com/#/">Keyboard&nbsp;Layout&nbsp;Editor</a> throughout my trip and prior, I had finally come up with a design (which borrowed heavily from the aforementioned splitKB Kyria) I liked. It did away with some of the less accessible looking keys from the Kyria, and increased</p>
+  <img src="type-22.png" alt="First design." height="300">
+  <p>I think this one is the best looking, but least usable. My palms are too long.</p>
+ <h3 id="CAD">Cardboard Aided Design</h3>
+  
  <h3>Refinement, or a history of every single change I had to cut out of a different sheet of cardboard to try.</h3>   
   <p>My mommy helped :)</p>
  <h3 id="FinalFinalFinalV26FinalRealFinal-2">Final Design and Kicad</h3>
 <!-- ##########################################Keymap############################################ -->   
- <h2 id="Keymap">My Keymap, and other personal adjustments</h2>
+ <h2 id="Keymap">&ensp;My Keymap, and other personal adjustments</h2>
     <p>I won't bore you with another sanctimonious over-explanatory rant about the superiority and unassailable holiness of Colemak-DH over QWERTY. I think that's entirely unnecessary. In an incredibly interesting way, QWERTY+horizontal stagger has been self-optimized by the way most people have naturally begun using it. Despite the typewriter skeuomorph being such an unergonomic design, users largely manage to avoid pitfalls of the design it by adapting a typing style that does not respect official textbook typing. Notice how in world record wpm videos typists' hands gravitate to specific areas and do not really rest in the homerow at all. The movement is not in their fingers but rather in their elbows. Am I saying that QWERTY belongs on monoblock keyboards? No, it doesn't really belong anywhere, but it's totally inoffensive. However I do not think QWERTY lends itself at all to <i>any</i> physical layout other than perhaps the typewriter skeuomorph. And then only barely. My issue is when it's used on split keyboards. I won't lie, my heart breaks when I see ergonomic keyboards using QWERTY keymaps. What was the point of all the effort of assembly and design?</p>
-
-  
-  <h2 id="Discoveries">The things I found out along the way</h2>
+  <h2 id="Discoveries">&ensp;The things I found out along the way</h2>
   <h3>Going between pointing tools and the right side of the keyboard makes combinations harder.</h3>
   <h3>My pinkies STILL have a hard time.</h3>
   <h3>The <kbd>BALL</kbd> Key needs to be taller.</h3>
   <p>amet</p>
- <h2 id="Plans">My plans for the next version.</h2>
+ <h2 id="Plans">&ensp;My plans for the next version.</h2>
     <p>consectur</p>
 </body>
+<footer>
+  <p><a href="index.html">&emsp;Return to main page.&emsp;</a></p>
+  <img src="coa.png" alt="All is in your hands." height="100" >
+</footer>
 </html>
