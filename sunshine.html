@@ -177,19 +177,41 @@ Sorry, Mom, I just wanted to know how it worked...<br>
 <p><br>I attempted to leave an onionskin, since I didn't have a wasteboard underneath and on the first hole I accidentially milled into the bed. Which meant cutting out more squares by hand.<br>
   I was happy with that, and went on to cut two plates out of polycarbonate, then came designing the pcb.
   <h3 id="PCB">Adventures in PCB design.</h3>
-  <p>Prior to the Sunshine, I had designed only one PCB ever before. While I had a strip of a few RP2040s, I wanted the ability to use <a href="QMK.fm">QMK</a> because I had experience with it and at the time there wasn't support for the 2040. I instead used an Elite-C because I wanted the ATMega32u4, and those are currently either stupidly expensive or out of stock everywhere.<br>After watching a video by <a href="https://www.youtube.com/watch?v=euJgtLcWWyo">Mitxela&nbsp;on&nbsp;curved&nbsp;traces</a> I resolved to make the pcb as beautiful as I could. <br> Well, as beautiful as I could do with zero effort. (There are quite a few little details I wish I had made look better but I was really excited to get the board in my hands at that point.) The PCBs, unlike most well-designed split keyboards, are not reversible because I wanted a certain look on the front and rear.</p>
-
+  <p>Prior to the Sunshine, I had designed only one PCB ever before. While I had a strip of a few RP2040s, I wanted the ability to use <a href="QMK.fm">QMK</a> because I had experience with it and at the time there wasn't support for the 2040. I instead used an Elite-C because I wanted the ATMega32u4, and those are currently either stupidly expensive or out of stock everywhere.<br>After watching a very convincing video by <a href="https://www.youtube.com/watch?v=euJgtLcWWyo">Mitxela&nbsp;on&nbsp;curved&nbsp;traces</a> I resolved to abandon the 45 degree defaults in KiCad. <br>The PCBs, unlike most well-designed split keyboards, are not reversible because I wanted a certain look on the front and rear.<br> Here are some carefully curated photos that make my pcbs look really good and slightly out of focus. In full color, ruining my theme for this page, because I really like green.<br></p>
+    <img src="pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." height="200" > 
+    <p><br>Really more like under your hands.<br></p>
+    <img src="pcb4.png" alt="" height="300" > 
+    <p><br>The place where all the big components go, the Elite-C, the solenoid circuit, TRRS jacks, and reset button.<br></p>
+    <img src="pcb2.png" alt="" height="200" > 
+    <p><br>PRO-TIP: This silkscreen decal excuses my design from all shortcomings.<br></p>
+    <img src="pcb3.png" alt="" height="200" >
+    <p><br>Back left side.<br></p>
+    <img src="pcb5.png" alt="" height="200" >  
+    <p><br>I really like how the key matrix came out.<br></p>
+    <img src="pcb6.png" alt="" height="200" > 
+    <p><br>A friendly face to keep me company while soldering.<br></p> 
+  <p>I won't be posting the PCB files themselves, not until the second version. I'm very proud but simultaneously self-conscious. I hope you like the photos.</p>
 <!-- ##########################################Keymap############################################ -->   
  <h3 id="Keymap">&ensp;My Keymap, and other personal adjustments</h3>
    <!-- <p>I won't bore you with another sanctimonious over-explanatory rant about the superiority and unassailable holiness of Colemak-DH over QWERTY. I think that's entirely unnecessary. In an incredibly interesting way, QWERTY+horizontal stagger has been self-optimized by the way most people have naturally begun using it. Despite the typewriter skeuomorph being such an unergonomic design, users largely manage to avoid pitfalls of the design it by adapting a typing style that does not respect official textbook typing. Notice how in world record wpm videos typists' hands gravitate to specific areas and do not really rest in the homerow at all. The movement is not in their fingers but rather in their elbows. Am I saying that QWERTY belongs on monoblock keyboards? No, it doesn't really belong anywhere, but it's totally inoffensive. However I do not think QWERTY lends itself at all to <i>any</i> physical layout other than perhaps the typewriter skeuomorph. And then only barely. My issue is when it's used on split keyboards. I won't lie, my heart breaks when I see ergonomic keyboards using QWERTY keymaps. What was the point of all the effort of assembly and design?</p> -->
+  <p>I'll skip the details about assembly, they're boring, it was easy. (Apart from arduously lubing switches and springs...). After it was assembled and sitting on my desk the Sunshine was everything I could have hoped. I set up VIAL and flashed the Elite-Cs with my keymap. My keymap is pretty simple, it's really easier to show it than to talk about it. Colemak-DH and some layers, nothing crazy. Most important notes are that I felt comfortable leaving keycodes for inteded for normie keyboards like <kbd>=+</kbd> instead of separating them because of how easy it was to add <kbd>SHIFT</kbd>  to any combination. The main personal adjustment I want to talk about is spring weight. My alphanumerics are all 25 gram, which is very light. 2U keys need to be heavier but I'm putting off desoldering them and making due. That's why my spacebar is using a 1U key. The <kbd>HEEL</kbd> bars, however are using awesomely heavy 650 gram springs. This makes them exceedingly comfortable as wristrests, but simultaneously possible to press down when needed. YMMV, not all wrists weigh the same. If I wasn't using heavy springs I would invert things in firmware so SHIFT would activate when the bars are no longer depressed. <br>
+  Oh and I never use that second alt key. If you have ideas on what I should put instead, hmu pls.
+  </p>
+  <img src="keymap1.png" alt="" height="300" > 
+  <img src="keymap2.png" alt="" height="300" > 
+  <img src="keymap3.png" alt="" height="300" > 
+  <img src="keymap4.png" alt="" height="300" > 
   <h2 id="Discoveries">&ensp;The things I found out along the way</h2>
   <p>Just as I discovered new likes and dislikes through experiencing and researching previous keyboards, using the Sunshine has lead me to learn new things too. These include:</p>
   <ul>
   <li>Going between pointing tools and the right side of the keyboard can make combinations harder.</li>
   <li>My pinkies STILL have a hard time reaching the highest row and the outermost columns.</li>
   <li>I miss the convenience of rotary encoders.</li>
+  <li>Came across this <a href="https://shop.keyboard.io/pages/model100">keyboard</a> by total chance. It has a thenar eminence key, could be a really cool input to add to the next Sunshine. Would require a big rework of the overall design but it could be done.</li>
   <li>The <kbd>BALL</kbd> key needs to be taller to reach the fourth and fifth metacarpals.</li>
   </ul>
+  <img src="cardboard 6.png" alt="Kind of tempted to do this with hot glue..." height="200"  class="gs"> 
+  <p><br>My attempt during cardboard prototyping to rectify the height issue. Impeccable elegance, of course.</p>
  <h2 id="Plans">&ensp;My plans for the next version.</h2>
     <h3>Adjusted and optimized layout</h3>
     <p>I think I will need to adjust the staggers again and go far more drastic. I may also investigate splay. While this might require a whole second round of cardboard prototyping, I have another method I'm eager to try. You'll hear about that next time.</p>
