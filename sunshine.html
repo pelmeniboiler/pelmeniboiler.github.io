@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- HIIIII PLEASE DON'T LOOK AT MY CODE ( 〃▽〃) IT'S EMBARASSING -->
   <head>
     <title>sunshine</title>
   <style>
@@ -33,6 +34,13 @@
          font-family:Times; 
          color:black;
          background-color: white;
+    }
+    table {
+      outline:  white solid;
+      outline-width: 5px;
+    }
+    th {
+      text-align: center;
     }
 a:link {
   color: rgb(0, 0, 0);
@@ -88,6 +96,7 @@ a:active {
     <tr><td><a href="#Keymap">&emsp;&emsp;2.3. My Keymap 	&emsp;</a></td></tr>
     <tr><td><a href="#Discoveries">&ensp;3. Discoveries	&emsp;</a></td></tr>
     <tr><td><a href="#Plans">&emsp;&emsp;3.1. Epilogue / Plans for future versions	&emsp;</a></td></tr>
+    <tr><td><a href="#Bye">&ensp;4. Salutations &emsp;</a></td></tr>
 </table>
 <!-- #####################################Abstract########################################### --> 
   <h2 id="TLDR">&ensp;Abstract, a fancy term for T.L.D.R.</h2>
@@ -147,7 +156,7 @@ Sorry, Mom, I just wanted to know how it worked...<br>
  <h2 id="Design">&ensp;Creating the perfect keyboard, the easy way</h2>
   <p>Design began properly some time around March 11, 2022 after I returned to the United States from a long trip to Ireland. Though I had been experimenting with <a href="http://www.keyboard-layout-editor.com/#/">Keyboard&nbsp;Layout&nbsp;Editor</a> throughout my trip and prior, I had finally come up with a design (which borrowed heavily from the aforementioned splitKB Kyria) I liked. It did away with some of the less accessible looking keys from the Kyria, and increased</p>
   <img src="type-22.png" alt="First design." height="300">
-  <p>I think this one is the best looking, but least usable. My palms are too long.</p>
+  <p>I think this one is the best looking, but least usable. My palms are too long. Note the 1.25U keys in the outermost pinky columns. It's supposed to keep things looking nice</p>
  <h3 id="CAD">Cardboard Aided Design</h3>
   <p>In order to rapidly prototype my designs I decided to put the layout into cardboard. I used <a href="https://plate.keeb.io/">Keeb.io's&nbsp;plate&nbsp;generator</a> to generate a svg I could print as a paper template.<br> </p>
 <img src="cardboard assisted design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" height="200" class="gs">
@@ -174,15 +183,22 @@ Sorry, Mom, I just wanted to know how it worked...<br>
  <h3 id="Keymap">&ensp;My Keymap, and other personal adjustments</h3>
    <!-- <p>I won't bore you with another sanctimonious over-explanatory rant about the superiority and unassailable holiness of Colemak-DH over QWERTY. I think that's entirely unnecessary. In an incredibly interesting way, QWERTY+horizontal stagger has been self-optimized by the way most people have naturally begun using it. Despite the typewriter skeuomorph being such an unergonomic design, users largely manage to avoid pitfalls of the design it by adapting a typing style that does not respect official textbook typing. Notice how in world record wpm videos typists' hands gravitate to specific areas and do not really rest in the homerow at all. The movement is not in their fingers but rather in their elbows. Am I saying that QWERTY belongs on monoblock keyboards? No, it doesn't really belong anywhere, but it's totally inoffensive. However I do not think QWERTY lends itself at all to <i>any</i> physical layout other than perhaps the typewriter skeuomorph. And then only barely. My issue is when it's used on split keyboards. I won't lie, my heart breaks when I see ergonomic keyboards using QWERTY keymaps. What was the point of all the effort of assembly and design?</p> -->
   <h2 id="Discoveries">&ensp;The things I found out along the way</h2>
-  <h3>Going between pointing tools and the right side of the keyboard makes combinations harder.</h3>
-  <h3>My pinkies STILL have a hard time.</h3>
-  <h3>The <kbd>BALL</kbd> key needs to be taller.</h3>
-  <p>amet</p>
+  <p>Just as I discovered new likes and dislikes through experiencing and researching previous keyboards, using the Sunshine has lead me to learn new things too. These include:</p>
+  <ul>
+  <li>Going between pointing tools and the right side of the keyboard can make combinations harder.</li>
+  <li>My pinkies STILL have a hard time reaching the highest row and the outermost columns.</li>
+  <li>I miss the convenience of rotary encoders.</li>
+  <li>The <kbd>BALL</kbd> key needs to be taller to reach the fourth and fifth metacarpals.</li>
+  </ul>
  <h2 id="Plans">&ensp;My plans for the next version.</h2>
-    <h3>Production-ready design</h3>
+    <h3>Adjusted and optimized layout</h3>
+    <p>I think I will need to adjust the staggers again and go far more drastic. I may also investigate splay. While this might require a whole second round of cardboard prototyping, I have another method I'm eager to try. You'll hear about that next time.</p>
+    <h3>Feature creep</h3>
+    <p>I want to add rotary encoders to the next build, at least one. They make pausing and playing media ultra convenient and volume adjust is super welcome too. However, there's more convenience to be had. For one, I love Guilty Gear, and sometimes I actually play Strive instead of listening to the albums while doing other things. I think a small 8-directional switch could be really nice to add if it could fit nicely. I doubt it would replace my fight stick, but it would still be really sweet. That aside, I need a pointing device of some sort, which an 8-directional switch is not suited for. An <a href="https://atulloh.github.io/oddball/">Oddball</a>-esque arrangement would be really nice.</p>
+    <h3>Production-ready, professional looking design</h3>
     <p>I want to be able to release plans for the second version gasket mounted in a case (maybe even sell it &#129300;), I think a new version would benefit from the <kbd>HEEL</kbd> bars having a separate PCB, as there is massive wasted area on the PCB as it stands. What's more, I want to use the RP2040 on-board instead of using something like the Elite-C. There are obvious benefits to this, cost being one of them, but I want to do it because it's just more elegant. I also want to find a better way for handling the mosfets and capacitors for the solenoid circuit. They take up a <i>lot</i> of space. Lastly, I want to have cute full-board artwork and better routed traces. I had a lot of cool ideas based on my pothos plant I never implemented and I'd like to give those another go.</p>
-    <h2>Until next time!</h2>
-    <p>I hope you enjoyed hearing about the keyboard I made. If you want to reach out to me, I'm on github at <a href="https://github.com/pelmeniboiler">pelmeniboiler</a>, discord at pelmeniboiler#8372, and twitter at <a href="https://twitter.com/pelmeniboiler">@pelmeniboiler</a> </p>
+    <h2 id="Bye">Until next time!</h2>
+    <p>I hope you enjoyed hearing about the keyboard I made. If you want to reach out to me, I'm on github at <a href="https://github.com/pelmeniboiler">pelmeniboiler</a>, discord at pelmeniboiler#8372, and twitter at <a href="https://twitter.com/pelmeniboiler">@pelmeniboiler</a>. <br></p>
 </body>
 <footer>
   <p><a href="index.html">&emsp;Return to main page.&emsp;</a></p>
