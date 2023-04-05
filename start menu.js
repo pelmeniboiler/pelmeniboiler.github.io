@@ -50,15 +50,15 @@ windows.forEach((window) => {
     // Add window to list of closed windows
     closedWindows.push(window);
     // Update the start menu with the closed windows
-    updateStartMenu();
+    updateWindowList();
   });
 });
 
 // Update the start menu with the closed windows
-function updateStartMenu() {
-  const startMenu = document.querySelector('.start-menu');
+function updateWindowList() {
+  const windowList = document.querySelector('.start-menu > .window-list');
   // Clear the current start menu items
-  startMenu.innerHTML = '';
+  windowList.innerHTML = '';
   // Add a new list item for each closed window
   closedWindows.forEach((window) => {
     const listItem = document.createElement('li');
@@ -72,10 +72,10 @@ function updateStartMenu() {
       closedWindows = closedWindows.filter((closedWindow) => {
         return closedWindow !== window;
       });
-      // Update the start menu with the closed windows
-      updateStartMenu();
+      // Update the window list with the closed windows
+      updateWindowList();
     });
     listItem.appendChild(link);
-    startMenu.appendChild(listItem);
+    windowList.appendChild(listItem);
   });
 }
