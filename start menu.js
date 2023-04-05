@@ -56,7 +56,7 @@ windows.forEach((window) => {
 
 // Update the start menu with the closed windows
 function updateStartMenu() {
-  const startMenu = document.querySelector('.start-menu');
+  const startMenu = document.querySelector('.start-menu > .window-list');
   // Clear the current start menu items
   startMenu.innerHTML = '';
   // Add a new list item for each closed window
