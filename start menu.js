@@ -17,6 +17,8 @@ windows.forEach((window) => {
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
+    // increase zindex
+    this.style.zIndex = (parseInt(this.style.zIndex) + 8).toString();
     // Get the mouse cursor position at startup
     pos3 = e.clientX;
     pos4 = e.clientY;
