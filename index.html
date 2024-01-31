@@ -1,18 +1,46 @@
-<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<style>
-    html {
-        height: 100%;
-    }
+    <head>
+        <meta charset="UTF-8">
+            <title>COOL WEBPAGE || CAN'T BE CLOSED SO DON'T BOTHER TRYING ||</title>
+        <style>
+            /* @font-face {
+                font-family: 'Selyodka Proportional','Times ';
+                src: 'Selyodka Proportional.ttf' format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            } */
     body {
-        overflow: hidden;
-        height: 100%;
-        background: #000000 url(tokyo3.gif) center center/cover repeat fixed;
-        color: #FFFFFF;
-        text-align:center;
-        filter: drop-shadow(5px 2px 8px #000000);
+      background-color: #ffffff;
+      color: black;
+      font-family: 'Times New Roman', serif;
+      overflow: hidden;
+      height: 100%;
+    }
+    .lcd-mode {
+      background-image: url('tokyo3.gif');
+      background-repeat: repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    .eink-mode {
+      background-color: white;
+      color: black;
+    }
+    #toggle-mode {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      border: 2px solid black;
+      background-color: white;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9999;
+    }
+    #toggle-mode:hover {
+      background-color: black;
+      color: white;
     }
     a:link {
         color: rgb(0, 0, 0);
@@ -34,48 +62,277 @@
         }
 
      a:active {
-        color: white;
+        color: rgb(0, 0, 0);
         background-color: white;
         text-decoration: underline;
     }
-</style>
-<script type="application/javascript">
-    let playing = false;
-    function play() {
-        if(!playing) {
-            playing=true;
-            const music = document.createElement('iframe');
-            music.type="text/html";
-            music.src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1183227601&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false";
-            music.frameborder="0";
-            music.allow="autoplay";
-            music.style="display:none;";
-            document.body.appendChild(music);
+.window {
+  position: absolute;
+  /* top: 100px;
+  left: 100px;
+  width: 300px;
+  height: 200px; */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  z-index: 1;
+  background-color: white;
+  border-radius: 10px;
+      border: 3px solid black;
+      padding: 2px;
+      text-align: left;
+}
+h1 {
+      font-size: 48px;
+      margin: 0 0 10px;
+      
+    }
+h2 {
+      font-size: 36px;
+      margin: 0 0 10px;
+      padding: 2px;
+      padding-right: 100px;
+    }
+ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      
+    }
+li {
+      font-size: 30px;
+      margin-bottom: 10px;
+      padding: 0px;
+    }
+p {
+    font-size: 24px;
+      margin-bottom: 10px;
+      padding: 0px;
+}
+
+.images {
+  width: 150px;
+  height: auto;
+}
+
+.title-bar {
+    height: 30px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #000000;
+      cursor: move;
+      box-sizing: border-box; 
+      padding: 0 1px; 
+      text-align: left
+}
+
+.title {
+  display: inline-block;
+  font-weight: bold;
+  padding: 5px;
+  font-size: 18px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  padding: 0;
+  margin: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.enter-btn {
+      position: relative;
+      margin-top: 100px;
+      border: 2px solid black;
+      background-color: white;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9999;
+}
+.content {
+  padding: 10px;
+}
+.music-content{
+    padding: 10px;
+    text-align: center;
+}
+
+#welcome {
+    position: fixed;
+  top: 1%;
+  left: 1%;
+  width: 98%;
+  height: 98%;
+  display: flex;
+  z-index: 99999;
+      background-color: white;
+      border-radius: 10px;
+      border: 3px solid black;
+      padding: 2px;
+      text-align: center;
+    }
+    #welcome h1 {
+    position: relative;
+    text-align: center;
+      font-size: 36px;
+      margin: 0 0 10px;
+    }
+    #welcome p {
+        position: relative;
+        
+      font-size: 20px;
+      margin: 0;
+      text-align: center;
+      
+    }
+    .welcome-content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        text-align: center;
+        margin-top: 10%;
+        padding-top: 30px;
+        margin-left: -5%
         }
-    };
-    
-</script>
-    
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2">
-<link rel="manifest" href="/site.webmanifest?v=2">
-<link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#5bbad5">
-<link rel="shortcut icon" href="/favicon.ico?v=2">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
-    
-<title> COOL WEBPAGE DO NOT CLOSE </title>
-</head>
-<body>
-<h1>Welcome to my web page</h1>
-<button type="button" name="Play" onclick="play()">Click me!</button>
-<p> Hello, <br> I like making things and writing about them, there isn't much here yet but I promise there will be if you bookmark this page!</p>
-<h2>Projects</h2>
-<ul>
-  <li><a href="sunshine.html">Sunshine Experimental Keyboard Project</a></li>
-  <li>There's more but the writeups are currently unorganized so you can't see them yet.</li>
-  <li>...</li>
-</ul>
-</body>
-</html>
+</style>
+
+    </head>
+    <body class="eink-mode">
+          <audio id="music" src="telstar.mp3"></audio>
+        <div id="welcome">
+            <div class="title-bar">
+              <span class="title">hello.welcome</span>
+            </div>
+            <div class="welcome-content">
+            <h1>pelmeniboiler</h1>
+            <p>
+             welcome to my page! <br>
+             it has been optimized for e-ink <br>
+             displays and thus <br>isn't much to look at. <br>
+             if you use an lcd display <br>
+             and wish to see a more <br>
+             distracting page <br>
+             click the toggle in the top right. <br>
+            </p>
+            <button class = "enter-btn" onclick="playAudio()">click to enter</button>
+            <button class = "enter-btn" onclick="window.location.href='https://pelmeniboiler.github.io/abridged.html'">i'm on a phone</button>
+            </div>
+            
+          </div>
+          <audio id="audio" src="telstar.mp3"></audio>
+        <div class="window" style="top: 12%; left: 8%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">🗀 projects.fold</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+                <h2>🗀projects</h2>
+                <h3>&ensp;⮑keyboards</h3>
+                <ul>
+                    <li><a href="https://pelmeniboiler.github.io/sunshine.html">&emsp;➮sunshine_000.html</a></li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                  </ul>
+            </div>
+          </div>
+          <div class="window" style="top: 12%; left: 40%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">🗀 more_projects.fold</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+                <h2>🗀more_projects</h2>
+                <h3>&ensp;⮑other</h3>
+                <ul>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                    <li>&emsp;➮coming_soon.placeholder</li>
+                  </ul>
+            </div>
+          </div>
+          <div class="window" style="top: 58%; left: 69%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">𝄆 music.ogg</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="music-content">
+                <h3>♩telstar.ogg♪♩</h3>
+                <h4>composed by joe meek and the tornadoes</h4>
+                <h5>arranged for piano by andré wils<br>rearranged by myself to be more calm<br>and easier for me to learn</h5>
+            </div>
+          </div>
+          <div class="window" style="top: 18.5%; left: 72.3%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">❈ favicon.ico</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+              <img src="coa.png" alt="cool huh?" class="images">
+            </div>
+          </div>
+          <!-- example
+            <div class="window" style="top: 12%; left: 36%;">
+            <div class="title-bar">
+              <span class="title">example.task</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+                content goes here 
+            </div>
+          </div> -->
+          <div class="window" style="top: 64%; left: 9%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">ℹ user.about</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+                <h2>❯wendy zhulkovsky❮</h2>
+                
+               <p>i am a double e student at utah tech university.<br>i like keyboards, drawing, and trying new things!</p>
+             
+            </div>
+          </div>
+          <div class="window" style="top: 66%; left: 49%; z-index: 1;">
+            <div class="title-bar">
+              <span class="title">Ⓒ cool.certificates</span>
+              <button class="close-btn">&times;</button>
+            </div>
+            <div class="content">
+               <h4><a href="https://certificates.cs50.io/bb86e9a2-df06-4ec6-840e-d7d79a4f23d2.pdf?size=letter">Harvard CS50 Puzzle Day 2023</a></h4>
+             
+            </div>
+          </div>
+          <div class="start-menu">
+            <div class="start-button"></div>
+            <ul class="window-list"></div>
+          </div>          
+          <div id="toggle-mode" onclick="toggleMode()">Change Display Mode</div>
+          <script src="start menu.js"></script>
+           <script>   
+function toggleMode() {
+      var body = document.getElementsByTagName("body")[0];
+      var toggle = document.getElementById("toggle-mode");
+      if (body.classList.contains("eink-mode")) {
+        body.classList.remove("eink-mode");
+        body.classList.add("lcd-mode");
+        toggle.innerHTML = "⇒e-ink mode";
+      } else {
+        body.classList.remove("lcd-mode");
+        body.classList.add("eink-mode");
+        toggle.innerHTML = "⇒lcd mode";
+      }
+    }
+    function playAudio() {
+      var audio = document.getElementById("audio");
+      audio.play();
+      document.getElementById("welcome").style.display = "none";
+    }
+      </script> 
+    </body>
+</html> 
