@@ -6,7 +6,7 @@ body {
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
     padding: 0;
-    line-height: 1.5; /* Slightly adjusted for classic feel */
+    line-height: 1.5; 
 }
 
 /* Link Styles */
@@ -17,20 +17,20 @@ a:link {
 }
 
 a:visited {
-    color: #000000; /* Visited links also black for e-ink */
+    color: #000000; 
     background-color: transparent;
-    text-decoration: none; /* Keeping it simple */
+    text-decoration: none; 
 }
 
 a:hover {
     color: #ffffff;
-    background-color: #000000; /* Invert colors on hover */
+    background-color: #000000; 
     text-decoration: underline;
 }
 
 a:active {
     color: #ffffff;
-    background-color: #000000; /* Consistent with hover */
+    background-color: #000000;
     text-decoration: underline;
 }
 
@@ -39,20 +39,19 @@ a:active {
     position: absolute;
     background-color: #ffffff;
     border: 2px solid #000000;
-    border-radius: 0; /* Sharp corners for classic feel */
+    border-radius: 0; 
     padding: 0;
     text-align: left;
-    /* box-shadow: none; /* No shadows for e-ink */
 }
 
 .title-bar {
-    height: 28px; /* Slightly shorter */
-    background-color: #000000; /* Black title bar */
-    color: #ffffff; /* White text on black title bar */
-    border-bottom: 2px solid #000000; /* Consistent border */
+    height: 28px; 
+    background-color: #000000; 
+    color: #ffffff; 
+    border-bottom: 2px solid #000000;
     cursor: move;
     box-sizing: border-box;
-    padding: 0 6px; /* Adjusted padding */
+    padding: 0 6px; 
     display: flex;
     align-items: center;
 }
@@ -65,37 +64,35 @@ a:active {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #ffffff; /* Ensure title text is white */
+    color: #ffffff; 
 }
 
 .close-btn {
-    font-family: 'Times New Roman', Times, serif; /* Consistent font */
-    font-size: 20px; /* Standard 'x' size */
+    font-family: 'Times New Roman', Times, serif; 
+    font-size: 20px; 
     font-weight: bold;
     line-height: 1;
     padding: 0 4px;
     margin-left: 6px;
-    background-color: transparent; /* Transparent background */
+    background-color: transparent; 
     border: none;
     cursor: pointer;
-    color: #ffffff; /* White 'x' on black title bar */
+    color: #ffffff;
 }
 
 .close-btn:hover {
-    background-color: #ffffff; /* White background on hover */
-    color: #000000; /* Black 'x' on hover */
+    background-color: #ffffff; 
+    color: #000000; 
 }
 .close-btn:active {
     background-color: #ffffff;
     color: #000000;
 }
 
-
-/* Content Area within Windows */
 .content {
-    padding: 10px; /* Classic padding */
+    padding: 10px;
     overflow-y: auto;
-    max-height: 350px; /* Adjust as needed */
+    max-height: 350px; 
 }
 
 .music-content {
@@ -124,7 +121,7 @@ a:active {
     padding: 6px 12px;
     font-size: 14px;
     cursor: pointer;
-    border-radius: 0; /* Sharp corners */
+    border-radius: 0;
     text-align: center;
 }
 
@@ -138,12 +135,11 @@ a:active {
 }
 
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
-    margin-bottom: 0.6em; /* Consistent classic spacing */
+    margin-bottom: 0.6em; 
     padding: 0;
-    font-weight: bold; /* Ensure headings are bold */
+    font-weight: bold; 
 }
 
 h1 {
@@ -162,21 +158,19 @@ h4 {
     font-size: 16px;
 }
 
-/* Paragraph and List Styles */
+
 p {
-    font-size: 14px; /* Classic paragraph size */
+    font-size: 14px;
     margin-bottom: 0.8em;
     padding: 0;
 }
 
 ul, ol {
-    list-style: none; /* Keep this if you add custom bullets/numbering via ::before or similar */
+    list-style: none;
     margin: 0 0 0.8em 0;
-    padding-left: 18px; /* Slightly less indent */
+    padding-left: 18px; 
 }
-/* If you want classic bullets for ul: */
-/* ul { list-style: disc outside; } */
-/* ol { list-style: decimal outside; } */
+
 
 
 li {
@@ -195,72 +189,54 @@ ul ul, ol ol {
 }
 
 .article-image {
-    width: auto; /* Let image take its natural width or be constrained by parent */
-    max-width: 100%; /* Ensure it doesn't overflow parent */
+    width: auto;
+    max-width: 100%; 
     height: auto;
     display: block;
-    margin: 0 0 0.8em 0; /* Align left, classic feel */
-    border: 1px solid #000000; /* Optional: simple border for images */
+    margin: 0 0 0.8em 0;
+    border: 1px solid #000000;
 }
 
-/* Footer (if used consistently) */
-#footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 2.5rem;
-    /* background-color: #ffffff; */
-    /* border-top: 2px solid #000000; */
-    /* text-align: center; */
-    /* padding: 5px; */
-}
-
-/* Start Menu Styles - Simplified for Classic/Encyclopedia Feel */
 .start-menu {
     position: fixed;
     bottom: 0;
     left: 0;
-    padding: 0; /* Remove padding, border will define edge */
+    padding: 0;
     width: 200px;
     background-color: #ffffff;
     border-top: 2px solid #000000;
     border-right: 2px solid #000000;
-    /* border-top-right-radius: 0; */ /* Sharp corners */
     display: flex;
     flex-direction: column;
     align-items: stretch;
     z-index: 10000;
-    /* box-shadow: none; */
 }
 
-.start-button { /* This is the clickable area in your HTML structure for the menu itself */
+.start-button {
     padding: 6px 8px;
     font-weight: bold;
     font-size: 14px;
-    cursor: default; /* Or pointer if it toggles something */
+    cursor: default; 
     text-align: left;
     border-bottom: 2px solid #000000;
-    /* margin-bottom: 0; */ /* No margin if list follows directly */
-    /* No hover effect needed if it's just a container label */
+    
 }
-/* If .start-button is meant to be an actual button to toggle the list, style it like .normal-btn */
 
-
-.window-list { /* This is the UL element */
+.window-list { 
     font-size: 14px;
     width: 100%;
-    max-height: 200px; /* Adjusted max height */
+    max-height: 200px; 
     overflow-y: auto;
     padding: 0;
-    margin:0; /* Remove default ul margin */
-    border-top: 1px solid #000000; /* Separator if .start-button is above */
+    margin:0; 
+    border-top: 1px solid #000000;
 }
 
-.window-list li { /* Targeting li directly as per your JS */
+.window-list li { 
     display: block;
-    padding: 5px 8px; /* Simple padding */
+    padding: 5px 8px; 
     margin-bottom: 0;
-    border-bottom: 1px solid #000000; /* Simple separator */
+    border-bottom: 1px solid #000000; f
     cursor: pointer;
     color: #000000;
     background-color: #ffffff;
@@ -268,15 +244,14 @@ ul ul, ol ol {
 }
 
 .window-list li:last-child {
-    border-bottom: none; /* No border for the last item */
+    border-bottom: none;
 }
 
 .window-list li:hover {
-    background-color: #000000; /* Invert on hover */
+    background-color: #000000;
     color: #ffffff;
 }
 
-/* Toggle Mode Button */
 #toggle-mode {
     position: fixed;
     top: 10px;
@@ -285,9 +260,9 @@ ul ul, ol ol {
     background-color: #ffffff;
     color: #000000;
     padding: 6px 12px;
-    font-size: 12px; /* Smaller for a utility button */
+    font-size: 12px;
     cursor: pointer;
-    border-radius: 0; /* Sharp corners */
+    border-radius: 0;
     z-index: 10001;
 }
 
