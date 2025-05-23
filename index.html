@@ -2,215 +2,45 @@
     <head>
         <meta charset="UTF-8">
             <title>COOL WEBPAGE || CAN'T BE CLOSED SO DON'T BOTHER TRYING ||</title>
-        <style>
+      <style>
             /* @font-face {
                 font-family: 'Selyodka Proportional','Times ';
                 src: 'Selyodka Proportional.ttf' format('truetype');
                 font-weight: normal;
                 font-style: normal;
             } */
-    body {
-      background-color: #ffffff;
-      color: black;
-      font-family: 'Times New Roman', serif;
-      overflow: hidden;
-      height: 100%;
-    }
-    .lcd-mode {
-      background-image: url('tokyo3.gif');
-      background-repeat: repeat;
-      background-position: center;
-      background-size: cover;
-    }
-    .eink-mode {
-      background-color: white;
-      color: black;
-    }
-    #toggle-mode {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      border: 2px solid black;
-      background-color: white;
-      color: black;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 9999;
-    }
-    #toggle-mode:hover {
-      background-color: black;
-      color: white;
-    }
-    a:link {
-        color: rgb(0, 0, 0);
-        background-color: white;
-        text-decoration: none;
-    }
-
-    a:visited {
+      body {
+        background-color: #ffffff;
         color: black;
-        background-color: white;
-        text-decoration: line-through solid currentcolor;
-    }
-
-    a:hover {
-        color: black;
-        background-color: white;
-        text-decoration: underline;
-        filter: drop-shadow(5px 2px 8px #ffffff);
-        }
-
-     a:active {
-        color: rgb(0, 0, 0);
-        background-color: white;
-        text-decoration: underline;
-    }
-.window {
-  position: absolute;
-  /* top: 100px;
-  left: 100px;
-  width: 300px;
-  height: 200px; */
-  background-color: #fff;
-  border: 1px solid #ccc;
-  z-index: 1;
-  background-color: white;
-  border-radius: 10px;
-      border: 3px solid black;
-      padding: 2px;
-      text-align: left;
-}
-h1 {
-      font-size: 48px;
-      margin: 0 0 10px;
-      
-    }
-h2 {
-      font-size: 36px;
-      margin: 0 0 10px;
-      padding: 2px;
-      padding-right: 100px;
-    }
-ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      
-    }
-li {
-      font-size: 30px;
-      margin-bottom: 10px;
-      padding: 0px;
-    }
-p {
-    font-size: 24px;
-      margin-bottom: 10px;
-      padding: 0px;
-}
-
-.images {
-  width: 150px;
-  height: auto;
-}
-
-.title-bar {
-    height: 30px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #000000;
-      cursor: move;
-      box-sizing: border-box; 
-      padding: 0 1px; 
-      text-align: left
-}
-
-.title {
-  display: inline-block;
-  font-weight: bold;
-  padding: 5px;
-  font-size: 18px;
-}
-
-.close-btn {
-  float: right;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 20px;
-  padding: 0;
-  margin: 5px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-.enter-btn {
-      position: relative;
-      margin-top: 100px;
-      border: 2px solid black;
-      background-color: white;
-      color: black;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 9999;
-}
-.content {
-  padding: 10px;
-}
-.music-content{
-    padding: 10px;
-    text-align: center;
-}
-
-#welcome {
-    position: fixed;
-  top: 1%;
-  left: 1%;
-  width: 98%;
-  height: 98%;
-  display: flex;
-  z-index: 99999;
-      background-color: white;
-      border-radius: 10px;
-      border: 3px solid black;
-      padding: 2px;
-      text-align: center;
-    }
-    #welcome h1 {
-    position: relative;
-    text-align: center;
-      font-size: 36px;
-      margin: 0 0 10px;
-    }
-    #welcome p {
-        position: relative;
-        
-      font-size: 20px;
-      margin: 0;
-      text-align: center;
-      
-    }
-    .welcome-content {
-        width: 100%;
+        font-family: 'Times New Roman', serif;
+        overflow: hidden;
         height: 100%;
-        position: relative;
-        text-align: center;
-        margin-top: 10%;
-        padding-top: 30px;
-        margin-left: -5%
-        }
-</style>
-
-    </head>
+      }
+      .lcd-mode {
+        background-image: url('tokyo3.gif');
+        background-repeat: repeat;
+        background-position: center;
+        background-size: cover;
+      }
+      .eink-mode {
+        background-color: white;
+        color: black;
+      }
+    </style>
+    <link rel="stylesheet" href="pelmeni2023.css">
+    <audio id="music" src="telstar.mp3"></audio>
+  </head>
     <body class="eink-mode">
-          <audio id="music" src="telstar.mp3"></audio>
-        <div id="welcome">
+        
+        <div class="window" style="top: 20%; left: 20%; z-index: 4;">
             <div class="title-bar">
-              <span class="title">hello.welcome</span>
+              <span class="title">ש hello.welcome</span>
+              <button class="close-btn">&times;</button>
             </div>
-            <div class="welcome-content">
+            <div class="content">
             <h1>pelmeniboiler</h1>
             <p>
-             welcome to my page! <br>
+             Welcome to my page! <br>
              it has been optimized for e-ink <br>
              displays and thus <br>isn't much to look at. <br>
              if you use an lcd display <br>
@@ -218,8 +48,6 @@ p {
              distracting page <br>
              click the toggle in the top right. <br>
             </p>
-            <button class = "enter-btn" onclick="playAudio()">click to enter</button>
-            <button class = "enter-btn" onclick="window.location.href='https://pelmeniboiler.github.io/abridged.html'">i'm on a phone</button>
             </div>
             
           </div>
@@ -262,7 +90,7 @@ p {
                   </ul>
             </div>
           </div>
-           <div class="window" style="top: 32%; left: 40%; z-index: 1;">
+           <div class="window" style="top: 32%; left: 60%; z-index: 1;">
             <div class="title-bar">
               <span class="title">🗀 tools.fold</span>
               <button class="close-btn">&times;</button>
@@ -284,6 +112,7 @@ p {
             </div>
             <div class="music-content">
                 <h3>♩telstar.ogg♪♩</h3>
+                <button class = "normal-btn" onclick="playAudio()">▶</button>
                 <h4>composed by joe meek and the tornadoes</h4>
                 <h5>arranged for piano by andré wils<br>rearranged by myself to be more calm<br>and easier for me to learn</h5>
             </div>
