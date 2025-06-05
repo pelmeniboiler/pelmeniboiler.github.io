@@ -1,12 +1,20 @@
-/* pelmeni2025.css - E-ink Optimized & Classic */
-/* General Body and Typography Styles */
+/* pelmeni2025.css */
+
+:root {
+  --sb-track-color: #ffffff;
+  --sb-thumb-background-color: #ffffff; 
+  --sb-thumb-border-color: #000000;   
+  --sb-size: 16px;
+  --sb-border-radius: 0px; 
+}
+
 body {
     background-color: #ffffff;
     color: #000000;
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
     padding: 0;
-    line-height: 1.5; 
+    line-height: 1.5;
 }
 
 /* Link Styles */
@@ -17,14 +25,14 @@ a:link {
 }
 
 a:visited {
-    color: #000000; 
+    color: #000000;
     background-color: transparent;
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 a:hover {
     color: #ffffff;
-    background-color: #000000; 
+    background-color: #000000;
     text-decoration: underline;
 }
 
@@ -39,21 +47,25 @@ a:active {
     position: absolute;
     background-color: #ffffff;
     border: 2px solid #000000;
-    border-radius: 0; 
+    border-radius: 0;
     padding: 0;
     text-align: left;
+    display: flex; /* Enable flex for vertical sizing of title-bar and content */
+    flex-direction: column; /* Stack title-bar and content vertically */
+    /* If you set explicit heights on .window divs, flex will help .content fill it */
 }
 
 .title-bar {
-    height: 28px; 
-    background-color: #000000; 
-    color: #ffffff; 
+    height: 28px;
+    background-color: #000000;
+    color: #ffffff;
     border-bottom: 2px solid #000000;
     cursor: move;
     box-sizing: border-box;
-    padding: 0 6px; 
+    padding: 0 6px;
     display: flex;
     align-items: center;
+    flex-shrink: 0; /* Prevent title bar from shrinking */
 }
 
 .title {
@@ -64,25 +76,25 @@ a:active {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .close-btn {
-    font-family: 'Times New Roman', Times, serif; 
-    font-size: 20px; 
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
     font-weight: bold;
     line-height: 1;
     padding: 0 4px;
     margin-left: 6px;
-    background-color: transparent; 
+    background-color: transparent;
     border: none;
     cursor: pointer;
     color: #ffffff;
 }
 
 .close-btn:hover {
-    background-color: #ffffff; 
-    color: #000000; 
+    background-color: #ffffff;
+    color: #000000;
 }
 .close-btn:active {
     background-color: #ffffff;
@@ -91,13 +103,23 @@ a:active {
 
 .content {
     padding: 10px;
-    overflow-y: auto;
-    max-height: 350px; 
+    overflow-y: auto; /* Make content scrollable if it overflows */
+    max-height: 350px; /* Default max-height for generic content windows */
+    flex-grow: 1; /* Allows content to expand and fill available space in a flex container */
+    min-height: 0; /* Important for flex-grow to work correctly with scrollable content */
+}
+
+/* Specific styling for article content areas to allow more height */
+.content.article {
+    /* max-height can be a percentage of viewport height or a large fixed value */
+    max-height: calc(100vh - 120px); /* Example: viewport height minus some offset for title bar, margins etc. */
+    /* Or a simpler vh unit: max-height: 75vh; */
 }
 
 .music-content {
     padding: 10px;
     text-align: center;
+    /* Also a .content div, so flex-grow applies if its parent .window has a set height and is flex */
 }
 
 .music-content h3 {
@@ -111,7 +133,6 @@ a:active {
     margin: 0 0 8px;
     padding: 0;
 }
-
 
 .normal-btn {
     position: relative;
@@ -134,30 +155,17 @@ a:active {
     color: #ffffff;
 }
 
-
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
-    margin-bottom: 0.6em; 
+    margin-bottom: 0.6em;
     padding: 0;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
-h1 {
-    font-size: 30px;
-}
-
-h2 {
-    font-size: 24px;
-}
-
-h3 {
-    font-size: 20px;
-}
-
-h4 {
-    font-size: 16px;
-}
-
+h1 { font-size: 30px; }
+h2 { font-size: 24px; }
+h3 { font-size: 20px; }
+h4 { font-size: 16px; }
 
 p {
     font-size: 14px;
@@ -168,10 +176,8 @@ p {
 ul, ol {
     list-style: none;
     margin: 0 0 0.8em 0;
-    padding-left: 18px; 
+    padding-left: 18px;
 }
-
-
 
 li {
     font-size: 14px;
@@ -183,14 +189,13 @@ ul ul, ol ol {
     margin-bottom: 0;
 }
 
-/* Article Specific Styles */
-.article {
-    position: relative;
+.article { /* This class is on the <article> tag which also has .content */
+    position: relative; /* Keep if needed for internal elements */
 }
 
 .article-image {
     width: auto;
-    max-width: 100%; 
+    max-width: 100%;
     height: auto;
     display: block;
     margin: 0 0 0.8em 0;
@@ -210,33 +215,36 @@ ul ul, ol ol {
     flex-direction: column;
     align-items: stretch;
     z-index: 10000;
+    /* max-height: 250px; Or some suitable max-height for the start menu itself */
 }
 
 .start-button {
     padding: 6px 8px;
     font-weight: bold;
     font-size: 14px;
-    cursor: default; 
+    cursor: default;
     text-align: left;
     border-bottom: 2px solid #000000;
-    
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
-.window-list { 
+.window-list {
     font-size: 14px;
     width: 100%;
-    max-height: 200px; 
-    overflow-y: auto;
+    max-height: 200px;
+    overflow-y: auto; /* Makes this scrollable */
     padding: 0;
-    margin:0; 
-    border-top: 1px solid #000000;
+    margin:0;
+    border-top: 1px solid #000000; /* Separator if .start-button is above */
+    flex-grow: 1; /* Allow list to take available space */
+    min-height: 0; /* For flex-grow with scroll */
 }
 
-.window-list li { 
+.window-list li {
     display: block;
-    padding: 5px 8px; 
+    padding: 5px 8px;
     margin-bottom: 0;
-    border-bottom: 1px solid #000000; f
+    border-bottom: 1px solid #000000; /* Corrected typo: removed 'f' */
     cursor: pointer;
     color: #000000;
     background-color: #ffffff;
@@ -271,30 +279,34 @@ ul ul, ol ol {
     color: #ffffff;
 }
 
-body {
-  --sb-track-color: #ffffff;
-  --sb-thumb-color: #ffffff;
-  --sb-size: 16px;
+/* Scrollbar styles for body, .content divs, and .window-list */
+body::-webkit-scrollbar,
+.content::-webkit-scrollbar,
+.window-list::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size); /* For horizontal scrollbars */
 }
 
-body::-webkit-scrollbar {
-  width: var(--sb-size)
-}
-
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track,
+.window-list::-webkit-scrollbar-track {
   background: var(--sb-track-color);
-  border-radius: 1px;
+  border-radius: var(--sb-border-radius);
 }
 
-body::-webkit-scrollbar-thumb {
-  background: var(--sb-thumb-color);
-  border-radius: 1px;
-  border: 2px solid #000000;
+body::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb,
+.window-list::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-background-color); /* White background */
+  border-radius: var(--sb-border-radius); /* Sharp corners */
+  border: 2px solid var(--sb-thumb-border-color); /* Black border */
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  body {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+  body,
+  .content,
+  .window-list {
+    scrollbar-color: var(--sb-thumb-border-color) var(--sb-track-color); /* Black thumb, White track */
+    scrollbar-width: thin; /* Or 'auto'. 'thin' often looks cleaner with custom styles. */
   }
 }
