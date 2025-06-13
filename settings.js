@@ -1,9 +1,3 @@
-// This script manages all user-configurable settings including theme, mode, and language.
-// It is designed to be portable and can be included in any page on the site.
-
-// This script manages all user-configurable settings including theme, mode, and language.
-// It now correctly shares translation data with other scripts.
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element References ---
     const getElement = (id) => document.getElementById(id);

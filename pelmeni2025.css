@@ -1,6 +1,8 @@
-/* pelmeni2025.css */
 @import url('https://fonts.googleapis.com/css2?family=Symbola&display=swap');
-
+@font-face {
+  font-family: 'FairfaxHD';
+  src: url('fonts/FairfaxHD.ttf') format('truetype');
+}
 :root {
   /* Scrollbar variables are now tied to theme variables */
   --sb-track-color: var(--win-bg-color, #ffffff);
@@ -16,9 +18,12 @@
 
 /* Base body styles */
 body {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif, FairfaxHD;
     margin: 0; padding: 0; line-height: 1.5;
     transition: background-color 0.3s, color 0.3s;
+    /* Reserve space for the start menu on mobile */
+    padding-bottom: 40px; 
+    overflow: hidden;
 }
 /* E-Ink / LCD mode has highest priority for background */
 body.eink-mode { background-color: var(--bg-color); }
@@ -163,4 +168,92 @@ body::-webkit-scrollbar-thumb,
     scrollbar-color: var(--sb-thumb-border-color) var(--sb-track-color);
     scrollbar-width: thin;
   }
+}
+
+/* --- MOBILE / SMALL SCREEN STYLES --- */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto; /* Allow body to scroll */
+        padding-bottom: 40px; /* Space for start button */
+    }
+    
+    .window {
+        position: relative; /* No more absolute positioning */
+        width: auto; /* Full width minus margins */
+        left: 0 !important; /* Override inline styles */
+        top: 0 !important; /* Override inline styles */
+        margin: 10px;
+        z-index: auto !important; /* No z-index stacking */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .title-bar {
+        cursor: default; /* Revert cursor since swiping is removed */
+    }
+
+    .start-menu {
+        width: 100%; /* Full width */
+        border-right: none;
+        bottom: 0;
+        left: 0;
+    }
+
+    .start-button {
+        cursor: pointer; /* Clickable to open menu */
+        border-bottom: none;
+        height: 40px;
+        box-sizing: border-box;
+    }
+
+    .window-list {
+        display: none; /* Initially hidden */
+        max-height: 50vh; /* Limit height */
+        position: absolute;
+        bottom: 40px; /* Position above the start button */
+        width: 100%;
+        background-color: var(--win-bg-color);
+        border-top: 2px solid var(--border-color);
+        box-sizing: border-box;
+    }
+    
+    .start-menu.open .window-list {
+        display: block; /* Show on .open */
+    }
+
+    /* Make settings window responsive */
+    .settings-window {
+        min-width: 0;
+    }
+    
+    .settings-container {
+        flex-direction: column;
+    }
+    
+    .settings-nav {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap; /* Allow nav items to wrap */
+        padding: 0;
+    }
+    
+    .settings-nav li {
+        flex-grow: 1; /* Distribute space evenly */
+        text-align: center;
+        border-right: 1px solid var(--border-color);
+    }
+    
+    .settings-nav li:last-child {
+        border-right: none;
+    }
+
+    .settings-nav li.active {
+        border-right: 1px solid var(--border-color); /* Reset desktop border */
+        border-bottom: 3px solid var(--text-color);
+    }
+    
+    .content {
+        max-height: none; /* Let content expand */
+    }
 }
