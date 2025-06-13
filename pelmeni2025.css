@@ -1,10 +1,5 @@
+/* pelmeni2025.css */
 @import url('https://fonts.googleapis.com/css2?family=Symbola&display=swap');
-
-/* ADD THIS RULE */
-@font-face {
-  font-family: 'FairfaxHD';
-  src: url('fonts/FairfaxHD.ttf') format('truetype');
-}
 
 :root {
   /* Scrollbar variables are now tied to theme variables */
@@ -21,11 +16,9 @@
 
 /* Base body styles */
 body {
-    font-family:'Times New Roman', Times, serif, FairfaxHD;
+    font-family: 'Times New Roman', Times, serif;
     margin: 0; padding: 0; line-height: 1.5;
     transition: background-color 0.3s, color 0.3s;
-    padding-bottom: 40px; 
-    overflow: hidden; 
 }
 /* E-Ink / LCD mode has highest priority for background */
 body.eink-mode { background-color: var(--bg-color); }
@@ -170,155 +163,4 @@ body::-webkit-scrollbar-thumb,
     scrollbar-color: var(--sb-thumb-border-color) var(--sb-track-color);
     scrollbar-width: thin;
   }
-}
-
-/* Base style for the dropdown <select> element */
-.dropdown {
-    /* Step 1: Forcefully remove browser/OS default appearance */
-    -webkit-appearance: none; /* For Safari/Chrome */
-    -moz-appearance: none;    /* For Firefox */
-    appearance: none;         /* Standard */
-
-    /* Step 2: Reset other default styles that can interfere */
-    border-radius: 0;
-    margin: 0;
-    
-    /* Step 3: Apply ALL our custom styles */
-    background-color: var(--win-bg-color);
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
-    font-family: inherit; /* Inherit body fonts */
-    font-size: 14px;
-    line-height: 1.5;
-    width: 100%;
-    box-sizing: border-box;
-
-    /* Step 4: Add space for our custom arrow and add the arrow */
-    padding: 6px 32px 6px 8px; /* Extra padding on the right for the arrow */
-    background-image: var(--dropdown-arrow); /* Use the variable we defined */
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
-}
-
-/* --- INTERACTIVE STATES FOR DROPDOWN (REVISED) --- */
-
-/* Hover & Focus-Visible states for standard themes */
-.dropdown:hover {
-    background-color: var(--text-color);
-    color: var(--bg-color);
-}
-
-/* Use the existing focus style for consistency */
-.dropdown:focus-visible {
-    outline: 2px solid var(--border-color);
-    outline-offset: 2px;
-}
-
-/* Hover & Focus-Visible states specifically for Funky Mode */
-body.funky-mode .dropdown:hover {
-    background-color: var(--funky-accent-color);
-    color: var(--funky-bg-color);
-}
-
-body.funky-mode .dropdown:focus-visible {
-     outline-color: var(--funky-border-color);
-}
-
-/* --- DROPDOWN OPTIONS STYLING --- */
-.dropdown option {
-    background-color: var(--win-bg-color);
-    color: var(--text-color);
-}
-
-body.funky-mode .dropdown option {
-    background-color: var(--funky-bg-color);
-    color: var(--funky-text-color);
-}
-
-/* --- MOBILE / SMALL SCREEN STYLES --- */
-@media (max-width: 768px) {
-    body {
-        overflow-y: auto; /* This now OVERRIDES the base style for mobile */
-        padding-bottom: 40px; 
-    }
-    
-    .window {
-        position: relative; 
-        width: auto;
-        left: 0 !important; 
-        top: 0 !important;
-        margin: 10px;
-        z-index: auto !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    
-    .title-bar {
-        cursor: default;
-    }
-
-    .start-menu {
-        width: 100%; 
-        border-right: none;
-        bottom: 0;
-        left: 0;
-    }
-
-    .start-button {
-        cursor: pointer; 
-        border-bottom: none;
-        height: 40px;
-        box-sizing: border-box;
-    }
-
-    .window-list {
-        display: none; 
-        max-height: 50vh; 
-        position: absolute;
-        bottom: 40px; 
-        width: 100%;
-        background-color: var(--win-bg-color);
-        border-top: 2px solid var(--border-color);
-        box-sizing: border-box;
-    }
-    
-    .start-menu.open .window-list {
-        display: block;
-    }
-
-    .settings-window {
-        min-width: 0;
-    }
-    
-    .settings-container {
-        flex-direction: column;
-    }
-    
-    .settings-nav {
-        width: 100%;
-        border-right: none;
-        border-bottom: 2px solid var(--border-color);
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-    }
-    
-    .settings-nav li {
-        flex-grow: 1;
-        text-align: center;
-        border-right: 1px solid var(--border-color);
-    }
-    
-    .settings-nav li:last-child {
-        border-right: none;
-    }
-
-    .settings-nav li.active {
-        border-right: 1px solid var(--border-color); 
-        border-bottom: 3px solid var(--text-color);
-    }
-    
-    .content {
-        max-height: none; 
-    }
 }
