@@ -16,9 +16,24 @@
 /* Ensure the main gallery window's content area fills the available space */
 #gallery-window .content {
     padding: 0;
-    max-height: none; /* Override any potential max-height from other styles */
+    max-height: none; /* Override any potential max-height from other styles */ 
+    top: 0;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 #nav-window .content {
     max-height: fit-content;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height:fit-content;
 }
+
+body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }

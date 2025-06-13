@@ -18,7 +18,7 @@
 <body class="eink-mode light-mode">
 
    
-    <div id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height:fit-content; position: absolute; z-index: 3;">
+    <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height:fit-content; position: absolute; z-index: 3;">
         <div class="title-bar">
           <span class="title" data-key="win_gallerynav_title">◈ article.nav</span>
           <button class="close-btn">&times;</button>
@@ -43,37 +43,40 @@
             <h2><a href="#Bye" data-key="nav_h2_bye">The End</a></h2>
             <h2><a href="index.html" data-key="nav_h2_home">⌂←</a></h2>
         </div>
-    </div>
+    </nav>
 
   
-    <div id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
+    <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
         <div class="title-bar">
             <span class="title" data-key="win_gallery_title">▤ sunshine.article</span>
             <button class="close-btn">&times;</button>
         </div>
-        <div class="content">
-            <div class="article-content">
+        <article class="content">
+            <header>
                 <h1 id="title" data-key="sunshine_h1">Sunshine Experimental Keyboard</h1>
                 <img src="photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image" style="max-height: 300px;">
                 <p data-key="sunshine_p1"></p>
                 <p data-key="sunshine_p2"></p>
-                
                 <hr>
-                
+            </header>
+            
+            <section>
                 <h2 id="TLDR" data-key="tldr_h2"></h2>
                 <p data-key="tldr_p1"></p>
                 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kSz5plE_5Rc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: block; margin: 20px auto;"></iframe>
-                
                 <hr>
-                
+            </section>
+            
+            <section>
                 <h2 id="Intro" data-key="intro_h2"></h2>
                 <p data-key="intro_p1"></p>
                 <img src="photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image" style="max-height: 300px;">
                 <p data-key="intro_p2"></p>
                 <p data-key="intro_p3"></p>
-                
                 <hr>
-                
+            </section>
+            
+            <section>
                 <h2 id="Objectives" data-key="objectives_h2"></h2>
                 <p data-key="objectives_p1"></p>
                 <h3 data-key="objectives_h3_theory"></h3>
@@ -92,61 +95,70 @@
                     <li data-key="objectives_li6"></li>
                     <li data-key="objectives_li7"></li>
                 </ul>
-                
                 <hr>
-                
+            </section>
+            
+            <section>
                 <h2 id="Design" data-key="design_h2"></h2>
                 <p data-key="design_p1"></p>
                 <img src="photos/sunshine/type-22.png" alt="First design." class="article-image" style="max-height: 300px;">
                 <p data-key="design_p2"></p>
                 
-                <h3 id="CAD" data-key="cad_h3"></h3>
-                <p data-key="cad_p1"></p>
-                <img src="photos/sunshine/cardboard assisted design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs" style="max-height: 200px;">
-                <p data-key="cad_p2"></p>
-                <img src="photos/sunshine/cardboard assisted design mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs" style="max-height: 200px;"> 
-                <p data-key="cad_p3"></p>
-                <img src="photos/sunshine/cardboard 3.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs" style="max-height: 200px;"> 
-                <p data-key="cad_p4"></p>
+                <section>
+                    <h3 id="CAD" data-key="cad_h3"></h3>
+                    <p data-key="cad_p1"></p>
+                    <img src="photos/sunshine/cardboard assisted design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs" style="max-height: 200px;">
+                    <p data-key="cad_p2"></p>
+                    <img src="photos/sunshine/cardboard assisted design mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="cad_p3"></p>
+                    <img src="photos/sunshine/cardboard 3.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="cad_p4"></p>
+                </section>
 
-                <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3"></h3>
-                <p data-key="final_p1"></p>
-                <img src="photos/sunshine/type-22 (3).png" alt="Moved the bar further" class="article-image" style="max-height: 100px;"> 
-                <p data-key="final_p2"></p>
-                <img src="photos/sunshine/cardboard  4.png" alt="" class="article-image gs" style="max-height: 200px;"> 
-                <p data-key="final_p3"></p>
-                <img src="photos/sunshine/very last.png" alt="" class="article-image" style="max-height: 200px;">   
-                <p data-key="final_p4"></p>
-                <img src="photos/sunshine/cardboard 5.png" alt="" class="article-image gs" style="max-height: 200px;"> 
-                <p data-key="final_p5"></p>
+                <section>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3"></h3>
+                    <p data-key="final_p1"></p>
+                    <img src="photos/sunshine/type-22 (3).png" alt="Moved the bar further" class="article-image" style="max-height: 100px;"> 
+                    <p data-key="final_p2"></p>
+                    <img src="photos/sunshine/cardboard  4.png" alt="" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="final_p3"></p>
+                    <img src="photos/sunshine/very last.png" alt="" class="article-image" style="max-height: 200px;">   
+                    <p data-key="final_p4"></p>
+                    <img src="photos/sunshine/cardboard 5.png" alt="" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="final_p5"></p>
+                </section>
 
-                <h3 id="PCB" data-key="pcb_h3"></h3>
-                <p data-key="pcb_p1"></p>
-                <img src="photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image" style="max-height: 200px;"> 
-                <p data-key="pcb_p2"></p>
-                <img src="photos/sunshine/pcb4.png" alt="" class="article-image" style="max-height: 300px;"> 
-                <p data-key="pcb_p3"></p>
-                <img src="photos/sunshine/pcb2.png" alt="" class="article-image" style="max-height: 200px;"> 
-                <p data-key="pcb_p4"></p>
-                <img src="photos/sunshine/pcb3.png" alt="" class="article-image" style="max-height: 200px;">
-                <p data-key="pcb_p5"></p>
-                <img src="photos/sunshine/pcb5.png" alt="" class="article-image" style="max-height: 200px;">  
-                <p data-key="pcb_p6"></p>
-                <img src="photos/sunshine/pcb6.png" alt="" class="article-image" style="max-height: 200px;"> 
-                <p data-key="pcb_p7"></p>
-                <p data-key="pcb_p8"></p>
+                <section>
+                    <h3 id="PCB" data-key="pcb_h3"></h3>
+                    <p data-key="pcb_p1"></p>
+                    <img src="photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p2"></p>
+                    <img src="photos/sunshine/pcb4.png" alt="" class="article-image" style="max-height: 300px;"> 
+                    <p data-key="pcb_p3"></p>
+                    <img src="photos/sunshine/pcb2.png" alt="" class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p4"></p>
+                    <img src="photos/sunshine/pcb3.png" alt="" class="article-image" style="max-height: 200px;">
+                    <p data-key="pcb_p5"></p>
+                    <img src="photos/sunshine/pcb5.png" alt="" class="article-image" style="max-height: 200px;">  
+                    <p data-key="pcb_p6"></p>
+                    <img src="photos/sunshine/pcb6.png" alt="" class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p7"></p>
+                    <p data-key="pcb_p8"></p>
+                    <hr>
+                </section>
 
-                <hr>
+                <section>
+                    <h3 id="Keymap" data-key="keymap_h3"></h3>
+                    <p data-key="keymap_p1"></p>
+                    <img src="photos/sunshine/keymap1.png" alt="Base Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="photos/sunshine/keymap3.png" alt="Number Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="photos/sunshine/keymap4.png" alt="Function Layer" class="article-image" style="max-height: 300px;"> 
+                    <hr>
+                </section>
+            </section>
 
-                <h3 id="Keymap" data-key="keymap_h3"></h3>
-                <p data-key="keymap_p1"></p>
-                <img src="photos/sunshine/keymap1.png" alt="Base Layer" class="article-image" style="max-height: 300px;"> 
-                <img src="photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image" style="max-height: 300px;"> 
-                <img src="photos/sunshine/keymap3.png" alt="Number Layer" class="article-image" style="max-height: 300px;"> 
-                <img src="photos/sunshine/keymap4.png" alt="Function Layer" class="article-image" style="max-height: 300px;"> 
-
-                <hr>
-
+            <section>
                 <h2 id="Discoveries" data-key="discoveries_h2"></h2>
                 <p data-key="discoveries_p1"></p>
                 <ul>
@@ -158,9 +170,10 @@
                 </ul>
                 <img src="photos/sunshine/cardboard 6.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs" style="max-height: 200px;"> 
                 <p data-key="discoveries_p2"></p>
-
                 <hr>
+            </section>
 
+            <section>
                 <h2 id="Plans" data-key="plans_h2"></h2>
                 <h3 data-key="plans_h3_layout"></h3>
                 <p data-key="plans_p1"></p>
@@ -168,20 +181,21 @@
                 <p data-key="plans_p2"></p>
                 <h3 data-key="plans_h3_production"></h3>
                 <p data-key="plans_p3"></p>
-
                 <hr>
+            </section>
 
+            <section>
                 <h2 id="Bye" data-key="bye_h2"></h2>
                 <p data-key="bye_p1"></p>
-            </div>
-        </div>
-    </div>
+            </section>
+        </article>
+    </main>
     
     
-    <div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: 11;">
+    <aside id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: 11;">
         <div class="title-bar"><span class="title" data-key="win_settings_title">⚙ system.settings</span><button class="close-btn">&times;</button></div>
         <div class="settings-container"><nav class="settings-nav"><ul><li data-target="language" class="active" data-key="settings_nav_lang">Language</li><li data-target="theme" data-key="settings_nav_theme">Appearance</li><li data-target="info" data-key="settings_nav_info">Information</li></ul></nav><main class="settings-content"><div id="settings-page-language" class="settings-page active"><h3 data-key="lang_select_label">Select Language</h3><select id="language-select" class="dropdown"><option value="en">English</option><option value="he">עברית (Hebrew)</option><option value="ru">Русский (Russian)</option><option value="de">Deutsch (German)</option><option value="ja">日本語 (Japanese)</option></select></div><div id="settings-page-theme" class="settings-page"><h3 data-key="theme_title">Display Theme</h3><div class="setting-group-inline"><input type="checkbox" id="eink-toggle" class="checkbox"><label for="eink-toggle" data-key="theme_eink_label">E-Ink Mode</label></div><hr class="setting-divider"><div class="setting-group"><label class="radio-label"><input type="radio" name="theme" value="light" data-key="theme_light_label"> Light</label><label class="radio-label"><input type="radio" name="theme" value="dark" data-key="theme_dark_label"> Dark</label><label class="radio-label"><input type="radio" name="theme" value="funky" data-key="theme_funky_label"> Funky</label></div></div><div id="settings-page-info" class="settings-page"><h3 data-key="info_title">Copyright & Licensing</h3><p data-key="info_p1">All photographic works...</p><p data-key="info_p2">Reproduction, distribution...</p><p data-key="info_p3">All other content...</p><p data-key="info_p4">Font...</p></div></main></div>
-    </div>
+    </aside>
     
     
     <div class="start-menu">
