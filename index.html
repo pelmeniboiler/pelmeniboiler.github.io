@@ -1,180 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="translation-source" content="index">
     <title>COOL WEBPAGE || CAN'T BE CLOSED SO DON'T BOTHER TRYING ||</title>
-    <link rel="stylesheet" href="pelmeni2023.css">
+    <link rel="stylesheet" href="pelmeni2025.css">
     <style>
-        .lcd-mode {
-            background-image: url('tokyo3.gif'); 
-            background-repeat: repeat;
-            background-position: center;
-            background-size: cover;
-        }
-        body { 
-            font-family: 'Times New Roman', Times, serif;
-            overflow: hidden;
-            height: 100%;
-        }
-        .logo-image-container { 
-            text-align: center;
-            padding: 10px;
-        }
-        .logo-image-container img {
-            width: 100px; 
-            height: 100px; 
-            object-fit: contain; 
-        }
+        body.lcd-mode { background-image: url('tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
+        body { font-family: 'Times New Roman', Times, serif; overflow: hidden; height: 100%; }
+        .logo-image-container { text-align: center; padding: 10px; }
+        .logo-image-container img { width: 100px; height: 100px; object-fit: contain; }
     </style>
-    <audio id="music" src="telstar.mp3"></audio> 
-</head>
-<body class="eink-mode">
-
-    <div class="window" style="top: 20%; left: 20%; z-index: 4;">
-        <div class="title-bar">
-            <span class="title">ש hello.welcome</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="content">
-            <h1>pelmeniboiler</h1>
-            <p>
-                Welcome! This page is optimized for e-ink displays,<br>
-                offering a clean, focused experience.<br>
-                For a more dynamic view on LCD screens,<br>
-                please use the toggle in the top-right.
-            </p>
-        </div>
-    </div>
-
     <audio id="audio" src="telstar.mp3"></audio> 
+</head>
+<body class="eink-mode light-mode">
 
+    <!-- Welcome Window -->
+    <div class="window" style="top: 35%; left: 20%; z-index: 4;">
+        <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
+        <div class="content"><h1 data-key="welcome_h1">pelmeniboiler</h1><p id="welcome-text" data-key="welcome_text_eink">Welcome!</p></div>
+    </div>
+
+    <!-- Projects Window -->
     <div class="window" style="top: 12%; left: 8%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">🗀 projects.fold</span>
-            <button class="close-btn">&times;</button>
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_projects_title">🗀 projects.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2>🗀 Projects</h2>
-            <h3>&ensp;⮑ Keyboards</h3>
+            <h2 data-key="projects_h2">🗀 Projects</h2>
+            <h3 data-key="projects_keyboards_h3">Keyboards</h3>
             <ul>
-                <li><a href="https://pelmeniboiler.github.io/sunshine.html">&emsp;➮ sunshine_000.html</a></li>
-                <li>&emsp;➮ coming_soon.placeholder</li>
-                <li>&emsp;➮ coming_soon.placeholder</li>
-                <li>&emsp;➮ coming_soon.placeholder</li>
+                <li><a href="sunshine.html" data-key="projects_sunshine_link">sunshine_000.html</a></li>
             </ul>
         </div>
     </div>
 
+    <!-- Photos Window -->
     <div class="window" style="top: 12%; left: 40%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">🗀 photos.fold</span>
-            <button class="close-btn">&times;</button>
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_photos_title">🗀 photos.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2>⌻ Photos</h2>
-            <h4>A collection of photos, best viewed on color displays.</h4>
-            <h3>&ensp;⮑ Two Thousand Twenty Three</h3>
+            <h2 data-key="photos_h2">⌻ Photos</h2>
+            <h4 data-key="photos_h4">A collection of photos, best viewed on color displays.</h4>
+            <h3 data-key="photos_2023_h3">Two Thousand Twenty Three</h3>
             <ul>
-                <li>&emsp;<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html">➮ dixie_and_vegas.pictures</a></li>
-                <li>&emsp;<a href="https://pelmeniboiler.github.io/elizabeth_park.html">➮ elizabeth_park.pictures</a></li>
-            </ul>
-            <h3>&ensp;⮑ Two Thousand Twenty Four</h3>
-            <ul>
-                <li>&emsp;➮ coming_soon.placeholder</li>
-                <li>&emsp;➮ coming_soon.placeholder</li>
+                <li><a href="dixie_and_vegas.html">➮ dixie_and_vegas.pictures</a></li>
+                <li><a href="elizabeth_park.html">➮ elizabeth_park.pictures</a></li>
             </ul>
         </div>
     </div>
 
+    <!-- Tools Window -->
     <div class="window" style="top: 32%; left: 60%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">🗀 tools.fold</span>
-            <button class="close-btn">&times;</button>
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_tools_title">🗀 tools.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2>🗺 HOI4 Mapping Tools</h2>
-            <h4>These tools require a color screen for optimal use.</h4>
+            <h2 data-key="tools_h2">🗺 HOI4 Mapping Tools</h2>
+            <h4 data-key="tools_h4">These tools require a color screen for optimal use.</h4>
             <ul>
-                <li>&emsp;<a href="https://pelmeniboiler.github.io/definitionviewer.html">➮ Web-based Definition.csv Wizard</a></li>
-                <li>&emsp;<a href="https://github.com/pelmeniboiler/hoi4-province-reassinger">➮ Province-Reassigning VSCode Extension</a></li>
+                <li><a href="definitionviewer.html">➮ Web-based Definition.csv Wizard</a></li>
+                <li><a href="https://github.com/pelmeniboiler/hoi4-province-reassinger">➮ Province-Reassigning VSCode Extension</a></li>
             </ul>
         </div>
     </div>
 
+    <!-- Music Window -->
     <div class="window" style="top: 58%; left: 69%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">𝄆 music.ogg</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="music-content">
+        <div class="title-bar"><span class="title" data-key="win_music_title">𝄆 music.ogg</span><button class="close-btn">&times;</button></div>
+        <div id="music-play-btn" class="music-content">
             <h3>♩ Telstar ♪♩</h3>
-            <button class="normal-btn" onclick="playAudio()">▶</button>
-            <h4>Composed by Joe Meek &amp; The Tornados.</h4>
-            <h5>Piano arrangement by André Wils,<br>adapted by me for a calmer rendition.</h5>
+            <button class="normal-btn" onclick="playAudio()" data-key="music_play_btn">▶</button>
+            <h4 data-key="music_h4">Composed by...</h4>
+            <h5 data-key="music_h5">Piano arrangement...</h5>
         </div>
     </div>
 
-   
+    <!-- Logo Window -->
     <div class="window" style="top: 18.5%; left: 72.3%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">❈ logo.canvas</span> 
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="content logo-image-container"> 
-            <img src="shzh.svg" alt="Shin-Zhe Hybrid Logo">
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>
+        <div class="content logo-image-container"><img id="logo-img" src="shzh.svg" alt="Logo"></div>
     </div>
 
+    <!-- About Me Window -->
     <div class="window" style="top: 64%; left: 9%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">ℹ user.about</span>
-            <button class="close-btn">&times;</button>
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_about_title">ℹ user.about</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2>❯ Wendy Zhulkovsky ❮</h2>
-            <p>I'm an electrical engineering student, passionate about<br>human-machine interfaces, language, art, and optics—<br>particularly their intersections.</p>
+            <h2 data-key="about_h2">❯ Wendy...</h2>
+            <p data-key="about_p">I'm an electrical engineering student...</p>
         </div>
     </div>
 
+    <!-- Certificates Window -->
     <div class="window" style="top: 66%; left: 49%; z-index: 1;">
-        <div class="title-bar">
-            <span class="title">Ⓒ cool.certificates</span>
-            <button class="close-btn">&times;</button>
-        </div>
+        <div class="title-bar"><span class="title" data-key="win_certs_title">Ⓒ cool.certificates</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h4><a href="https://certificates.cs50.io/bb86e9a2-df06-4ec6-840e-d7d79a4f23d2.pdf?size=letter">Harvard CS50 Puzzle Day 2023</a></h4>
+            <h4><a href="https://certificates.cs50.io/bb86e9a2-df06-4ec6-840e-d7d79a4f23d2.pdf?size=letter" data-key="certs_link">Harvard CS50...</a></h4>
         </div>
     </div>
 
+    <!-- Unified Settings Window (Starts Closed) -->
+    <div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: 11;">
+        <div class="title-bar">
+            <span class="title" data-key="win_settings_title">🛠 system.settings</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="settings-container">
+            <nav class="settings-nav">
+                <ul>
+                    <li data-target="language" class="active" data-key="settings_nav_lang">Language</li>
+                    <li data-target="theme" data-key="settings_nav_theme">Appearance</li>
+                    <li data-target="info" data-key="settings_nav_info">Information</li>
+                </ul>
+            </nav>
+            <main class="settings-content">
+                <!-- Language Page -->
+                <div id="settings-page-language" class="settings-page active">
+                    <h3 data-key="lang_select_label">Select Language</h3>
+                    <select id="language-select" class="dropdown">
+                        <option value="en">English</option>
+                        <option value="he">עברית (Hebrew)</option>
+                        <option value="ru">Русский (Russian)</option>
+                        <option value="de">Deutsch (German)</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                    </select>
+                </div>
+
+                <!-- Appearance Page -->
+                <div id="settings-page-theme" class="settings-page">
+                    <h3 data-key="theme_title">Display Theme</h3>
+                    <div class="setting-group-inline">
+                        <input type="checkbox" id="eink-toggle" class="checkbox">
+                        <label for="eink-toggle" data-key="theme_eink_label">E-Ink Mode</label>
+                    </div>
+                    <hr class="setting-divider">
+                    <div class="setting-group">
+                        <label class="radio-label"><input type="radio" name="theme" value="light" data-key="theme_light_label"> Light</label>
+                        <label class="radio-label"><input type="radio" name="theme" value="dark" data-key="theme_dark_label"> Dark</label>
+                        <label class="radio-label"><input type="radio" name="theme" value="funky" data-key="theme_funky_label"> Funky</label>
+                    </div>
+                </div>
+
+                <!-- Information Page -->
+                <div id="settings-page-info" class="settings-page">
+                    <h3 data-key="info_title">Copyright & Licensing</h3>
+                    <p data-key="info_p1">All photographic works...</p>
+                    <p data-key="info_p2">Reproduction, distribution...</p>
+                    <p data-key="info_p3">All other content...</p>
+                    <p data-key="info_p4">Font...</p>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Start Menu -->
     <div class="start-menu">
-        <div class="start-button">program.launcher</div>
+        <div class="start-button">
+            <img src="shzh.svg" id="start-menu-logo" alt="logo"/>
+            <span data-key="start_menu_btn">program.launcher</span>
+        </div>
         <ul class="window-list"></ul>
     </div>
-
-    <div id="toggle-mode" onclick="toggleMode()">Change Display Mode</div>
-
-    <script src="start menu.js"></script>
-    <script>
-        function toggleMode() {
-            var body = document.getElementsByTagName("body")[0];
-            var toggle = document.getElementById("toggle-mode");
-            if (body.classList.contains("eink-mode")) {
-                body.classList.remove("eink-mode");
-                body.classList.add("lcd-mode");
-                toggle.innerHTML = "⇒ e-ink mode";
-            } else {
-                body.classList.remove("lcd-mode");
-                body.classList.add("eink-mode");
-                toggle.innerHTML = "⇒ lcd mode";
-            }
-        }
-
-        function playAudio() {
-            var audioToPlay = document.getElementById("audio");
-            if (audioToPlay) {
-                audioToPlay.play().catch(error => console.error("Audio play failed:", error));
-            }
-        }
-    </script>
+    
+    <!-- Scripts -->
+     <script src="settings.js" defer></script>
+    <script src="start menu.js" defer></script>
+    
 </body>
 </html>
