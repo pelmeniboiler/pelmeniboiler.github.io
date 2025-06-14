@@ -8,7 +8,7 @@
 }
 @font-face {
   font-family: 'Symbola';
-  src: url('fonts/Symbola-Emoji.ttf') format('truetype');
+  src: url('fonts/Symbola.ttf') format('truetype');
 }
 :root {
   /* Scrollbar variables are now tied to theme variables */
@@ -17,10 +17,10 @@
   --sb-thumb-border-color: var(--border-color, #000000);
   --sb-size: 16px;
   /* Funky Mode defaults, overridden by JS */
-  --funky-bg-color: #1a1a1a;
-  --funky-text-color: #e0e0e0;
-  --funky-border-color: #00ffff;
-  --funky-accent-color: #00bbbb;
+  --funky-bg-color: #b1de75;
+  --funky-text-color: #b000b5;
+  --funky-border-color: #eb01a5;
+  --funky-accent-color: #fa6607;
 }
 
 /* Base body styles */
@@ -34,7 +34,7 @@ body {
 }
 /* E-Ink / LCD mode has highest priority for background */
 body.eink-mode { background-color: var(--bg-color); }
-body.lcd-mode { background-image: url('tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
+body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
 
 /* --- THEME DEFINITIONS --- */
 body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }

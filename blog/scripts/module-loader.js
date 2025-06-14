@@ -1,4 +1,4 @@
-// /module-loader.js
+// /scripts/module-loader.js
 // This script loads HTML modules into placeholders and then loads the dependent scripts.
 
 document.addEventListener('DOMContentLoaded', () => {
