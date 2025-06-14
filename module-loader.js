@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Defines the scripts that depend on the modules being loaded first.
     const dependentScripts = [
-        'settings.js',
-        'start menu.js'
+        'scripts/settings.js',
+        'scripts/start menu.js'
     ];
 
     /**

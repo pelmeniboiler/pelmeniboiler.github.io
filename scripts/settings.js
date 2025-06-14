@@ -75,7 +75,7 @@ function setupSettings() {
     function applyTheme(theme) {
         body.classList.remove('light-mode', 'dark-mode', 'funky-mode');
         body.classList.add(`${theme}-mode`);
-        const newSrc = theme === 'dark' || theme === 'funky' ? 'shzh-white.svg' : 'shzh.svg';
+        const newSrc = theme === 'dark' || theme === 'funky' ? 'logo/shzh-white.svg' : 'logo/shzh.svg';
         if (logoImg) logoImg.src = newSrc;
         if (startMenuLogo) startMenuLogo.src = newSrc;
         if (theme === 'funky') {
