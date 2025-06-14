@@ -1,7 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Symbola&display=swap');
 @font-face {
   font-family: 'FairfaxHD';
   src: url('fonts/FairfaxHD.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Selyodka';
+  src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Symbola';
+  src: url('fonts/Symbola-Emoji.ttf') format('truetype');
 }
 :root {
   /* Scrollbar variables are now tied to theme variables */
@@ -39,7 +46,7 @@ body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-t
 body { color: var(--text-color); }
 
 .symbol {
-    font-family: 'Symbola', 'Times New Roman', serif;
+    font-family: 'Symbola';
     font-weight: normal; /* Ensure symbols aren't bolded with titles */
 }
 

@@ -10,13 +10,15 @@
         #toolbar .tool-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center;}
         #toolbar button { background-color: #efefef; border: 1px solid #ccc; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: 500;}
         #toolbar button:hover { background-color: #e0e0e0; }
-        #export-button { background-color: #4CAF50; color: white; border: none; grid-column: 1 / -1; font-weight: bold; }
-        #export-button:hover { background-color: #45a049; }
+        #export-button, #json-button { color: white; border: none; font-weight: bold; }
+        #export-button { background-color: #4CAF50; } #export-button:hover { background-color: #45a049; }
+        #json-button { background-color: #2196F3; } #json-button:hover { background-color: #1976D2; }
         #editor { border: 1px solid #ccc; padding: 15px; min-height: 500px; background: #fff; border-radius: 8px; }
         #editor aside { border-left: 3px solid #ccc; padding-left: 10px; margin: 1em 0; color: #555; }
         #preview-container { width: 300px; flex-shrink: 0; }
         #nav-preview { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-height: 200px; }
-        #page-name-input { border: 1px solid #ccc; padding: 5px; border-radius: 5px; }
+        .input-field { border: 1px solid #ccc; padding: 5px; border-radius: 5px; width: 100%; }
+        .helper-text { font-size: 12px; color: #666; margin-left: 10px; }
         h1, h2, h3 { margin-top: 1.5em; color: #333; }
         hr { border: none; border-top: 1px solid #eee; margin: 1em 0; }
         kbd { background-color: #eee; border: 1px solid #b4b4b4; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,.2), 0 2px 0 0 rgba(255,255,255,.7) inset; color: #333; display: inline-block; font-family: monospace; font-size: .85em; font-weight: 700; line-height: 1; padding: 2px 4px; white-space: nowrap; }
@@ -28,11 +30,15 @@
         <h1>Page Content Editor</h1>
         <div id="toolbar">
              <div class="tool-group">
-                <label for="page-name-input"><strong>Page Name / Translation Source:</strong></label>
-                <input type="text" id="page-name-input" placeholder="e.g., my-cool-article">
+                <label for="page-name-input" style="flex-basis: 45%;"><strong>Page Name / Filename:</strong></label>
+                <label for="page-prefix-input" style="flex-basis: 45%;"><strong>Page Key Prefix:</strong></label>
+                <input type="text" id="page-name-input" class="input-field" placeholder="my-cool-article" style="flex-basis: 45%;">
+                <input type="text" id="page-prefix-input" class="input-field" placeholder="mca" style="flex-basis: 45%;">
             </div>
             <div class="tool-group">
+                <button onclick="document.execCommand('formatBlock', false, 'h1');">Heading 1</button>
                 <button onclick="document.execCommand('formatBlock', false, 'h2');">Heading 2</button>
+                <button onclick="document.execCommand('formatBlock', false, 'h3');">Heading 3</button>
                 <button onclick="document.execCommand('formatBlock', false, 'p');">Paragraph</button>
                 <button onclick="addImage();">Image</button>
                 <button onclick="document.execCommand('insertHorizontalRule', false);">Divider</button>
@@ -50,19 +56,24 @@
                 <button onclick="addAbbr();">Abbr.</button>
             </div>
             <div class="tool-group">
-                <button onclick="document.execCommand('insertUnorderedList', false);">● Unordered List</button>
-                <button onclick="document.execCommand('insertOrderedList', false);">1. Ordered List</button>
-                <button onclick="addDetailsBlock();">▸ Details Block</button>
+                <button onclick="document.execCommand('insertUnorderedList', false);">● List</button>
+                <button onclick="document.execCommand('insertOrderedList', false);">1. List</button>
+                <button onclick="addDetailsBlock();">▸ Details</button>
                 <button onclick="wrapSelection('aside');">Aside</button>
             </div>
              <hr>
             <div class="tool-group">
-                <button id="export-button" onclick="generateAndExport();">Generate & Download Page</button>
+                <button id="export-button" onclick="generateAndExportHtml();">Generate Page HTML</button>
+                <button id="json-button" onclick="generateAndExportJson();">Generate Translation JSON</button>
+                <span class="helper-text">Place downloaded JSON in 'localization/' folder.</span>
             </div>
         </div>
         <div id="editor" contenteditable="true">
+            <h1>My Cool Article</h1>
             <h2>This is my first heading</h2>
             <p>This is a paragraph under the first heading. Select text and use the buttons to format it.</p>
+            <h3>A subsection</h3>
+            <p>Content within the subsection.</p>
             <h2>Here is another major section</h2>
             <p>This will become another item in the navigation menu.</p>
         </div>
@@ -78,122 +89,18 @@
         const editor = document.getElementById('editor');
         const navPreview = document.getElementById('nav-preview');
 
-        // --- STATIC HTML BLOCKS ---
-        const SETTINGS_WINDOW_HTML = `
-    <!-- Unified Settings Window (Starts Closed) -->
-    <div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: 11;">
-        <div class="title-bar">
-            <span class="title" data-key="win_settings_title"><span class=\"symbol\">⚙</span> system.settings</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="settings-container">
-            <nav class="settings-nav">
-                <ul>
-                    <li data-target="language" class="active" data-key="settings_nav_lang">Language</li>
-                    <li data-target="theme" data-key="settings_nav_theme">Appearance</li>
-                    <li data-target="info" data-key="settings_nav_info">Information</li>
-                </ul>
-            </nav>
-            <main class="settings-content">
-                <!-- Language Page -->
-                <div id="settings-page-language" class="settings-page active">
-                    <h3 data-key="lang_select_label">Select Language</h3>
-                    <select id="language-select" class="dropdown">
-                        <option value="en">English</option>
-                        <option value="he">עברית (Hebrew)</option>
-                        <option value="ru">Русский (Russian)</option>
-                        <option value="de">Deutsch (German)</option>
-                        <option value="ja">日本語 (Japanese)</option>
-                    </select>
-                </div>
-                <!-- Appearance Page -->
-                <div id="settings-page-theme" class="settings-page">
-                    <h3 data-key="theme_title">Display Theme</h3>
-                    <div class="setting-group-inline">
-                        <input type="checkbox" id="eink-toggle" class="checkbox">
-                        <label for="eink-toggle" data-key="theme_eink_label">E-Ink Mode</label>
-                    </div>
-                    <hr class="setting-divider">
-                    <div class="setting-group">
-                        <label class="radio-label"><input type="radio" name="theme" value="light" data-key="theme_light_label"> Light</label>
-                        <label class="radio-label"><input type="radio" name="theme" value="dark" data-key="theme_dark_label"> Dark</label>
-                        <label class="radio-label"><input type="radio" name="theme" value="funky" data-key="theme_funky_label"> Funky</label>
-                    </div>
-                </div>
-                <!-- Information Page -->
-                <div id="settings-page-info" class="settings-page">
-                    <h3 data-key="info_title">Copyright & Licensing</h3>
-                    <p data-key="info_p1">All photographic works...</p>
-                    <p data-key="info_p2">Reproduction, distribution...</p>
-                    <p data-key="info_p3">All other content...</p>
-                    <p data-key="info_p4">Font...</p>
-                </div>
-            </main>
-        </div>
-    </div>`;
-        const START_MENU_HTML = `
-    <div class="start-menu">
-        <div class="start-button">
-            <img src="shzh.svg" id="start-menu-logo" alt="logo"/>
-            <span data-key="start_menu_btn">program.launcher</span>
-        </div>
-        <ul class="window-list"></ul>
-    </div>`;
-        const SCRIPTS_HTML = `
-    <!-- Scripts -->
-    <script src="settings.js" defer><\/script>
-    <script src="start menu.js" defer><\/script>`;
+        // --- STATIC HTML BLOCKS (MODULE PLACEHOLDERS) ---
+        const SETTINGS_MODULE_HTML = `<div id="settings-module-placeholder"></div>`;
+        const START_MENU_MODULE_HTML = `<div id="start-menu-module-placeholder"></div>`;
+        const SCRIPTS_MODULE_HTML = `<script src="module-loader.js" defer><\/script>`;
 
         // --- TOOLBAR FUNCTIONS ---
         editor.addEventListener('input', updateNavPreview);
-
         function addImage() { const url = prompt("Enter image URL:"); if (url) { document.execCommand('insertImage', false, url); } }
         function addLink() { const url = prompt("Enter the URL:"); if (url) { document.execCommand('createLink', false, url); } }
-
-        function wrapSelection(tagName) {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && !selection.getRangeAt(0).collapsed) {
-                const range = selection.getRangeAt(0);
-                const wrapper = document.createElement(tagName);
-                wrapper.appendChild(range.extractContents());
-                range.insertNode(wrapper);
-                selection.removeAllRanges(); // Deselect
-            }
-        }
-        
-        function addAbbr() {
-            const title = prompt("Enter the full text for the abbreviation:");
-            if (title) {
-                const selection = window.getSelection();
-                if (selection.rangeCount > 0 && !selection.getRangeAt(0).collapsed) {
-                    const range = selection.getRangeAt(0);
-                    const abbr = document.createElement('abbr');
-                    abbr.title = title;
-                    abbr.appendChild(range.extractContents());
-                    range.insertNode(abbr);
-                    selection.removeAllRanges();
-                }
-            }
-        }
-
-        function addDetailsBlock() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && !selection.getRangeAt(0).collapsed) {
-                const summaryText = prompt("Enter the summary for the details block:", "Click to expand");
-                if (summaryText) {
-                    const range = selection.getRangeAt(0);
-                    const details = document.createElement('details');
-                    const summary = document.createElement('summary');
-                    summary.textContent = summaryText;
-                    details.appendChild(summary);
-                    details.appendChild(range.extractContents());
-                    range.insertNode(details);
-                    selection.removeAllRanges();
-                }
-            } else {
-                alert("Please select the text you want to be inside the details block.");
-            }
-        }
+        function wrapSelection(tagName) { const s=window.getSelection();if(s.rangeCount>0&&!s.getRangeAt(0).collapsed){const r=s.getRangeAt(0),w=document.createElement(tagName);w.appendChild(r.extractContents());r.insertNode(w);s.removeAllRanges();} }
+        function addAbbr() { const t=prompt("Enter full text for abbreviation:");if(t){const s=window.getSelection();if(s.rangeCount>0&&!s.getRangeAt(0).collapsed){const r=s.getRangeAt(0),a=document.createElement('abbr');a.title=t;a.appendChild(r.extractContents());r.insertNode(a);s.removeAllRanges();}}}
+        function addDetailsBlock() { const s=window.getSelection();if(s.rangeCount>0&&!s.getRangeAt(0).collapsed){const t=prompt("Enter summary for details block:","Click to expand");if(t){const r=s.getRangeAt(0),d=document.createElement('details'),m=document.createElement('summary');m.textContent=t;d.appendChild(m);d.appendChild(r.extractContents());r.insertNode(d);s.removeAllRanges();}}else{alert("Please select text to be inside details block.");}}
         
         // --- PREVIEW AND EXPORT LOGIC ---
         function updateNavPreview() {
@@ -214,13 +121,13 @@
                 const nodeType = el.nodeName.toLowerCase();
                 let item = null;
                 switch (nodeType) {
-                    case 'h2': case 'h3': case 'p': case 'ul': case 'ol': case 'details': case 'hr': case 'aside':
+                    case 'h1': case 'h2': case 'h3': case 'p': case 'ul': case 'ol': case 'details': case 'hr': case 'aside':
                         item = { type: nodeType, content: el.innerHTML };
                         break;
                     case 'img':
                         item = { type: 'img', src: el.src, alt: el.alt };
                         break;
-                    case 'div': // Handle contenteditable wrapping things in divs
+                    case 'div':
                         manifest.push({ type: 'p', content: el.innerHTML });
                         break;
                     case '#text':
@@ -234,77 +141,109 @@
             return manifest;
         }
 
-        function renderHtmlFromManifest(pageName, manifest) {
+        /**
+         * Processes the manifest and returns both the final HTML and a translation object.
+         */
+        function processManifest(pagePrefix, manifest) {
             let articleHtml = '';
-            let navHtml = '<h2><a href="#">Article Sections</a></h2>\n<ul>';
+            let navHtml = '<ul>';
+            let translations = {}; // Start with an empty object for page-specific keys
             let h_count = 0, p_count = 0, img_count = 0;
 
             manifest.forEach(item => {
                 const { type, content, src, alt } = item;
                 let id = '', dataKey = '';
                 
-                if (type === 'h2' || type === 'h3') {
+                if (type === 'h1' || type === 'h2' || type === 'h3') {
                     h_count++;
-                    const cleanContent = item.content.replace(/<[^>]*>?/gm, '').trim();
+                    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
                     id = (cleanContent.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')) || `${type}-${h_count}`;
-                    dataKey = `nav_${type}_${id}`;
-                    articleHtml += `<${type} id="${id}" data-key="${dataKey}">${content}</${type}>\n`;
-                    const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
-                    navHtml += `\n  <li><a href="#${id}">${indent}${cleanContent}</a></li>`;
+                    
+                    dataKey = (type === 'h1') ? `${pagePrefix}_h1` : `${pagePrefix}_${type}_${id}`;
+                    translations[dataKey] = content;
+                    
+                    // The element in the final HTML is empty; it will be populated by the translation script
+                    articleHtml += `<${type} id="${id}" data-key="${dataKey}"></${type}>\n`;
+
+                    if (type !== 'h1') { // Don't add H1 to nav list
+                        const navKey = `${pagePrefix}_nav_${id}`;
+                        const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
+                        navHtml += `\n  <li><a href="#${id}" data-key="${navKey}"></a></li>`;
+                        translations[navKey] = `${indent}${cleanContent}`;
+                    }
                 } else if (type === 'p') {
-                    p_count++; dataKey = `article_p_${p_count}`;
-                    articleHtml += `<p data-key="${dataKey}">${content}</p>\n`;
+                    p_count++; 
+                    dataKey = `${pagePrefix}_p${p_count}`;
+                    translations[dataKey] = content;
+                    articleHtml += `<p data-key="${dataKey}"></p>\n`;
                 } else if (type === 'img') {
-                    img_count++; dataKey = `article_img_${img_count}`;
-                    articleHtml += `<img src="${src}" alt="${alt || ''}" data-key="${dataKey}" class="article-image">\n`;
-                } else if (['ul', 'ol', 'details', 'aside'].includes(type)) {
+                    img_count++; 
+                    dataKey = `${pagePrefix}_img_alt_${img_count}`;
+                    translations[dataKey] = alt || '';
+                    articleHtml += `<img src="${src}" alt="" data-key="${dataKey}" class="article-image">\n`;
+                } else if (['ul', 'ol', 'details', 'aside', 'hr'].includes(type)) {
+                    // These complex elements don't get a single data-key, their contents might.
                     articleHtml += `<${type}>${content}</${type}>\n`;
-                } else if (type === 'hr') {
-                     articleHtml += `<hr>\n`;
                 }
             });
             
-            navHtml += '\n</ul>\n<h2><a href="index.html">⌂←</a></h2>';
-
-            return `<!DOCTYPE html>
+            navHtml += '\n</ul>\n<a href="index.html">⌂←</a>'; // The home link is static, no data-key
+            
+            const finalHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="translation-source" content="${pageName}">
-    <title>${pageName}</title>
+    <meta name="translation-source" content="${pagePrefix}">
+    <title>${pagePrefix}</title>
     <link rel="stylesheet" href="pelmeni2025.css">
     <link rel="stylesheet" href="article.css">
 </head>
 <body class="eink-mode light-mode">
     <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height: fit-content; position: absolute; z-index: 3;">
-        <div class="title-bar"><span class="title">◈ ${pageName}.nav</span></div>
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ ${pagePrefix}.nav</span><button class="close-btn">&times;</button></div>
         <div class="content">${navHtml}</div>
     </nav>
     <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
-        <div class="title-bar"><span class="title">▤ ${pageName}.article</span></div>
+        <div class="title-bar"><span class="title" data-key="win_gallery_title">▤ ${pagePrefix}.article</span><button class="close-btn">&times;</button></div>
         <article class="content">${articleHtml}</article>
     </main>
-    ${SETTINGS_WINDOW_HTML}
-    ${START_MENU_HTML}
-    ${SCRIPTS_HTML}
+    ${SETTINGS_MODULE_HTML}
+    ${START_MENU_MODULE_HTML}
+    ${SCRIPTS_MODULE_HTML}
 </body>
 </html>`;
+
+            return { html: finalHtml, translations: { en: translations } };
         }
         
-        function generateAndExport() {
-            const pageNameInput = document.getElementById('page-name-input');
-            const pageName = pageNameInput.value.trim() || 'untitled-page';
+        function generateAndExportHtml() {
+            const pageName = document.getElementById('page-name-input').value.trim() || 'untitled-page';
+            const pagePrefix = document.getElementById('page-prefix-input').value.trim() || pageName;
             const manifest = createManifestFromEditor();
-            const fileContent = renderHtmlFromManifest(pageName, manifest);
-            const blob = new Blob([fileContent], { type: 'text/html;charset=utf-8' });
+            const { html } = processManifest(pagePrefix, manifest);
+            
+            downloadFile(html, `${pageName}.html`, 'text/html');
+        }
+
+        function generateAndExportJson() {
+            const pageName = document.getElementById('page-name-input').value.trim() || 'untitled-page';
+            const pagePrefix = document.getElementById('page-prefix-input').value.trim() || pageName;
+            const manifest = createManifestFromEditor();
+            const { translations } = processManifest(pagePrefix, manifest);
+
+            const jsonString = JSON.stringify(translations, null, 2); // Pretty-print with 2 spaces
+            downloadFile(jsonString, `${pagePrefix}.json`, 'application/json');
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const blob = new Blob([content], { type: `${contentType};charset=utf-8` });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `${pageName}.html`;
+            a.download = fileName;
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
-        // Initial nav generation
         updateNavPreview();
     </script>
 </body>

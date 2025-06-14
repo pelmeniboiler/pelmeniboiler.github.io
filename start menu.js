@@ -1,10 +1,15 @@
-// This script handles the draggable windows and the start menu functionality.
-// It uses a robust "check-then-listen" pattern to handle asynchronous translation loading.
+// start menu.js
+// This script also has its DOMContentLoaded wrapper removed.
+// It will now correctly listen for the 'translationsReady' event dispatched by settings.js.
 
-document.addEventListener('DOMContentLoaded', () => {
+function setupStartMenu() {
     // --- Basic setup ---
     const startMenu = document.querySelector('.start-menu');
-    if (!startMenu) return;
+    // Important: check if the start menu exists before proceeding.
+    if (!startMenu) {
+        // console.log("Start menu not found on this page, skipping setup.");
+        return;
+    }
     
     const startButton = startMenu.querySelector('.start-button');
     const windows = document.querySelectorAll('.window');
@@ -25,8 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.setAttribute('tabindex', '0');
             const titleElement = closedItemWindow.querySelector('.title');
 
+            // Determine the window title using translation data
             const titleKey = titleElement ? titleElement.getAttribute('data-key') : null;
-            const titleText = (titleKey && translations[lang] && translations[lang][titleKey]) ?
+            const titleText = (titleKey && translations && translations[lang] && translations[lang][titleKey]) ?
                 translations[lang][titleKey] :
                 (titleElement ? titleElement.textContent.trim() : 'Untitled Window');
 
@@ -35,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const openHandler = (e) => {
                 e.preventDefault();
                 openWindow(closedItemWindow, translations, lang);
+                // On mobile, close the start menu after opening a window
                 if (isMobile() && startMenu.classList.contains('open')) {
                     startMenu.classList.remove('open');
                 }
@@ -52,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openWindow(windowToOpen, translations, lang) {
-        windowToOpen.style.display = 'flex';
+        windowToOpen.style.display = 'flex'; // Use flex to match your CSS
         windowToOpen.classList.remove('init-closed');
 
         if (!isMobile()) {
@@ -77,42 +84,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleBar = window.querySelector('.title-bar');
             const closeBtn = window.querySelector('.close-btn');
 
-            // --- Close button logic (works on mobile and desktop) ---
+            // --- Close button logic ---
             if (closeBtn) {
-                closeBtn.addEventListener('click', () => closeWindow(window, translations, lang));
+                // To prevent multiple listeners, we replace the node
+                const newBtn = closeBtn.cloneNode(true);
+                closeBtn.parentNode.replaceChild(newBtn, closeBtn);
+                newBtn.addEventListener('click', () => closeWindow(window, translations, lang));
             }
 
             // --- Desktop-only: Dragging logic ---
-            if (!isMobile()) {
+            if (!isMobile() && titleBar) {
                 let offsetX = 0, offsetY = 0;
+                
+                titleBar.onmousedown = (e) => {
+                    e.preventDefault();
+                    highestZIndex++;
+                    window.style.zIndex = highestZIndex;
+                    const rect = window.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    document.onmousemove = elementDrag;
+                    document.onmouseup = closeDragElement;
+                };
 
-                if (titleBar) {
-                    titleBar.onmousedown = (e) => {
-                        e.preventDefault();
-                        highestZIndex++;
-                        window.style.zIndex = highestZIndex;
-                        const rect = window.getBoundingClientRect();
-                        offsetX = e.clientX - rect.left;
-                        offsetY = e.clientY - rect.top;
-                        document.onmousemove = elementDrag;
-                        document.onmouseup = closeDragElement;
-                    };
+                function elementDrag(e) {
+                    window.style.left = (e.clientX - offsetX) + "px";
+                    window.style.top = (e.clientY - offsetY) + "px";
+                }
 
-                    function elementDrag(e) {
-                        window.style.left = (e.clientX - offsetX) + "px";
-                        window.style.top = (e.clientY - offsetY) + "px";
-                    }
-
-                    function closeDragElement() {
-                        document.onmouseup = null;
-                        document.onmousemove = null;
-                    }
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
                 }
             }
         });
     }
     
-    function setupStartMenu() {
+    function setupMobileMenu() {
         if (isMobile()) {
             startButton.addEventListener('click', () => {
                 startMenu.classList.toggle('open');
@@ -121,27 +129,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Main Initialization Logic ---
-    function initializeStartMenu(translations, lang) {
+    function initialize(translations, lang) {
+        // Find all initially closed windows
         windows.forEach(win => {
             const isExplicitlyClosed = win.classList.contains('init-closed');
             const isVisuallyHidden = getComputedStyle(win).display === 'none';
-
             if ((isExplicitlyClosed || isVisuallyHidden) && !closedWindows.includes(win)) {
                 closedWindows.push(win);
             }
         });
 
         setupWindowInteractions(translations, lang);
-        setupStartMenu(); // Setup mobile start menu toggle
+        setupMobileMenu();
         updateWindowList(translations, lang);
     }
     
-    // Listen for the custom event that signals translations are ready.
+    // --- Event Listener ---
+    // This is the key part. We listen for the custom event from settings.js
     document.addEventListener('translationsReady', (event) => {
         const { translations, lang } = event.detail;
-        initializeStartMenu(translations, lang);
+        initialize(translations, lang);
 
-        // Re-initialize on resize to switch between mobile/desktop modes
+        // Re-initialize on resize to switch between mobile/desktop modes.
+        // A full reload is a simple way to handle the complexity of changing modes.
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
@@ -149,10 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 location.reload(); 
             }, 250);
         });
-    }, { once: true });
+    }, { once: true }); // Use 'once' to ensure it only runs one time.
 
-    // Fallback if the event has already fired.
+    // Fallback: If settings.js finishes before this script runs, the data will be on the window.
     if (window.translationsData) {
-        initializeStartMenu(window.translationsData.translations, window.translationsData.lang);
+        const { translations, lang } = window.translationsData;
+        initialize(translations, lang);
     }
-});
+}
+
+// Run the setup function
+setupStartMenu();

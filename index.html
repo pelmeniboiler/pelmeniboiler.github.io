@@ -15,13 +15,11 @@
 </head>
 <body class="eink-mode light-mode">
 
-    <!-- Welcome Window -->
+    <!-- Window Content -->
     <div class="window" style="top: 35%; left: 20%; z-index: 4;">
         <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
         <div class="content"><h1 data-key="welcome_h1">pelmeniboiler</h1><p id="welcome-text" data-key="welcome_text_eink">Welcome!</p></div>
     </div>
-
-    <!-- Projects Window -->
     <div class="window" style="top: 12%; left: 8%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_projects_title">🗀 projects.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
@@ -32,8 +30,6 @@
             </ul>
         </div>
     </div>
-
-    <!-- Photos Window -->
     <div class="window" style="top: 12%; left: 40%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_photos_title">🗀 photos.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
@@ -46,8 +42,6 @@
             </ul>
         </div>
     </div>
-
-    <!-- Tools Window -->
     <div class="window" style="top: 35%; left: 60%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_tools_title">🗀 tools.fold</span><button class="close-btn">&times;</button></div>
         <div class="content">
@@ -59,8 +53,6 @@
             </ul>
         </div>
     </div>
-
-    <!-- Music Window -->
     <div class="window" style="top: 58%; left: 69%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_music_title">𝄆 music.ogg</span><button class="close-btn">&times;</button></div>
         <div id="music-play-btn" class="music-content">
@@ -70,14 +62,10 @@
             <h5 data-key="music_h5">Piano arrangement...</h5>
         </div>
     </div>
-
-    <!-- Logo Window -->
     <div class="window" style="top: 15.5%; left: 72.3%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>
         <div class="content logo-image-container"><img id="logo-img" src="shzh.svg" alt="Logo"></div>
     </div>
-
-    <!-- About Me Window -->
     <div class="window" style="top: 64%; left: 9%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_about_title">ℹ user.about</span><button class="close-btn">&times;</button></div>
         <div class="content">
@@ -85,82 +73,17 @@
             <p data-key="about_p">I'm an electrical engineering student...</p>
         </div>
     </div>
-
-    <!-- Certificates Window -->
-    <div class="window" style="top: 55%; left: 4    7%; z-index: 1;">
+    <div class="window" style="top: 55%; left: 47%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_certs_title">Ⓒ cool.certificates</span><button class="close-btn">&times;</button></div>
         <div class="content">
             <h4><a href="https://certificates.cs50.io/bb86e9a2-df06-4ec6-840e-d7d79a4f23d2.pdf?size=letter" data-key="certs_link">Harvard CS50...</a></h4>
         </div>
     </div>
 
-    <!-- Unified Settings Window (Starts Closed) -->
-    <div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: 11;">
-        <div class="title-bar">
-            <span class="title" data-key="win_settings_title">🛠 system.settings</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="settings-container">
-            <nav class="settings-nav">
-                <ul>
-                    <li data-target="language" class="active" data-key="settings_nav_lang">Language</li>
-                    <li data-target="theme" data-key="settings_nav_theme">Appearance</li>
-                    <li data-target="info" data-key="settings_nav_info">Information</li>
-                </ul>
-            </nav>
-            <main class="settings-content">
-                <!-- Language Page -->
-                <div id="settings-page-language" class="settings-page active">
-                    <h3 data-key="lang_select_label">Select Language</h3>
-                    <select id="language-select" class="dropdown">
-                        <option value="en">English</option>
-                        <option value="he">עברית (Hebrew)</option>
-                        <option value="ru">Русский (Russian)</option>
-                        <option value="de">Deutsch (German)</option>
-                        <option value="ja">日本語 (Japanese)</option>
-                        <option value="gt"> (English)</option>
-                    </select>
-                </div>
-
-                <!-- Appearance Page -->
-                <div id="settings-page-theme" class="settings-page">
-                    <h3 data-key="theme_title">Display Theme</h3>
-                    <div class="setting-group-inline">
-                        <input type="checkbox" id="eink-toggle" class="checkbox">
-                        <label for="eink-toggle" data-key="theme_eink_label">E-Ink Mode</label>
-                    </div>
-                    <hr class="setting-divider">
-                    <div class="setting-group">
-                        <label class="radio-label"><input type="radio" name="theme" value="light" data-key="theme_light_label"> Light</label>
-                        <label class="radio-label"><input type="radio" name="theme" value="dark" data-key="theme_dark_label"> Dark</label>
-                        <label class="radio-label"><input type="radio" name="theme" value="funky" data-key="theme_funky_label"> Funky</label>
-                    </div>
-                </div>
-
-                <!-- Information Page -->
-                <div id="settings-page-info" class="settings-page">
-                    <h3 data-key="info_title">Copyright & Licensing</h3>
-                    <p data-key="info_p1">All photographic works...</p>
-                    <p data-key="info_p2">Reproduction, distribution...</p>
-                    <p data-key="info_p3">All other content...</p>
-                    <p data-key="info_p4">Font...</p>
-                </div>
-            </main>
-        </div>
-    </div>
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
     
-    <!-- Start Menu -->
-    <div class="start-menu">
-        <div class="start-button">
-            <img src="shzh.svg" id="start-menu-logo" alt="logo"/>
-            <span data-key="start_menu_btn">program.launcher</span>
-        </div>
-        <ul class="window-list"></ul>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="settings.js" defer></script>
-    <script src="start menu.js" defer></script>
+    <script src="module-loader.js" defer></script>
     
 </body>
 </html>

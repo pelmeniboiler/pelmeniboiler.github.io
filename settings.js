@@ -1,5 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Element References ---
+// settings.js
+// No longer needs a DOMContentLoaded wrapper, as module-loader.js ensures the DOM is ready.
+
+// --- DOM Element References ---
+// Encapsulate in a function to avoid polluting the global scope
+function setupSettings() {
     const getElement = (id) => document.getElementById(id);
     const body = document.body;
     const welcomeText = getElement('welcome-text');
@@ -23,9 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsNavItems.forEach(item => {
             item.addEventListener('click', () => {
                 const targetId = `settings-page-${item.dataset.target}`;
+                // Deactivate current active elements
                 document.querySelectorAll('.settings-page.active, .settings-nav li.active').forEach(activeEl => {
                     activeEl.classList.remove('active');
                 });
+                // Activate new target page and nav item
                 const targetPage = getElement(targetId);
                 if (targetPage) targetPage.classList.add('active');
                 item.classList.add('active');
@@ -106,14 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyTranslationsToPage(translations, lang) {
-        if (!translations[lang]) lang = 'en';
+        if (!translations[lang]) lang = 'en'; // Fallback to English
         document.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
             if (translations[lang] && translations[lang][key]) {
                 if (elem.tagName === 'INPUT' && elem.type === 'radio') {
                     const label = elem.parentElement;
                     if (label.nodeName === 'LABEL') {
-                        label.innerHTML = '';
+                        // Reconstruct label to avoid issues
+                        label.innerHTML = ''; 
                         label.appendChild(elem);
                         label.appendChild(document.createTextNode(' ' + translations[lang][key]));
                     }
@@ -127,8 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (languageSelect) languageSelect.value = lang;
         localStorage.setItem(LANG_KEY, lang);
         
-        // ** THE CRITICAL FIX IS HERE **
-        // After applying, we store the data globally and then dispatch the event.
+        // This is the critical part for communicating with start menu.js
         window.translationsData = { translations, lang };
         document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations, lang } }));
     }
@@ -138,14 +144,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const globalTranslationsPath = 'localization/global.json';
             const pageSourceName = document.querySelector('meta[name="translation-source"]')?.content;
             const pageTranslationsPath = pageSourceName ? `localization/${pageSourceName}.json` : null;
+            
             const fetchPromises = [fetch(globalTranslationsPath)];
             if (pageTranslationsPath) {
                 fetchPromises.push(fetch(pageTranslationsPath));
             }
+
             const responses = await Promise.all(fetchPromises);
             responses.forEach(res => {
                 if (!res.ok) throw new Error(`Failed to fetch ${res.url}: ${res.statusText}`);
             });
+
             const jsonPromises = responses.map(res => res.json());
             const [globalData, pageData] = await Promise.all(jsonPromises);
             
@@ -154,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTranslationsToPage(loadedTranslations, lang);
         } catch (error) {
             console.error("Error loading translations:", error);
-            applyTranslationsToPage({}, 'en');
+            // Fallback to empty translations if loading fails
+            applyTranslationsToPage({}, 'en'); 
         }
     }
 
@@ -162,8 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
         const savedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         applyTheme(savedTheme);
+
         const savedMode = localStorage.getItem(MODE_KEY) || 'eink';
         applyMode(savedMode);
+
         const savedLang = localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0];
         await loadAndSetLanguage(savedLang);
     }
@@ -185,5 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
-});
+}
+
+// Run the setup function
+setupSettings();
