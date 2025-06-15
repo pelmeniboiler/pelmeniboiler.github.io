@@ -29,7 +29,7 @@
     <div id="editor-container">
         <h1>Page Content Editor</h1>
         <div id="toolbar">
-             <div class="tool-group">
+            <div class="tool-group">
                 <label for="page-name-input" style="flex-basis: 45%;"><strong>Page Name / Filename:</strong></label>
                 <label for="page-prefix-input" style="flex-basis: 45%;"><strong>Page Key Prefix:</strong></label>
                 <input type="text" id="page-name-input" class="input-field" placeholder="my-cool-article" style="flex-basis: 45%;">
@@ -61,7 +61,7 @@
                 <button onclick="addDetailsBlock();">▸ Details</button>
                 <button onclick="wrapSelection('aside');">Aside</button>
             </div>
-             <hr>
+            <hr>
             <div class="tool-group">
                 <button id="export-button" onclick="generateAndExportHtml();">Generate Page HTML</button>
                 <button id="json-button" onclick="generateAndExportJson();">Generate Translation JSON</button>
@@ -92,7 +92,7 @@
         // --- STATIC HTML BLOCKS (MODULE PLACEHOLDERS) ---
         const SETTINGS_MODULE_HTML = `<div id="settings-module-placeholder"></div>`;
         const START_MENU_MODULE_HTML = `<div id="start-menu-module-placeholder"></div>`;
-        const SCRIPTS_MODULE_HTML = `<script src="scripts/module-loader.js" defer><\/script>`;
+        const SCRIPTS_MODULE_HTML = `<script src="/scripts/module-loader.js" defer><\/script>`;
 
         // --- TOOLBAR FUNCTIONS ---
         editor.addEventListener('input', updateNavPreview);
@@ -109,9 +109,13 @@
             headings.forEach(h => {
                 const text = h.textContent || 'Untitled Heading';
                 const indent = h.tagName === 'H3' ? '&emsp;&emsp;' : '&ensp;';
-                navHtml += `\n  <li><a href="#">${indent}${text}</a></li>`;
+                if (h.tagName === 'H2') {
+                    navHtml += `\n  <li><a href="#"><strong>${indent}${text}</strong></a></li>`;
+                } else { // H3
+                    navHtml += `\n  <li><a href="#">${indent}${text}</a></li>`;
+                }
             });
-            navHtml += '\n</ul>\n<h2><a href="index.html">⌂←</a></h2>';
+            navHtml += '\n</ul>\n<h2><a href="/index.html">⌂←</a></h2>';
             navPreview.innerHTML = navHtml;
         }
 
@@ -132,7 +136,7 @@
                         break;
                     case '#text':
                         if (el.textContent.trim() !== '') {
-                             manifest.push({ type: 'p', content: el.textContent });
+                            manifest.push({ type: 'p', content: el.textContent });
                         }
                         break;
                 }
@@ -169,7 +173,12 @@
                         const navKey = `${pagePrefix}_nav_${id}`;
                         const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
                         navHtml += `\n  <li><a href="#${id}" data-key="${navKey}"></a></li>`;
-                        translations[navKey] = `${indent}${cleanContent}`;
+                        
+                        if (type === 'h2') {
+                            translations[navKey] = `<strong>${indent}${cleanContent}</strong>`;
+                        } else { // h3
+                            translations[navKey] = `${indent}${cleanContent}`;
+                        }
                     }
                 } else if (type === 'p') {
                     p_count++; 
@@ -187,7 +196,7 @@
                 }
             });
             
-            navHtml += '\n</ul>\n<a href="index.html">⌂←</a>'; // The home link is static, no data-key
+            navHtml += '\n</ul>\n<a href="/index.html">⌂←</a>'; // The home link is static, no data-key
             
             const finalHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -196,8 +205,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="${pagePrefix}">
     <title>${pagePrefix}</title>
-    <link rel="stylesheet" href="styles/pelmeni2025.css">
-    <link rel="stylesheet" href="styles/article.css">
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
 </head>
 <body class="eink-mode light-mode">
     <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height: fit-content; position: absolute; z-index: 3;">
