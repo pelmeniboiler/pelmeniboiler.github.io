@@ -30,13 +30,21 @@
         <h1>Page Content Editor</h1>
         <div id="toolbar">
             <div class="tool-group">
+                <label for="article-title-input" style="flex-basis: 100%;"><strong>Article Title:</strong></label>
+                <input type="text" id="article-title-input" class="input-field" placeholder="My Awesome Article Title">
+                
+                <label for="page-desc-input" style="flex-basis: 100%;"><strong>Article Description (for blog preview):</strong></label>
+                <input type="text" id="page-desc-input" class="input-field" placeholder="A short, catchy description of the article.">
+                
+                <label for="page-keywords-input" style="flex-basis: 100%;"><strong>Keywords (comma-separated):</strong></label>
+                <input type="text" id="page-keywords-input" class="input-field" placeholder="tech, blog, awesome, stuff">
+
                 <label for="page-name-input" style="flex-basis: 45%;"><strong>Page Name / Filename:</strong></label>
                 <label for="page-prefix-input" style="flex-basis: 45%;"><strong>Page Key Prefix:</strong></label>
                 <input type="text" id="page-name-input" class="input-field" placeholder="my-cool-article" style="flex-basis: 45%;">
                 <input type="text" id="page-prefix-input" class="input-field" placeholder="mca" style="flex-basis: 45%;">
             </div>
             <div class="tool-group">
-                <button onclick="document.execCommand('formatBlock', false, 'h1');">Heading 1</button>
                 <button onclick="document.execCommand('formatBlock', false, 'h2');">Heading 2</button>
                 <button onclick="document.execCommand('formatBlock', false, 'h3');">Heading 3</button>
                 <button onclick="document.execCommand('formatBlock', false, 'p');">Paragraph</button>
@@ -69,7 +77,6 @@
             </div>
         </div>
         <div id="editor" contenteditable="true">
-            <h1>My Cool Article</h1>
             <h2>This is my first heading</h2>
             <p>This is a paragraph under the first heading. Select text and use the buttons to format it.</p>
             <h3>A subsection</h3>
@@ -124,8 +131,9 @@
             editor.childNodes.forEach(el => {
                 const nodeType = el.nodeName.toLowerCase();
                 let item = null;
+                // Note: h1 is handled by the dedicated title field
                 switch (nodeType) {
-                    case 'h1': case 'h2': case 'h3': case 'p': case 'ul': case 'ol': case 'details': case 'hr': case 'aside':
+                    case 'h2': case 'h3': case 'p': case 'ul': case 'ol': case 'details': case 'hr': case 'aside':
                         item = { type: nodeType, content: el.innerHTML };
                         break;
                     case 'img':
@@ -148,37 +156,35 @@
         /**
          * Processes the manifest and returns both the final HTML and a translation object.
          */
-        function processManifest(pagePrefix, manifest) {
-            let articleHtml = '';
+        function processManifest(pagePrefix, articleTitle, description, keywords, manifest) {
+            const titleKey = `${pagePrefix}_title`;
+            const descKey = `${pagePrefix}_desc`;
+            let articleHtml = `<h1 id="title" data-key="${titleKey}"></h1>\n`;
             let navHtml = '<ul>';
-            let translations = {}; // Start with an empty object for page-specific keys
+            let translations = {};
+            translations[titleKey] = articleTitle;
+            translations[descKey] = description; // Add description to translations
+
             let h_count = 0, p_count = 0, img_count = 0;
 
             manifest.forEach(item => {
                 const { type, content, src, alt } = item;
                 let id = '', dataKey = '';
                 
-                if (type === 'h1' || type === 'h2' || type === 'h3') {
+                if (type === 'h2' || type === 'h3') {
                     h_count++;
                     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
                     id = (cleanContent.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')) || `${type}-${h_count}`;
-                    
-                    dataKey = (type === 'h1') ? `${pagePrefix}_h1` : `${pagePrefix}_${type}_${id}`;
+                    dataKey = `${pagePrefix}_${type}_${id}`;
                     translations[dataKey] = content;
-                    
-                    // The element in the final HTML is empty; it will be populated by the translation script
                     articleHtml += `<${type} id="${id}" data-key="${dataKey}"></${type}>\n`;
-
-                    if (type !== 'h1') { // Don't add H1 to nav list
-                        const navKey = `${pagePrefix}_nav_${id}`;
-                        const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
-                        navHtml += `\n  <li><a href="#${id}" data-key="${navKey}"></a></li>`;
-                        
-                        if (type === 'h2') {
-                            translations[navKey] = `<strong>${indent}${cleanContent}</strong>`;
-                        } else { // h3
-                            translations[navKey] = `${indent}${cleanContent}`;
-                        }
+                    const navKey = `${pagePrefix}_nav_${id}`;
+                    const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
+                    navHtml += `\n  <li><a href="#${id}" data-key="${navKey}"></a></li>`;
+                    if (type === 'h2') {
+                        translations[navKey] = `<strong>${indent}${cleanContent}</strong>`;
+                    } else { // h3
+                        translations[navKey] = `${indent}${cleanContent}`;
                     }
                 } else if (type === 'p') {
                     p_count++; 
@@ -191,18 +197,19 @@
                     translations[dataKey] = alt || '';
                     articleHtml += `<img src="${src}" alt="" data-key="${dataKey}" class="article-image">\n`;
                 } else if (['ul', 'ol', 'details', 'aside', 'hr'].includes(type)) {
-                    // These complex elements don't get a single data-key, their contents might.
                     articleHtml += `<${type}>${content}</${type}>\n`;
                 }
             });
             
-            navHtml += '\n</ul>\n<a href="/index.html">⌂←</a>'; // The home link is static, no data-key
+            navHtml += '\n</ul>\n<a href="/index.html">⌂←</a>';
             
             const finalHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${description}">
+    <meta name="keywords" content="${keywords}">
     <meta name="translation-source" content="${pagePrefix}">
     <title>${pagePrefix}</title>
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
@@ -226,23 +233,31 @@
             return { html: finalHtml, translations: { en: translations } };
         }
         
+        function getPageMetadata() {
+            return {
+                pageName: document.getElementById('page-name-input').value.trim() || 'untitled-page',
+                pagePrefix: document.getElementById('page-prefix-input').value.trim() || 'untitled-page',
+                articleTitle: document.getElementById('article-title-input').value.trim() || 'Untitled Article',
+                description: document.getElementById('page-desc-input').value.trim(),
+                keywords: document.getElementById('page-keywords-input').value.trim()
+            };
+        }
+
         function generateAndExportHtml() {
-            const pageName = document.getElementById('page-name-input').value.trim() || 'untitled-page';
-            const pagePrefix = document.getElementById('page-prefix-input').value.trim() || pageName;
+            const meta = getPageMetadata();
             const manifest = createManifestFromEditor();
-            const { html } = processManifest(pagePrefix, manifest);
+            const { html } = processManifest(meta.pagePrefix, meta.articleTitle, meta.description, meta.keywords, manifest);
             
-            downloadFile(html, `${pageName}.html`, 'text/html');
+            downloadFile(html, `${meta.pageName}.html`, 'text/html');
         }
 
         function generateAndExportJson() {
-            const pageName = document.getElementById('page-name-input').value.trim() || 'untitled-page';
-            const pagePrefix = document.getElementById('page-prefix-input').value.trim() || pageName;
+            const meta = getPageMetadata();
             const manifest = createManifestFromEditor();
-            const { translations } = processManifest(pagePrefix, manifest);
+            const { translations } = processManifest(meta.pagePrefix, meta.articleTitle, meta.description, meta.keywords, manifest);
 
             const jsonString = JSON.stringify(translations, null, 2); // Pretty-print with 2 spaces
-            downloadFile(jsonString, `${pagePrefix}.json`, 'application/json');
+            downloadFile(jsonString, `${meta.pagePrefix}.json`, 'application/json');
         }
 
         function downloadFile(content, fileName, contentType) {

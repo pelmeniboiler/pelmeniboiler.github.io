@@ -1,5 +1,6 @@
 {
   "en": {
+    "epark_title": "Elizabeth Park",
     "win_gallerynav_title": "◈ gallery.nav",
     "win_music_title": "𝄆 music.ogg",
     "win_gallery_title": "▤ pictures.gallery",
@@ -96,6 +97,7 @@
     "easteregg_p": "weren't you reading that?"
   },
   "he": {
+    "epark_title": "גן הוורדים אליזבת",
     "win_gallerynav_title": "◈ גלריה.ניווט",
     "win_music_title": "𝄆 מוזיקה.ogg",
     "win_gallery_title": "▤ תמונות.גלריה",
@@ -193,6 +195,7 @@
     "easteregg_p": "לא קראת את זה?"
   },
   "ru": {
+    "epark_title": "Элизабет-парка",
     "win_gallerynav_title": "◈ галерея.nav",
     "win_music_title": "𝄆 музыка.ogg",
     "win_gallery_title": "▤ картинки.gallery",
@@ -299,6 +302,7 @@
     "theme_funky_label": "Фанки"
   },
   "de": {
+    "epark_title": "Elizabeth Park Rosengarten",
     "win_gallerynav_title": "◈ galerie.nav",
     "win_music_title": "𝄆 musik.ogg",
     "win_gallery_title": "▤ bilder.galerie",
@@ -396,6 +400,7 @@
     "easteregg_p": "hast du das nicht gerade gelesen?"
   },
   "ja": {
+    "epark_title": "「エリザベス・パーク薔薇園」",
     "win_gallerynav_title": "◈ ギャラリー.nav",
     "win_music_title": "𝄆 音楽.ogg",
     "win_gallery_title": "▤ 写真.gallery",
@@ -493,6 +498,7 @@
     "easteregg_p": "読んでたんじゃないの？"
   },
   "gt": {
+    "epark_title": "   ",
     "win_gallerynav_title": "◈ .nav",
     "win_music_title": "𝄆 .ogg",
     "win_gallery_title": "▤ .gallery",

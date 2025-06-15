@@ -1,5 +1,6 @@
 {
   "gt": {
+    "graflect_ipa_title": "Graflect &  IPA ",
     "win_article_nav_title": "◈ .nav",
     "nav_h2_intro": "",
     "nav_h3_consonants": "&ensp;",
@@ -61,6 +62,7 @@
     "example_re_in_kugelschreiber": ":  <b></b>  <b></b>ammstein"
   },
   "he": {
+    "graflect_ipa_title": "Graflect והמקבילות שלו ב-IPA",
     "win_article_nav_title": "◈ ניווט.מאמר",
     "nav_h2_intro": "מבוא",
     "nav_h3_consonants": "&ensp;עיצורים",
@@ -122,6 +124,7 @@
     "example_re_in_kugelschreiber": "<b>ר'</b> גרונית, כמו בעוֹ<b>רֵ</b>ב"
   },
   "ru": {
+    "graflect_ipa_title": "Graflect и его эквиваленты в МФА",
     "win_article_nav_title": "◈ навигация.статья",
     "nav_h2_intro": "Введение",
     "nav_h3_consonants": "&ensp;Согласные",
@@ -183,6 +186,7 @@
     "example_re_in_kugelschreiber": "Французский/немецкий грассирующий <b>р</b>"
   },
   "de": {
+    "graflect_ipa_title": "Graflect und seine IPA-Äquivalente",
     "win_article_nav_title": "◈ artikel.nav",
     "nav_h2_intro": "Einführung",
     "nav_h3_consonants": "&ensp;Konsonanten",
@@ -244,6 +248,7 @@
     "example_re_in_kugelschreiber": "Zäpfchen-R (guttural), wie in <b>R</b>ost"
   },
   "ja": {
+    "graflect_ipa_title": "GraflectとそのIPA等価記号",
     "win_article_nav_title": "◈ 記事.nav",
     "nav_h2_intro": "はじめに",
     "nav_h3_consonants": "&ensp;子音",
@@ -305,6 +310,7 @@
     "example_re_in_kugelschreiber": "ドイツ語など、喉を震わせるR音"
   },
   "en": {
+    "graflect_ipa_title": "Graflect and its IPA Equivalents",
     "win_article_nav_title": "◈ article.nav",
     "nav_h2_intro": "Introduction",
     "nav_h3_consonants": "&ensp;Consonants",

@@ -1,5 +1,6 @@
 {
   "en": {
+    "sunshine_title": "Sunshine Experimental Keyboard",
     "win_gallerynav_title": "◈ article.nav",
     "win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "Abstract",
@@ -82,6 +83,7 @@
     "bye_p1": "Thanks for reading about my keyboard journey! Building the Sunshine keyboard has been one of the most challenging and rewarding projects I've ever undertaken. It's not just a tool, but a reflection of a philosophy about how we interact with our computers. If you have any questions, feel free to reach out."
   },
   "he": {
+    "sunshine_title": "מקלדת ניסיונית Sunshine",
     "win_gallerynav_title": "◈ מאמר.ניווט",
     "win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "תקציר",
@@ -164,6 +166,7 @@
     "bye_p1": "תודה שקראתם על מסע המקלדת שלי! בניית מקלדת Sunshine הייתה אחד הפרויקטים המאתגרים והמתגמלים ביותר שלקחתי על עצמי. זה לא רק כלי, אלא השתקפות של פילוסופיה על האופן שבו אנו מתקשרים עם המחשבים שלנו. אם יש לכם שאלות, אתם מוזמנים לפנות אליי."
   },
   "ru": {
+    "sunshine_title": "Экспериментальная клавиатура Sunshine",
     "win_gallerynav_title": "◈ статья.nav",
     "win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "Краткое содержание",
@@ -246,6 +249,7 @@
     "bye_p1": "Спасибо, что прочитали о моем путешествии в мир клавиатур! Создание клавиатуры Sunshine было одним из самых сложных и полезных проектов, которые я когда-либо предпринимала. Это не просто инструмент, а отражение философии о том, как мы взаимодействуем с нашими компьютерами. Если у вас есть вопросы, не стесняйтесь обращаться."
   },
   "de": {
+    "sunshine_title": "Sunshine Experimentelle Tastatur",
     "win_gallerynav_title": "◈ artikel.nav",
     "win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "Zusammenfassung",
@@ -328,6 +332,7 @@
     "bye_p1": "Danke, dass du über meine Tastaturreise gelesen hast! Der Bau der Sunshine-Tastatur war eines der herausforderndsten und lohnendsten Projekte, die ich je unternommen habe. Es ist nicht nur ein Werkzeug, sondern ein Spiegelbild einer Philosophie darüber, wie wir mit unseren Computern interagieren. Wenn du Fragen hast, zögere nicht, dich zu melden."
   },
   "ja": {
+    "sunshine_title": "サンシャイン実験キーボード",
     "win_gallerynav_title": "◈ 記事.nav",
     "win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "要約",
@@ -410,6 +415,7 @@
     "bye_p1": "私のキーボードの旅を読んでくれてありがとう！サンシャインキーボードの製作は、私がこれまで手がけた中で最も挑戦的でやりがいのあるプロジェクトの1つでした。それは単なるツールではなく、私たちがコンピュータとどのように対話するかについての哲学の反映です。質問があれば、お気軽にご連絡ください。"
   },
   "gt": {
+    "sunshine_title": "  ",
     "win_gallerynav_title": "◈ .nav",
     "win_gallery_title": "▤ .article",
     "nav_h2_tldr": "",
