@@ -273,3 +273,66 @@ body::-webkit-scrollbar-thumb,
         max-height: none; /* Let content expand */
     }
 }
+/* Styles for the new blog post list */
+    .blog-post {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .blog-post:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .blog-post h3 {
+        margin: 0 0 0.25rem 0;
+        padding: 0;
+        font-size: 1.1em;
+    }
+    .blog-post h3 a {
+        padding-left: 0 !important; /* Override general link style padding */
+    }
+    .blog-post .post-date {
+        font-size: 0.8em;
+        font-style: italic;
+        opacity: 0.7;
+        margin-bottom: 0.5rem;
+    }
+    .blog-post p {
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+    #blog-posts-container {
+        min-height: 50px;
+    }
+    /* Styles for blog filter buttons */
+    #blog-filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .filter-btn {
+        border: 2px solid var(--border-color);
+        background-color: var(--win-bg-color);
+        color: var(--text-color);
+        padding: 4px 10px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+    .filter-btn.active {
+        background-color: var(--text-color);
+        color: var(--win-bg-color);
+        font-weight: bold;
+    }
+    .filter-btn:hover:not(.active) {
+        background-color: var(--text-color);
+        color: var(--win-bg-color);
+    }
+    body.funky-mode .filter-btn.active,
+    body.funky-mode .filter-btn:hover:not(.active) {
+        background-color: var(--funky-accent-color);
+        color: var(--funky-bg-color);
+    }

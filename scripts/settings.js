@@ -76,7 +76,6 @@ function setupSettings() {
         body.classList.remove('light-mode', 'dark-mode', 'funky-mode');
         body.classList.add(`${theme}-mode`);
         
-        // FIXED: Use root-relative paths for images
         const newSrc = theme === 'dark' || theme === 'funky' ? '/logo/shzh-white.svg' : '/logo/shzh.svg';
         
         if (logoImg) logoImg.src = newSrc;
@@ -105,6 +104,7 @@ function setupSettings() {
 
     // --- Language Logic ---
     function deepMerge(target, source) {
+        if (!source) return target;
         for (const lang in source) {
             if (source.hasOwnProperty(lang)) {
                 if (!target[lang]) target[lang] = {};
@@ -122,7 +122,6 @@ function setupSettings() {
                 if (elem.tagName === 'INPUT' && elem.type === 'radio') {
                     const label = elem.parentElement;
                     if (label.nodeName === 'LABEL') {
-                        // Reconstruct label to avoid issues
                         label.innerHTML = ''; 
                         label.appendChild(elem);
                         label.appendChild(document.createTextNode(' ' + translations[lang][key]));
@@ -137,38 +136,69 @@ function setupSettings() {
         if (languageSelect) languageSelect.value = lang;
         localStorage.setItem(LANG_KEY, lang);
         
-        // This is the critical part for communicating with start menu.js
         window.translationsData = { translations, lang };
         document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations, lang } }));
     }
 
     async function loadAndSetLanguage(lang) {
         try {
-            // FIXED: Use root-relative paths for fetch requests
+            // Define paths for core translation files
             const globalTranslationsPath = '/localization/global.json';
             const pageSourceName = document.querySelector('meta[name="translation-source"]')?.content;
             const pageTranslationsPath = pageSourceName ? `/localization/${pageSourceName}.json` : null;
-            
-            const fetchPromises = [fetch(globalTranslationsPath)];
-            if (pageTranslationsPath) {
-                fetchPromises.push(fetch(pageTranslationsPath));
-            }
 
-            const responses = await Promise.all(fetchPromises);
-            responses.forEach(res => {
+            // Start fetching core files and the blog manifest concurrently.
+            const globalPromise = fetch(globalTranslationsPath);
+            const pagePromise = pageTranslationsPath ? fetch(pageTranslationsPath) : Promise.resolve(null);
+            const blogManifestPromise = fetch('/blog/blog-manifest.json').catch(e => {
+                console.warn("Blog manifest not found. Blog post-specific translations will be unavailable.", e);
+                return null; // Don't break if the manifest is missing
+            });
+
+            // Await the manifest first, as we need its content to know what else to fetch.
+            const blogManifestRes = await blogManifestPromise;
+            let blogTranslationPromises = [];
+
+            if (blogManifestRes && blogManifestRes.ok) {
+                const blogManifest = await blogManifestRes.json();
+                if(Array.isArray(blogManifest)) {
+                    // Get a unique set of translation source names from the blog posts.
+                    const blogTranslationSources = [...new Set(blogManifest.map(post => post.translationSource).filter(Boolean))];
+                    // Create fetch promises for each unique blog translation file.
+                    blogTranslationPromises = blogTranslationSources.map(source =>
+                        fetch(`/localization/${source}.json`).catch(e => {
+                            console.warn(`Could not load translation source: ${source}.json`, e);
+                            return null; // Return null on failure to not break Promise.all
+                        })
+                    );
+                }
+            }
+            
+            // Wait for ALL translation files (core and blog-specific) to finish loading.
+            const allResponses = await Promise.all([
+                globalPromise,
+                pagePromise,
+                ...blogTranslationPromises
+            ]);
+            
+            // Filter out any failed or null fetches and check responses.
+            const successfulResponses = allResponses.filter(Boolean);
+            successfulResponses.forEach(res => {
                 if (!res.ok) throw new Error(`Failed to fetch ${res.url}: ${res.statusText}`);
             });
 
-            const jsonPromises = responses.map(res => res.json());
-            const [globalData, pageData] = await Promise.all(jsonPromises);
+            // Convert all successful responses to JSON.
+            const allJsonData = await Promise.all(successfulResponses.map(res => res.json()));
             
-            loadedTranslations = deepMerge(globalData, pageData || {});
+            // Deep merge all translation objects into the master list, starting with an empty object.
+            loadedTranslations = allJsonData.reduce((acc, data) => deepMerge(acc, data), {});
             
+            // Finally, apply the fully merged translations to the page.
             applyTranslationsToPage(loadedTranslations, lang);
+
         } catch (error) {
             console.error("Error loading translations:", error);
-            // Fallback to empty translations if loading fails
-            applyTranslationsToPage({}, 'en'); 
+            applyTranslationsToPage({}, 'en'); // Fallback to empty on error
         }
     }
 
@@ -192,7 +222,6 @@ function setupSettings() {
 
     initialize();
 
-    // Make the audio player globally accessible
     if(getElement('music-play-btn')) {
         window.playAudio = function() {
             const audioPlayer = getElement("audio");
