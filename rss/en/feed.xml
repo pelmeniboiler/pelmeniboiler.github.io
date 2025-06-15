@@ -13,10 +13,10 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Sun, 15 Jun 2025 03:49:47 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 15 Jun 2025 04:36:12 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
-			<title>⌻ pictures from Dixie and Vegas</title>
+			<title>Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
 			<link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
 			<description><![CDATA[
             <header>
@@ -116,7 +116,7 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
 		</item>
 		<item>
-			<title>⌻ pictures from Elizabeth Park, Hartford, Connecticut</title>
+			<title>Elizabeth Park Rose Garden, Hartford, Connecticut| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
 			<link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
 			<description><![CDATA[
             <header>
@@ -244,7 +244,7 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
 		</item>
 		<item>
-			<title>▤ Graflect to IPA chart</title>
+			<title>Graflect and its IPA Equivalents</title>
 			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
 			<description><![CDATA[
             <header>
@@ -345,7 +345,7 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
 		</item>
 		<item>
-			<title>Sunshine Keyboard</title>
+			<title>Sunshine Experimental Keyboard</title>
 			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
 			<description><![CDATA[
             <header>
@@ -487,20 +487,6 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
-		</item>
-		<item>
-			<title>test</title>
-			<link>https://pelmeniboiler.github.io/blog/test.html</link>
-			<description><![CDATA[<h1 id="my-cool-article" data-key="test_h1">My Cool Article</h1>
-<h2 id="this-is-my-first-heading" data-key="test_h2_this-is-my-first-heading">This is my first heading</h2>
-<p data-key="test_p1">This is a paragraph under the first heading. Select text and use the buttons to format it.</p>
-<h3 id="a-subsection" data-key="test_h3_a-subsection">A subsection</h3>
-<p data-key="test_p2">Content within the subsection.</p>
-<h2 id="here-is-another-major-section" data-key="test_h2_here-is-another-major-section">Here is another major section</h2>
-<p data-key="test_p3">This will become another item in the navigation menu.</p>
-]]></description>
-			<pubDate>Sun, 15 Jun 2025 03:49:47 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/test.html</guid>
 		</item>
 </channel>
 </rss>
