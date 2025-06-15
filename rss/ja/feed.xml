@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<title>ペリメニボイラー</title>
+	<link>https://pelmeniboiler.github.io/</link>
+	<description>私の好きなイケてるもの。</description>
+	<language>ja</language>
+    <copyright>2021-2025 Wendy Zhulkovsky PIT License, Several Rights Reserved.</copyright>
+    <ttl>60</ttl>
+    <image>
+        <url>https://pelmeniboiler.github.io/logo/shzh.svg</url>
+        <title>ペリメニボイラー</title>
+        <link>https://pelmeniboiler.github.io/</link>
+    </image>
+	<generator>VS Code RSS Generator</generator>
+	<lastBuildDate>Sun, 15 Jun 2025 03:16:09 GMT</lastBuildDate>
+	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
+		<item>
+			<title>⌻ pictures from Dixie and Vegas</title>
+			<link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
+			<description><![CDATA[
+            <header>
+                <h1 id="title" data-key="dv_h1">ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
+                <p data-key="dv_p1">ユタのディキシーは、私が写真の趣味を再開した場所です。最初に着いたときにカメラを持っていたら撮れたであろうワシントンやセントジョージの写真はあまりありません。風景や街並みのために作られたかのような、非常に特徴的な地域です。当時は友人のアーロンと一緒に住んでいて、日焼けでかなりダメージを受けていました。</p>
+                <hr>
+            </header>
+            
+            <section>
+                <h2 id="July" data-key="dv_h2_july"> 7月</h2>
+                <p data-key="dv_p2">その月に<a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a>と<a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKORマクロレンズ</a>を手に入れました。このレンズのオートフォーカスは新しいレンズに比べて非常に遅く、開放では非常にソフトです。しかし非常に安価で、良いポートレートが撮れます。初期の作品のほとんどは、それに慣れようとしていたのと、カメラのモニターからは大丈夫そうに見えたため、あまりにもソフトすぎます。</p>
+                
+                <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ ぬいぐるみ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
+                <p data-key="dv_p3">私のバジル（OMORI (2020)）のぬいぐるみが、テディベアのミーシャの膝にすっぽり収まっています。左には友人のジュリアが作ったゴンドラ、右には友人のアーロンがKommandoStoreで購入したゴンドラに挟まれています。右のゴンドラの足の間にはオモリ（OMORI (2020)）が見えます。</p>
+
+                <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ ゴンドラ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
+                <p data-key="dv_p4">ゴンドラ一人。</p>
+                
+                <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ チェリーとパイ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
+                <p data-key="dv_p5">FLDS（末日聖徒イエス・キリスト教会原理主義派）の訪問販売の女性が、アーロンと私にこのパイ型のチーズケーキを売ってくれました。裏のポーチでチェリーと一緒に食べました。クリーミーで甘く、少し軽く、キャラメルがたっぷりかかっていました。チェリーとの相性も良かったです。</p>
+            </section>
+            
+            <section>
+                <h2 id="Oppie Trip" data-key="dv_h2_oppie"> オッピー旅行</h2>
+                <p data-key="dv_p6">友人のアーロン、ジョシュ、ベアと一緒に「オッペンハイマー」を観に行きました。クールな映画でした。映画の後、ジョシュのテスラに戻る途中でこの写真を撮りました。</p>
+                
+                <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ 大観覧車</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
+                <p data-key="dv_p7">観覧車のゴンドラの中にはテレビがあって、最悪だと聞きました。でも、下から見るとかなりクールですね。</p>
+            </section>
+            
+            <section>
+                <h2 id="Honey Salt" data-key="dv_h2_honey"> ハニーソルトへ</h2>
+                <p data-key="dv_p8">マッカラン空港で友人のデビッドを迎えに行くために、私とアーロンがセントジョージからベガスに出発するスケジュールを間違えてしまいました。週を間違えたのです！私たちはまあまあのレストランであるハニーソルトに行き、クールな人たちに会いました。駐車場にいたクールなゴスっぽい女の子と、レストランで隣に座っていた確かユタからの派手なカップルです。</p>
+            
+                <h3 id="Goth" data-key="dv_h3_goth"> ❏ ゴスギャル</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
+                <p data-key="dv_p9">インスタとか交換すればよかった！ポーズをとってくれてありがとう、ランダムなベガスのゴスギャルさん！</p>
+            </section>
+
+            <section>
+                <h2 id="David" data-key="dv_h2_david"> デイビッド獲得</h2>
+                <p data-key="dv_p10">少し後でデイビッドを迎えにベガスに再展開しました。</p>
+            
+                <h3 id="Burger" data-key="dv_h3_burger"> ❏ めちゃくちゃなバーガー</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
+                <p data-key="dv_p11">味は良かったけど、食べるのが不可能でした！馬鹿なバーガーがバラバラになる。パンは美味しかったけど、中身に比べて構造的に強すぎました。</p>
+
+                <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ スクーターマン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
+                <p data-key="dv_p12">50cc以下のエンジンを積んだ乗り物の群れが、ストリップで私たち三人のそばを通り過ぎました。クールなスクーター。</p>
+
+                <h3 id="GoKart" data-key="dv_h3_gokart"> ❏ ゴーカートマン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gokart.png" class="article-image">
+                <p data-key="dv_p13">50cc以下のエンジンの群れのもう一人のメンバー。</p>
+
+                <h3 id="Victor" data-key="dv_h3_victor"> ❏ ビクター</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
+                <p data-key="dv_p14">うわー… Fallout New Vegasのビクターだ… 私のこと覚えてるかな？�</p>
+            </section>
+
+            <section>
+                <h2 id="Last" data-key="dv_h2_last"> 最後のベガス旅行</h2>
+                <p data-key="dv_p15">アーロンと私は週末に最後のベガス旅行をしました。二人ともひどい高熱を出し、私はほとんど歩くことも起きていることもできませんでした。恐ろしい夢を見ました。子供の頃に閉じ込められたと夢見た暗い球体が、弱々しく小さくなって私の腕の中に横たわっていました。その息苦しい力は削ぎ落とされていました。それは優しく、促すように私に何かをするように手招きし、かつて使ったある特定の道具の驚くべき精度をそっと私に思い出させました。私の大切な球体がとても可哀想でした。私は私の球体を愛しています。ベガスが一つ建ててくれて嬉しいです。</p>
+            
+                <h3 id="Sign" data-key="dv_h3_sign"> ❏ 北ベガスの看板</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
+                <p data-key="dv_p16">これはアメリカ南西部で撮った中で一番シャープな写真かもしれません…</p>
+
+                <h3 id="North" data-key="dv_h3_north"> ❏ 北部ストリップ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/north_strip.png" class="article-image">
+                <p data-key="dv_p17">面白い看板！</p>
+
+                <h3 id="Vegas" data-key="dv_h3_vegas"> ❏ ベガスの暗黒面</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vegas.png" class="article-image">
+                <p data-key="dv_p18">ベガスの一部がLEDやネオンで覆われていないことを知っていましたか？夜には光らないんです。不気味！</p>
+
+                <h3 id="Breakfast" data-key="dv_h3_breakfast"> ❏ クソまずい朝食</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/bad_breakfast.png" class="article-image">
+                <p data-key="dv_p19">ひどい朝食でした。オルタナティブなライフスタイルを持つクールな年配の女性に勧められました。古いフルーツとほとんど卵も他のものもないのに5ドル。まだ病気だったし！もっとしっかりしたところに行くべきでした。でも、写真仲間に会えました！</p>
+            </section>
+
+            <section>
+                <h2 id="Leaving" data-key="dv_h2_leaving"> 帰宅</h2>
+                <p data-key="dv_p20">バイバイ、セントジョージ！</p>
+            
+                <h3 id="Plane" data-key="dv_h3_plane"> ❏ パインバレー山脈のタービン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
+                <p data-key="dv_p21">セントジョージでの最後の写真。</p>
+            </section>
+
+        ]]></description>
+			<pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
+		</item>
+		<item>
+			<title>⌻ pictures from Elizabeth Park, Hartford, Connecticut</title>
+			<link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
+			<description><![CDATA[
+            <header>
+                <h1 id="title" data-key="ep_h1">エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州<br>| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</h1>
+                <p data-key="ep_p1">コネチカットに戻ってから、友人のジュリアと素敵な庭園に行きました。<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html">ユタ</a>で使い始めたのと同じカメラとレンズの組み合わせを使いました。花や虫には良い選択だったと思いますが、次回こういうことをするときは、父の<a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a>ともっと風景向けのレンズを借りて、庭園のレイアウトをもっと撮りたいです。本当に素晴らしいので。水鳥もたくさんいましたが、もっとシャープな写真が撮れたらよかったのに。<br>写真をこんなに圧縮する代わりに、Flickrでホストしてここに埋め込むことを検討すべきだと思います。ディテールが失われすぎています...</p>
+                <hr>
+            </header>
+            
+            <section>
+                <h2 id="Purple" data-key="ep_h2_purple"> 紫色</h2>
+                <h3 id="On Bush1" data-key="ep_h3_onbush1"> ❏ 茂みの上</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/rose.png" class="article-image">
+                <p data-key="ep_p_purple">なんてかわいい色、とても柔らかそう！</p>
+            </section>
+        
+            <section>
+                <h2 id="Pink" data-key="ep_h2_pink"> ピンク</h2>
+                <h3 id="On Bush2" data-key="ep_h3_onbush2"> ❏ 茂みの上</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/014elizabeth_park.png" class="article-image">
+                <p data-key="ep_p_pink1">この渦巻き模様はとてもきれい！</p>
+
+                <h3 id="Fallen" data-key="ep_h3_fallen"> ❏ 地面から</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/015elizabeth_park.png" class="article-image">
+                <p data-key="ep_p_pink2">このかわいそうなバラは地面に落ちてしまいました… 持っててくれてありがとう、ジュリア！</p>
+                
+                <h3 id="Close up" data-key="ep_h3_closeup"> ❏ クローズアップ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/004elizabeth_park.png" class="article-image">
+                <p data-key="ep_p_pink3">うわー、花びらの質感を見て… とてもきれい…</p>
+            </section>
+            
+            <section>
+                <h2 id="Red" data-key="ep_h2_red"> 赤色</h2>
+                <p data-key="ep_p_red_intro">まさに史上最高のクラシックなバラの色、正直なところ。</p>
+                
+                <h3 id="Poke" data-key="ep_h3_poke"> ❏ ジュリアがバラを突く</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/poke.png" class="article-image">
+                <p data-key="ep_p_poke">ありがとう、ジュリア！</p>
+                
+                <h3 id="Standing" data-key="ep_h3_standing"> ❏ 立っている</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/rbush.png" class="article-image">
+                <p data-key="ep_p_standing">描かれたバラが持つ、真ん中の典型的な渦巻きが大好きです。</p>
+                
+                <h3 id="Hanging1" data-key="ep_h3_hanging1"> ❏ ぶら下がっている</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/red.png" class="article-image">
+                <p data-key="ep_p_hanging1">カメラから出したままでこんなに赤い… 赤すぎるかも… 少し抑えるべきだったかな。</p>
+            </section>
+
+            <section>
+                <h2 id="Yellow" data-key="ep_h2_yellow"> 黄色</h2>
+                <p data-key="ep_p_yellow_intro">黄色のバラ、そんなものがあるなんて知っていましたか？</p>
+            
+                <h3 id="On Bush3" data-key="ep_h3_onbush3"> ❏ 茂みの上</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/ybush.png" class="article-image">
+                <p data-key="ep_p_yellow1">この黄色の色合いが大好きです。</p>
+
+                <h3 id="Alone" data-key="ep_h3_alone"> ❏ 一つだけ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/yellow.png" class="article-image">
+                <p data-key="ep_p_yellow2">この淡い黄色も悪くないけど、こっちの質感が好きです。</p>
+            </section>
+
+            <section>
+                <h2 id="White" data-key="ep_h2_white"> 白色</h2>
+                <p data-key="ep_p_white_intro">まだ色付けされていない未完成のバラを見ることができて、とても幸運でした！なんて素晴らしいことでしょう。</p>
+            
+                <h3 id="Square" data-key="ep_h3_square"> ❏ 四角い花びらのバラ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/square.png" class="article-image">
+                <p data-key="ep_p_white1">四角い花びらと真ん中のおしべとめしべが好きです。きれいな花。</p>
+
+                <h3 id="Hanging2" data-key="ep_h3_hanging2"> ❏ 枝に</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/whanging.png" class="article-image">
+                <p data-key="ep_p_white2">光の中で輝く様子が大好きです。なんて素晴らしい花でしょう。</p>
+
+                <h3 id="Freckley" data-key="ep_h3_freckley"> ❏ そばかす</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Roses/freckle.png" class="article-image">
+                <p data-key="ep_p_white3">私みたいに、斑点のある変わり者！</p>
+            </section>
+
+            <section>
+                <h2 id="Patches" data-key="ep_h2_other"> その他の花</h2>
+                <p data-key="ep_p_other_intro">庭にはバラ以外の花もありました！ハーブもあって、本気でつまみ食いしたかったです…</p>
+            
+                <h3 id="Canna" data-key="ep_h3_canna"> ❏ カンナ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/flowers.png" class="article-image">
+                <p data-key="ep_p_canna">赤から覗く紫色の茎の部分が大好きです。根元の大きくて暗い葉。なんてかっこいい花でしょう。</p>
+
+                <h3 id="Cock's Comb" data-key="ep_h3_cockscomb"> ❏ ケイトウ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/flowers3.png" class="article-image">
+                <p data-key="ep_p_cockscomb">周りには色とりどりのケイトウがたくさんありましたが、この紫色のものはとても鮮やかでした。</p>
+
+                <h3 id="Zinnia" data-key="ep_h3_zinnia"> ❏ ジニア</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/patch2.png%20" class="article-image">
+                <p data-key="ep_p_zinnia">これが大好き、もっと広いレンズを持ってきていればもっと撮れたのに！</p>
+
+                <h3 id="Marigold" data-key="ep_h3_marigold"> ❏ マリーゴールド</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/patch5.png" class="article-image">
+                <p data-key="ep_p_marigold">私に言わせれば「マリーオレンジ」だけど…</p>
+
+                <h3 id="Rosehip" data-key="ep_h3_rosehip"> ❏ おいしいローズヒップ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/yummy.png" class="article-image">
+                <p data-key="ep_p_rosehip">これをいくつか食べました… とてもおいしい… 中のトゲに気をつけて！</p>
+            </section>
+
+            <section>
+                <h2 id="Bee" data-key="ep_h2_bee"> ハチ</h2>
+                <p></p>
+            
+                <h3 id="Woah Bee" data-key="ep_h3_woahbee"> ❏ わあ、ハチ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee.png" class="article-image">
+                <p data-key="ep_p_bee1">毛皮と羽のディテールにとても満足しています。かわいい小さな腕と脚を見るのが大好きです。よく見ると、ハチの副眼が見えるものもあります！</p>
+
+                <h3 id="Cute Bee" data-key="ep_h3_cutebee"> ❏ かわいいハチ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee2.png" class="article-image">
+
+                <h3 id="Look at it go!" data-key="ep_h3_lookatitgo"> ❏ 見て、飛んでる！</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee3.png" class="article-image">
+              
+                <h3 id="So fuzzy..." data-key="ep_h3_sofuzzy"> ❏ ふわふわ…</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee4.png" class="article-image">
+             
+                <h3 id="AAAAAH!" data-key="ep_h3_aaaah"> ❏ うわあああ！</h3>
+                <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/aaah.png" class="article-image">
+            </section>
+        ]]></description>
+			<pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
+		</item>
+		<item>
+			<title>▤ Graflect to IPA chart</title>
+			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
+			<description><![CDATA[
+            <header>
+                <h1 id="title" data-key="guide_h1">GraflectとそのIPA等価記号</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンによって考案された表音正書法です。それは微妙に示差的であり、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
+                <hr>
+            </header>
+            
+            <section>
+                <h2 id="consonants" data-key="guide_h2_consonants">子音</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example">音の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>パ</b>ンの「プ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>バ</b>スの「ブ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>テ</b>ンキの「ト」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ド</b>アの「ド」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>カ</b>メラの「ク」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ガ</b>ラスの「グ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>フ</b>ァイルの「フ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine">外来音: <b>ヴ</b>ァイオリンの「ヴ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">英語の音: <b>th</b>ink の <b>th</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">英語の音: <b>th</b>is の <b>th</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの「ス」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの「ズ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの「シ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">ビ<b>ジョ</b>ンの「ジ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>ハ</b>イの息の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの「ム」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの「ン」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末</td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend">英語の音: <b>l</b>end の <b>l</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの「ウ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>マの「ィ」の音</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        
+            <section>
+                <h2 id="vowels" data-key="guide_h2_vowels">母音</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example">音の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/iː/ or /i/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">短母音「イ」、<b>イ</b>スのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">短母音「ウ」、ブ<b>ッ</b>クのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">「ア」、<b>ア</b>ップルのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (曖昧母音)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft">「オ」、<b>オ</b>レンジのように</td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt">英語の音: b<b>ir</b>d の母音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+             <section>
+                <h2 id="other" data-key="guide_h2_other">その他の記号（破擦音、非英語、複合音）</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example_desc">音の例 / 説明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの「チ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの「ジ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」</td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の喉音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語など、喉を震わせるR音</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        ]]></description>
+			<pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
+		</item>
+		<item>
+			<title>Sunshine Keyboard</title>
+			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
+			<description><![CDATA[
+            <header>
+                <h1 id="title" data-key="sunshine_h1">サンシャイン実験キーボード</h1>
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
+                <p data-key="sunshine_p1">サンシャインキーボードは、私がゼロから設計・製作したカスタムのエルゴノミクス分割キーボードです。レイヤーに配置された最小限のキーをコンボでアクセスすることで、指の移動を最小限に抑え、快適性を最大限に高めることを目的とした実験的なレイアウトです。</p>
+                <p data-key="sunshine_p2">このプロジェクトは、段ボールによる物理的なプロトタイピングから、カスタムPCBの設計、ファームウェアのプログラミングまで、キーボード設計の深い探求でした。この記事では、その道のりを記録しています。</p>
+                <hr>
+            </header>
+            
+            <section>
+                <h2 id="TLDR" data-key="tldr_h2">要約 (TL;DR)</h2>
+                <p data-key="tldr_p1">私はわずか36キーのカスタム分割エルゴノミクスキーボードを設計・製作しました。すべての文字にアクセスするためにレイヤーとキーの組み合わせ（コンボ）に大きく依存しており、これにより指は常にホームポジションまたはその近くに留まります。段ボールでレイアウトのプロトタイプを作成し、ユニークなアートワークを持つカスタムPCBを設計し、QMKファームウェアでプログラムしました。奇妙ですが、快適です。以下のタイピングテストビデオをご覧ください：</p>
+                
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Intro" data-key="intro_h2">背景と動機</h2>
+                <p data-key="intro_p1">一日中タイピングする多くの人々と同様に、私も標準的なキーボードは不快だと感じていました。ここに写っているLily58のような市販のエルゴノミクスキーボードをいくつか試しましたが、改善はされたものの、私にとって完璧ではありませんでした。多くは依然として不快な指の動きや伸ばしを必要としました。</p>
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
+                <p data-key="intro_p2">私は平均的な手ではなく、*私の*手のために作られたものが欲しかったのです。私はミニマリストキーボードのコミュニティ、特に非常に少ないキー（40%未満）を使用している人々に触発されました。その哲学は単純です：レイヤーを通じてキーを指に近づけることができるのに、なぜ指をキーに移動させる必要があるのでしょうか？</p>
+                <p data-key="intro_p3">これは私を単純な結論に導きました：私にとって完璧なキーボードを手に入れるには、自分で設計するしかないと。</p>
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Objectives" data-key="objectives_h2">プロジェクトの目的</h2>
+                <p data-key="objectives_p1">設計を始める前に、プロジェクトの明確な目標リストを設定しました。これらはキーボードエルゴノミクスに関する中心的な理論に導かれました。</p>
+                <h3 data-key="objectives_h3_theory">私のキーボード快適性に関する大統一理論</h3>
+                <h4 data-key="objectives_h4_phalanges">指骨第一：動きの最小化</h4>
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
+                <p data-key="objectives_p2">中心的な考え方は、指を伸ばしたり長距離を移動させたりすべきではないということです。各キーは指の自然な休息位置の真下に配置されるべきです。最も強くて柔軟な指である親指は、レイヤーの有効化や<kbd>スペース</kbd>、<kbd>Enter</kbd>、<kbd>Backspace</kbd>などの一般的な修飾キーを担当すべきです。</p>
+                <h4 data-key="objectives_h4_combos">コンボとレイヤー：キー数の削減</h4>
+                <p data-key="objectives_p3">限られた数のキーでは、レイヤーが不可欠です。例えば、親指キーを押し続けると、ホームポジションの`ASDF`が`1234`に変わるかもしれません。キーの組み合わせ、つまり「コンボ」は、2つのキーを同時に押して別のアクションをトリガーすることで、物理的なキーを増やさずに機能をさらに拡張できます。例えば、<kbd>J</kbd>と<kbd>K</kbd>を同時に押すと<kbd>Escape</kbd>が出力されるかもしれません。</p>
+                <p data-key="objectives_p4">これにより、以下の具体的な設計目標が導き出されました：</p>
+                <ul>
+                    <li data-key="objectives_li1">片手につき3行5列、プラス親指クラスター。</li>
+                    <li data-key="objectives_li2">自然な指の長さに合わせた積極的なカラムスタッガー。</li>
+                    <li data-key="objectives_li3">快適で角度のついた親指クラスター。</li>
+                    <li data-key="objectives_li4">数字行、ファンクション行、さらには一部の記号キーの必要性をなくすためのレイヤーとコンボへの強い依存。</li>
+                    <li data-key="objectives_li5">完全にプログラム可能なファームウェア（QMKまたはZMK）。</li>
+                    <li data-key="objectives_li6">ユニークで個人的な美学。</li>
+                    <li data-key="objectives_li7">肩幅の姿勢のための分割設計であること。</li>
+                </ul>
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Design" data-key="design_h2">設計プロセス</h2>
+                <p data-key="design_p1">私がType-22と呼んだ最初のコンセプトは、キーボードレイアウトエディタで作成されました。非常に攻撃的な小指のスタッガーと、親指のアークに関する初期のアイデアがありました。</p>
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
+                <p data-key="design_p2">しかし、画面上の2Dレイアウトでは、実際に*どう感じる*かはわかりません。そのためには、物理的なものが必要でした。</p>
+                
+                <section>
+                    <h3 id="CAD" data-key="cad_h3">CAD（段ボール支援設計）</h3>
+                    <p data-key="cad_p1">すぐに3Dプリントケースを作成したりPCBを注文したりする代わりに、より安価で迅速なプロトタイピング材料である段ボールに目を向けました。レイアウトを1:1スケールで印刷し、段ボールに貼り付けました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
+                    <p data-key="cad_p2">次に、丹念にスイッチの穴を切り抜きました。これにより、本物のメカニカルスイッチとキーキャップを取り付けて、間隔とスタッガーをテストすることができました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
+                    <p data-key="cad_p3">この低忠実度のプロトタイプは非常に貴重でした。どの列がずれているか、親指キーが届きにくいかをすぐに感じることができました。私はこれらの段ボールプロトタイプをいくつか作成し、その都度デザインを微調整しました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
+                    <p data-key="cad_p4">副次的な利点として、段ボールでタイピングすると驚くほど良い音がします。</p>
+                </section>
+
+                <section>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">レイアウトの最終決定</h3>
+                    <p data-key="final_p1">最初の変更点の1つは親指クラスターでした。最初のデザインでは、内側の親指キーが内側すぎ、不快な伸ばしが必要でした。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
+                    <p data-key="final_p2">段ボールのプロトタイプがこれを確認しました。私はアークをよりきつく、より自然に届くように調整しました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
+                    <p data-key="final_p3">別のイテレーションでは、小指の列の調整が含まれていました。低すぎることが判明したため、少し上げました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
+                    <p data-key="final_p4">さらにいくつかの微調整の後、快適で自然に感じるレイアウトにたどり着きました。これがPCBの基礎となる最終デザインになりました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
+                    <p data-key="final_p5">この最終的な段ボールバージョンは、プロジェクトの残りの部分での私の信頼できるガイドでした。</p>
+                </section>
+
+                <section>
+                    <h3 id="PCB" data-key="pcb_h3">PCBの設計</h3>
+                    <p data-key="pcb_p1">物理的なレイアウトが確定したので、キーボードの電子頭脳であるプリント基板（PCB）を設計する時が来ました。このプロセスにはKiCadを使用しました。PCBアートには、「すべてはあなたの手の中に」というモットーを選びました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
+                    <p data-key="pcb_p2">キーボードの回路図はかなり単純です。各スイッチはマトリックスの一部であり、「ゴースティング」（誤ったキー入力が登録されること）を防ぐためにダイオードで接続されています。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
+                    <p data-key="pcb_p3">マイクロコントローラーとしてRaspberry Pi Picoを選びました。安価で強力、そしてQMKファームウェアで十分にサポートされているためです。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
+                    <p data-key="pcb_p4">キーボードの2つの半分は、電力とデータマトリックス信号を運ぶTRRSケーブルで接続されています。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
+                    <p data-key="pcb_p5">Kailhホットスワップソケットのサポートを追加しました。これにより、はんだ付けなしで簡単にスイッチを交換できます。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
+                    <p data-key="pcb_p6">パズルを解くようなすべての配線を終えた後、シルクスクリーンアートを追加し、製造用のガーバーファイルを生成しました。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
+                    <p data-key="pcb_p7">ファイルをメーカーに送り、数週間後、完成した基板が届きました！</p>
+                    <p data-key="pcb_p8">デザインがデジタルファイルから物理的なオブジェクトになるのを見るのは、信じられないほどやりがいがありました。</p>
+                    <hr>
+                </section>
+
+                <section>
+                    <h3 id="Keymap" data-key="keymap_h3">私の個人的なキーマップ</h3>
+                    <p data-key="keymap_p1">キーボードは良いキーマップなしでは何もありません。私はQMKで自分のものをプログラムしました。それには4つの主要なレイヤーがあります：文字用のベースレイヤー、数字用のレイヤー、記号用のレイヤー、そしてシステムコントロールとFキー用のファンクションレイヤーです。レイヤーは親指キーでアクセスします。また、EscapeやTabのような一般的なキーにはコンボを多用しています。</p>
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap4.png" alt="Function Layer" class="article-image"> 
+                    <hr>
+                </section>
+            </section>
+
+            <section>
+                <h2 id="Discoveries" data-key="discoveries_h2">発見と結果</h2>
+                <p data-key="discoveries_p1">このプロジェクトは大きな学習経験でした。以下に主要な発見をいくつか挙げます：</p>
+                <ul>
+                    <li data-key="discoveries_li1">段ボールでのプロトタイピングは、エルゴノミクスデザインにとって不可欠で、安価で効果的なステップです。</li>
+                    <li data-key="discoveries_li2">親指クラスターの角度と位置は、快適性にとって最も重要な要素です。</li>
+                    <li data-key="discoveries_li3">レイヤーとコンボの使用にはかなりの学習曲線がありますが、数週間後には第二の天性になります。</li>
+                    <li data-key="discoveries_li4">KiCadのような現代のオープンソースソフトウェアのおかげで、PCBの設計は思っているほど怖くありません。</li>
+                    <li data-key="discoveries_li5">キーボードに「フリーサイズ」の解決策はありません。パーソナライズが鍵です。</li>
+                </ul>
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
+                <p data-key="discoveries_p2">また、シリコンで満たされたケースが優れた防音効果を提供することも発見しましたが、最終的なケースをホットグルーを重ねて作るだけでどうなるか見てみたいという誘惑に今も駆られています。</p>
+                <hr>
+            </section>
+
+            <section>
+                <h2 id="Plans" data-key="plans_h2">今後の計画</h2>
+                <h3 data-key="plans_h3_layout">レイアウト改訂（サンシャインV2）</h3>
+                <p data-key="plans_p1">第2バージョンでは、少しテンティング（半分を中央で上向きに傾けること）を追加したり、DactylやKinesis Advantageキーボードのように、キーウェルのためにより攻撃的な曲率を試したりしてみたいです。</p>
+                <h3 data-key="plans_h3_features">新しいハードウェア機能</h3>
+                <p data-key="plans_p2">現在のレイヤーを表示するための小さなOLEDスクリーンや、マウスの必要性をなくすために親指の下に小さなトラックボールやトラックパッドを追加することに興味があります。</p>
+                <h3 data-key="plans_h3_production">生産と共有</h3>
+                <p data-key="plans_p3">すべての設計ファイル（KiCad、ケースモデル）を近々GitHubで公開する予定です。グループバイの計画はありませんが、これらのファイルが自分だけの完璧なキーボードを作りたいと思っている他の人々にとって役立つことを願っています。</p>
+                <hr>
+            </section>
+
+            <section>
+                <h2 id="Bye" data-key="bye_h2">おわり（今のところは）</h2>
+                <p data-key="bye_p1">私のキーボードの旅を読んでくれてありがとう！サンシャインキーボードの製作は、私がこれまで手がけた中で最も挑戦的でやりがいのあるプロジェクトの1つでした。それは単なるツールではなく、私たちがコンピュータとどのように対話するかについての哲学の反映です。質問があれば、お気軽にご連絡ください。</p>
+            </section>
+        ]]></description>
+			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+</channel>
+</rss>
