@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    /**
+     * Re-applies translations to a specific container.
+     * Needed after filtering to translate newly added elements.
+     * @param {object} translations - The loaded translation data.
+     * @param {string} lang - The current language code.
+     * @param {string} scopeSelector - A CSS selector for the container to translate.
+     */
     function applyTranslationsToScope(translations, lang, scopeSelector) {
         const scope = document.querySelector(scopeSelector);
         if (!scope) return;
@@ -24,6 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * Renders a given array of posts to the DOM.
+     * It sets up the elements with data-keys, allowing the main translation script to populate them,
+     * and adds a separate "read more" link that won't be overwritten.
+     * @param {Array} postsToRender - The array of post objects to display.
+     */
     const renderPosts = (postsToRender) => {
         postsListContainer.innerHTML = '';
         
@@ -40,12 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
         postsToRender.forEach(post => {
             const postArticle = document.createElement('article');
             postArticle.className = 'blog-post';
-            // ... (rest of the post rendering logic is unchanged)
+            
+            // --- Title and Date elements (unchanged) ---
             const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
             linkElement.href = post.link;
             linkElement.setAttribute('data-key', post.titleKey);
-            linkElement.textContent = post.title;
+            linkElement.textContent = post.title; // Set default text
             titleElement.appendChild(linkElement);
 
             const date = new Date(post.date);
@@ -57,16 +71,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 day: 'numeric'
             });
 
+            // --- Description and "Read More" link (MODIFIED) ---
+            
+            // 1. Create the description paragraph. This will be targeted by the translation script.
             const descriptionElement = document.createElement('p');
             descriptionElement.setAttribute('data-key', post.descriptionKey);
             descriptionElement.textContent = post.description;
 
+            // 2. Create a *separate* paragraph for the "read more" link.
+            //    This element has no data-key and will not be touched by the translation script.
+            const readMoreElement = document.createElement('p');
+            readMoreElement.innerHTML = `<i><a href="${post.link}">read more &rarr;</a></i>`;
+
+            // Append all elements to the article
             postArticle.appendChild(titleElement);
             postArticle.appendChild(dateElement);
             postArticle.appendChild(descriptionElement);
+            postArticle.appendChild(readMoreElement); // Add the link element after the description
+            
             fragment.appendChild(postArticle);
         });
         postsListContainer.appendChild(fragment);
+
+        // If translations are already loaded (e.g., when re-filtering), apply them.
+        if (window.translationsData) {
+            const { translations, lang } = window.translationsData;
+            applyTranslationsToScope(translations, lang, '#blog-posts-list');
+        }
     };
 
     const setupFilters = (posts) => {
@@ -103,28 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 : allPosts.filter(post => post.keywords && post.keywords.includes(selectedKeyword));
             
             renderPosts(postsToRender);
-            
-            if (window.translationsData) {
-                 const { translations, lang } = window.translationsData;
-                 applyTranslationsToScope(translations, lang, '#blog-posts-list');
-            }
         });
     };
     
-    // NEW: Function to handle the RSS dropdown logic
     const setupRssDropdown = () => {
         const rssButton = document.querySelector('.rss-btn');
         const rssDropdown = document.querySelector('.rss-dropdown-content');
 
         if (rssButton && rssDropdown) {
             rssButton.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent the window click listener from immediately closing it
+                event.stopPropagation();
                 rssDropdown.classList.toggle('show');
             });
             
-            // Add a single global listener to close the dropdown if a click occurs outside
             window.addEventListener('click', function(event) {
-                // Check if the dropdown is visible and the click was outside of its container
                 if (rssDropdown.classList.contains('show') && !event.target.closest('.rss-dropdown-container')) {
                     rssDropdown.classList.remove('show');
                 }
@@ -148,8 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setupFilters(allPosts);
             renderPosts(allPosts);
-            
-            // Call the function to set up the RSS dropdown after the blog window content is loaded
             setupRssDropdown();
 
         } catch (error) {
@@ -160,5 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Run the main loader function.
     loadBlogPosts();
+
+    // REMOVED: The event listener for 'translationsReady' is no longer needed with this approach.
 });
