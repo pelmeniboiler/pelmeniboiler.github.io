@@ -1,24 +1,16 @@
 // /scripts/blog-loader.js
 // This script fetches the blog manifest, creates filter buttons, and dynamically populates the blog window.
+// It now also handles the logic for the RSS feed dropdown menu.
 
 document.addEventListener('DOMContentLoaded', () => {
     const filterContainer = document.getElementById('blog-filter-container');
     const postsListContainer = document.getElementById('blog-posts-list');
-    
-    // Store all posts fetched from the manifest to avoid re-fetching on filter.
     let allPosts = [];
 
-    // Exit if the required containers are not on the page.
     if (!filterContainer || !postsListContainer) {
         return;
     }
 
-    /**
-     * Re-applies translations to a specific part of the page. This is needed after filtering.
-     * @param {object} translations - The loaded translation data from settings.js.
-     * @param {string} lang - The current language code.
-     * @param {string} scopeSelector - A CSS selector for the container to translate.
-     */
     function applyTranslationsToScope(translations, lang, scopeSelector) {
         const scope = document.querySelector(scopeSelector);
         if (!scope) return;
@@ -27,23 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
         scope.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
             if (translations[lang] && translations[lang][key]) {
-                // Use innerHTML to support potential HTML in translations.
                 elem.innerHTML = translations[lang][key];
             }
         });
     }
 
-    /**
-     * Renders a given array of posts to the DOM.
-     * @param {Array} postsToRender - The array of post objects to display.
-     */
     const renderPosts = (postsToRender) => {
-        // Clear previous posts.
         postsListContainer.innerHTML = '';
         
         if (postsToRender.length === 0) {
             postsListContainer.innerHTML = '<p data-key="blog_no_posts_filter">No posts match the selected keyword.</p>';
-            // Manually trigger translation for this new element if translations are already loaded
             if (window.translationsData) {
                 const { translations, lang } = window.translationsData;
                 applyTranslationsToScope(translations, lang, '#blog-posts-list');
@@ -55,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         postsToRender.forEach(post => {
             const postArticle = document.createElement('article');
             postArticle.className = 'blog-post';
-
+            // ... (rest of the post rendering logic is unchanged)
             const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
             linkElement.href = post.link;
@@ -84,22 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
         postsListContainer.appendChild(fragment);
     };
 
-    /**
-     * Creates filter buttons based on keywords found in the posts.
-     * @param {Array} posts - The array of all post objects.
-     */
     const setupFilters = (posts) => {
-        // Collect all unique keywords.
         const keywords = new Set(posts.flatMap(p => p.keywords || []));
         
-        // Add "All" button first.
         const allButton = document.createElement('button');
         allButton.className = 'filter-btn active';
         allButton.innerHTML = `<span class="symbol">✧</span> All`;
         allButton.dataset.keyword = 'All';
         filterContainer.appendChild(allButton);
 
-        // Create buttons for each keyword with appropriate icons.
         const keywordIconMap = {
             "Language": "▤", "Photos": "⌻", "Projects": "🗀", "Keyboards": "⌨"
         };
@@ -112,35 +90,48 @@ document.addEventListener('DOMContentLoaded', () => {
             filterContainer.appendChild(button);
         });
 
-        // Add a single event listener to the container for efficiency.
         filterContainer.addEventListener('click', (e) => {
             const clickedButton = e.target.closest('.filter-btn');
             if (!clickedButton) return;
 
-            // Update active state on buttons.
             filterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             clickedButton.classList.add('active');
 
             const selectedKeyword = clickedButton.dataset.keyword;
-
-            // Filter and render posts based on the selected keyword.
             const postsToRender = (selectedKeyword === 'All')
                 ? allPosts
                 : allPosts.filter(post => post.keywords && post.keywords.includes(selectedKeyword));
             
             renderPosts(postsToRender);
             
-            // Re-apply translations to the newly rendered content, as it was wiped by renderPosts.
             if (window.translationsData) {
                  const { translations, lang } = window.translationsData;
                  applyTranslationsToScope(translations, lang, '#blog-posts-list');
             }
         });
     };
+    
+    // NEW: Function to handle the RSS dropdown logic
+    const setupRssDropdown = () => {
+        const rssButton = document.querySelector('.rss-btn');
+        const rssDropdown = document.querySelector('.rss-dropdown-content');
 
-    /**
-     * Main function to fetch all posts and initialize the component.
-     */
+        if (rssButton && rssDropdown) {
+            rssButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the window click listener from immediately closing it
+                rssDropdown.classList.toggle('show');
+            });
+            
+            // Add a single global listener to close the dropdown if a click occurs outside
+            window.addEventListener('click', function(event) {
+                // Check if the dropdown is visible and the click was outside of its container
+                if (rssDropdown.classList.contains('show') && !event.target.closest('.rss-dropdown-container')) {
+                    rssDropdown.classList.remove('show');
+                }
+            });
+        }
+    }
+
     const loadBlogPosts = async () => {
         try {
             postsListContainer.innerHTML = '<p data-key="blog_loading">Loading posts...</p>';
@@ -148,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             allPosts = await response.json();
             
-            // Sort posts by date, newest first, for better user experience.
             allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             if (!allPosts || allPosts.length === 0) {
@@ -158,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setupFilters(allPosts);
             renderPosts(allPosts);
+            
+            // Call the function to set up the RSS dropdown after the blog window content is loaded
+            setupRssDropdown();
 
         } catch (error) {
             console.error('Failed to load blog posts:', error);
@@ -167,6 +160,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Run the main function.
     loadBlogPosts();
 });
