@@ -1,169 +1,653 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Powered Page Builder</title>
+    <style>
+        /* General Body and Layout */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            display: flex; 
+            gap: 20px; 
+            padding: 20px; 
+            background-color: #f4f5f7; 
+            color: #172b4d;
+        }
+        #editor-container { 
+            flex: 1 1 65%;
+            min-width: 400px;
+        }
+        #preview-container { 
+            flex: 1 1 35%;
+            max-width: 500px;
+            min-width: 300px;
+            position: sticky; 
+            top: 20px; 
+            align-self: flex-start;
+        }
+
+        /* Toolbar Styling */
+        #toolbar { 
+            margin-bottom: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background: #ffffff; 
+            padding: 20px; 
+            border: 1px solid #dfe1e6; 
+            border-radius: 8px;
+            box-shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 1px 1px rgba(9,30,66,.13);
+        }
+        #toolbar .tool-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        #toolbar button { 
+            background-color: #f0f2f5; 
+            border: 1px solid #ccc; 
+            padding: 8px 12px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: 500;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        #toolbar button:hover:not(:disabled) { background-color: #e4e6e9; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); }
+        #toolbar button:disabled { cursor: not-allowed; opacity: 0.6; }
+
+
+        /* Special Buttons */
+        #export-button, #json-button { color: white; border: none; font-weight: bold; }
+        #export-button { background-color: #006400; } #export-button:hover:not(:disabled) { background-color: #005000; }
+        #json-button { background-color: #0052cc; } #json-button:hover:not(:disabled) { background-color: #0041a3; }
+
+        /* Editor Area */
+        #editor { 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            min-height: 500px; 
+            background: #fff; 
+            border-radius: 8px; 
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+            line-height: 1.6;
+        }
+        #editor:focus {
+             border-color: #4c9aff;
+             box-shadow: inset 0 1px 2px rgba(0,0,0,.1), 0 0 0 3px rgba(76,154,255,.2);
+             outline: none;
+        }
+
+        /* Content Styling within Editor */
+        #editor aside { border-left: 3px solid #ccc; padding-left: 10px; margin: 1em 0; color: #555; font-style: italic; }
+        h1, h2, h3 { margin-top: 1.5em; color: #333; }
+        hr { border: none; border-top: 1px solid #eee; margin: 1.5em 0; }
+        kbd { background-color: #eee; border: 1px solid #b4b4b4; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,.2), 0 2px 0 0 rgba(255,255,255,.7) inset; color: #333; display: inline-block; font-family: monospace; font-size: .85em; font-weight: 700; line-height: 1; padding: 2px 4px; white-space: nowrap; }
+        code { background-color: #f0f0f0; border-radius: 3px; padding: 2px 4px; font-family: monospace; }
+        
+        /* Preview & Inputs */
+        #nav-preview { 
+            background-color: #ffffff; 
+            padding: 15px; 
+            border: 1px solid #dfe1e6; 
+            border-radius: 8px; 
+            min-height: 200px;
+        }
+        .input-field { border: 1px solid #ccc; padding: 8px; border-radius: 5px; width: 100%; transition: border-color 0.2s; }
+        .input-field:focus { border-color: #4c9aff; outline: none; }
+        .helper-text { font-size: 12px; color: #666; margin-left: 10px; }
+        
+        /* AI & API Key Section */
+        .api-key-group { flex-basis: 100%; margin-top: 10px; }
+        #translation-options label { user-select: none; }
+        #translation-options input { margin-right: 4px; }
+
+        /* Notification System */
+        #notification-area { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .notification {
+            background-color: #212529;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .notification.show { opacity: 1; transform: translateX(0); }
+    </style>
+</head>
+<body>
+
+    <div id="editor-container">
+        <h1>Page Content Editor</h1>
+        <div id="toolbar">
+            <!-- Metadata Group -->
+            <div class="tool-group">
+                <label for="article-title-input" style="flex-basis: 100%;"><strong>Article Title:</strong></label>
+                <input type="text" id="article-title-input" class="input-field" placeholder="My Awesome Article Title">
+                
+                <label for="page-desc-input" style="flex-basis: 100%; margin-top: 10px;"><strong>Article Description (for blog preview):</strong></label>
+                <input type="text" id="page-desc-input" class="input-field" placeholder="A short, catchy description of the article.">
+                
+                <label for="page-keywords-input" style="flex-basis: 100%; margin-top: 10px;"><strong>Keywords (comma-separated):</strong></label>
+                <input type="text" id="page-keywords-input" class="input-field" placeholder="tech, blog, awesome, stuff">
+
+                <label for="page-name-input" style="flex-basis: 48%; margin-top: 10px;"><strong>Page Name / Filename:</strong></label>
+                <label for="page-prefix-input" style="flex-basis: 48%; margin-top: 10px;"><strong>Page Key Prefix:</strong></label>
+                <input type="text" id="page-name-input" class="input-field" placeholder="my-cool-article" style="flex-basis: 48%;">
+                <input type="text" id="page-prefix-input" class="input-field" placeholder="mca" style="flex-basis: 48%;">
+            </div>
+             <!-- Block Tools -->
+            <div class="tool-group">
+                <button onclick="document.execCommand('formatBlock', false, 'h2');">Heading 2</button>
+                <button onclick="document.execCommand('formatBlock', false, 'h3');">Heading 3</button>
+                <button onclick="document.execCommand('formatBlock', false, 'p');">Paragraph</button>
+                <button onclick="addImage();">Image</button>
+                <button onclick="document.execCommand('insertHorizontalRule', false);">Divider</button>
+            </div>
+            <!-- Inline Tools -->
+            <div class="tool-group">
+                <button onclick="document.execCommand('bold', false);"><b>Bold</b></button>
+                <button onclick="document.execCommand('italic', false);"><i>Italic</i></button>
+                <button onclick="document.execCommand('underline', false);"><u>Underline</u></button>
+                <button onclick="document.execCommand('strikeThrough', false);"><del>Strikethrough</del></button>
+                <button onclick="addLink();">🔗 Link</button>
+            </div>
+            <!-- Semantic Tools -->
+            <div class="tool-group">
+                <button onclick="wrapSelection('code');"><code>Code</code></button>
+                <button onclick="wrapSelection('kbd');"><kbd>Keyboard</kbd></button>
+                <button onclick="wrapSelection('dfn');">Definition</button>
+                <button onclick="addAbbr();">Abbr.</button>
+            </div>
+            <!-- Complex Blocks -->
+            <div class="tool-group">
+                <button onclick="document.execCommand('insertUnorderedList', false);">● List</button>
+                <button onclick="document.execCommand('insertOrderedList', false);">1. List</button>
+                <button onclick="addDetailsBlock();">▸ Details</button>
+                <button onclick="wrapSelection('aside');">Aside</button>
+            </div>
+            <hr>
+             <!-- AI TRANSLATION -->
+            <div class="tool-group" id="translation-options">
+                <strong>AI Translations:</strong>
+                <label><input type="checkbox" name="language" value="ja" data-name="Japanese"> Japanese</label>
+                <label><input type="checkbox" name="language" value="he" data-name="Hebrew"> Hebrew</label>
+                <label><input type="checkbox" name="language" value="ru" data-name="Russian"> Russian</label>
+                <label><input type="checkbox" name="language" value="de" data-name="German"> German</label>
+                <label><input type="checkbox" name="language" value="en_graflect" data-name="Graflect"> Graflect (English)</label>
+                 <!-- API Key Input -->
+                <div class="api-key-group">
+                    <label for="api-key-input"><strong>Google AI API Key (Optional):</strong></label>
+                    <input type="password" id="api-key-input" class="input-field" placeholder="Enter your key for independent use">
+                </div>
+            </div>
+             <!-- Export Tools -->
+            <div class="tool-group">
+                <button id="export-button" onclick="generateAndExportHtml();">Generate Page HTML</button>
+                <button id="json-button" onclick="generateAndExportJson();">Generate Translation JSON</button>
+                <span class="helper-text">Place downloaded JSON in 'localization/' folder.</span>
+            </div>
+        </div>
+        <div id="editor" contenteditable="true">
+            <h2>This is my first heading</h2>
+            <p>This is a paragraph under the first heading. Select text and use the buttons to format it, like with <b>bold text</b> or <i>italic text</i>. Here is a test sentence for Graflect: The quick brown fox jumps over the lazy dog.</p>
+            <h3>A subsection</h3>
+            <p>Content within the subsection.</p>
+            <ul><li>Here is an item in a list.</li><li>And another one.</li></ul>
+            <h2>Here is another major section</h2>
+            <p>This will become another item in the navigation menu.</p>
+        </div>
+    </div>
+
+    <div id="preview-container">
+        <h3>Live Navigation Preview</h3>
+        <div id="nav-preview"></div>
+    </div>
+
+    <!-- Notification Area -->
+    <div id="notification-area"></div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const navPreview = document.getElementById('nav-preview');
+
+        // --- STATIC HTML BLOCKS (MODULE PLACEHOLDERS) ---
+        const SETTINGS_MODULE_HTML = `<div id="settings-module-placeholder"></div>`;
+        const START_MENU_MODULE_HTML = `<div id="start-menu-module-placeholder"></div>`;
+        const SCRIPTS_MODULE_HTML = `<script src="/scripts/module-loader.js" defer><\/script>`;
+
+        // --- TOOLBAR FUNCTIONS ---
+        function addImage() { const url = prompt("Enter image URL:"); if (url) { document.execCommand('insertImage', false, url); } }
+        function addLink() { const url = prompt("Enter the URL:"); if (url) { document.execCommand('createLink', false, url); } }
+        
+        function wrapSelection(tagName) { 
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && !selection.getRangeAt(0).collapsed) {
+                const range = selection.getRangeAt(0);
+                const wrapper = document.createElement(tagName);
+                wrapper.appendChild(range.extractContents());
+                range.insertNode(wrapper);
+                selection.removeAllRanges();
+            } else {
+                showNotification(`Please select text to wrap with <${tagName}>.`);
+            }
+        }
+        
+        function addAbbr() { 
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0 && !selection.getRangeAt(0).collapsed) {
+                const title = prompt("Enter full text for abbreviation:");
+                if (title) {
+                    const range = selection.getRangeAt(0);
+                    const abbr = document.createElement('abbr');
+                    abbr.title = title;
+                    abbr.appendChild(range.extractContents());
+                    range.insertNode(abbr);
+                    selection.removeAllRanges();
+                }
+            } else {
+                showNotification("Please select the abbreviation text first.");
+            }
+        }
+
+        function addDetailsBlock() { 
+            const selection = window.getSelection();
+            if (!selection.rangeCount || selection.getRangeAt(0).collapsed) {
+                showNotification("Please select the text to be made collapsible.");
+                return;
+            }
+            const summaryText = prompt("Enter summary for details block:", "Click to expand");
+            if (summaryText) {
+                const range = selection.getRangeAt(0);
+                const details = document.createElement('details');
+                const summary = document.createElement('summary');
+                summary.textContent = summaryText;
+                details.appendChild(summary);
+                details.appendChild(range.extractContents());
+                range.insertNode(details);
+                selection.removeAllRanges();
+            }
+        }
+        
+        // --- PREVIEW, MANIFEST, AND EXPORT LOGIC ---
+        function updateNavPreview() {
+            let navHtml = '<h2><a href="#">Article Sections</a></h2>\n<ul>';
+            const headings = editor.querySelectorAll('h2, h3');
+            headings.forEach(h => {
+                const text = h.textContent || 'Untitled Heading';
+                const indent = h.tagName === 'H3' ? '&emsp;&emsp;' : '&ensp;';
+                if (h.tagName === 'H2') {
+                    navHtml += `\n  <li><a href="#"><strong>${indent}${text}</strong></a></li>`;
+                } else {
+                    navHtml += `\n  <li><a href="#">${indent}${text}</a></li>`;
+                }
+            });
+            navHtml += '\n</ul>\n<h2><a href="/index.html">⌂← Home</a></h2>';
+            navPreview.innerHTML = navHtml;
+        }
+
+        function createManifestFromEditor() {
+            const manifest = [];
+            editor.childNodes.forEach(el => {
+                const nodeType = el.nodeName.toLowerCase();
+                let item = null;
+                switch (nodeType) {
+                    case 'h2': case 'h3': case 'p': case 'ul': case 'ol': case 'details': case 'hr': case 'aside':
+                        item = { type: nodeType, content: el.innerHTML };
+                        break;
+                    case 'img':
+                        item = { type: 'img', src: el.src, alt: el.alt };
+                        break;
+                    case 'div':
+                        if (el.innerHTML.trim() !== '') {
+                           manifest.push({ type: 'p', content: el.innerHTML });
+                        }
+                        break;
+                    case '#text':
+                        if (el.textContent.trim() !== '') {
+                            manifest.push({ type: 'p', content: el.textContent });
+                        }
+                        break;
+                }
+                if (item) manifest.push(item);
+            });
+            return manifest;
+        }
+
+        function processManifest(pagePrefix, articleTitle, description, keywords, manifest) {
+            const titleKey = `${pagePrefix}_title`;
+            const descKey = `${pagePrefix}_desc`;
+            let articleHtml = `<h1 id="title" data-key="${titleKey}"></h1>\n`;
+            let navHtml = '<ul>';
+            let translations = { en: { [titleKey]: articleTitle, [descKey]: description } };
+            let h_count = 0, p_count = 0, img_count = 0, block_count = 0;
+
+            manifest.forEach(item => {
+                const { type, content, src, alt } = item;
+                let id = '', dataKey = '';
+                
+                if (type === 'h2' || type === 'h3') {
+                    h_count++;
+                    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
+                    id = (cleanContent.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')) || `${type}-${h_count}`;
+                    dataKey = `${pagePrefix}_${type}_${id}`;
+                    translations.en[dataKey] = content;
+                    articleHtml += `<${type} id="${id}" data-key="${dataKey}"></${type}>\n`;
+                    
+                    const navKey = `${pagePrefix}_nav_${id}`;
+                    const indent = type === 'h3' ? '&emsp;&emsp;' : '&ensp;';
+                    navHtml += `\n  <li><a href="#${id}" data-key="${navKey}"></a></li>`;
+                    translations.en[navKey] = type === 'h2' ? `<strong>${indent}${cleanContent}</strong>` : `${indent}${cleanContent}`;
+
+                } else if (type === 'p') {
+                    p_count++; 
+                    dataKey = `${pagePrefix}_p${p_count}`;
+                    translations.en[dataKey] = content;
+                    articleHtml += `<p data-key="${dataKey}"></p>\n`;
+
+                } else if (type === 'img') {
+                    img_count++; 
+                    dataKey = `${pagePrefix}_img_alt_${img_count}`;
+                    translations.en[dataKey] = alt || 'article image';
+                    articleHtml += `<img src="${src}" alt="" data-key="${dataKey}" class="article-image">\n`;
+
+                } else if (['ul', 'ol', 'details', 'aside'].includes(type)) {
+                    block_count++;
+                    dataKey = `${pagePrefix}_${type}${block_count}`;
+                    translations.en[dataKey] = content;
+                    articleHtml += `<${type} data-key="${dataKey}"></${type}>\n`;
+                
+                } else if (type === 'hr') {
+                    articleHtml += `<hr>\n`;
+                }
+            });
+            
+            navHtml += '\n</ul>\n<a href="/index.html">⌂← Home</a>';
+            
+            const finalHtml = `<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="translation-source" content="graflect_ipa">
-    <meta name="description" content="Chart mapping the Graflect phonetic orthography to the International Phonetic Alphabet (IPA).">
-    <meta name="keywords" content="Language">
-    <meta name="pubDate" content="2025-06-13T10:00:00Z">
-    <title>▤ Graflect to IPA chart</title>
+    <meta name="description" data-key="${descKey}">
+    <meta name="keywords" content="${keywords}">
+    <meta name="translation-source" content="${pagePrefix}">
+    <title>${articleTitle}</title>
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <link rel="stylesheet" href="/styles/article.css">
-    <style>
-        /* Basic table styling for readability */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 1.1em;
-        }
-        th, td {
-            border: var(--text-color);
-            padding: 8px 12px;
-            text-align: left;
-        }
-        .graflect-font, th:first-child {
-            font-size: 1.5em; /* Make Graflect symbols larger */
-            text-align: center;
-        }
-        td:nth-child(2) {
-             font-family: 'Segoe UI', 'Arial', sans-serif; /* Use a font that supports IPA */
-             text-align: center;
-        }
-
-        /* FIX: Force the FairfaxHD font on all elements with this class */
-        .graflect-font {
-            font-family: "FairfaxHD" !important;
-        }
-
-        body {
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-    </style>
 </head>
 <body class="eink-mode light-mode">
-
-    <nav id="nav-window" class="window" style="top: 0; left: 0; min-height: fit-content; width: 260px; position: absolute; z-index: 3;">
-        <div class="title-bar">
-            <span class="title" data-key="win_article_nav_title">◈ article.nav</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <div class="content">
-            <h2><a href="#intro" data-key="nav_h2_intro">Introduction</a></h2>
-            <h3><a href="#consonants" data-key="nav_h3_consonants">&ensp;Consonants</a></h3>
-            <h3><a href="#vowels" data-key="nav_h3_vowels">&ensp;Vowels</a></h3>
-            <h3><a href="#other" data-key="nav_h3_other">&ensp;Other Symbols</a></h3>
-            <h2><a href="/index.html" data-key="nav_h2_home">⌂←</a></h2>
-        </div>
-    </nav> 
-
+    <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height: fit-content; position: absolute; z-index: 3;">
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ ${pagePrefix}.nav</span><button class="close-btn">&times;</button></div>
+        <div class="content">${navHtml}</div>
+    </nav>
     <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
-        <div class="title-bar">
-            <span class="title" data-key="win_guide_title">▤ graflect.guide</span>
-            <button class="close-btn">&times;</button>
-        </div>
-        <article class="content">
-            <header>
-                <h1 id="title" data-key="guide_h1">A Guide to Graflect & its IPA Equivalents</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography invented by Aaron Paterson. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created. This chart serves as the first comprehensive resource for this purpose, created to aid in understanding and transcription.</p>
-                <hr>
-            </header>
-            
-            <section>
-                <h2 id="consonants" data-key="guide_h2_consonants">Consonants</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example">Example Sound</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>p</b> in <b>p</b>lan</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>b</b> in <b>b</b>and</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>t</b> in <b>t</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>d</b> in len<b>d</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>k</b> in <b>k</b>ick, <b>c</b> in <b>c</b>ool</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>g</b> in <b>g</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>f</b> in <b>f</b>ail</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>v</b> in <b>v</b>ine</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think"><b>th</b> in <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this"><b>th</b> in <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>s</b> in <b>s</b>outh</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>z</b> in <b>z</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>sh</b> in <b>sh</b>ut</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>s</b> in occa<b>s</b>ion</td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>h</b> in <b>h</b>ome</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>m</b> in <b>m</b>an</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>n</b> in <b>n</b>orth</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b>ng</b> in lo<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>l</b> in <b>l</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b>r</b> in <b>r</b>ope (American R)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>w</b> in <b>w</b>oman</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>y</b> in <b>y</b>our</td></tr>
-                    </tbody>
-                </table>
-            </section>
-        
-            <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">Vowels</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example">Example Sound</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/ or /i/</td><td data-key="example_ea_in_lean"><b>ea</b> in l<b>ea</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in"><b>i</b> in <b>i</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b>oo</b> in g<b>oo</b>d</td></tr>
-                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school"><b>oo</b> in sch<b>oo</b>l</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b>e</b> in l<b>e</b>nd</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b>a</b> in <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me, <b>ai</b> in f<b>ai</b>l</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le or h<b>o</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt"><b>ur</b> in K<b>ur</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-             <section>
-                <h2 id="other" data-key="guide_h2_other">Other Symbols (Affricates, Non-English & Compounds)</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example_desc">Example Sound / Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>ch</b> in <b>ch</b>ase</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>j</b> in <b>j</b>ump</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>you</b> in <b>you</b></td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>we</b> in <b>we</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">German: <b>ch</b> in Ba<b>ch</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Spanish: Flapped <b>r</b> in pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">German: Guttural <b>r</b> in <b>R</b>ammstein</td></tr>
-                    </tbody>
-                </table>
-            </section>
-        </article>
+        <div class="title-bar"><span class="title" data-key="win_gallery_title">▤ ${pagePrefix}.article</span><button class="close-btn">&times;</button></div>
+        <article class="content">${articleHtml}</article>
     </main>
-    
-    <div id="settings-module-placeholder"></div>
-    <div id="start-menu-module-placeholder"></div>
-    
-    <script src="/scripts/module-loader.js" defer></script>
+    ${SETTINGS_MODULE_HTML}
+    ${START_MENU_MODULE_HTML}
+    ${SCRIPTS_MODULE_HTML}
+</body>
+</html>`;
+
+            return { html: finalHtml, translations: translations };
+        }
+        
+        // --- HELPER FUNCTIONS ---
+        function getPageMetadata() {
+            return {
+                pageName: document.getElementById('page-name-input').value.trim() || 'untitled-page',
+                pagePrefix: document.getElementById('page-prefix-input').value.trim(),
+                articleTitle: document.getElementById('article-title-input').value.trim() || 'Untitled Article',
+                description: document.getElementById('page-desc-input').value.trim(),
+                keywords: document.getElementById('page-keywords-input').value.trim()
+            };
+        }
+
+        async function generateAndExportHtml() {
+            const meta = getPageMetadata();
+            if (!meta.pagePrefix) {
+                showNotification("Error: 'Page Key Prefix' is required for export.");
+                return;
+            }
+            const manifest = createManifestFromEditor();
+            const { html } = processManifest(meta.pagePrefix, meta.articleTitle, meta.description, meta.keywords, manifest);
+            downloadFile(html, `${meta.pageName}.html`, 'text/html');
+        }
+
+        async function generateAndExportJson() {
+            setLoadingState(true);
+            try {
+                const meta = getPageMetadata();
+                if (!meta.pagePrefix) {
+                    showNotification("Error: 'Page Key Prefix' is required for export.");
+                    setLoadingState(false);
+                    return;
+                }
+
+                const manifest = createManifestFromEditor();
+                let { translations } = processManifest(meta.pagePrefix, meta.articleTitle, meta.description, meta.keywords, manifest);
+                
+                const selectedLanguages = Array.from(document.querySelectorAll('#translation-options input:checked')).map(input => ({ code: input.value, name: input.dataset.name }));
+                const apiKey = document.getElementById('api-key-input').value.trim();
+
+                if(selectedLanguages.length > 0) {
+                     translations = await getAiTranslations(translations, selectedLanguages, apiKey);
+                }
+
+                const jsonString = JSON.stringify(translations, null, 2);
+                downloadFile(jsonString, `${meta.pagePrefix}.json`, 'application/json');
+            } catch (error) {
+                console.error("An error occurred during JSON generation:", error);
+                showNotification("An unexpected error occurred. Check the console.");
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const blob = new Blob([content], { type: `${contentType};charset=utf-8` });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+        }
+        
+        function setupAutoGenerators() {
+            const articleTitleInput = document.getElementById('article-title-input');
+            const pageNameInput = document.getElementById('page-name-input');
+            const pagePrefixInput = document.getElementById('page-prefix-input');
+
+            articleTitleInput.addEventListener('input', () => {
+                const title = articleTitleInput.value;
+                const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+                pageNameInput.value = slug;
+                const prefix = title.split(' ').filter(word => word.length > 0).map(word => word[0]).join('').toLowerCase() || 'pfx';
+                pagePrefixInput.value = prefix.substring(0, 4);
+            });
+        }
+        
+        // --- AI TRANSLATION LOGIC ---
+        
+        // Graflect rules are stored in a constant for the specialized prompt.
+        const GRAFLECT_RULES_PROMPT = `You are a linguistic expert specializing in phonetic transcription. Your task is to transcribe English text into a fictional phonetic orthography called "Graflect".
+
+        **Primary Goal:** Transcribe the provided English text phonetically into Graflect symbols. This is NOT a translation.
+        **Constraint:** You MUST preserve all HTML tags and their attributes exactly as they appear in the original text. Only modify the text content within the tags. Use the following table of correspondences. Do not invent new symbols.
+
+        **Consonants:**
+        - /p/ ->  (p in plan)
+        - /b/ ->  (b in band)
+        - /t/ ->  (t in tend)
+        - /d/ ->  (d in lend)
+        - /k/ ->  (k in kick, c in cool)
+        - /ɡ/ ->  (g in gone)
+        - /f/ ->  (f in fail)
+        - /v/ ->  (v in vine)
+        - /θ/ ->  (th in think)
+        - /ð/ ->  (th in this)
+        - /s/ ->  (s in south)
+        - /z/ ->  (z in zone)
+        - /ʃ/ ->  (sh in shut)
+        - /ʒ/ ->  (s in occasion)
+        - /h/ ->  (h in home)
+        - /m/ ->  (m in man)
+        - /n/ ->  (n in north)
+        - /ŋ/ ->  (ng in long)
+        - /l/ ->  (l in lend)
+        - /r/ ->  (r in rope, American R)
+        - /w/ ->  (w in woman)
+        - /j/ ->  (y in your)
+        - /tʃ/ ->  (ch in chase)
+        - /dʒ/ ->  (j in jump)
+
+        **Vowels:**
+        - /iː/ or /i/ ->  (ea in lean)
+        - /ɪ/ ->  (i in in)
+        - /ʊ/ ->  (oo in good)
+        - /uː/ or /u/ ->  (oo in school)
+        - /ɛ/ ->  (e in lend)
+        - /æ/ ->  (a in accent)
+        - /ʌ/ or /ə/ (schwa) ->  (u in tug)
+        - /ɔ/ or /ɑ/ ->  (o in soft, a in father)
+        - /eɪ/ ->  or  (a in game, ai in fail)
+        - /aɪ/ ->  (ye in bye)
+        - /aʊ/ ->  (ou in south)
+        - /oʊ/ ->  or  (o in hole or home)
+        - /ɝ/ or /ɜr/ ->  (ur in Kurt)
+        - /ɛər/ ->  (air in air)
+        
+        **Compounds & Other:**
+        - /ju/ ->  (you in you)
+        - /wi/ ->  or  (we in we)
+        - /x/ (German ch) -> 
+        - /ɾ/ (Spanish flap) -> 
+        - /ʁ/ (German guttural r) -> 
+        `;
+
+        async function getAiTranslations(baseTranslations, languages, apiKey) {
+            showNotification(`Starting AI processing for ${languages.map(l=>l.name).join(', ')}...`);
+            const englishContent = baseTranslations.en;
+            
+            for (const lang of languages) {
+                const langCode = lang.code;
+                const langName = lang.name;
+                baseTranslations[langCode] = {};
+                
+                showNotification(`Processing for ${langName}...`);
+
+                const translationPromises = Object.entries(englishContent).map(([key, htmlContent]) => {
+                    return callTranslationApi(htmlContent, langCode, langName, apiKey).then(translatedHtml => {
+                        return { key, translatedHtml };
+                    }).catch(error => {
+                        console.error(`Failed to process key ${key} for ${langName}:`, error);
+                        showNotification(`Error processing a section for ${langName}. Check console.`, 'error');
+                        return { key, translatedHtml: `[Processing Error] ${htmlContent}` };
+                    });
+                });
+                
+                const results = await Promise.all(translationPromises);
+                
+                for(const result of results) {
+                    baseTranslations[langCode][result.key] = result.translatedHtml;
+                }
+                showNotification(`Finished processing for ${langName}.`);
+            }
+            showNotification('All AI processing complete!');
+            return baseTranslations;
+        }
+
+        async function callTranslationApi(htmlContent, targetLangCode, targetLangName, apiKey) {
+            let prompt;
+            if (targetLangCode === 'en_graflect') {
+                prompt = `${GRAFLECT_RULES_PROMPT}
+
+                Original English HTML:
+                \`\`\`html
+                ${htmlContent}
+                \`\`\`
+
+                Transcribed Graflect HTML:`;
+            } else {
+                prompt = `You are an expert translator tasked with adapting an author's unique voice into other languages.
+                Translate the following HTML snippet from English to ${targetLangName}.
+
+                **Primary Goal:** Do NOT perform a literal, word-for-word translation. Instead, capture the original's *style, tone, and intent*. Recreate the content as if the original author was a native speaker of ${targetLangName}.
+                
+                **Constraint:** You MUST preserve all HTML tags and their attributes exactly as they appear in the original text. Only modify the text content within the tags.
+
+                Original English HTML:
+                \`\`\`html
+                ${htmlContent}
+                \`\`\`
+
+                Translated ${targetLangName} HTML:`;
+            }
+
+            const effectiveApiKey = apiKey || ""; // Use provided key or fall back to environment-provided key
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`API request failed with status ${response.status}: ${errorBody}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                let text = result.candidates[0].content.parts[0].text;
+                text = text.trim().replace(/^```(html|)\s*/, '').replace(/```\s*$/, '');
+                return text;
+            } else {
+                console.error("Unexpected API response structure:", result);
+                if(result.promptFeedback && result.promptFeedback.blockReason){
+                    throw new Error(`API call was blocked. Reason: ${result.promptFeedback.blockReason.reason}`);
+                }
+                throw new Error('Could not parse translation from API response.');
+            }
+        }
+
+
+        function setLoadingState(isLoading) {
+            const jsonButton = document.getElementById('json-button');
+            const exportButton = document.getElementById('export-button');
+            if(isLoading) {
+                jsonButton.disabled = true;
+                exportButton.disabled = true;
+                jsonButton.textContent = 'Generating...';
+            } else {
+                jsonButton.disabled = false;
+                exportButton.disabled = false;
+                jsonButton.textContent = 'Generate Translation JSON';
+            }
+        }
+
+        function showNotification(message) {
+            const area = document.getElementById('notification-area');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            area.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.addEventListener('transitionend', () => notification.remove(), { once: true });
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            editor.addEventListener('input', updateNavPreview);
+            updateNavPreview();
+            setupAutoGenerators();
+        });
+
+    </script>
 </body>
 </html>
