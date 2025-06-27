@@ -9,7 +9,14 @@ function setupSettings() {
     const welcomeText = getElement('welcome-text');
     const logoImg = getElement('logo-img');
     const startMenuLogo = getElement('start-menu-logo');
-    const languageSelect = getElement('language-select');
+    
+    // --- Custom Language Dropdown Elements ---
+    const langDropdown = getElement('language-select-custom');
+    const langDropdownToggle = langDropdown?.querySelector('.custom-dropdown-toggle');
+    const langDropdownValue = getElement('language-select-value');
+    const langDropdownMenu = langDropdown?.querySelector('.custom-dropdown-menu');
+    const langDropdownItems = langDropdown?.querySelectorAll('.custom-dropdown-item');
+
     const einkToggle = getElement('eink-toggle');
     const themeRadios = document.querySelectorAll('input[name="theme"]');
     const settingsNavItems = document.querySelectorAll('.settings-nav li');
@@ -133,7 +140,15 @@ function setupSettings() {
         });
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
-        if (languageSelect) languageSelect.value = lang;
+        
+        // Update the custom dropdown display
+        if (langDropdownValue && langDropdownMenu) {
+            const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${lang}"]`);
+            if (selectedItem) {
+                langDropdownValue.textContent = selectedItem.textContent;
+            }
+        }
+
         localStorage.setItem(LANG_KEY, lang);
         
         window.translationsData = { translations, lang };
@@ -213,12 +228,33 @@ function setupSettings() {
         const savedLang = localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0];
         await loadAndSetLanguage(savedLang);
     }
+    
+    // --- Custom Dropdown Logic ---
+    if (langDropdown) {
+        // Toggle dropdown visibility
+        langDropdownToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent window click listener from firing immediately
+            langDropdownMenu.classList.toggle('show');
+        });
 
-    if (languageSelect) {
-        languageSelect.addEventListener('change', () => {
-            loadAndSetLanguage(languageSelect.value);
+        // Handle language selection
+        langDropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const lang = item.dataset.value;
+                loadAndSetLanguage(lang);
+                langDropdownMenu.classList.remove('show');
+            });
+        });
+
+        // Close dropdown if clicked outside
+        window.addEventListener('click', () => {
+            if (langDropdownMenu.classList.contains('show')) {
+                langDropdownMenu.classList.remove('show');
+            }
         });
     }
+
 
     initialize();
 

@@ -17,14 +17,20 @@
             <!-- Language Page -->
             <div id="settings-page-language" class="settings-page active">
                 <h3 data-key="lang_select_label">Select Language</h3>
-                <select id="language-select" class="dropdown">
-                    <option value="en">English</option>
-                    <option value="he">עברית (Hebrew)</option>
-                    <option value="ru">Русский (Russian)</option>
-                    <option value="de">Deutsch (German)</option>
-                    <option value="ja">日本語 (Japanese)</option>
-                    <option value="gt"> (English)</option>
-                </select>
+                <div id="language-select-custom" class="custom-dropdown">
+                    <button class="custom-dropdown-toggle" type="button">
+                        <span id="language-select-value">English</span>
+                        <span class="custom-dropdown-arrow">▼</span>
+                    </button>
+                    <div class="custom-dropdown-menu">
+                        <a href="#" class="custom-dropdown-item" data-value="en">English</a>
+                        <a href="#" class="custom-dropdown-item" data-value="he">עברית (Hebrew)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="ru">Русский (Russian)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="de">Deutsch (German)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="ja">日本語 (Japanese)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="gt"> (English)</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Appearance Page -->
