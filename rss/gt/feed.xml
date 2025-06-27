@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Sun, 15 Jun 2025 05:22:30 GMT</lastBuildDate>
+	<lastBuildDate>Fri, 27 Jun 2025 03:14:34 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/gt/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>   | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -249,18 +249,18 @@
 			<description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">Graflect &amp;  IPA </h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a>       Aaron Paterson.                    .       <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>,         Rebecca G. Bettencourt of Kreative Korp   <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>  (   ),   <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>.  ,     Graflect   <abbr title="International Phonetic Alphabet">IPA</abbr>   .           ,       .</p>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a>       Aaron Paterson.                    .       <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>,       Rebecca G. Bettencourt of Kreative Korp   <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>  (   ),   <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>.  ,     Graflect   <abbr title="International Phonetic Alphabet">IPA</abbr>   .           ,       .</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="consonants" data-key="guide_h2_consonants"></h2>
+                <h2 id="consonants" data-key="guide_h2_consonants"></h2>
                 <table>
                     <thead>
                         <tr>
-                            <th data-key="table_header_symbol">Graflect </th>
-                            <th data-key="table_header_ipa">IPA </th>
-                            <th data-key="table_header_example"> </th>
+                            <th data-key="table_header_symbol">Graflect </th>
+                            <th data-key="table_header_ipa">IPA </th>
+                            <th data-key="table_header_example"> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -268,9 +268,9 @@
                         <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b></b>  <b></b><b></b>, <b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b></b>  <b></b><b></b>, <b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this"><b></b>  <b></b></td></tr>
@@ -283,9 +283,9 @@
                         <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b></b>  <b></b> ( )</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b></b>  <b></b> ( )</td></tr>
                         <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b></b>  <b></b></td></tr>
                     </tbody>
                 </table>
             </section>
@@ -295,48 +295,48 @@
                  <table>
                     <thead>
                         <tr>
-                            <th data-key="table_header_symbol">Graflect </th>
-                            <th data-key="table_header_ipa">IPA </th>
-                            <th data-key="table_header_example"> </th>
+                            <th data-key="table_header_symbol">Graflect </th>
+                            <th data-key="table_header_ipa">IPA </th>
+                            <th data-key="table_header_example"> </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr><td class="graflect-font"></td><td>/iː/ or /i/</td><td data-key="example_ea_in_lean"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b></b>  <b></b> (   )</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game"><b></b>  <b></b>, <b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game"><b></b>  <b></b>, <b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole"><b></b>  <b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt"><b></b>  K<b></b>t</td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole"><b></b>  <b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b></b>  <b></b></td></tr>
                     </tbody>
                 </table>
             </section>
 
              <section>
-                <h2 id="other" data-key="guide_h2_other">  (, - &amp; )</h2>
+                <h2 id="other" data-key="guide_h2_other">  (, - &amp; )</h2>
                  <table>
                     <thead>
                         <tr>
-                            <th data-key="table_header_symbol">Graflect </th>
-                            <th data-key="table_header_ipa">IPA </th>
-                            <th data-key="table_header_example_desc">  / </th>
+                            <th data-key="table_header_symbol">Graflect </th>
+                            <th data-key="table_header_ipa">IPA </th>
+                            <th data-key="table_header_example_desc">  / </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">: <b></b>  Ba<b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">:  <b></b>  pe<b></b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">:  <b></b>  <b></b>ammstein</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">:  <b></b>  pe<b></b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">:  <b></b>  <b></b>ammstein</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -345,50 +345,50 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
 		</item>
 		<item>
-			<title>  </title>
+			<title>  </title>
 			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
 			<description><![CDATA[
             <header>
-                <h1 id="title" data-key="sunshine_h1">  </h1>
+                <h1 id="title" data-key="sunshine_h1">  </h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">     , ,        .                           .</p>
-                <p data-key="sunshine_p2">        ,          PCB    .     .</p>
+                <p data-key="sunshine_p1">     , ,        .                           .</p>
+                <p data-key="sunshine_p2">        ,          PCB    .     .</p>
                 <hr>
             </header>
             
             <section>
                 <h2 id="TLDR" data-key="tldr_h2"> (TL;DR)</h2>
-                <p data-key="tldr_p1">           36 .         ()    ,             .      ,    PCB   ,     QMK . ' ,  ' .       :</p>
+                <p data-key="tldr_p1">           36 .         ()    ,             .      ,    PCB   ,     QMK . ' ,  ' .       :</p>
                 
                 <hr>
             </section>
             
             <section>
                 <h2 id="Intro" data-key="intro_h2"> &amp; </h2>
-                <p data-key="intro_p1">      , '      .       ,   Lily58  ,        ,  '   .        .</p>
+                <p data-key="intro_p1">      , '      .       ,   Lily58,        ,  '   .        .</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">       ** ,    .        ,         (-40%).    :                  ?</p>
+                <p data-key="intro_p2">       ** ,    .        ,         (sub-40%).    :                  ?</p>
                 <p data-key="intro_p3">      :       , '     .</p>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Objectives" data-key="objectives_h2"> </h2>
-                <p data-key="objectives_p1">   ,           .          .</p>
+                <p data-key="objectives_p1">   ,           .          .</p>
                 <h3 data-key="objectives_h3_theory">      </h3>
-                <h4 data-key="objectives_h4_phalanges"> :  </h4>
+                <h4 data-key="objectives_h4_phalanges"> :  </h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">            .         '   .  ,       ,           <kbd>Space</kbd>, <kbd>Enter</kbd>,  <kbd>Backspace</kbd>.</p>
+                <p data-key="objectives_p2">            .         '   .  ,       ,           <kbd>Space</kbd>, <kbd>Enter</kbd>,  <kbd>Backspace</kbd>.</p>
                 <h4 data-key="objectives_h4_combos">  :   </h4>
-                <p data-key="objectives_p3">     ,   .  ,           `ASDF`  `1234`.  ,  ','            ,         .  ,  <kbd>J</kbd>  <kbd>K</kbd>    <kbd>Escape</kbd>.</p>
+                <p data-key="objectives_p3">     ,   .  ,           `ASDF`  `1234`.  ,  ','            ,         .  ,  <kbd>J</kbd>  <kbd>K</kbd>    <kbd>Escape</kbd>.</p>
                 <p data-key="objectives_p4">       :</p>
                 <ul>
                     <li data-key="objectives_li1">3   5   ,    .</li>
                     <li data-key="objectives_li2">       .</li>
                     <li data-key="objectives_li3"> ,   .</li>
-                    <li data-key="objectives_li4">            ,  ,     .</li>
+                    <li data-key="objectives_li4">            ,  ,     .</li>
                     <li data-key="objectives_li5">   (QMK or ZMK).</li>
-                    <li data-key="objectives_li6">    .</li>
+                    <li data-key="objectives_li6">    .</li>
                     <li data-key="objectives_li7">      - .</li>
                 </ul>
                 <hr>
@@ -401,51 +401,51 @@
                 <p data-key="design_p2">,  2D     '      **.  ,     .</p>
                 
                 <section>
-                    <h3 id="CAD" data-key="cad_h3">CAD (  )</h3>
-                    <p data-key="cad_p1">   3D       PCB,         : .       1:1         .</p>
+                    <h3 id="CAD" data-key="cad_h3">CAD (  )</h3>
+                    <p data-key="cad_p1">   3D       PCB,         : .       1:1         .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
-                    <p data-key="cad_p2">      .                 .</p>
+                    <p data-key="cad_p2">      .                 .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3"> -   .        ,         .       ,     .</p>
+                    <p data-key="cad_p3"> -   .        ,         .       ,     .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">   ,       .</p>
+                    <p data-key="cad_p4">   ,       .</p>
                 </section>
 
                 <section>
-                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">  </h3>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">  </h3>
                     <p data-key="final_p1">         .           ,    .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">    .            .</p>
+                    <p data-key="final_p2">    .            .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
                     <p data-key="final_p3">      .       ,     .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
                     <p data-key="final_p4">    ,          .           PCB .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p5">             .</p>
+                    <p data-key="final_p5">             .</p>
                 </section>
 
                 <section>
                     <h3 id="PCB" data-key="pcb_h3">  PCB</h3>
-                    <p data-key="pcb_p1">    ,           :     (PCB).   KiCad   .   PCB ,     'ALL IS IN YOUR HANDS'.</p>
+                    <p data-key="pcb_p1">    ,           :     (PCB).   KiCad   .   PCB ,     'ALL IS IN YOUR HANDS'.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
-                    <p data-key="pcb_p2">       .       ,       '' (    ).</p>
+                    <p data-key="pcb_p2">       .       ,       '' (    ).</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p3">     Raspberry Pi Pico     ' , ,  -  QMK .</p>
+                    <p data-key="pcb_p3">     Raspberry Pi Pico     ' , ,  -  QMK .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p4">          TRRS ,        .</p>
+                    <p data-key="pcb_p4">          TRRS ,        .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
-                    <p data-key="pcb_p5">    Kailh - ,         .</p>
+                    <p data-key="pcb_p5">    Kailh - ,         .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
                     <p data-key="pcb_p6">    ,      ,         Gerber   .</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
                     <p data-key="pcb_p7">        ,    ,    !</p>
-                    <p data-key="pcb_p8">              .</p>
+                    <p data-key="pcb_p8">              .</p>
                     <hr>
                 </section>
 
                 <section>
-                    <h3 id="Keymap" data-key="keymap_h3">  </h3>
-                    <p data-key="keymap_p1">       .     QMK.     :     ,    ,    ,         F-.        .            Escape  Tab.</p>
+                    <h3 id="Keymap" data-key="keymap_h3">  </h3>
+                    <p data-key="keymap_p1">       .     QMK.     :     ,    ,    ,         F-.        .            Escape  Tab.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
@@ -455,34 +455,34 @@
             </section>
 
             <section>
-                <h2 id="Discoveries" data-key="discoveries_h2"> &amp; </h2>
-                <p data-key="discoveries_p1">      .       :</p>
+                <h2 id="Discoveries" data-key="discoveries_h2"> &amp; </h2>
+                <p data-key="discoveries_p1">      .       :</p>
                 <ul>
-                    <li data-key="discoveries_li1">     , ,      .</li>
+                    <li data-key="discoveries_li1">     , ,      .</li>
                     <li data-key="discoveries_li2">              .</li>
-                    <li data-key="discoveries_li3">          ,          .</li>
+                    <li data-key="discoveries_li3">          ,          .</li>
                     <li data-key="discoveries_li4">  PCB      ,    -   KiCad.</li>
-                    <li data-key="discoveries_li5">   '---'   .   .</li>
+                    <li data-key="discoveries_li5">   '---'   .   .</li>
                 </ul>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
-                <p data-key="discoveries_p2">            ,                ,     .</p>
+                <p data-key="discoveries_p2">            ,                ,     .</p>
                 <hr>
             </section>
 
             <section>
                 <h2 id="Plans" data-key="plans_h2"> </h2>
                 <h3 data-key="plans_h3_layout">  (Sunshine V2)</h3>
-                <p data-key="plans_p1">   ,          (      )          ,    Dactyl  Kinesis Advantage .</p>
+                <p data-key="plans_p1">   ,          (      )          ,    Dactyl  Kinesis Advantage .</p>
                 <h3 data-key="plans_h3_features">  </h3>
-                <p data-key="plans_p2">'      OLED      ,                 .</p>
-                <h3 data-key="plans_h3_production"> &amp; </h3>
-                <p data-key="plans_p3">        (KiCad,  )  GitHub .  '      ,                 .</p>
+                <p data-key="plans_p2">'      OLED      ,                 .</p>
+                <h3 data-key="plans_h3_production"> &amp; </h3>
+                <p data-key="plans_p3">        (KiCad,  )  GitHub .  '      ,                 .</p>
                 <hr>
             </section>
 
             <section>
                 <h2 id="Bye" data-key="bye_h2">  ( )</h2>
-                <p data-key="bye_p1">      !               '  . '    ,             .     ,     .</p>
+                <p data-key="bye_p1">      !               '  . '    ,             .     ,     .</p>
             </section>
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>

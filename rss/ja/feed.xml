@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Sun, 15 Jun 2025 05:22:30 GMT</lastBuildDate>
+	<lastBuildDate>Fri, 27 Jun 2025 03:14:34 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -55,18 +55,18 @@
                 <h2 id="Honey Salt" data-key="dv_h2_honey"> ハニーソルトへ</h2>
                 <p data-key="dv_p8">マッカラン空港で友人のデビッドを迎えに行くために、私とアーロンがセントジョージからベガスに出発するスケジュールを間違えてしまいました。週を間違えたのです！私たちはまあまあのレストランであるハニーソルトに行き、クールな人たちに会いました。駐車場にいたクールなゴスっぽい女の子と、レストランで隣に座っていた確かユタからの派手なカップルです。</p>
             
-                <h3 id="Goth" data-key="dv_h3_goth"> ❏ ゴスギャル</h3>
+                <h3 id="Goth" data-key="dv_h3_goth"> ❏ ゴスの女の子</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
-                <p data-key="dv_p9">インスタとか交換すればよかった！ポーズをとってくれてありがとう、ランダムなベガスのゴスギャルさん！</p>
+                <p data-key="dv_p9">インスタとか交換すればよかった！ポーズをとってくれてありがとう、ランダムなベガスのゴスな女の子！</p>
             </section>
 
             <section>
-                <h2 id="David" data-key="dv_h2_david"> デイビッド獲得</h2>
+                <h2 id="David" data-key="dv_h2_david"> デイビッドを迎えに</h2>
                 <p data-key="dv_p10">少し後でデイビッドを迎えにベガスに再展開しました。</p>
             
                 <h3 id="Burger" data-key="dv_h3_burger"> ❏ めちゃくちゃなバーガー</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
-                <p data-key="dv_p11">味は良かったけど、食べるのが不可能でした！馬鹿なバーガーがバラバラになる。パンは美味しかったけど、中身に比べて構造的に強すぎました。</p>
+                <p data-key="dv_p11">味は良かったけど、食べるのが不可能でした！馬鹿なバーガーがバラバラになる。パンは美味しかったけど、中身に対してしっかりしすぎていた。</p>
 
                 <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ スクーターマン</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
@@ -78,7 +78,7 @@
 
                 <h3 id="Victor" data-key="dv_h3_victor"> ❏ ビクター</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
-                <p data-key="dv_p14">うわー… Fallout New Vegasのビクターだ… 私のこと覚えてるかな？�</p>
+                <p data-key="dv_p14">うわー… Fallout New Vegasのビクターだ… 私のこと覚えてるかな？😳</p>
             </section>
 
             <section>
@@ -149,7 +149,7 @@
             
             <section>
                 <h2 id="Red" data-key="ep_h2_red"> 赤色</h2>
-                <p data-key="ep_p_red_intro">まさに史上最高のクラシックなバラの色、正直なところ。</p>
+                <p data-key="ep_p_red_intro">これぞバラの王道カラーって感じですね。</p>
                 
                 <h3 id="Poke" data-key="ep_h3_poke"> ❏ ジュリアがバラを突く</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/poke.png" class="article-image">
@@ -179,7 +179,7 @@
 
             <section>
                 <h2 id="White" data-key="ep_h2_white"> 白色</h2>
-                <p data-key="ep_p_white_intro">まだ色付けされていない未完成のバラを見ることができて、とても幸運でした！なんて素晴らしいことでしょう。</p>
+                <p data-key="ep_p_white_intro">まだ色付けされていない未完成のバラを見ることができて、とても幸運でした！最高の体験でした！</p>
             
                 <h3 id="Square" data-key="ep_h3_square"> ❏ 四角い花びらのバラ</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/square.png" class="article-image">
@@ -244,12 +244,12 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
 		</item>
 		<item>
-			<title>GraflectとそのIPA等価記号</title>
+			<title>GraflectとそのIPA対応記号</title>
 			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
 			<description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">GraflectとそのIPA等価記号</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンによって考案された表音正書法です。それは微妙に示差的であり、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
+                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応記号</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンによって考案された表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
                 <hr>
             </header>
             
@@ -264,28 +264,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>パ</b>ンの「プ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>バ</b>スの「ブ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>テ</b>ンキの「ト」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ド</b>アの「ド」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>カ</b>メラの「ク」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ガ</b>ラスの「グ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>フ</b>ァイルの「フ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine">外来音: <b>ヴ</b>ァイオリンの「ヴ」</td></tr>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>パ</b>ンの [p] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>バ</b>スの [b] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>テ</b>ンキの [t] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ド</b>アの [d] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>カ</b>メラの [k] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ガ</b>ラスの [g] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>フ</b>ァイルの [f] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>ヴ</b>ァイオリンの [v] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">英語の音: <b>th</b>ink の <b>th</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">英語の音: <b>th</b>is の <b>th</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの「ス」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの「ズ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの「シ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">ビ<b>ジョ</b>ンの「ジ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>ハ</b>イの息の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの「ム」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの「ン」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末</td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの [s] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの [z] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの [ʃ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">ビ<b>ジョ</b>ンの [ʒ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>は</b>行の息の音 [h]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの [m] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの [n] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末 [ŋ]</td></tr>
                         <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend">英語の音: <b>l</b>end の <b>l</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの「ウ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>マの「ィ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの [w] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>クソクの [j] の音</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -307,7 +307,7 @@
                         <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">「ア」、<b>ア</b>ップルのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (曖昧母音)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft">「オ」、<b>オ</b>レンジのように</td></tr>
                         <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
@@ -320,7 +320,7 @@
             </section>
 
              <section>
-                <h2 id="other" data-key="guide_h2_other">その他の記号（破擦音、非英語、複合音）</h2>
+                <h2 id="other" data-key="guide_h2_other">その他の記号（破擦音、非英語の音、複合音）</h2>
                  <table>
                     <thead>
                         <tr>
@@ -330,13 +330,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの「チ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの「ジ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の喉音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語など、喉を震わせるR音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの [tʃ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの [dʒ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」の音</td></tr>
+                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の [x] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr [ɾ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語など、口蓋垂ふるえ音のR [ʁ]</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -345,107 +345,107 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
 		</item>
 		<item>
-			<title>サンシャイン実験キーボード</title>
+			<title>実験的キーボード「サンシャイン」</title>
 			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
 			<description><![CDATA[
             <header>
-                <h1 id="title" data-key="sunshine_h1">サンシャイン実験キーボード</h1>
+                <h1 id="title" data-key="sunshine_h1">実験的キーボード「サンシャイン」</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">サンシャインキーボードは、私がゼロから設計・製作したカスタムのエルゴノミクス分割キーボードです。レイヤーに配置された最小限のキーをコンボでアクセスすることで、指の移動を最小限に抑え、快適性を最大限に高めることを目的とした実験的なレイアウトです。</p>
-                <p data-key="sunshine_p2">このプロジェクトは、段ボールによる物理的なプロトタイピングから、カスタムPCBの設計、ファームウェアのプログラミングまで、キーボード設計の深い探求でした。この記事では、その道のりを記録しています。</p>
+                <p data-key="sunshine_p1">「サンシャインキーボード」は、私がゼロから設計・製作した、人間工学に基づいたカスタム分割式キーボードです。これは、キーの数を最小限に抑え、それらをレイヤー構造とキーの組み合わせ（コンボ）で操作することで、指の移動距離を減らし快適性を最大限に高めることを目指した実験的な配列です。</p>
+                <p data-key="sunshine_p2">このプロジェクトは、段ボールによる物理的な試作品作りから、カスタム基板（PCB）の設計、ファームウェアのプログラミングに至るまで、キーボード設計の世界への深い探求となりました。この記事では、その道のりを記録しています。</p>
                 <hr>
             </header>
             
             <section>
                 <h2 id="TLDR" data-key="tldr_h2">要約 (TL;DR)</h2>
-                <p data-key="tldr_p1">私はわずか36キーのカスタム分割エルゴノミクスキーボードを設計・製作しました。すべての文字にアクセスするためにレイヤーとキーの組み合わせ（コンボ）に大きく依存しており、これにより指は常にホームポジションまたはその近くに留まります。段ボールでレイアウトのプロトタイプを作成し、ユニークなアートワークを持つカスタムPCBを設計し、QMKファームウェアでプログラムしました。奇妙ですが、快適です。以下のタイピングテストビデオをご覧ください：</p>
+                <p data-key="tldr_p1">私はわずか36キーのカスタム分割型エルゴキーボードを設計・製作しました。すべての文字入力はレイヤーとキーの同時押し（コンボ）に大きく依存しており、これにより指は常にホームポジションかそのすぐ近くに留まります。段ボールで配列の試作品を作り、ユニークなアートワークを施したカスタム基板を設計し、QMKファームウェアでプログラムしました。変わっていますが、快適です。以下のタイピングテスト動画をご覧ください：</p>
                 
                 <hr>
             </section>
             
             <section>
                 <h2 id="Intro" data-key="intro_h2">背景と動機</h2>
-                <p data-key="intro_p1">一日中タイピングする多くの人々と同様に、私も標準的なキーボードは不快だと感じていました。ここに写っているLily58のような市販のエルゴノミクスキーボードをいくつか試しましたが、改善はされたものの、私にとって完璧ではありませんでした。多くは依然として不快な指の動きや伸ばしを必要としました。</p>
+                <p data-key="intro_p1">一日中タイピングする多くの人々と同様に、私も標準的なキーボードは不快だと感じていました。ここに写っているLily58のような市販のエルゴキーボードをいくつか試しましたが、改善はされたものの、私にとって完璧ではありませんでした。多くは依然として不快な指の動きやストレッチを必要としました。</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">私は平均的な手ではなく、*私の*手のために作られたものが欲しかったのです。私はミニマリストキーボードのコミュニティ、特に非常に少ないキー（40%未満）を使用している人々に触発されました。その哲学は単純です：レイヤーを通じてキーを指に近づけることができるのに、なぜ指をキーに移動させる必要があるのでしょうか？</p>
-                <p data-key="intro_p3">これは私を単純な結論に導きました：私にとって完璧なキーボードを手に入れるには、自分で設計するしかないと。</p>
+                <p data-key="intro_p2">私は平均的な手ではなく、*私の*手のために作られたものが欲しかったのです。私はミニマリストキーボードのコミュニティ、特にキーが極端に少ない（40%未満）キーボードを使う人々に触発されました。その哲学は単純です。「レイヤーを使えばキーを指元に持ってこれるのに、なぜわざわざ指をキーまで動かすのか？」</p>
+                <p data-key="intro_p3">これは私を単純な結論に導きました。自分にとって完璧なキーボードを手に入れるには、自分で設計するしかない、と。</p>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Objectives" data-key="objectives_h2">プロジェクトの目的</h2>
-                <p data-key="objectives_p1">設計を始める前に、プロジェクトの明確な目標リストを設定しました。これらはキーボードエルゴノミクスに関する中心的な理論に導かれました。</p>
+                <p data-key="objectives_p1">設計を始める前に、プロジェクトの明確な目標リストを設定しました。これらはキーボードの人間工学に関する中心的な理論に基づいています。</p>
                 <h3 data-key="objectives_h3_theory">私のキーボード快適性に関する大統一理論</h3>
-                <h4 data-key="objectives_h4_phalanges">指骨第一：動きの最小化</h4>
+                <h4 data-key="objectives_h4_phalanges">指が第一：動きの最小化</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">中心的な考え方は、指を伸ばしたり長距離を移動させたりすべきではないということです。各キーは指の自然な休息位置の真下に配置されるべきです。最も強くて柔軟な指である親指は、レイヤーの有効化や<kbd>スペース</kbd>、<kbd>Enter</kbd>、<kbd>Backspace</kbd>などの一般的な修飾キーを担当すべきです。</p>
+                <p data-key="objectives_p2">中心的な考え方は、指を伸ばしたり長距離を移動させたりすべきではない、ということです。各キーは指の自然なホームポジションの真下に配置されるべきです。最も強くて柔軟な指である親指は、レイヤーの有効化や<kbd>スペース</kbd>、<kbd>Enter</kbd>、<kbd>Backspace</kbd>といった多用する修飾キーを担当すべきです。</p>
                 <h4 data-key="objectives_h4_combos">コンボとレイヤー：キー数の削減</h4>
-                <p data-key="objectives_p3">限られた数のキーでは、レイヤーが不可欠です。例えば、親指キーを押し続けると、ホームポジションの`ASDF`が`1234`に変わるかもしれません。キーの組み合わせ、つまり「コンボ」は、2つのキーを同時に押して別のアクションをトリガーすることで、物理的なキーを増やさずに機能をさらに拡張できます。例えば、<kbd>J</kbd>と<kbd>K</kbd>を同時に押すと<kbd>Escape</kbd>が出力されるかもしれません。</p>
+                <p data-key="objectives_p3">キーの数が限られているため、レイヤーは不可欠です。例えば、親指キーを押し続けると、ホームポジションの`ASDF`が`1234`に変わる、といった具合です。キーの組み合わせ、つまり「コンボ」（2つのキーを同時に押して別のアクションを発動する）を使えば、物理キーを増やさずに機能をさらに拡張できます。例えば、<kbd>J</kbd>と<kbd>K</kbd>を同時に押すと<kbd>Escape</kbd>が入力されるようにできます。</p>
                 <p data-key="objectives_p4">これにより、以下の具体的な設計目標が導き出されました：</p>
                 <ul>
-                    <li data-key="objectives_li1">片手につき3行5列、プラス親指クラスター。</li>
-                    <li data-key="objectives_li2">自然な指の長さに合わせた積極的なカラムスタッガー。</li>
-                    <li data-key="objectives_li3">快適で角度のついた親指クラスター。</li>
-                    <li data-key="objectives_li4">数字行、ファンクション行、さらには一部の記号キーの必要性をなくすためのレイヤーとコンボへの強い依存。</li>
+                    <li data-key="objectives_li1">片手につき3行5列、加えて親指クラスター。</li>
+                    <li data-key="objectives_li2">自然な指の長さに合わせた、大胆なカラムスタッガー（列のずらし）。</li>
+                    <li data-key="objectives_li3">快適な角度のついた親指クラスター。</li>
+                    <li data-key="objectives_li4">数字行、ファンクション行、さらには一部の記号キーさえも不要にするための、レイヤーとコンボへの強い依存。</li>
                     <li data-key="objectives_li5">完全にプログラム可能なファームウェア（QMKまたはZMK）。</li>
-                    <li data-key="objectives_li6">ユニークで個人的な美学。</li>
-                    <li data-key="objectives_li7">肩幅の姿勢のための分割設計であること。</li>
+                    <li data-key="objectives_li6">ユニークで個人的なデザイン性。</li>
+                    <li data-key="objectives_li7">肩幅に合わせた姿勢のための分割設計であること。</li>
                 </ul>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Design" data-key="design_h2">設計プロセス</h2>
-                <p data-key="design_p1">私がType-22と呼んだ最初のコンセプトは、キーボードレイアウトエディタで作成されました。非常に攻撃的な小指のスタッガーと、親指のアークに関する初期のアイデアがありました。</p>
+                <p data-key="design_p1">私が「Type-22」と名付けた最初のコンセプトは、キーボードレイアウトエディタで作成されました。非常に大胆な小指のずらしと、親指の弧に関する初期のアイデアがありました。</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
-                <p data-key="design_p2">しかし、画面上の2Dレイアウトでは、実際に*どう感じる*かはわかりません。そのためには、物理的なものが必要でした。</p>
+                <p data-key="design_p2">しかし、画面上の2Dレイアウトでは、それが実際に*どう感じるか*はわかりません。そのためには、物理的なものが必要でした。</p>
                 
                 <section>
-                    <h3 id="CAD" data-key="cad_h3">CAD（段ボール支援設計）</h3>
-                    <p data-key="cad_p1">すぐに3Dプリントケースを作成したりPCBを注文したりする代わりに、より安価で迅速なプロトタイピング材料である段ボールに目を向けました。レイアウトを1:1スケールで印刷し、段ボールに貼り付けました。</p>
+                    <h3 id="CAD" data-key="cad_h3">CAD（Cardboard Aided Design / 段ボール支援設計）</h3>
+                    <p data-key="cad_p1">すぐにケースを3Dプリントしたり基板を発注したりする代わりに、より安価で迅速な試作材料である段ボールに目を向けました。レイアウトを原寸大で印刷し、段ボールに貼り付けました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
-                    <p data-key="cad_p2">次に、丹念にスイッチの穴を切り抜きました。これにより、本物のメカニカルスイッチとキーキャップを取り付けて、間隔とスタッガーをテストすることができました。</p>
+                    <p data-key="cad_p2">次に、丹念にスイッチ用の穴を切り抜きました。これにより、本物のメカニカルスイッチとキーキャップをはめ込み、間隔やずれを試すことができました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">この低忠実度のプロトタイプは非常に貴重でした。どの列がずれているか、親指キーが届きにくいかをすぐに感じることができました。私はこれらの段ボールプロトタイプをいくつか作成し、その都度デザインを微調整しました。</p>
+                    <p data-key="cad_p3">この手軽な試作品は非常に貴重でした。どの列がずれているか、親指キーが押しにくいかをすぐに感じ取ることができました。私はこの段ボール試作品をいくつか作り、その都度デザインを微調整しました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">副次的な利点として、段ボールでタイピングすると驚くほど良い音がします。</p>
+                    <p data-key="cad_p4">おまけに、段ボールでタイピングすると驚くほど良い音がします。</p>
                 </section>
 
                 <section>
                     <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">レイアウトの最終決定</h3>
-                    <p data-key="final_p1">最初の変更点の1つは親指クラスターでした。最初のデザインでは、内側の親指キーが内側すぎ、不快な伸ばしが必要でした。</p>
+                    <p data-key="final_p1">最初の変更点の一つは親指クラスターでした。初期のデザインでは、内側の親指キーが奥に入りすぎており、不快な指の伸ばしが必要でした。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">段ボールのプロトタイプがこれを確認しました。私はアークをよりきつく、より自然に届くように調整しました。</p>
+                    <p data-key="final_p2">段ボールの試作品がこれを確認させてくれました。私は弧をよりコンパクトで自然に届くように調整しました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p3">別のイテレーションでは、小指の列の調整が含まれていました。低すぎることが判明したため、少し上げました。</p>
+                    <p data-key="final_p3">別の試作では、小指の列を調整しました。低すぎることが判明したため、少し持ち上げました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
-                    <p data-key="final_p4">さらにいくつかの微調整の後、快適で自然に感じるレイアウトにたどり着きました。これがPCBの基礎となる最終デザインになりました。</p>
+                    <p data-key="final_p4">さらにいくつかの微調整を経て、快適で自然に感じるレイアウトにたどり着きました。これが、基板の元となる最終デザインとなりました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p5">この最終的な段ボールバージョンは、プロジェクトの残りの部分での私の信頼できるガイドでした。</p>
+                    <p data-key="final_p5">この最終的な段ボール版は、プロジェクトの残りの期間、私の頼れる指針となりました。</p>
                 </section>
 
                 <section>
-                    <h3 id="PCB" data-key="pcb_h3">PCBの設計</h3>
-                    <p data-key="pcb_p1">物理的なレイアウトが確定したので、キーボードの電子頭脳であるプリント基板（PCB）を設計する時が来ました。このプロセスにはKiCadを使用しました。PCBアートには、「すべてはあなたの手の中に」というモットーを選びました。</p>
+                    <h3 id="PCB" data-key="pcb_h3">基板（PCB）の設計</h3>
+                    <p data-key="pcb_p1">物理的なレイアウトが固まったので、キーボードの電子頭脳であるプリント基板（PCB）を設計する時が来ました。このプロセスにはKiCadを使用しました。基板アートには、「すべてはあなたの手の中に」というモットーを選びました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
-                    <p data-key="pcb_p2">キーボードの回路図はかなり単純です。各スイッチはマトリックスの一部であり、「ゴースティング」（誤ったキー入力が登録されること）を防ぐためにダイオードで接続されています。</p>
+                    <p data-key="pcb_p2">キーボードの回路図はかなり単純です。各スイッチはマトリックスの一部であり、「ゴースティング」（誤ったキー入力の登録）を防ぐためにダイオードで接続されています。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p3">マイクロコントローラーとしてRaspberry Pi Picoを選びました。安価で強力、そしてQMKファームウェアで十分にサポートされているためです。</p>
+                    <p data-key="pcb_p3">マイクロコントローラーにはRaspberry Pi Picoを選びました。安価で強力、そしてQMKファームウェアで十分にサポートされているためです。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p4">キーボードの2つの半分は、電力とデータマトリックス信号を運ぶTRRSケーブルで接続されています。</p>
+                    <p data-key="pcb_p4">キーボードの左右のパーツは、電源とデータマトリックス信号を運ぶTRRSケーブルで接続されています。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
-                    <p data-key="pcb_p5">Kailhホットスワップソケットのサポートを追加しました。これにより、はんだ付けなしで簡単にスイッチを交換できます。</p>
+                    <p data-key="pcb_p5">Kailhのホットスワップソケットに対応させました。これにより、はんだ付けなしで簡単にスイッチを交換できます。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
-                    <p data-key="pcb_p6">パズルを解くようなすべての配線を終えた後、シルクスクリーンアートを追加し、製造用のガーバーファイルを生成しました。</p>
+                    <p data-key="pcb_p6">パズルを解くような全ての配線を終えた後、シルクスクリーンのアートワークを追加し、製造用のガーバーファイルを生成しました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p7">ファイルをメーカーに送り、数週間後、完成した基板が届きました！</p>
-                    <p data-key="pcb_p8">デザインがデジタルファイルから物理的なオブジェクトになるのを見るのは、信じられないほどやりがいがありました。</p>
+                    <p data-key="pcb_p7">ファイルを製造業者に送り、数週間後、完成した基板が届きました！</p>
+                    <p data-key="pcb_p8">デザインがデジタルファイルから物理的なモノになるのを見るのは、信じられないほどやりがいのあることでした。</p>
                     <hr>
                 </section>
 
                 <section>
-                    <h3 id="Keymap" data-key="keymap_h3">私の個人的なキーマップ</h3>
-                    <p data-key="keymap_p1">キーボードは良いキーマップなしでは何もありません。私はQMKで自分のものをプログラムしました。それには4つの主要なレイヤーがあります：文字用のベースレイヤー、数字用のレイヤー、記号用のレイヤー、そしてシステムコントロールとFキー用のファンクションレイヤーです。レイヤーは親指キーでアクセスします。また、EscapeやTabのような一般的なキーにはコンボを多用しています。</p>
+                    <h3 id="Keymap" data-key="keymap_h3">私の個人用キーマップ</h3>
+                    <p data-key="keymap_p1">良いキーマップがなければキーボードは始まりません。私はQMKで自分のキーマップをプログラムしました。主に4つのレイヤーがあります：文字用のベースレイヤー、数字用レイヤー、記号用レイヤー、そしてシステム制御やFキー用のファンクションレイヤーです。レイヤーは親指キーでアクセスします。また、EscapeやTabのような多用するキーにはコンボを積極的に活用しています。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
@@ -455,34 +455,34 @@
             </section>
 
             <section>
-                <h2 id="Discoveries" data-key="discoveries_h2">発見と結果</h2>
-                <p data-key="discoveries_p1">このプロジェクトは大きな学習経験でした。以下に主要な発見をいくつか挙げます：</p>
+                <h2 id="Discoveries" data-key="discoveries_h2">発見と成果</h2>
+                <p data-key="discoveries_p1">このプロジェクトは非常に大きな学びの経験でした。以下に主要なポイントをいくつか挙げます：</p>
                 <ul>
-                    <li data-key="discoveries_li1">段ボールでのプロトタイピングは、エルゴノミクスデザインにとって不可欠で、安価で効果的なステップです。</li>
-                    <li data-key="discoveries_li2">親指クラスターの角度と位置は、快適性にとって最も重要な要素です。</li>
-                    <li data-key="discoveries_li3">レイヤーとコンボの使用にはかなりの学習曲線がありますが、数週間後には第二の天性になります。</li>
-                    <li data-key="discoveries_li4">KiCadのような現代のオープンソースソフトウェアのおかげで、PCBの設計は思っているほど怖くありません。</li>
-                    <li data-key="discoveries_li5">キーボードに「フリーサイズ」の解決策はありません。パーソナライズが鍵です。</li>
+                    <li data-key="discoveries_li1">人間工学に基づいた設計において、段ボールでの試作は不可欠かつ安価で効果的なステップである。</li>
+                    <li data-key="discoveries_li2">親指クラスターの角度と位置が、快適性にとって最も重要な要素である。</li>
+                    <li data-key="discoveries_li3">レイヤーとコンボの習得にはかなりの時間がかかるが、数週間で第二の天性となる。</li>
+                    <li data-key="discoveries_li4">KiCadのような現代のオープンソースソフトウェアのおかげで、基板設計は思っているほど怖くない。</li>
+                    <li data-key="discoveries_li5">キーボードに「フリーサイズ」の解決策はない。パーソナライズが鍵である。</li>
                 </ul>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
-                <p data-key="discoveries_p2">また、シリコンで満たされたケースが優れた防音効果を提供することも発見しましたが、最終的なケースをホットグルーを重ねて作るだけでどうなるか見てみたいという誘惑に今も駆られています。</p>
+                <p data-key="discoveries_p2">また、シリコンを充填したケースが優れた静音効果をもたらすことも発見しましたが、最終的なケースをホットグルーを積層して作ってみたらどうなるか、試してみたいという誘惑に今も駆られています。</p>
                 <hr>
             </section>
 
             <section>
                 <h2 id="Plans" data-key="plans_h2">今後の計画</h2>
-                <h3 data-key="plans_h3_layout">レイアウト改訂（サンシャインV2）</h3>
-                <p data-key="plans_p1">第2バージョンでは、少しテンティング（半分を中央で上向きに傾けること）を追加したり、DactylやKinesis Advantageキーボードのように、キーウェルのためにより攻撃的な曲率を試したりしてみたいです。</p>
+                <h3 data-key="plans_h3_layout">配列の改訂（Sunshine V2）</h3>
+                <p data-key="plans_p1">第2版では、少し「テンティング」（左右のパーツを中央で上向きに傾けること）を追加したり、DactylやKinesis Advantageキーボードのように、キーウェル（指を置く窪み）にもっと大胆な曲面を試したりしてみたいです。</p>
                 <h3 data-key="plans_h3_features">新しいハードウェア機能</h3>
-                <p data-key="plans_p2">現在のレイヤーを表示するための小さなOLEDスクリーンや、マウスの必要性をなくすために親指の下に小さなトラックボールやトラックパッドを追加することに興味があります。</p>
-                <h3 data-key="plans_h3_production">生産と共有</h3>
-                <p data-key="plans_p3">すべての設計ファイル（KiCad、ケースモデル）を近々GitHubで公開する予定です。グループバイの計画はありませんが、これらのファイルが自分だけの完璧なキーボードを作りたいと思っている他の人々にとって役立つことを願っています。</p>
+                <p data-key="plans_p2">現在のレイヤーを表示するための小型OLEDスクリーンや、マウスを不要にするために親指の下に小さなトラックボールかトラックパッドを追加することに興味があります。</p>
+                <h3 data-key="plans_h3_production">製造と共有</h3>
+                <p data-key="plans_p3">すべての設計ファイル（KiCad、ケースモデル）を近々GitHubで公開する予定です。共同購入の計画はありませんが、これらのファイルが自分だけの完璧なキーボードを作りたいと思っている他の人々にとって役立つことを願っています。</p>
                 <hr>
             </section>
 
             <section>
-                <h2 id="Bye" data-key="bye_h2">おわり（今のところは）</h2>
-                <p data-key="bye_p1">私のキーボードの旅を読んでくれてありがとう！サンシャインキーボードの製作は、私がこれまで手がけた中で最も挑戦的でやりがいのあるプロジェクトの1つでした。それは単なるツールではなく、私たちがコンピュータとどのように対話するかについての哲学の反映です。質問があれば、お気軽にご連絡ください。</p>
+                <h2 id="Bye" data-key="bye_h2">おわりに（今のところは）</h2>
+                <p data-key="bye_p1">私のキーボードの旅を読んでいただきありがとうございました！サンシャインキーボードの製作は、私がこれまで手がけた中で最も挑戦的でやりがいのあるプロジェクトの一つでした。これは単なる道具ではなく、私たちがコンピュータとどう向き合うかという哲学の反映です。ご質問があれば、お気軽にご連絡ください。</p>
             </section>
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
