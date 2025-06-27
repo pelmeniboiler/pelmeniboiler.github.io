@@ -2,7 +2,7 @@
   "en": {
     "sunshine_title": "Sunshine Experimental Keyboard",
     "win_gallerynav_title": "◈ article.nav",
-    "win_gallery_title": "▤ sunshine.article",
+    "sun_win_gallery_title": "▤ sunshine.article",
     "nav_h2_tldr": "Abstract",
     "nav_h2_intro": "Background",
     "nav_h2_objectives": "Objectives",
@@ -85,7 +85,7 @@
   "he": {
     "sunshine_title": "מקלדת ניסיונית Sunshine",
     "win_gallerynav_title": "◈ ניווט.מאמר",
-    "win_gallery_title": "▤ sunshine.מאמר",
+    "sun_win_gallery_title": "▤ sunshine.מאמר",
     "nav_h2_tldr": "תקציר",
     "nav_h2_intro": "רקע",
     "nav_h2_objectives": "מטרות",
@@ -168,7 +168,7 @@
   "ru": {
     "sunshine_title": "Экспериментальная клавиатура Sunshine",
     "win_gallerynav_title": "◈ навигация.статья",
-    "win_gallery_title": "▤ sunshine.статья",
+    "sun_win_gallery_title": "▤ sunshine.статья",
     "nav_h2_tldr": "Кратко",
     "nav_h2_intro": "Предыстория",
     "nav_h2_objectives": "Цели",
@@ -251,7 +251,7 @@
   "de": {
     "sunshine_title": "Experimentelle Tastatur Sunshine",
     "win_gallerynav_title": "◈ artikel.navigation",
-    "win_gallery_title": "▤ sunshine.artikel",
+    "sun_win_gallery_title": "▤ sunshine.artikel",
     "nav_h2_tldr": "Zusammenfassung",
     "nav_h2_intro": "Hintergrund",
     "nav_h2_objectives": "Ziele",
@@ -334,7 +334,7 @@
   "ja": {
     "sunshine_title": "実験的キーボード「サンシャイン」",
     "win_gallerynav_title": "◈ 記事.nav",
-    "win_gallery_title": "▤ sunshine.記事",
+    "sun_win_gallery_title": "▤ sunshine.記事",
     "nav_h2_tldr": "要約",
     "nav_h2_intro": "背景",
     "nav_h2_objectives": "目的",
@@ -417,7 +417,7 @@
   "gt": {
     "sunshine_title": "  ",
     "win_gallerynav_title": "◈ .nav",
-    "win_gallery_title": "▤ .article",
+    "sun_win_gallery_title": "▤ .article",
     "nav_h2_tldr": "",
     "nav_h2_intro": "",
     "nav_h2_objectives": "",
