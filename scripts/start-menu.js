@@ -1,4 +1,4 @@
-// start menu.js
+// start-menu.js
 // This script also has its DOMContentLoaded wrapper removed.
 // It will now correctly listen for the 'translationsReady' event dispatched by settings.js.
 
@@ -152,11 +152,17 @@ function setupStartMenu() {
 
         // Re-initialize on resize to switch between mobile/desktop modes.
         // A full reload is a simple way to handle the complexity of changing modes.
+        let wasMobile = isMobile(); 
+
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                location.reload(); 
+                const isNowMobile = isMobile();
+                // ONLY reload if the state has changed (e.g., portrait to landscape)
+                if (isNowMobile !== wasMobile) {
+                    location.reload();
+                }
             }, 250);
         });
     }, { once: true }); // Use 'once' to ensure it only runs one time.
