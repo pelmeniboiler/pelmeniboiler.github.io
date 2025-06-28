@@ -38,7 +38,7 @@ body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repea
 
 /* --- THEME DEFINITIONS --- */
 body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
-body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #111111; }
+body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
 body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
 
 

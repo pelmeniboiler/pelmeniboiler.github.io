@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // FIXED: Paths are now root-relative to work from any page depth.
     const modules = [
         { id: 'settings-module-placeholder', path: '/modules/settings-module.html' },
-        { id: 'start-menu-module-placeholder', path: '/modules/start-menu-module.html' }
+        { id: 'start-menu-module-placeholder', path: '/modules/start-menu-module.html' },
+        { id: 'chirper-demo-placeholder', path: '/modules/blog/demos/replab.html' }
     ];
 
     // Defines the scripts that depend on the modules being loaded first.
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Once modules are loaded, load and execute the dependent JavaScript files.
         dependentScripts.forEach(scriptSrc => loadScript(scriptSrc));
+        document.dispatchEvent(new CustomEvent('modulesLoaded'));
     };
 
     // Start the process.

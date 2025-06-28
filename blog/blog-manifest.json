@@ -1,5 +1,18 @@
 [
   {
+    "filename": "graflect.html",
+    "link": "/blog/graflect.html",
+    "date": "Fri, 13 Jun 2025 10:00:00 GMT",
+    "translationSource": "graflect_ipa",
+    "titleKey": "guide_h1",
+    "title": "▤ Graflect to IPA chart",
+    "descriptionKey": "guide_p1",
+    "description": "Chart mapping the Graflect phonetic orthography to the International Phonetic Alphabet (IPA).",
+    "keywords": [
+      "Language"
+    ]
+  },
+  {
     "filename": "elizabeth_park.html",
     "link": "/blog/elizabeth_park.html",
     "date": "Sat, 03 Feb 2024 10:00:00 GMT",
