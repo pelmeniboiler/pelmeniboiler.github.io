@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="translation-source" content="sunshine">
+    <meta name="description" content="An old article about my first-ever custom keyboard. This documents my original process prototyping with cardboard.">
+    <meta name="pubDate" content="2022-08-26T10:00:00Z">
+    <meta name="keywords" content="Projects, Keyboards">
+    <meta name="author" content="Wendy Zhulkovsky">
+    <title>Sunshine Keyboard</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+    <style>
+        kbd {
+            outline: 1px solid;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="eink-mode light-mode">
+
+   
+    <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height:fit-content; position: absolute; z-index: 3;">
+        <div class="title-bar">
+          <span class="title" data-key="win_gallerynav_title">◈ article.nav</span>
+          <button class="close-btn">&times;</button>
+        </div>
+        <div class="content">
+            <h2><a href="#TLDR" data-key="nav_h2_tldr">Abstract</a></h2>
+            <h2><a href="#Intro" data-key="nav_h2_intro">Background</a></h2>
+            <h2><a href="#Objectives" data-key="nav_h2_objectives">Objectives</a></h2>
+            <h2><a href="#Design" data-key="nav_h2_design">Design Process</a></h2>
+            <ul>
+                <li><a href="#CAD" data-key="nav_h3_cad">&ensp;Cardboard Aided Design</a></li>
+                <ul>
+                    <li><a href="#FinalFinalFinalV26FinalRealFinal-2" data-key="nav_h4_final">&emsp;Final Design</a></li>
+                </ul>
+                <li><a href="#PCB" data-key="nav_h3_pcb">&ensp;Designing the PCB</a></li>
+                <li><a href="#Keymap" data-key="nav_h3_keymap">&ensp;My Keymap</a></li>
+            </ul>
+            <h2><a href="#Discoveries" data-key="nav_h2_discoveries">Discoveries</a></h2>
+            <ul>
+                <li><a href="#Plans" data-key="nav_h3_plans">&ensp;Future Plans</a></li>
+            </ul>
+            <h2><a href="#Bye" data-key="nav_h2_bye">The End</a></h2>
+            <h2><a href="/index.html" data-key="nav_h2_home">⌂←</a></h2>
+        </div>
+    </nav>
+
+  
+    <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
+        <div class="title-bar">
+            <span class="title" data-key="sun_win_gallery_title">▤ sunshine.article</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <article class="content">
+            <header>
+                <h1 id="title" data-key="sunshine_h1">Sunshine Experimental Keyboard</h1>
+                <img src="/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image" style="max-height: 300px;">
+                <p data-key="sunshine_p1"></p>
+                <p data-key="sunshine_p2"></p>
+                <hr>
+            </header>
+            
+            <section>
+                <h2 id="TLDR" data-key="tldr_h2"></h2>
+                <p data-key="tldr_p1"></p>
+                <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kSz5plE_5Rc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: block; margin: 20px auto;"></iframe>
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Intro" data-key="intro_h2"></h2>
+                <p data-key="intro_p1"></p>
+                <img src="/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image" style="max-height: 300px;">
+                <p data-key="intro_p2"></p>
+                <p data-key="intro_p3"></p>
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Objectives" data-key="objectives_h2"></h2>
+                <p data-key="objectives_p1"></p>
+                <h3 data-key="objectives_h3_theory"></h3>
+                <h4 data-key="objectives_h4_phalanges"></h4>
+                <img src="/photos/sunshine/hand anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image" style="max-height: 300px;">
+                <p data-key="objectives_p2"></p>
+                <h4 data-key="objectives_h4_combos"></h4>
+                <p data-key="objectives_p3"></p>
+                <p data-key="objectives_p4"></p>
+                <ul>
+                    <li data-key="objectives_li1"></li>
+                    <li data-key="objectives_li2"></li>
+                    <li data-key="objectives_li3"></li>
+                    <li data-key="objectives_li4"></li>
+                    <li data-key="objectives_li5"></li>
+                    <li data-key="objectives_li6"></li>
+                    <li data-key="objectives_li7"></li>
+                </ul>
+                <hr>
+            </section>
+            
+            <section>
+                <h2 id="Design" data-key="design_h2"></h2>
+                <p data-key="design_p1"></p>
+                <img src="/photos/sunshine/type-22.png" alt="First design." class="article-image" style="max-height: 300px;">
+                <p data-key="design_p2"></p>
+                
+                <section>
+                    <h3 id="CAD" data-key="cad_h3"></h3>
+                    <p data-key="cad_p1"></p>
+                    <img src="/photos/sunshine/cardboard assisted design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs" style="max-height: 200px;">
+                    <p data-key="cad_p2"></p>
+                    <img src="/photos/sunshine/cardboard assisted design mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="cad_p3"></p>
+                    <img src="/photos/sunshine/cardboard 3.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="cad_p4"></p>
+                </section>
+
+                <section>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3"></h3>
+                    <p data-key="final_p1"></p>
+                    <img src="/photos/sunshine/type-22 (3).png" alt="Moved the bar further" class="article-image" style="max-height: 100px;"> 
+                    <p data-key="final_p2"></p>
+                    <img src="/photos/sunshine/cardboard  4.png" alt="" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="final_p3"></p>
+                    <img src="/photos/sunshine/very last.png" alt="" class="article-image" style="max-height: 200px;">   
+                    <p data-key="final_p4"></p>
+                    <img src="/photos/sunshine/cardboard 5.png" alt="" class="article-image gs" style="max-height: 200px;"> 
+                    <p data-key="final_p5"></p>
+                </section>
+
+                <section>
+                    <h3 id="PCB" data-key="pcb_h3"></h3>
+                    <p data-key="pcb_p1"></p>
+                    <img src="/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p2"></p>
+                    <img src="/photos/sunshine/pcb4.png" alt="" class="article-image" style="max-height: 300px;"> 
+                    <p data-key="pcb_p3"></p>
+                    <img src="/photos/sunshine/pcb2.png" alt="" class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p4"></p>
+                    <img src="/photos/sunshine/pcb3.png" alt="" class="article-image" style="max-height: 200px;">
+                    <p data-key="pcb_p5"></p>
+                    <img src="/photos/sunshine/pcb5.png" alt="" class="article-image" style="max-height: 200px;">  
+                    <p data-key="pcb_p6"></p>
+                    <img src="/photos/sunshine/pcb6.png" alt="" class="article-image" style="max-height: 200px;"> 
+                    <p data-key="pcb_p7"></p>
+                    <p data-key="pcb_p8"></p>
+                    <hr>
+                </section>
+
+                <section>
+                    <h3 id="Keymap" data-key="keymap_h3"></h3>
+                    <p data-key="keymap_p1"></p>
+                    <img src="/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image" style="max-height: 300px;"> 
+                    <img src="/photos/sunshine/keymap4.png" alt="Function Layer" class="article-image" style="max-height: 300px;"> 
+                    <hr>
+                </section>
+            </section>
+
+            <section>
+                <h2 id="Discoveries" data-key="discoveries_h2"></h2>
+                <p data-key="discoveries_p1"></p>
+                <ul>
+                    <li data-key="discoveries_li1"></li>
+                    <li data-key="discoveries_li2"></li>
+                    <li data-key="discoveries_li3"></li>
+                    <li data-key="discoveries_li4"></li>
+                    <li data-key="discoveries_li5"></li>
+                </ul>
+                <img src="/photos/sunshine/cardboard 6.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs" style="max-height: 200px;"> 
+                <p data-key="discoveries_p2"></p>
+                <hr>
+            </section>
+
+            <section>
+                <h2 id="Plans" data-key="plans_h2"></h2>
+                <h3 data-key="plans_h3_layout"></h3>
+                <p data-key="plans_p1"></p>
+                <h3 data-key="plans_h3_features"></h3>
+                <p data-key="plans_p2"></p>
+                <h3 data-key="plans_h3_production"></h3>
+                <p data-key="plans_p3"></p>
+                <hr>
+            </section>
+
+            <section>
+                <h2 id="Bye" data-key="bye_h2"></h2>
+                <p data-key="bye_p1"></p>
+            </section>
+        </article>
+    </main>
+    
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>

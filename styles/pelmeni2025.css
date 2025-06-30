@@ -1,0 +1,507 @@
+@font-face {
+  font-family: 'FairfaxHD';
+  src: url('fonts/FairfaxHD.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Selyodka';
+  src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Symbola';
+  src: url('fonts/Symbola.ttf') format('truetype');
+}
+:root {
+  /* Scrollbar variables are now tied to theme variables */
+  --sb-track-color: var(--win-bg-color, #ffffff);
+  --sb-thumb-background-color: var(--win-bg-color, #ffffff);
+  --sb-thumb-border-color: var(--border-color, #000000);
+  --sb-size: 16px;
+  /* Funky Mode defaults, overridden by JS */
+  --funky-bg-color: #b1de75;
+  --funky-text-color: #b000b5;
+  --funky-border-color: #eb01a5;
+  --funky-accent-color: #fa6607;
+}
+
+/* Base body styles */
+body {
+    font-family: 'Times New Roman', Times, serif, FairfaxHD;
+    margin: 0; padding: 0; line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
+    /* Reserve space for the start menu on mobile */
+    padding-bottom: 40px; 
+    overflow: hidden;
+}
+/* E-Ink / LCD mode has highest priority for background */
+body.eink-mode { background-color: var(--bg-color); }
+body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
+
+/* --- THEME DEFINITIONS --- */
+body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
+body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
+body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
+
+
+/* --- STATIC ELEMENT STYLES --- */
+body { color: var(--text-color); }
+
+.symbol {
+
+        font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
+        font-weight: normal; 
+}
+
+.window { 
+    position: absolute;
+    background-color: var(--win-bg-color); 
+    border: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+.window.init-closed {
+    display: none;
+}
+.title-bar { background-color: var(--inv-bg-color); color: var(--inv-text-color); border-bottom: 2px solid var(--border-color); cursor: move; padding: 0 6px; display: flex; align-items: center; flex-shrink: 0; height: 28px; box-sizing: border-box; }
+.title { color: var(--inv-text-color); font-weight: bold; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dropdown { width: 100%; padding: 8px; border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); font-family: inherit; }
+.start-menu { position: fixed; bottom: 0; left: 0; width: 200px; z-index: 10000; background-color: var(--win-bg-color); border-top: 2px solid var(--border-color); border-right: 2px solid var(--border-color); }
+.start-button { border-bottom: 2px solid var(--border-color); padding: 4px 8px; font-weight: bold; cursor: default; display: flex; align-items: center; gap: 8px; }
+.start-button img { height: 20px; width: 20px; }
+.window-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
+.window-list li { padding: 5px 8px 5px 2em; border-bottom: 1px solid var(--border-color); color: var(--text-color); background-color: var(--win-bg-color); }
+.window-list li:last-child { border-bottom: none; }
+.settings-window { min-width: 500px; }
+.settings-container { display: flex; flex-grow: 1; min-height: 0; }
+.settings-nav { flex-shrink: 0; width: 150px; border-right: 2px solid var(--border-color); padding: 10px 0; }
+.settings-nav ul { list-style: none; padding: 0; margin: 0; }
+.settings-nav li { padding: 10px 15px; }
+.settings-nav li.active { font-weight: bold; border-right: 3px solid var(--text-color); }
+.settings-content { flex-grow: 1; padding: 20px; overflow-y: auto; }
+.settings-page { display: none; }
+.settings-page.active { display: block; }
+.settings-page h3 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 15px; }
+.settings-page > *:not(h3) { padding-left: 1em; } 
+.setting-group-inline { display: flex; align-items: center; gap: 10px; }
+.setting-divider { border: none; height: 2px; background-color: var(--border-color); margin: 20px 0; }
+.setting-group { display: flex; flex-direction: column; align-items: flex-start; }
+.radio-label { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; }
+input[type="radio"], input[type="checkbox"] { margin-right: 8px; accent-color: var(--text-color); }
+h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
+p { font-size: 14px; margin-bottom: 0.8em; }
+.content { padding: 10px; overflow-y: auto; max-height: 350px; flex-grow: 1; min-height: 0; }
+.music-content { padding: 10px; text-align: center; }
+.content h3 { padding-left: 1em; }
+.content ul, .content ol { padding-left: 2em; list-style: none; margin: 0; }
+.content ul li a, .content ol li a { padding-left: 1em; display: inline-block; }
+
+
+/* --- INTERACTIVE ELEMENT STYLES (HOVER, FOCUS, ACTIVE, ETC) --- */
+*:focus { outline: none; }
+::selection { background-color: var(--text-color); color: var(--bg-color); }
+body.funky-mode ::selection { background-color: var(--funky-accent-color); color: var(--funky-bg-color); }
+
+a:link, a:visited { color: var(--text-color); text-decoration: none; }
+a:hover, a:active, a:focus-visible {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    text-decoration: underline;
+}
+body.funky-mode a:hover, body.funky-mode a:active, body.funky-mode a:focus-visible {
+    background-color: var(--funky-accent-color);
+    color: var(--funky-bg-color);
+}
+
+.close-btn, .normal-btn, .window-list li, .settings-nav li { cursor: pointer; }
+
+.close-btn { color: var(--inv-text-color); background: transparent; border: none; font-size: 20px; font-weight: bold; padding: 0 4px; }
+.close-btn:hover, .close-btn:active, .close-btn:focus-visible {
+    outline: none;
+    background-color: var(--inv-text-color);
+    color: var(--inv-bg-color);
+}
+
+.normal-btn { border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); padding: 6px 12px; }
+.normal-btn:hover, .normal-btn:active, .normal-btn:focus-visible {
+    background-color: var(--text-color);
+    color: var(--win-bg-color);
+}
+body.funky-mode .normal-btn:hover, body.funky-mode .normal-btn:active, body.funky-mode .normal-btn:focus-visible {
+    background-color: var(--funky-accent-color);
+    color: var(--funky-bg-color);
+}
+
+.window-list li:hover, .window-list li:focus-visible,
+.settings-nav li:hover, .settings-nav li:focus-visible {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+body.funky-mode .settings-nav li:hover, body.funky-mode .settings-nav li:focus-visible {
+    background-color: var(--funky-accent-color);
+    color: var(--funky-bg-color);
+}
+
+.dropdown:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--border-color);
+    outline-offset: 2px;
+}
+body.funky-mode .dropdown:focus-visible,
+body.funky-mode input:focus-visible {
+     outline-color: var(--funky-border-color);
+}
+
+/* --- SCROLLBAR STYLES --- *//* --- SCROLLBAR STYLES --- */
+/* Find this section in your CSS file */
+
+/* Add .settings-content to this rule */
+body::-webkit-scrollbar,
+.content::-webkit-scrollbar,
+.window-list::-webkit-scrollbar,
+.settings-content::-webkit-scrollbar { /* ADD THIS SELECTOR */
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+/* Add .settings-content to this rule */
+body::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track,
+.window-list::-webkit-scrollbar-track,
+.settings-content::-webkit-scrollbar-track { /* ADD THIS SELECTOR */
+  background: var(--sb-track-color);
+}
+
+/* Add .settings-content to this rule */
+body::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb,
+.window-list::-webkit-scrollbar-thumb,
+.settings-content::-webkit-scrollbar-thumb { /* ADD THIS SELECTOR */
+  background: var(--sb-thumb-background-color);
+  border: 2px solid var(--sb-thumb-border-color);
+}
+
+/* And finally, add it to the Firefox fallback */
+@supports not selector(::-webkit-scrollbar) {
+  body, .content, .window-list, .settings-content { /* ADD .settings-content HERE */
+    scrollbar-color: var(--sb-thumb-border-color) var(--sb-track-color);
+    scrollbar-width: thin;
+  }
+}
+
+/* --- MOBILE / SMALL SCREEN STYLES --- */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto; /* Allow body to scroll */
+        padding-bottom: 40px; /* Space for start button */
+    }
+    
+    .window {
+        position: relative; /* No more absolute positioning */
+        width: auto; /* Full width minus margins */
+        left: 0 !important; /* Override inline styles */
+        top: 0 !important; /* Override inline styles */
+        margin: 10px;
+        z-index: auto !important; /* No z-index stacking */
+    }
+    
+    .title-bar {
+        cursor: default; /* Revert cursor since swiping is removed */
+    }
+
+    .start-menu {
+        width: 100%; /* Full width */
+        border-right: none;
+        bottom: 0;
+        left: 0;
+    }
+
+    .start-button {
+        cursor: pointer; /* Clickable to open menu */
+        border-bottom: none;
+        height: 40px;
+        box-sizing: border-box;
+    }
+
+    .window-list {
+        display: none; /* Initially hidden */
+        max-height: 50vh; /* Limit height */
+        position: absolute;
+        bottom: 40px; /* Position above the start button */
+        width: 100%;
+        background-color: var(--win-bg-color);
+        border-top: 2px solid var(--border-color);
+        box-sizing: border-box;
+    }
+    
+    .start-menu.open .window-list {
+        display: block; /* Show on .open */
+    }
+
+    /* Make settings window responsive */
+    .settings-window {
+        min-width: 0;
+    }
+    
+    .settings-container {
+        flex-direction: column;
+    }
+    
+    .settings-nav {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap; /* Allow nav items to wrap */
+        padding: 0;
+    }
+    
+    .settings-nav li {
+        flex-grow: 1; /* Distribute space evenly */
+        text-align: center;
+        border-right: 1px solid var(--border-color);
+    }
+    
+    .settings-nav li:last-child {
+        border-right: none;
+    }
+
+    .settings-nav li.active {
+        border-right: 1px solid var(--border-color); /* Reset desktop border */
+        border-bottom: 3px solid var(--text-color);
+    }
+    
+    .content {
+        max-height: none; /* Let content expand */
+    }
+}
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    font-family: inherit;
+}
+.custom-dropdown-toggle {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid var(--border-color);
+    background-color: var(--win-bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: var(--win-bg-color);
+    border: 2px solid var(--border-color);
+    border-top: none;
+    z-index: 12; /* Higher than settings window's z-index */
+    box-sizing: border-box;
+}
+.custom-dropdown-menu.show {
+    display: block;
+}
+.custom-dropdown-item {
+    display: block;
+    padding: 8px;
+    color: var(--text-color);
+    text-decoration: none;
+}
+/* Styles for the new blog post list */
+    .blog-post {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .blog-post:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .blog-post h3 {
+        margin: 0 0 0.25rem 0;
+        padding: 0;
+        font-size: 1.1em;
+    }
+    .blog-post h3 a {
+        padding-left: 0 !important; /* Override general link style padding */
+    }
+    .blog-post .post-date {
+        font-size: 0.8em;
+        font-style: italic;
+        opacity: 0.7;
+        margin-bottom: 0.5rem;
+    }
+    .blog-post p {
+        font-size: 14px;
+        margin-bottom: 0;
+        max-width: 750px;
+    }
+    #blog-posts-container {
+        min-height: 50px;
+    }
+    /* Styles for blog filter buttons */
+    #blog-filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .filter-btn {
+        border: 2px solid var(--border-color);
+        background-color: var(--win-bg-color);
+        color: var(--text-color);
+        padding: 4px 10px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+    .filter-btn.active {
+        background-color: var(--text-color);
+        color: var(--win-bg-color);
+        font-weight: bold;
+    }
+    .filter-btn:hover:not(.active) {
+        background-color: var(--text-color);
+        color: var(--win-bg-color);
+    }
+    body.funky-mode .filter-btn.active,
+    body.funky-mode .filter-btn:hover:not(.active) {
+        background-color: var(--funky-accent-color);
+        color: var(--funky-bg-color);
+    }
+    .rss-dropdown-container {
+        position: relative; /* Anchor for the dropdown */
+        margin-left: auto; /* Push it to the right */
+    }
+    .rss-btn {
+        background: transparent;
+        border: none;
+        color: var(--inv-text-color);
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0 6px;
+    }
+    .rss-btn:hover, .rss-btn:focus-visible {
+        background-color: var(--inv-text-color);
+        color: var(--inv-bg-color);
+    }
+    .rss-dropdown-content {
+        display: none; /* Hidden by default */
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: var(--win-bg-color);
+        border: 2px solid var(--border-color);
+        min-width: 160px;
+        z-index: 10;
+        padding: 5px 0;
+    }
+    .rss-dropdown-content a {
+        color: var(--text-color);
+        padding: 8px 12px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+    .rss-dropdown-content a:hover, .rss-dropdown-content a:focus-visible {
+        background-color: var(--text-color);
+        color: var(--bg-color);
+    }
+    .show {
+        display: block; /* Class to show the dropdown */
+    }
+/* --- Aside Element Style --- */
+aside {
+  margin: 1.5em 0; /* Vertical spacing */
+  padding: 0.5em 1em 0.5em 1.5em; /* Top, Right, Bottom, Left */
+  border-left: 4px solid var(--border-color);
+  background-color: transparent; /* Blends with the container */
+  font-style: italic;
+  opacity: 0.9; /* Slightly de-emphasize from main text */
+}
+
+/* Optional styling for a heading inside an aside */
+aside h4 {
+  font-style: normal; /* Headings shouldn't be italic */
+  margin: 0 0 0.5em 0;
+  font-weight: bold;
+}
+
+/* Ensure paragraphs inside the aside reset bottom margin if not needed */
+aside p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Inline Details Element --- */
+details.inline-details {
+  display: inline-block; /* Allows it to sit within text but have block properties */
+  position: relative;   /* Anchor for the expandable content */
+}
+
+details.inline-details summary {
+  /* Style the summary to look like interactive text */
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  display: inline; /* Keep the summary part truly inline */
+}
+
+/* Hide the default triangle/marker */
+details.inline-details summary::-webkit-details-marker,
+details.inline-details summary::marker {
+  display: none;
+}
+
+/* Hover/Focus state matches your existing link styles */
+details.inline-details summary:hover,
+details.inline-details summary:focus-visible {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  text-decoration-style: solid;
+  outline: none;
+}
+
+/* Funky mode variant for hover/focus */
+body.funky-mode details.inline-details summary:hover,
+body.funky-mode details.inline-details summary:focus-visible {
+  background-color: var(--funky-accent-color);
+  color: var(--funky-bg-color);
+}
+
+/* This is the panel that appears when the details element is open */
+details.inline-details .details-content {
+  display: none; /* Will be shown by the [open] attribute */
+  position: absolute;
+  top: 130%; /* Position below the summary text with a small gap */
+  left: -12px; /* Scoot it left to align with the start of the summary text */
+  background-color: var(--win-bg-color);
+  border: 2px solid var(--border-color);
+  padding: 12px;
+  z-index: 20; /* Make sure it appears above other content */
+  min-width: 300px;
+  max-width: 450px;
+  font-style: normal; /* Reset any parent italicization (e.g., if used in an aside) */
+  text-align: left;
+  line-height: 1.5; /* Ensure consistent line height */
+}
+
+/* Show the content when the parent <details> element is open */
+details[open].inline-details .details-content {
+  display: block;
+}
+
+/* Paragraphs inside the pop-up panel */
+details.inline-details .details-content p {
+    font-size: 14px;
+    margin-bottom: 0.5em;
+}
+
+details.inline-details .details-content p:last-child {
+    margin-bottom: 0;
+}
