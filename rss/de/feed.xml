@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Fri, 27 Jun 2025 22:01:49 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 29 Jun 2025 23:37:46 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>Dixie und Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -487,6 +487,45 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+		<item>
+			<title>Dieser Blog unterstützt jetzt RSS</title>
+			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+			<description><![CDATA[<h1 id="title" data-key="tbns_title">Dieser Blog unterstützt jetzt RSS</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Radikal Simplifiziertes System</h2>
+                <p data-key="tbns_p1">Falls du meine Seite von früher kennst, ist dir vielleicht aufgefallen, dass ich meinen „Foto-Ordner“ und „Projekte-Ordner“ neu angeordnet habe. Früher hatten die unterschiedliche Designs und sahen total verschieden aus, je nachdem, wann in meinem Leben ich etwas über divs oder andere wichtige HTML-Elemente gelernt hatte.&nbsp;</p>
+                <p data-key="tbns_p2">Jetzt verwenden beide Genres das Standard-Artikel-Layout, das ich vor 2 Jahren entwickelt habe, und werden in der Blog-Übersicht sortiert. Obwohl ich finde, dass diese Vorgehensweise ein wenig von der Idee abweicht, verschiedene „Ordner“ mit organisierten Inhaltsgenres zu haben, denke ich,&nbsp;</p>
+                <p data-key="tbns_p3"><ol><li>• Letztendlich sind sie als Blog-Artikel formatiert und sollten auch als solche behandelt werden.</li><li>• Diese Methode ist weitaus skalierbarer.&nbsp;</li></ol></p>
+                <p data-key="tbns_p4">Du kannst sie gerne mit den Kategorien durchsortieren. Eine Suchfunktion werde ich hinzufügen, sobald ich genug Beiträge habe, damit sich das lohnt.&nbsp;</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">Richtig Simple Substitution</h2>
+                <p data-key="tbns_p5">In letzter Zeit habe ich gesehen, wie viele <abbr title="Ja, ich benutze dieses Wort. Hätten Sie 'Leute-aus-dem-Netzwerk' bevorzugt?">Netzbürger</abbr>&nbsp;<a href="https://substack.com/">Substack</a>&nbsp;als ihr bevorzugtes Werkzeug für die Erstellung von Blogs und Newslettern annehmen. Ich mag Substack! Es ist eine gute Plattform. Ich benutze es gerne, und obwohl das hauptsächlich am verfügbaren Inhalt liegt, werde ich nicht so tun, als hätte ich die Hälfte der Blogs, die ich lese, gefunden, wenn sie Substack nicht benutzt hätten.</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">Was ich an Substack mag:</h3>
+                <p data-key="tbns_p6"><ul><li>• Prinzipielle Weigerung, „extremistische Inhalte zu überwachen“.</li><li>• Große Auswahl an Publikationen, es hat viele unterschiedliche Märkte erobert.</li><li>• Kostenlos nutzbar, mit einem fairen Geschäftsmodell für diejenigen, die Geld verdienen wollen.</li><li>• Sehr einfach, Kreativen Geld zu geben.</li><li>• LaTeX-Unterstützung.</li><li>• Datawrapper-Unterstützung.</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">Was ich an Substack hasse:</h3>
+                <p data-key="tbns_p7"><ul><li>• E-Mail-zentriertes Design.</li><li>• Mein Posteingang besteht jetzt nur noch aus E-Mails von Substack.</li><li>• Ich will die E-Mail-Adressen der Leute, die meinen Blog lesen, nicht haben.</li><li>• Ich will meine E-Mail-Adresse nicht den Leuten geben, deren Newsletter ich lese.</li><li>• Kein benutzerdefiniertes CSS.</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Dinge, die Substack offensichtlich nie einbauen könnte, die ich aber will:</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js-Unterstützung.</li><li>• Interaktive Demos.</li></ul><aside>Absolut keine Andeutungen auf kommende Dinge.</aside><br></div>Ich denke, für die meisten Leute ist Substack genau das, was sie suchen, wenn es um öffentlich gepostete, lange Texte geht. Für jeden, dessen E-Mail-Posteingang zu heilig ist, um ihn zu entweihen, oder der besonders wählerisch bei CSS ist, ist <a href="https://wordpress.com/">WordPress</a> wahrscheinlich die richtige Alternative. Ich für meinen Teil habe mich für keines von beiden entschieden. Ich finde es macht richtig Spaß, zu lernen und mich beim Erstellen meiner eigenen Website abzumühen, besonders mit einer KI, die mir Händchen hält, da ich phänomenal begriffsstutzig bin und Nachhilfe von einem Wesen mit unmenschlicher Geduld brauche.</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">Richtig Smarte Strategie</h2>
+                <p data-key="tbns_p8">Also, ich weigere mich, E-Mail-zentrierte Lösungen wie Newsletter zu verwenden, weil ich bei der Vorstellung kotzen könnte, aber ich hasse auch die Idee, dass Leute meinen Blog manuell überprüfen müssen. Es gibt nur eine Lösung, oder?</p>
+                <p data-key="tbns_p9">Ich erinnerte mich an das Konzept von RSS aus meiner Kindheit. Dieses kleine orangefarbene Quadrat, das früher auf jeder einzelnen Webseite im Internet zu finden war, richtig? Soweit reichte mein Wissen. Ich wusste nicht einmal, dass Flipboard, die Lieblings-App meines Vaters auf seinem iPad, ein RSS-Reader war. Es war nicht super einfach, darüber zu lernen. Wenn man RSS in die Suchleiste eingibt, erhält man eine Website mit demselben Namen, die sich dem Podcasting zu widmen scheint. Es gibt eine Menge Dienste zur Automatisierung der RSS-Feed-Erstellung und zur Ermöglichung von Abonnements, die Google lieber priorisiert als nützliche Informationen.</p>
+                <p data-key="tbns_p10">Anfangs war mir nicht klar, dass alles, was ich für einen RSS-Feed brauchte, eine einzige XML-Datei war, aber schließlich habe ich eine Erweiterung für mein VScode eingerichtet, damit ich den Feed aus den HTML-Dateien in meinem Blog-Ordner und ihren Lokalisierungen erstellen kann.&nbsp;&nbsp;</p>
+                <p data-key="tbns_p11">Das ist genau die richtige Lösung für meine Vorlieben. Es liegt am Abonnenten, ob und wie er meine Inhalte sieht. Wenn sie es in ihrer E-Mail haben wollen, ist das ihre Entscheidung und ich habe nichts damit zu tun. Perfekt!</p>
+                <p data-key="tbns_p12">Alles, was ich jetzt tun muss, ist meinen <abbr title="Verfügbar in 4 Sprachen und 2 englischen Orthographien, klicke auf das Satelliten-Symbol in meiner Blog-Ansicht auf meiner Homepage.">RSS-Feed</abbr> anzubieten und... Moment mal... wie liest man überhaupt RSS?</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">Raffgierige Subskriptions-Services</h2>
+                <p data-key="tbns_p13">Wenn du noch kein RSS nutzt, aber gerne möchtest, möchte ich dich informieren, dass es völlig kostenlos ist. Wenn du auf Android bist, benutze <a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>. Wenn du auf iOS bist, bin ich sicher, dass es auch Optionen gibt, aber für die kann ich nicht bürgen. Wenn du synchronisieren willst, was du gelesen hast und was nicht, möchtest du vielleicht deinen eigenen Server. Es gibt viele Dienste, die sehr spezifische Funktionen anbieten, die dich <i>vielleicht</i> nicht interessieren, aber für bestimmte Arten von Nutzern immens wertvoll sind. Ich finde es gut, dass es diese gibt, aber ich mag es nicht, dass sie über der richtigen Lösung für deinen Anwendungsfall priorisiert werden, wenn du bei Google danach suchst.</p>
+
+                <p data-key="tbns_p15"><aside>Vielleicht möchtest du einen synchronisierten Leseverlauf oder Dienste, die von Websites scrapen können, die unvollständige RSS-Feeds anbieten. Falls ja, wirst du das sehr leicht finden.&nbsp;</aside></p>
+            </section>
+        ]]></description>
+			<pubDate>Sun, 29 Jun 2025 23:37:46 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
 </rss>

@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Fri, 27 Jun 2025 22:01:49 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 29 Jun 2025 23:37:46 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/gt/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>   | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -487,6 +487,45 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+		<item>
+			<title>      </title>
+			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+			<description><![CDATA[<h1 id="title" data-key="tbns_title">      </h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">  </h2>
+                <p data-key="tbns_p1">       ,    '   " "  " ".                        html .&nbsp;</p>
+                <p data-key="tbns_p2">,          2  ,       .                  ""       ,  &nbsp;</p>
+                <p data-key="tbns_p3"><ol><li>•  '          .</li><li>•      .&nbsp;</li></ol></p>
+                <p data-key="tbns_p4">        .                .&nbsp;</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack"> </h2>
+                <p data-key="tbns_p5">, '   <abbr title="Yes, I'm using that word. Would you have prefered people-of-network?"></abbr>&nbsp; <a href="https://substack.com/"></a>&nbsp;  --     .   ! '   .    ,   '       ,  '  '            .</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">    :</h3>
+                <p data-key="tbns_p6"><ul><li>•    "  ".</li><li>•    ,      .</li><li>•   ,             .</li><li>•      .</li><li>•  .</li><li>•  .</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">    :</h3>
+                <p data-key="tbns_p7"><ul><li>• - .</li><li>•        .</li><li>•             .</li><li>•               .</li><li>•   CSS.</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">        :</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js .</li><li>•  .</li></ul><aside>      .</aside><br></div> —  —    '       - - .                  CSS, <a href="https://wordpress.com/"></a>     .  , '   .   '           ,   AI      '     --       .</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">  </h2>
+                <p data-key="tbns_p8">,     -         ,              . '   , ' ?</p>
+                <p data-key="tbns_p9">             .              , ?        .  '   ,  '     ,      .        .          ,               .                         .</p>
+                <p data-key="tbns_p10">                      XML ,          VScode         html        .&nbsp;&nbsp;</p>
+                <p data-key="tbns_p11">        . '           .       , '          . !</p>
+                <p data-key="tbns_p12">         <abbr title="Available in 4 languages, and 2 orthographies in English, click the satellite icon on my blog view on my homepage.">   </abbr> ... ...        ?</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">  </h2>
+                <p data-key="tbns_p13">            ,           .  '  ,  <a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/"></a>.  '  iOS, '     ,   '   .       '   ,      .            <i></i>            .     ,   '                    .</p>
+
+                <p data-key="tbns_p15"><aside>                   ,  , '    .&nbsp;</aside></p>
+            </section>
+        ]]></description>
+			<pubDate>Sun, 29 Jun 2025 23:37:46 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
 </rss>

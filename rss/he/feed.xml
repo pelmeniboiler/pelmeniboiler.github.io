@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Fri, 27 Jun 2025 22:01:48 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 29 Jun 2025 23:37:46 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/he/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>דיקסי ווגאס | ניקון D3, עדשת 105ממ f/2.8 FX AF MICRO-NIKKOR</title>
@@ -487,6 +487,45 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+		<item>
+			<title>הבלוג תומך עכשיו ב-RSS</title>
+			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+			<description><![CDATA[<h1 id="title" data-key="tbns_title">הבלוג תומך עכשיו ב-RSS</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">רציונליזציה של שטויות</h2>
+                <p data-key="tbns_p1">אם הכרתם את האתר שלי מלפני כן, אולי שמתם לב שסידרתי מחדש את "תיקיית התמונות" ו"תיקיית הפרויקטים". פעם הן השתמשו בעיצובים שונים ונראו אחרת לגמרי, תלוי באיזה שלב בחיים למדתי על div-ים או אלמנטים חשובים אחרים של HTML.&nbsp;</p>
+                <p data-key="tbns_p2">עכשיו, שני הז'אנרים משתמשים בלייאאוט המאמרים הסטנדרטי שפיתחתי לפני שנתיים, והם ממוינים בתצוגת הבלוג. למרות שאני חושבת שהדרך הזאת קצת פוגעת ברעיון של "תיקיות" נפרדות עם ז'אנרים מאורגנים של תוכן, אני חושבת ש&nbsp;</p>
+                <p data-key="tbns_p3"><ol><li>• בסופו של דבר הם מעוצבים כמאמרי בלוג וצריך להתייחס אליהם ככאלה.</li><li>• השיטה הזאת הרבה יותר סקיילבילית.&nbsp;</li></ol></p>
+                <p data-key="tbns_p4">אתם מוזמנים למיין אותם בעזרת הקטגוריות. אני אוסיף פונקציית חיפוש כשיהיו לי מספיק פוסטים כדי שזה יהיה נחוץ.&nbsp;</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">רוצה שקט, שונאת סאבסטק</h2>
+                <p data-key="tbns_p5">לאחרונה, ראיתי הרבה <abbr title="כן, אני משתמשת במילה הזאת. העדפתם 'אנשי-רשת'?">גולשים</abbr>&nbsp;מאמצים את <a href="https://substack.com/">Substack</a>&nbsp;ככלי המועדף עליהם ליצירת בלוגים וניוזלטרים. אני אוהבת את Substack! זאת פלטפורמה טובה. אני נהנית להשתמש בה, ולמרות שזה בעיקר תוצאה של התוכן הזמין, אני לא אעמיד פנים שהייתי מוצאת חצי מהבלוגים שאני קוראת אם הם לא היו משתמשים ב-Substack.</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">מה אני אוהבת ב-Substack:</h3>
+                <p data-key="tbns_p6"><ul><li>• סירוב עקרוני ל"צנזר תוכן קיצוני".</li><li>• מגוון רחב של פרסומים, הוא כבש שווקים רבים ושונים.</li><li>• חינמי לשימוש, עם מודל עסקי הוגן למי שכן רוצה להרוויח כסף.</li><li>• קל מאוד לתת כסף ליוצרים.</li><li>• תמיכה ב-LaTeX.</li><li>• תמיכה ב-Datawrapper.</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">מה אני שונאת ב-Substack:</h3>
+                <p data-key="tbns_p7"><ul><li>• עיצוב שמתרכז במייל.</li><li>• תיבת הדואר הנכנס שלי מלאה עכשיו במיילים מ-Substack.</li><li>• אני לא רוצה את כתובות המייל של האנשים שקוראים את הבלוג שלי.</li><li>• אני לא רוצה לתת את כתובת המייל שלי לאנשים שאני קוראת את הניוזלטרים שלהם.</li><li>• אין CSS מותאם אישית.</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">דברים ש-Substack בחיים לא יוסיפו אבל אני רוצה:</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• תמיכה ב-Chart.js.</li><li>• הדגמות אינטראקטיביות.</li></ul><aside>לגמרי לא רמזים לדברים שיבואו.</aside><br></div>אני חושבת שעבור רוב האנשים, Substack הוא בדיוק מה שהם מחפשים כשמדובר בכתיבה ארוכה שמתפרסמת באופן ציבורי. לכל מי שתיבת המייל שלו קדושה מדי לחילול או שהוא אנין טעם במיוחד לגבי CSS, <a href="https://wordpress.com/">WordPress</a> היא כנראה האלטרנטיבה הנכונה. אני, מצדי, לא בחרתי באף אחד מהם. אני מגלה שזה ממש כיף ללמוד ולהיאבק בבניית אתר משלי, במיוחד כשיש לי AI שמחזיק לי את היד, כי אני אטומה בטירוף וזקוקה לשיעורים פרטיים מישות עם סבלנות על-אנושית.</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">רעיון שפותר שטויות</h2>
+                <p data-key="tbns_p8">אז, אני מסרבת להשתמש בפתרונות מבוססי מייל כמו ניוזלטרים כי הרעיון גורם לי להקיא, אבל אני גם שונאת את המחשבה שאנשים יצטרכו לבדוק את הבלוג שלי ידנית. יש רק פתרון אחד, לא?</p>
+                <p data-key="tbns_p9">נזכרתי במושג RSS מהילדות. הריבוע הכתום הקטן הזה שהיה פעם בכל עמוד אינטרנט, נכון? הידע שלי נגמר שם. אפילו לא ידעתי ש-Flipboard, האפליקציה האהובה על אבא שלי באייפד שלו, היא קורא RSS. לא היה סופר קל ללמוד על זה. אם מקלידים RSS בשורת החיפוש, מקבלים אתר באותו שם שנראה שמוקדש לפודקאסטים. יש טונה של שירותים שקשורים לאוטומציה של יצירת פיד RSS ומתן אפשרות למנוי, שגוגל בוחרת לתעדף על פני מידע שימושי.</p>
+                <p data-key="tbns_p10">בהתחלה לא היה לי ברור שכל מה שאני צריכה כדי שיהיה לי פיד RSS זה קובץ XML בודד, אבל בסוף התקנתי תוסף ל-VScode שלי כדי שאוכל לבנות את הפיד מקבצי ה-HTML שבתיקיית הבלוג שלי ומהלוקליזציות שלהם.&nbsp;&nbsp;</p>
+                <p data-key="tbns_p11">זה בדיוק הפתרון הנכון להעדפות שלי. זו החלטה של המנוי אם ואיך הוא רואה את התוכן שלי. אם הוא רוצה את זה במייל שלו, זו הבחירה שלו ולי לא יהיה שום חלק בזה. מושלם!</p>
+                <p data-key="tbns_p12">כל מה שאני צריכה לעשות עכשיו זה להציע את <abbr title="זמין ב-4 שפות, וב-2 אורתוגרפיות באנגלית. לחצו על אייקון הלוויין בתצוגת הבלוג בדף הבית שלי.">פיד ה-RSS</abbr> שלי ו... רגע... איך בכלל קוראים RSS?</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">רדיפת שקל שקל</h2>
+                <p data-key="tbns_p13">אם אתם עוד לא משתמשים ב-RSS אבל רוצים, חשוב לי להודיע לכם שזה חינמי לגמרי. אם אתם באנדרואיד, השתמשו ב-<a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>. אם אתם ב-iOS, אני בטוחה שיש גם אפשרויות, אבל אני לא יכולה לערוב להן. אם אתם רוצים לסנכרן מה קראתם ומה לא, אולי תרצו שרת משלכם. יש הרבה שירותים שמציעים פיצ'רים מאוד ספציפיים ש<i>אולי</i> לא אכפת לכם מהם אבל הם בעלי ערך עצום לסוגים מסוימים של משתמשים. אני אוהבת שהם קיימים, אבל אני לא אוהבת שהם מקבלים עדיפות על פני הפתרון הנכון למקרה השימוש שלכם כשאתם מחפשים אותו בגוגל.</p>
+
+                <p data-key="tbns_p15"><aside>יכול להיות שתרצו היסטוריית קריאה מסונכרנת או שירותים שיודעים לגרד מידע מאתרים שמציעים פיד RSS חלקי, אם כן, תמצאו את זה בקלות רבה.&nbsp;</aside></p>
+            </section>
+        ]]></description>
+			<pubDate>Sun, 29 Jun 2025 23:37:46 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
 </rss>

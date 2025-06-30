@@ -1,5 +1,18 @@
 [
   {
+    "filename": "this-blog-now-supports-rss.html",
+    "link": "/blog/this-blog-now-supports-rss.html",
+    "date": "Sun, 29 Jun 2025 23:37:46 GMT",
+    "translationSource": "tbns",
+    "titleKey": "tbns_title",
+    "title": "This blog now supports RSS",
+    "descriptionKey": "tbns_p1",
+    "description": "No description found.",
+    "keywords": [
+      "Meta"
+    ]
+  },
+  {
     "filename": "graflect.html",
     "link": "/blog/graflect.html",
     "date": "Fri, 13 Jun 2025 10:00:00 GMT",

@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Fri, 27 Jun 2025 22:01:48 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 29 Jun 2025 23:37:46 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -487,6 +487,45 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+		<item>
+			<title>This Blog Now Supports RSS</title>
+			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+			<description><![CDATA[<h1 id="title" data-key="tbns_title">This Blog Now Supports RSS</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Reorganizing Some Stuff</h2>
+                <p data-key="tbns_p1">If you were familiar with my site before, you may notice I've rearranged my "photo folder" and "projects folder". These used to use different theming and looked totally different based on when in life I had learned about divs or other important html elements.&nbsp;</p>
+                <p data-key="tbns_p2">Now, both genres use the standard article layout I developed 2 years ago, and are sorted in the blog viewer. While I think this way of doing things does take away from the idea of having different "folders" with organized genres of content in them, I think&nbsp;</p>
+                <p data-key="tbns_p3"><ol><li>• Ultimately they're formatted as blog articles and should be treated as such.</li><li>• This method is far more scalable.&nbsp;</li></ol></p>
+                <p data-key="tbns_p4">Feel free to sort through them with the categories. I will add a search function when I have enough posts for that to be necessary.&nbsp;</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">Replacing SubStack</h2>
+                <p data-key="tbns_p5">Lately, I've seen many <abbr title="Yes, I'm using that word. Would you have prefered people-of-network?">netizens</abbr>&nbsp;adopt <a href="https://substack.com/">Substack</a>&nbsp;as their tool-of-choice for creating blogs and newsletters. I like Substack! It's a good platform. I enjoy using it, and while that's mostly a result of the content available, I won't pretend I'd have found half the blogs I read had they not used Substack.</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">What I like about Substack:</h3>
+                <p data-key="tbns_p6"><ul><li>• Principled refusal to "police extremist content".</li><li>• Great range of publications, it has captured many disparate markets.</li><li>• Free to use, with a fair business model for those who do want to make money.</li><li>• Very easy to give creators money.</li><li>• LaTeX support.</li><li>• Datawrapper support.</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">What I hate about Substack:</h3>
+                <p data-key="tbns_p7"><ul><li>• Email-centric design.</li><li>• My inbox is now all emails from Substack.</li><li>• I do not want the email addresses of people who read my blog.</li><li>• I do not want to give my email address to people whose newsletters I read.</li><li>• No custom CSS.</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Things Substack could obviously never include but I want:</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js Support.</li><li>• Interactive demos.</li></ul><aside>Totally not hints of anything to come.</aside><br></div>I think—for most people—Substack is exactly what they're looking for when it comes to publicly-posted long-form writing. For anyone for whom their email inbox is too sacred to profane or is particularly picky about CSS, <a href="https://wordpress.com/">WordPress</a> is probably the right alternative. For me, I've gone with neither. I find it's really fun to learn and struggle through making my own website, especially with AI to hold my hand since I'm phenomenally thickheaded and need one-on-one tutoring from a being with inhuman patience.</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">Resolving Significant Snags</h2>
+                <p data-key="tbns_p8">So, I refuse to use email-centric solutions like newsletters because the idea makes me puke, but I also hate the idea of people having to manually check my blog. There's only one solution, isn't there?</p>
+                <p data-key="tbns_p9">I remembered the concept of RSS from when I was a child. The little orange square that once sat on every single webpage on the internet, right? That was as far as my knowledge went. I didn't even know Flipboard, my dad's favorite app on his iPad, was an RSS reader. It was not super easy to learn about. If you type RSS into your search bar, you get a website with the same name that seems to be dedicated to podcasting. There are a ton of services related to automating RSS feed generation and enabling subscription that Google chooses to prioritize over useful information.</p>
+                <p data-key="tbns_p10">It was initially unclear to me that all I needed in order to have an RSS feed was a single XML file, but eventually I set up an extension for my VScode so I could build the feed out of html files in my blog folder and their localizations.&nbsp;&nbsp;</p>
+                <p data-key="tbns_p11">This is exactly the right solution for my preferences. It's up to the subscriber if and how they see my content. If they want it in their email, it's their choice and I will have no part in it. Perfect!</p>
+                <p data-key="tbns_p12">All I have to do now is offer my <abbr title="Available in 4 languages, and 2 orthographies in English, click the satellite icon on my blog view on my homepage.">rss feed</abbr> and... wait... how does one even read RSS?</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">Rapacious Subscription Services</h2>
+                <p data-key="tbns_p13">If you do not use RSS yet but would like to, I would like to inform you that it is totally free. If you're on android, use <a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>. If you're on iOS, I'm sure there are also options, but I can't vouch for them. If you want to sync what you've read or not, you might want your own server. There are many services which offer very specific features that you <i>might</i> not care about but are immensely valuable to certain kinds of users. I like that these exist, but I don't like that they are prioritized above the correct solution for your use case if you search for it on Google.</p>
+
+                <p data-key="tbns_p15"><aside>You may want synced read history or services that can scrape from websites that offer incomplete rss feeds, if so, you'll find this very easily.&nbsp;</aside></p>
+            </section>
+        ]]></description>
+			<pubDate>Sun, 29 Jun 2025 23:37:46 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
 </rss>

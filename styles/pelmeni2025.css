@@ -46,8 +46,9 @@ body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-t
 body { color: var(--text-color); }
 
 .symbol {
-    font-family: 'Symbola';
-    font-weight: normal; /* Ensure symbols aren't bolded with titles */
+
+        font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
+        font-weight: normal; 
 }
 
 .window { 
@@ -414,3 +415,93 @@ body::-webkit-scrollbar-thumb,
     .show {
         display: block; /* Class to show the dropdown */
     }
+/* --- Aside Element Style --- */
+aside {
+  margin: 1.5em 0; /* Vertical spacing */
+  padding: 0.5em 1em 0.5em 1.5em; /* Top, Right, Bottom, Left */
+  border-left: 4px solid var(--border-color);
+  background-color: transparent; /* Blends with the container */
+  font-style: italic;
+  opacity: 0.9; /* Slightly de-emphasize from main text */
+}
+
+/* Optional styling for a heading inside an aside */
+aside h4 {
+  font-style: normal; /* Headings shouldn't be italic */
+  margin: 0 0 0.5em 0;
+  font-weight: bold;
+}
+
+/* Ensure paragraphs inside the aside reset bottom margin if not needed */
+aside p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Inline Details Element --- */
+details.inline-details {
+  display: inline-block; /* Allows it to sit within text but have block properties */
+  position: relative;   /* Anchor for the expandable content */
+}
+
+details.inline-details summary {
+  /* Style the summary to look like interactive text */
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  display: inline; /* Keep the summary part truly inline */
+}
+
+/* Hide the default triangle/marker */
+details.inline-details summary::-webkit-details-marker,
+details.inline-details summary::marker {
+  display: none;
+}
+
+/* Hover/Focus state matches your existing link styles */
+details.inline-details summary:hover,
+details.inline-details summary:focus-visible {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  text-decoration-style: solid;
+  outline: none;
+}
+
+/* Funky mode variant for hover/focus */
+body.funky-mode details.inline-details summary:hover,
+body.funky-mode details.inline-details summary:focus-visible {
+  background-color: var(--funky-accent-color);
+  color: var(--funky-bg-color);
+}
+
+/* This is the panel that appears when the details element is open */
+details.inline-details .details-content {
+  display: none; /* Will be shown by the [open] attribute */
+  position: absolute;
+  top: 130%; /* Position below the summary text with a small gap */
+  left: -12px; /* Scoot it left to align with the start of the summary text */
+  background-color: var(--win-bg-color);
+  border: 2px solid var(--border-color);
+  padding: 12px;
+  z-index: 20; /* Make sure it appears above other content */
+  min-width: 300px;
+  max-width: 450px;
+  font-style: normal; /* Reset any parent italicization (e.g., if used in an aside) */
+  text-align: left;
+  line-height: 1.5; /* Ensure consistent line height */
+}
+
+/* Show the content when the parent <details> element is open */
+details[open].inline-details .details-content {
+  display: block;
+}
+
+/* Paragraphs inside the pop-up panel */
+details.inline-details .details-content p {
+    font-size: 14px;
+    margin-bottom: 0.5em;
+}
+
+details.inline-details .details-content p:last-child {
+    margin-bottom: 0;
+}

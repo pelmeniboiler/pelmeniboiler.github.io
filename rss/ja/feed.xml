@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Fri, 27 Jun 2025 22:01:49 GMT</lastBuildDate>
+	<lastBuildDate>Sun, 29 Jun 2025 23:37:46 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -487,6 +487,45 @@
         ]]></description>
 			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+		</item>
+		<item>
+			<title>このブログはRSSに対応しました</title>
+			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+			<description><![CDATA[<h1 id="title" data-key="tbns_title">このブログはRSSに対応しました</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">リフレッシュ！サイト・ストラクチャー (Rifresshu! Saito Sutorakuchā)</h2>
+                <p data-key="tbns_p1">以前から私のサイトをご存知の方は、「写真フォルダー」と「プロジェクトフォルダー」を再編成したことにお気づきかもしれません。これらは以前、別々のテーマを使用していて、人生のどの時点でdivや他の重要なHTML要素について学んだかによって、全く違う見た目になっていました。</p>
+                <p data-key="tbns_p2">現在は、どちらのジャンルも2年前に開発した標準の記事レイアウトを使用し、ブログビューアで分類されています。このやり方は、コンテンツのジャンルごとに整理された別々の「フォルダー」を持つという考えからは少し離れてしまうと思いますが、でもまあ、</p>
+                <p data-key="tbns_p3"><ol><li>• 最終的にはブログ記事としてフォーマットされているのだから、そのように扱うべき。</li><li>• この方法の方がはるかに拡張性が高い。</li></ol></p>
+                <p data-key="tbns_p4">カテゴリーを使って自由に分類してみてください。検索機能は、それが必要になるほど記事が増えたら追加します。</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">楽々シンジケーション・システム (Raku-raku Shinjikēshon Shisutemu)</h2>
+                <p data-key="tbns_p5">最近、多くの<abbr title="はい、この言葉を使っています。「ネットワークの民」の方がよかったですか？">ネチズン</abbr>がブログやニュースレターを作成するためのツールとして<a href="https://substack.com/">Substack</a>を選んでいます。Substackは好きですよ！良いプラットフォームです。利用していて楽しいですし、それは主に利用可能なコンテンツのおかげですが、もし彼らがSubstackを使っていなかったら、私が読んでいるブログの半分は見つけられなかっただろうとは言っておきます。</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">Substackの好きなところ：</h3>
+                <p data-key="tbns_p6"><ul><li>• 「過激なコンテンツを取り締まる」ことを原則として拒否している点。</li><li>•出版物の幅が広く、多くの異なる市場を取り込んでいる点。</li><li>• 無料で利用でき、収益を上げたい人には公正なビジネスモデルがある点。</li><li>•クリエイターにお金を渡すのがとても簡単な点。</li><li>• LaTeX対応。</li><li>• Datawrapper対応。</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">Substackの嫌いなところ：</h3>
+                <p data-key="tbns_p7"><ul><li>• メール中心の設計。</li><li>• 私の受信箱は今やSubstackからのメールでいっぱいです。</li><li>• 私のブログを読んでくれる人のメールアドレスは要りません。</li><li>• ニュースレターを読んでいる人のメールアドレスを渡したくありません。</li><li>• カスタムCSSが使えない。</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Substackには絶対に含まれないだろうけど、私が欲しいもの：</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js対応。</li><li>•インタラクティブなデモ。</li></ul><aside>今後の展開のヒントじゃないんだからね。</aside><br></div>ほとんどの人にとって、Substackは公に投稿される長文の文章に関して、まさに求めているものだと思います。メールの受信箱を汚されるのが神聖な儀式に反すると感じる人や、CSSに特にうるさい人にとっては、<a href="https://wordpress.com/">WordPress</a>がおそらく正しい代替案でしょう。私自身は、どちらも選びませんでした。自分でウェブサイトを作ることの学びと苦労は本当に楽しいです。特に、私が驚くほど頭が固く、超人的な忍耐力を持つ存在から一対一の指導を必要とするので、AIが手を貸してくれるようになってからは尚更です。</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">楽勝する術 (Rakushō Suru Sube)</h2>
+                <p data-key="tbns_p8">というわけで、ニュースレターのようなメール中心のソリューションは、その考えだけで吐き気がするので拒否しますが、人々が手動で私のブログをチェックしなければならないというのも嫌いです。解決策は一つしかないですよね？</p>
+                <p data-key="tbns_p9">子供の頃にRSSという概念を思い出しました。かつてインターネット上のあらゆるウェブページにあった、あの小さなオレンジ色の四角いアイコンですよね？私の知識はそこまででした。父がiPadで一番好きだったアプリ、FlipboardがRSSリーダーだということすら知りませんでした。RSSについて学ぶのは、あまり簡単ではありませんでした。検索バーに「RSS」と入力すると、同じ名前のウェブサイトが出てきますが、それはポッドキャスティング専門のようです。Googleが有益な情報よりも優先して表示するのは、RSSフィードの生成を自動化したり、購読を可能にしたりする関連サービスばかりです。</p>
+                <p data-key="tbns_p10">RSSフィードを持つために必要なのが単一のXMLファイルだけだとは、最初はよく分かりませんでした。しかし、最終的にはVScodeに拡張機能 を設定し、ブログフォルダー内のHTMLファイルとそのローカライゼーションからフィードを構築できるようにしました。</p>
+                <p data-key="tbns_p11">これは私の好みにぴったりの解決策です。私のコンテンツをどう見るかは、購読者次第。メールで受け取りたいなら、それは彼らの選択であり、私は一切関与しません。完璧です！</p>
+                <p data-key="tbns_p12">あとは私の<abbr title="4つの言語と、英語の2つの表記法で利用可能です。ホームページのブログビューにある衛星アイコンをクリックしてください。">rssフィード</abbr>を提供するだけ…待って…RSSってどうやって読むの？</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">ろくでもない集金システム (Rokudemonai Shūkin System)</h2>
+                <p data-key="tbns_p13">まだRSSを使っていないけれど使ってみたいという方にお伝えしたいのですが、これは完全に無料です。Androidをお使いなら、<a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>を使ってください。iOSをお使いなら、きっと他の選択肢もあると思いますが、私が保証することはできません。既読・未読を同期したい場合は、自分用のサーバーが必要になるかもしれません。特定の種類のユーザーにとっては非常に価値があるけれど、あなたにとっては気にしないかもしれない、非常に特殊な機能を提供するサービスはたくさんあります。そういったサービスが存在するのは良いことだと思いますが、Googleで検索したときに、あなたのユースケースにとっての正しい解決策よりも優先されて表示されるのは気に入りません。</p>
+
+                <p data-key="tbns_p15"><aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside></p>
+            </section>
+        ]]></description>
+			<pubDate>Sun, 29 Jun 2025 23:37:46 GMT</pubDate>
+			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
 </rss>

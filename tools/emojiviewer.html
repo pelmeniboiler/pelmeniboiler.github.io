@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode Symbol and Emoji Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Corrected link to the monochrome Noto Emoji font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sb-track-color: var(--win-bg-color, #ffffff);
+            --sb-thumb-background-color: var(--win-bg-color, #ffffff);
+            --sb-thumb-border-color: var(--border-color, #000000);
+            --sb-size: 16px;
+            --funky-bg-color: #b1de75;
+            --funky-text-color: #b000b5;
+            --funky-border-color: #eb01a5;
+            --funky-accent-color: #fa6607;
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif, FairfaxHD;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 40px;
+            /* Changed overflow to auto to allow scrolling */
+            overflow: auto; 
+        }
+        body.eink-mode { background-color: var(--bg-color); }
+        body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
+        body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
+        body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
+        body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
+        body { color: var(--text-color); }
+        .symbol {
+            /* Updated font stack to prioritize Noto Emoji (monochrome) */
+            font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+            font-weight: normal; /* Resetting weight to normal for monochrome font */
+        }
+        .window {
+            position: absolute;
+            background-color: var(--win-bg-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        /* --- End of user CSS, with minor modifications --- */
+        
+        /* --- Custom Styles for this page --- */
+        body.light-mode {
+             background-color: #f4f4f9;
+             color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            font-family: 'Selyodka', 'Times New Roman', serif;
+        }
+        .unicode-block {
+            margin-bottom: 3rem;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .unicode-block h2 {
+            margin-top: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+        .symbol-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #fafafa;
+        }
+        .symbol-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
+        .symbol-item .symbol {
+            font-size: 2.5rem; /* Larger emoji */
+            line-height: 1.2;
+        }
+        .symbol-item code {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 0.25rem;
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        #copy-notification {
+            position: fixed;
+            bottom: -100px; /* Initially hidden */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: bottom 0.5s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        #copy-notification.show {
+            bottom: 30px; /* Slide in from bottom */
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="container">
+        <h1>Unicode Symbol & Emoji Viewer</h1>
+        <div id="symbol-container">
+            <!-- Unicode blocks will be generated here by JavaScript -->
+        </div>
+    </div>
+    
+    <div id="copy-notification">Copied!</div>
+
+    <script>
+        // Wait for the document to be fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Define the Unicode blocks to display
+            const unicodeBlocks = [
+                { name: 'Miscellaneous Symbols', start: 0x2600, end: 0x26FF },
+                { name: 'Dingbats', start: 0x2700, end: 0x27BF },
+                { name: 'Miscellaneous Symbols and Arrows', start: 0x2B00, end: 0x2BFF },
+                { name: 'Playing Cards', start: 0x1F0A0, end: 0x1F0FF },
+                { name: 'Miscellaneous Symbols and Pictographs', start: 0x1F300, end: 0x1F5FF },
+                { name: 'Emoticons', start: 0x1F600, end: 0x1F64F },
+                { name: 'Transport and Map Symbols', start: 0x1F680, end: 0x1F6FF },
+                { name: 'Alchemical Symbols', start: 0x1F700, end: 0x1F77F },
+                { name: 'Geometric Shapes Extended', start: 0x1F780, end: 0x1F7FF },
+                { name: 'Supplemental Arrows-C', start: 0x1F800, end: 0x1F8FF },
+                { name: 'Supplemental Symbols and Pictographs', start: 0x1F900, end: 0x1F9FF },
+                { name: 'Symbols for Legacy Computing', start: 0x1FB00, end: 0x1FBFF },
+            ];
+
+            const mainContainer = document.getElementById('symbol-container');
+            const notification = document.getElementById('copy-notification');
+
+            // Function to show the "Copied!" notification
+            let notificationTimeout;
+            function showNotification() {
+                // Clear any existing timeout to prevent it from hiding prematurely
+                if (notificationTimeout) {
+                    clearTimeout(notificationTimeout);
+                }
+                notification.classList.add('show');
+                // Set a new timeout to hide the notification after 2 seconds
+                notificationTimeout = setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            }
+
+            // Function to copy text to clipboard
+            // Uses the document.execCommand for better compatibility in sandboxed environments
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed'; // Prevent scrolling to bottom of page in MS Edge.
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showNotification();
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textarea);
+            }
+            
+            // Loop through each defined block and generate the HTML
+            unicodeBlocks.forEach(block => {
+                // Create a container for the block
+                const blockDiv = document.createElement('div');
+                blockDiv.className = 'unicode-block';
+
+                // Create the title for the block
+                const blockTitle = document.createElement('h2');
+                blockTitle.textContent = `${block.name} (U+${block.start.toString(16).toUpperCase()} - U+${block.end.toString(16).toUpperCase()})`;
+                blockDiv.appendChild(blockTitle);
+
+                // Create the grid for symbols
+                const gridDiv = document.createElement('div');
+                gridDiv.className = 'symbol-grid';
+
+                // Loop through the codepoint range for the current block
+                for (let i = block.start; i <= block.end; i++) {
+                    const char = String.fromCodePoint(i);
+                    const codePoint = `U+${i.toString(16).toUpperCase().padStart(4, '0')}`;
+
+                    // Create the individual item container
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'symbol-item';
+                    itemDiv.title = `Click to copy ${char}`;
+
+                    // Create the symbol span
+                    const symbolSpan = document.createElement('span');
+                    symbolSpan.className = 'symbol';
+                    symbolSpan.textContent = char;
+
+                    // Create the code point display
+                    const codeTag = document.createElement('code');
+                    codeTag.textContent = codePoint;
+                    
+                    // Add a click event listener to copy the symbol
+                    itemDiv.addEventListener('click', () => {
+                        copyToClipboard(char);
+                    });
+                    
+                    itemDiv.appendChild(symbolSpan);
+                    itemDiv.appendChild(codeTag);
+                    gridDiv.appendChild(itemDiv);
+                }
+
+                blockDiv.appendChild(gridDiv);
+                mainContainer.appendChild(blockDiv);
+            });
+        });
+    </script>
+
+</body>
+</html>
