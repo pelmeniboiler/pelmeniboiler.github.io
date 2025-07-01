@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 01:07:53 GMT</lastBuildDate>
+	<lastBuildDate>Tue, 01 Jul 2025 03:28:37 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>Dixie und Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -249,7 +249,7 @@
 			<description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">Graflect und seine IPA-Entsprechungen</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> ist eine phonetische Orthographie, die von Aaron Paterson erfunden wurde. Sie ist subtil merkmalsbasiert und in der Lage, eine Vielzahl von Akzenten im Englischen und sogar in anderen Sprachen wiederzugeben. Die Orthographie ist im <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a> enthalten, und Schriftunterstützung ist von Rebecca G. Bettencourt von Kreative Korp in der <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>-Schrift (wie auf dieser Seite zu sehen) und in der <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0-Schrift von greenstar967</a> verfügbar. Bisher wurde kein öffentlicher Leitfaden erstellt, der Graflect auf das <abbr title="International Phonetic Alphabet">Internationale Phonetische Alphabet (IPA)</abbr> abbildet. Diese Tabelle dient als erste umfassende Ressource für diesen Zweck und wurde erstellt, um das Verständnis und die Transkription zu erleichtern.</p>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> ist eine phonetische Orthographie, die auf Aaron Patersons persönlicher Website, MayCXC, vorgestellt wird. Sie ist subtil merkmalsbasiert und in der Lage, eine Vielzahl von Akzenten im Englischen und sogar in anderen Sprachen wiederzugeben. Die Orthographie ist im <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a> enthalten, und Schriftunterstützung ist von Rebecca G. Bettencourt von Kreative Korp in der <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>-Schrift (wie auf dieser Seite zu sehen) und in der <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0-Schrift von greenstar967</a> verfügbar. Bisher wurde kein öffentlicher Leitfaden erstellt, der Graflect auf das <abbr title="International Phonetic Alphabet">Internationale Phonetische Alphabet (IPA)</abbr> abbildet. Diese Tabelle dient als erste umfassende Ressource für diesen Zweck und wurde erstellt, um das Verständnis und die Transkription zu erleichtern.</p>
                 <hr>
             </header>
             
@@ -301,19 +301,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/ or /i/</td><td data-key="example_ea_in_lean">Langes <b>ie</b> in w<b>ie</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">Langes <b>ie</b> in w<b>ie</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">Kurzes <b>i</b> in b<b>i</b>n</td></tr>
                         <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">Kurzes <b>u</b> in B<b>u</b>ch</td></tr>
-                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school">Langes <b>u</b> in Sch<b>u</b>h</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">Langes <b>u</b> in Sch<b>u</b>h</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">Offenes <b>e</b> in B<b>e</b>tt</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">Offenes <b>a</b> wie in M<b>a</b>ppe</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_a_in_accent">Wie im englischen <b>a</b>ccent</td></tr>
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">Schwa-Laut (<b>ə</b>), wie <b>e</b> in bitt<b>e</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft">Offenes <b>o</b> in <b>o</b>ffen</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game">Langes <b>ee</b> in S<b>ee</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">Offenes <b>o</b> in <b>o</b>ffen</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">Englischer Diphthong in g<b>a</b>me</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_ant">Wie im englischen c<b>a</b>t</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ei</b> in m<b>ei</b>n</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>au</b> in H<b>au</b>s</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole">Geschlossenes <b>o</b> in R<b>o</b>se</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt">Nicht im Deutschen; wie <b>ir</b> in engl. b<b>ir</b>d</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">Geschlossenes <b>o</b> in B<b>oo</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oˤʊ/</td><td data-key="example_o_in_hole">Ein tieferer, gerundeter o-Laut, wie im englischen h<b>o</b>le</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">Vokal in engl. n<b>ur</b>se (nicht-rhotischer Akzent)</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>ä</b> in B<b>ä</b>r</td></tr>
                     </tbody>
                 </table>
@@ -333,10 +335,11 @@
                         <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>tsch</b> in deu<b>tsch</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>dsch</b> in <b>Dsch</b>ungel</td></tr>
                         <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ju</b> in <b>Ju</b>li</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>wi</b> in <b>wi</b>e</td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>wi</b> in <b>wi</b>e</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">Französisch: <b>ui</b> im Wort h<b>ui</b>t</td></tr>
                         <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">Ach-Laut, wie <b>ch</b> in Ba<b>ch</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Spanischer Tap mit der Zungenspitze (in pe<b>r</b>o)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">Zäpfchen-R (Guttural), wie in <b>R</b>abe</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">Deutsches Zäpfchen-R in <b>R</b>ammstein</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -524,7 +527,7 @@
                 <p data-key="tbns_p15"><aside>Vielleicht möchtest du einen synchronisierten Leseverlauf oder Dienste, die von Websites scrapen können, die unvollständige RSS-Feeds anbieten. Falls ja, wirst du das sehr leicht finden.&nbsp;</aside></p>
             </section>
         ]]></description>
-			<pubDate>Tue, 01 Jul 2025 01:07:53 GMT</pubDate>
+			<pubDate>Tue, 01 Jul 2025 03:28:36 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>

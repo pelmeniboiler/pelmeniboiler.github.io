@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 01:07:53 GMT</lastBuildDate>
+	<lastBuildDate>Tue, 01 Jul 2025 03:28:37 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -249,7 +249,7 @@
 			<description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応記号</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンによって考案された表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンの個人ウェブサイト、MayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
                 <hr>
             </header>
             
@@ -277,13 +277,13 @@
                         <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの [s] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの [z] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの [ʃ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">ビ<b>ジョ</b>ンの [ʒ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">英語の音: occa<b>s</b>ion の [ʒ]</td></tr>
                         <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>は</b>行の息の音 [h]</td></tr>
                         <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの [m] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの [n] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末 [ŋ]</td></tr>
                         <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend">英語の音: <b>l</b>end の <b>l</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音、<b>r</b>opeのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの [w] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>クソクの [j] の音</td></tr>
                     </tbody>
@@ -301,19 +301,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/ or /i/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">短母音「イ」、<b>イ</b>スのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">短母音「ウ」、ブ<b>ッ</b>クのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/uː/ or /u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">「ア」、<b>ア</b>ップルのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/ or /ɑ/</td><td data-key="example_o_in_soft">「オ」、<b>オ</b>レンジのように</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_a_in_accent">英語の <b>a</b>ccent の [ɔ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)、またはシュワー</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「オ」、<b>オ</b>レンジのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/oʊ/</td><td data-key="example_o_in_hole">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɝ/ or /ɜr/</td><td data-key="example_ur_in_kurt">英語の音: b<b>ir</b>d の母音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oˤʊ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">英語の音: n<b>ur</b>se の母音（非R音性アクセント）</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
                     </tbody>
                 </table>
@@ -333,10 +335,11 @@
                         <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの [tʃ] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの [dʒ] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」の音</td></tr>
-                        <tr><td class="graflect-font"> or </td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">フランス語: h<b>ui</b>t の <b>ui</b> の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の [x] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr [ɾ]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語など、口蓋垂ふるえ音のR [ʁ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語: <b>R</b>ammstein の口蓋垂ふるえ音のR [ʁ]</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -524,7 +527,7 @@
                 <p data-key="tbns_p15"><aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside></p>
             </section>
         ]]></description>
-			<pubDate>Tue, 01 Jul 2025 01:07:53 GMT</pubDate>
+			<pubDate>Tue, 01 Jul 2025 03:28:36 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
