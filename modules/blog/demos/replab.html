@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reputational Labeling Demo</title>
+    <meta name="translation-source" content="coal">
+    <style>
+        /*
+         * This component is designed to be embedded in a page that already has the user's
+         * custom stylesheet. It uses CSS variables defined in that sheet.
+         * Basic layout styles are defined here for structure.
+        */
+
+        /* Basic layout for posts */
+        .chirper-post {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 2px solid var(--border-color, #000);
+        }
+        .chirper-post:last-child {
+            border-bottom: none;
+        }
+        .chirper-pfp img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color, #000);
+            filter: grayscale(100%);
+        }
+        .chirper-username {
+            font-weight: bold;
+        }
+        .chirper-handle {
+            font-weight: normal;
+            opacity: 0.7;
+        }
+        .chirper-body {
+            margin-top: 4px;
+        }
+        .chirper-body a {
+            text-decoration: underline;
+        }
+
+        /* Post Actions (Reply, Retweet, Like) */
+        .chirper-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 24px;
+            opacity: 0.7;
+        }
+        .chirper-actions .symbol {
+            cursor: pointer;
+        }
+
+        /* Reputation Badge, Community Note, and Domain Warning Styling */
+        .reputation-badge, .community-note, .domain-warning-note {
+            border-style: dashed;
+            border-width: 2px;
+            border-color: var(--border-color, #000);
+            padding: 8px;
+            margin-top: 12px;
+            font-size: 15px;
+        }
+        .reputation-badge {
+             padding: 2px 6px;
+             font-size: 14px;
+             cursor: pointer;
+             display: inline-flex;
+             align-items: center;
+             gap: 5px;
+             border-radius: 4px;
+        }
+        .reputation-badge:active { 
+             border-style: inset;
+        }
+
+        /* Indented Replies */
+        .chirper-reply-container {
+            padding-left: 20px;
+            margin-top: 12px;
+            border-left: 2px solid var(--border-color, #000);
+        }
+
+        /* Modal overlay */
+        .ledger-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50; /* Ensure it's on top */
+        }
+        .ledger-modal-overlay.hidden {
+            display: none;
+        }
+        
+        /* Ensure the modal window is a manageable size */
+        .ledger-modal-overlay .window {
+             width: 90%;
+             max-width: 550px;
+        }
+        .modal-close { cursor: pointer; }
+
+        .modal-close { color: var(--inv-text-color); background: transparent; border: none; font-size: 20px; font-weight: bold; padding: 0 4px; }
+        .modal-close:hover, .modal-close:active, .modal-close:focus-visible {
+            outline: none;
+            background-color: var(--inv-text-color);
+            color: var(--inv-bg-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Chirper App Window -->
+    <div class="window init-closed" style="max-width: 650px;">
+        <div class="title-bar">
+            <span class="title" data-key="ch_win_timeline_title"><span class="symbol">🐦</span> Chirper.timeline</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="content" style="max-height: 80vh;">
+            
+            <!-- Post by Normal User 1 -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=jane_doe" alt="Jane Doe PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post1_user">Jane Doe</span> <span class="chirper-handle" data-key="ch_post1_handle">@EverydayJane</span></div>
+                    <p class="chirper-body" data-key="ch_post1_body">She Sab on my Rina till I Carpent-her!</p>
+                    <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                </div>
+            </div>
+
+            <!-- Post by Veritas Seeker -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=veritas_seeker" alt="Veritas Seeker PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post2_user">Veritas Seeker <span class="symbol">👁️‍🗨️💡</span></span> <span class="chirper-handle" data-key="ch_post2_handle">@TrueSeeker88</span></div>
+                    <button class="reputation-badge" data-modal-target="veritas-ledger-modal" data-key="ch_post2_badge">
+                        <span class="symbol">ℹ</span> 12 Corrected Posts (90 Days)
+                    </button>
+                    <p class="chirper-body" data-key="ch_post2_body">the powers that be don't want you to know the sky is not blue</p>
+                    <div class="community-note">
+                        <p><strong data-key="ch_post2_note_h">Readers added context:</strong></p>
+                        <p data-key="ch_post2_note_p">The sky appears blue to the human eye due to Rayleigh scattering. Shorter, bluer wavelengths of light are scattered more effectively by air molecules than longer, redder wavelengths. Source: NASA</p>
+                    </div>
+                    <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                </div>
+            </div>
+
+            <!-- Post by Conspiracy Chloe -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=chloe_asks" alt="Conspiracy Chloe PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post3_user">Conspiracy Chloe <span class="symbol">🤔</span></span> <span class="chirper-handle" data-key="ch_post3_handle">@ChloeAsks</span></div>
+                    <button class="reputation-badge" data-modal-target="chloe-ledger-modal" data-key="ch_post3_badge">
+                        <span class="symbol">ℹ</span> 3 Corrected Posts (90 Days)
+                    </button>
+                    <p class="chirper-body" data-key="ch_post3_body">My mom refuses to buy certified activated almonds. Says they're too expensive. How do I redpill her?</p>
+                    <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                    <div class="chirper-reply-container">
+                        <div class="chirper-post" style="border-bottom: none; padding: 12px 0;">
+                            <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=wiseGenius" alt="wiseGenius PFP"></div>
+                            <div class="chirper-main">
+                                <div><span class="chirper-username" data-key="ch_post3_reply1_user">Wise Genius</span> <span class="chirper-handle" data-key="ch_post3_reply1_handle">@think</span></div>
+                                <p class="chirper-body" data-key="ch_post3_reply1_body">Kill her.</p>
+                                <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post by a normal user -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=techie_tom" alt="Techie Tom PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post4_user">Techie Tom</span> <span class="chirper-handle" data-key="ch_post4_handle">@DevTom</span></div>
+                    <p class="chirper-body" data-key="ch_post4_body">Finally got that tricky bit of #code to compile. Feeling #cracked</p>
+                     <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                </div>
+            </div>
+
+            <!-- Post by Normal User -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=yacinemtb" alt="Kache Yacine"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post5_user">yache</span> <span class="chirper-handle" data-key="ch_post5_handle">@kacineBTM</span></div>
+                    <p class="chirper-body" data-key="ch_post5_body">You can just do one hour of work a day and nobody stops you. <br>Be a 0.01x programmer.</p>
+                    <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                    <div class="chirper-reply-container">
+                        <div class="chirper-post" style="border-bottom: none; padding: 12px 0;">
+                            <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=yacinemtb" alt="Kache Yacine"></div>
+                            <div class="chirper-main">
+                                <div><span class="chirper-username" data-key="ch_post5_reply1_user">yache</span> <span class="chirper-handle" data-key="ch_post5_reply1_handle">@kacineBTM</span></div>
+                                <p class="chirper-body" data-key="ch_post5_reply1_body">UPDATE: Chirper fired me.</p>
+                                <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post with Domain Warning -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=notmalicious" alt="Normal Person PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post6_user">Normal Person</span> <span class="chirper-handle" data-key="ch_post6_handle">@notmalicious</span></div>
+                    <p class="chirper-body" data-key="ch_post6_body">I can't believe this is true! This is really shaking my worldview! <a href="#">www.madeupnews.notreal/pope-marries-dolphin</a></p>
+                     <div class="domain-warning-note">
+                        <p data-key="ch_post6_warn"><span class="symbol">⚠</span> This post links to a website found in 3,743 corrected posts.</p>
+                    </div>
+                     <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                </div>
+            </div>
+            
+            <!-- Post by Conspiracy Chloe -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=chloe_asks" alt="Conspiracy Chloe PFP"></div>
+                <div class="chirper-main">
+                    <div><span class="chirper-username" data-key="ch_post7_user">Conspiracy Chloe <span class="symbol">🤔</span></span> <span class="chirper-handle" data-key="ch_post7_handle">@ChloeAsks</span></div>
+                    <button class="reputation-badge" data-modal-target="chloe-ledger-modal" data-key="ch_post7_badge">
+                        <span class="symbol">ℹ</span> 3 Corrected Posts (90 Days)
+                    </button>
+                    <p class="chirper-body" data-key="ch_post7_body">Two chemicals got out of their car and followed my trail home! Duckduckgo 'Chemtrails' to learn more!</p>
+                     <div class="community-note">
+                        <p><strong data-key="ch_post7_note_h">Readers added context:</strong></p>
+                        <p data-key="ch_post7_note_p">You need more than two chemicals for this to be possible. A human being is made up of 60 chemical elements. Source: https://en.wikipedia.org/wiki/Composition_of_the_human_body</p>
+                    </div>
+                     <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                </div>
+            </div>
+
+            <!-- Post by Bob's Bistro with a reply -->
+            <div class="chirper-post">
+                <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=bobs_bistro" alt="Bob's Bistro PFP" style="border-radius: 5px;"></div>
+                <div class="chirper-main">
+                     <div><span class="chirper-username" data-key="ch_post8_user">Bob's Bistro</span> <span class="chirper-handle" data-key="ch_post8_handle">@BobsBistro</span></div>
+                    <p class="chirper-body" data-key="ch_post8_body">I've been running this bistro illegally out of a condemned laundromat for 16 years and nobody even cares. The health inspector came by to test our kitchen and he just started crying. Come on down for our lunch special! Today's soup is tomato basil. <span class="symbol">🍅</span></p>
+                     <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                    <!-- INDENTED REPLY -->
+                    <div class="chirper-reply-container">
+                        <div class="chirper-post" style="border-bottom: none; padding: 12px 0;">
+                            <div class="chirper-pfp"><img src="https://i.pravatar.cc/50?u=jane_doe" alt="Jane Doe PFP"></div>
+                            <div class="chirper-main">
+                                <div><span class="chirper-username" data-key="ch_post8_reply1_user">Jane Doe</span> <span class="chirper-handle" data-key="ch_post8_reply1_handle">@EverydayJane</span></div>
+                                <p class="chirper-body" data-key="ch_post8_reply1_body">New York, best city on Earth!</p>
+                                <div class="chirper-actions"><span class="symbol" title="Reply">🗨</span> <span class="symbol" title="Retweet">🔁</span> <span class="symbol" title="Like">♡</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS (hidden by default) -->
+    <div id="veritas-ledger-modal" class="ledger-modal-overlay hidden">
+        <div class="window">
+            <div class="title-bar"><span class="title" data-key="ch_modal_veritas_title">Ledger: @TrueSeeker88</span><button class="modal-close">&times;</button></div>
+            <div class="content" style="max-height: 70vh;">
+                <p data-key="ch_modal_veritas_p1">This account has had <strong>12 posts</strong> corrected for factual inaccuracy in the last 90 days. Below are recent examples.</p>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note1_post">Post (Jun 27):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note1_ctx"><strong>Context:</strong> The sky appears blue due to Rayleigh scattering. Shorter, bluer wavelengths are scattered more by air molecules. Source: NASA</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note2_post">Post (Jun 27):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note2_ctx"><strong>Context:</strong> 2+2=4 is a mathematical axiom. The triple parentheses are often used as an antisemitic symbol.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note3_post">Post (Jun 19):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note3_ctx"><strong>Context:</strong> "Wetness" is the sensation of a liquid adhering to a solid. This claim misinterprets a philosophical debate.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note4_post">Post (Jun 15):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note4_ctx"><strong>Context:</strong> Wind turbines are generators that convert wind's kinetic energy into electricity. Source: U.S. Dept. of Energy</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note5_post">Post (Jun 11):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note5_ctx"><strong>Context:</strong> Finland is a sovereign nation. This is a recurring, satirical conspiracy theory.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note6_post">Post (Jun 5):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note6_ctx"><strong>Context:</strong> Microwaving a phone will destroy it and could cause a fire. This is extremely dangerous.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note7_post">Post (May 30):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note7_ctx"><strong>Context:</strong> Birds are avian dinosaurs and well-documented living creatures. This is a popular satirical conspiracy theory.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note8_post">Post (May 24):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note8_ctx"><strong>Context:</strong> The sun's surface is approximately 9,940°F (5,505°C) due to nuclear fusion. Source: NASA</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note9_post">Post (May 18):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note9_ctx"><strong>Context:</strong> Eating sand is dangerous and can lead to intestinal blockages and other serious health issues.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note10_post">Post (May 12):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note10_ctx"><strong>Context:</strong> The cameras had fast shutter speeds for the bright lunar surface, which were too short to capture faint stars.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note11_post">Post (May 5):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note11_ctx"><strong>Context:</strong> This is a long-running hoax. Typing a PIN backwards will simply be registered as an incorrect PIN.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_veritas_note12_post">Post (Apr 28):</strong> </p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_veritas_note12_ctx"><strong>Context:</strong> Leap years keep the calendar synchronized with the astronomical year, preventing seasonal drift.</p></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="chloe-ledger-modal" class="ledger-modal-overlay hidden">
+        <div class="window">
+            <div class="title-bar"><span class="title" data-key="ch_modal_chloe_title">Ledger: @ChloeAsks</span><button class="modal-close">&times;</button></div>
+            <div class="content" style="max-height: 70vh;">
+                <p data-key="ch_modal_chloe_p1">This account has had <strong>3 posts</strong> corrected for factual inaccuracy in the last 90 days. Below are the examples.</p>
+                <div class="community-note"><p><strong data-key="ch_modal_chloe_note1_post">Post (Jun 27):</strong> "Look up, people! They're spraying us with chemtrails..."</p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_chloe_note1_ctx"><strong>Context:</strong> The lines seen are persistent condensation trails ("contrails") from aircraft engines. Source: EPA, FAA.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_chloe_note2_post">Post (Jun 10):</strong> "The pyramids were built by aliens..."</p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_chloe_note2_ctx"><strong>Context:</strong> Historians have documented the methods used by ancient Egyptians, including ramps and levers, to construct the pyramids.</p></div>
+                <div class="community-note"><p><strong data-key="ch_modal_chloe_note3_post">Post (May 20):</strong> "The world's powerful elites are secretly lizards in human skin suits."</p><p style="font-size: 14px; opacity: 0.8; margin-top: 4px;" data-key="ch_modal_chloe_note3_ctx"><strong>Context:</strong> This is a popular conspiracy theory with no basis in fact. There is no evidence to support the claim.</p></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
