@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graflect Transliteration Tool</title>
+    <link rel="stylesheet" href="pelmeni2025.css">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --text-color: #dcdcdc;
+            --primary-color: #569cd6;
+            --input-bg: #252526;
+            --border-color: #3e3e42;
+            --button-bg: #0e639c;
+            --button-hover-bg: #1177bb;
+            --prompt-bg: #2d2d30;
+        }
+        body {
+            font-family: "Fairfax HD";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            font-family: 'Fairfax HD';
+        }
+        textarea, #output-container, #prompt-area {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 1em;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 1.2em;
+            line-height: 1.6;
+            font-family: 'Fairfax HD';
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        #output-container {
+            min-height: 100px;
+            background-color: #1a1a1a;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #output {
+            font-family: 'Fairfax HD';
+            font-size: 1.5em;
+        }
+        .controls {
+            display: flex;
+            gap: 1em;
+            justify-content: center;
+            font-family: 'Fairfax HD';
+        }
+        button {
+            padding: 0.8em 1.5em;
+            font-size: 1em;
+            font-family: 'Fairfax HD';
+            font-weight: bold;
+            color: white;
+            background-color: var(--button-bg);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button:hover:not(:disabled) {
+            background-color: var(--button-hover-bg);
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        #clear-choices {
+            background-color: #723c3c;
+        }
+        #clear-choices:hover {
+            background-color: #8b4a4a;
+        }
+        #prompt-area {
+            margin-top: 1em;
+            background-color: var(--prompt-bg);
+            border-left: 5px solid var(--primary-color);
+        }
+        .prompt-word-highlight {
+            font-style: italic;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .choice-buttons button {
+            margin-right: 0.5em;
+            margin-bottom: 0.5em;
+            background-color: #3e3e42;
+        }
+        .choice-buttons button:hover {
+            background-color: #5a5a5e;
+        }
+        .remember-choice {
+            margin-top: 1em;
+            display: flex;
+            align-items: center;
+        }
+        .remember-choice input {
+            margin-right: 0.5em;
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1></h1>
+        <h2>Graflect Transliteration Tool</h2>
+        <p>Enter English text. For ambiguous words, the tool will pause and ask you to choose the correct sound. Your choices can be saved for future use.</p>
+        <textarea id="english-input" placeholder="Enter English text here... e.g., the quick brown fox jumps over the lazy dog"></textarea>
+        <div class="controls">
+            <button id="transliterate-btn">Transliterate</button>
+            <button id="clear-choices">Clear Saved Choices</button>
+        </div>
+        <div id="prompt-area" style="display: none;">
+            <h3 id="prompt-heading"></h3>
+            <p id="prompt-instruction"></p>
+            <div id="prompt-buttons-container" class="choice-buttons"></div>
+            <div class="remember-choice">
+                <input type="checkbox" id="remember-choice-checkbox" checked>
+                <label for="remember-choice-checkbox">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
+            </div>
+        </div>
+        <h2>Result:</h2>
+        <div id="output-container">
+            <span id="output"></span>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA MAPPINGS ---
+        const graflectMap = {
+            '/p/': '', '/b/': '', '/t/': '', '/d/': '', '/k/': '', '/ɡ/': '',
+            '/f/': '', '/v/': '', '/θ/': '', '/ð/': '', '/s/': '', '/z/': '',
+            '/ʃ/': '', '/ʒ/': '', '/h/': '', '/m/': '', '/n/': '', '/ŋ/': '',
+            '/l/': '', '/r/': '', '/w/': '', '/j/': '', '/iː/': '', '/ɪ/': '',
+            '/ʊ/': '', '/u/': '', '/ɛ/': '', '/æ/': '', '/ʌ/': '', '/ə/': '',
+            '/ɑ/': '', '/eɪ/': '', '/ɛə/': '', '/aɪ/': '', '/aʊ/': '', '/oʊ/': '',
+            '/ɔ/': '', '/ɜː/': '', '/ɛər/': '', '/tʃ/': '', '/dʒ/': '', '/ju/': '',
+            '/wi/': '', '/ɥi/': '', '/x/': '', '/ɾ/': '', '/ʁ/': '',
+            // --- NEW & UPDATED MAPPINGS TO PREVENT IPA LEAKS ---
+            '/ks/': '',  // 'x' sound
+            '/kw/': '',  // 'qu' sound
+            '/ɒ/': '',    // Short 'o' sound (like in 'fox'), mapped to the /ɑ/ Graflect
+            '/uː/': ''   // Long 'oo' sound, mapped to /u/
+        };
+
+        const graphemeToIpa = {
+            // Longest Graphemes First
+            'ck': '/k/', // NEW RULE: ck is always /k/
+            'qu': '/kw/',
+            'th': ['/θ/', '/ð/'],
+            'sh': '/ʃ/',
+            'ch': ['/tʃ/', '/k/'],
+            'ng': '/ŋ/',
+            'ph': '/f/',
+            'kn': '/n/',
+            'wr': '/r/',
+            'gh': ['/ɡ/', '/f/', ''],
+            'oo': ['/uː/', '/ʊ/', '/ʌ/'],
+            'ee': '/iː/',
+            'ea': ['/iː/', '/ɛ/', '/eɪ/'],
+            'ou': ['/aʊ/', '/oʊ/', '/u/', '/ʌ/'],
+            'ow': ['/aʊ/', '/oʊ/'],
+            'ai': '/eɪ/',
+            'ay': '/eɪ/',
+            // Single Characters
+            'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/'], 'e': ['/ɛ/', '/iː/', '/ə/'], 'i': ['/ɪ/', '/aɪ/'], 
+            'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
+            'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
+            'p': '/p/', 'b': '/b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'g': '/ɡ/', 'f': '/f/', 'v': '/v/', 
+            's': '/s/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/', 'r': '/r/', 'w': '/w/',
+            'j': '/dʒ/'
+        };
+
+        // --- DOM ELEMENTS ---
+        const inputEl = document.getElementById('english-input');
+        const outputEl = document.getElementById('output');
+        const transliterateBtn = document.getElementById('transliterate-btn');
+        const clearBtn = document.getElementById('clear-choices');
+        const promptAreaEl = document.getElementById('prompt-area');
+        const promptHeadingEl = document.getElementById('prompt-heading');
+        const promptInstructionEl = document.getElementById('prompt-instruction');
+        const promptButtonsEl = document.getElementById('prompt-buttons-container');
+        const rememberCheckbox = document.getElementById('remember-choice-checkbox');
+        const promptWordCheckboxEl = document.getElementById('prompt-word-for-checkbox');
+
+        // --- STATE & LOCAL STORAGE ---
+        let userChoices = {};
+        // Sort keys by length, descending, to ensure longest match is always found first.
+        const graphemeKeys = Object.keys(graphemeToIpa).sort((a, b) => b.length - a.length);
+        const ipaKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
+
+        function loadUserChoices() {
+            const stored = localStorage.getItem('graflectUserChoices');
+            userChoices = stored ? JSON.parse(stored) : {};
+        }
+        function saveUserChoices() {
+            localStorage.setItem('graflectUserChoices', JSON.stringify(userChoices));
+        }
+        function clearUserChoices() {
+            if (confirm("Are you sure you want to delete all saved word preferences? This cannot be undone.")) {
+                localStorage.removeItem('graflectUserChoices');
+                userChoices = {};
+                outputEl.textContent = '';
+                alert("Saved choices cleared.");
+            }
+        }
+
+        // --- CORE LOGIC ---
+        function ipaToGraflect(ipaString) {
+            if (!ipaString) return '';
+            let result = '';
+            let remainingIpa = ipaString;
+            while (remainingIpa.length > 0) {
+                let foundMatch = false;
+                for (const key of ipaKeys) { // ipaKeys is pre-sorted to be longest first
+                    if (remainingIpa.startsWith(key)) {
+                        result += graflectMap[key];
+                        remainingIpa = remainingIpa.substring(key.length);
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (!foundMatch) {
+                    result += remainingIpa[0]; // Fallback for unmapped characters (should not happen with good maps)
+                    remainingIpa = remainingIpa.substring(1);
+                }
+            }
+            return result;
+        }
+
+        function findLongestGrapheme(text) {
+            for (const key of graphemeKeys) {
+                if (text.startsWith(key)) return key;
+            }
+            return text[0];
+        }
+
+        let currentResolve;
+
+        async function promptForChoice(word, grapheme, options, index) {
+            const highlightedWord = `${word.substring(0, index)}<span class="prompt-word-highlight">${word.substring(index, index + grapheme.length)}</span>${word.substring(index + grapheme.length)}`;
+            promptHeadingEl.innerHTML = `Ambiguity in "${word}"`;
+            promptInstructionEl.innerHTML = `Choose the sound for the highlighted part: ${highlightedWord}`;
+            promptWordCheckboxEl.textContent = word;
+            promptButtonsEl.innerHTML = '';
+            options.forEach(ipa => {
+                if (ipa === undefined) return;
+                const button = document.createElement('button');
+                const graflectChars = ipaToGraflect(ipa);
+                button.innerHTML = `${ipa || '(silent)'} → ${graflectChars || ' '}`;
+                button.onclick = () => {
+                    if(currentResolve) {
+                        currentResolve(ipa);
+                        currentResolve = null;
+                    }
+                    promptAreaEl.style.display = 'none';
+                };
+                promptButtonsEl.appendChild(button);
+            });
+            promptAreaEl.style.display = 'block';
+            return new Promise(resolve => {
+                currentResolve = resolve;
+            });
+        }
+
+        async function processWord(word) {
+            const lowerWord = word.toLowerCase();
+            if (userChoices[lowerWord]) {
+                return ipaToGraflect(userChoices[lowerWord]);
+            }
+            let finalIpa = '';
+            let remaining = lowerWord;
+            let originalIndex = 0;
+            while (remaining.length > 0) {
+                const grapheme = findLongestGrapheme(remaining);
+                let ipaOptions = graphemeToIpa[grapheme];
+                if (typeof ipaOptions === 'string') {
+                    finalIpa += ipaOptions;
+                } else if (Array.isArray(ipaOptions)) {
+                    const chosenIpa = await promptForChoice(word, grapheme, ipaOptions, originalIndex);
+                    if (chosenIpa) finalIpa += chosenIpa;
+                } else {
+                    finalIpa += grapheme;
+                }
+                remaining = remaining.substring(grapheme.length);
+                originalIndex += grapheme.length;
+            }
+            if (rememberCheckbox.checked) {
+                userChoices[lowerWord] = finalIpa;
+                saveUserChoices();
+            }
+            return ipaToGraflect(finalIpa);
+        }
+
+        async function handleTransliterateClick() {
+            transliterateBtn.disabled = true;
+            transliterateBtn.textContent = "Processing...";
+            const text = inputEl.value;
+            const parts = text.split(/(\s+|[.,!?;:"()'-])/g);
+            let finalOutput = '';
+            for (const part of parts) {
+                if (!part) continue;
+                if (part.match(/(\s+|[.,!?;:"()'-]|\d+)/)) {
+                    finalOutput += part;
+                } else {
+                    const word = part;
+                    const graflectWord = await processWord(word);
+                    finalOutput += graflectWord;
+                }
+                outputEl.textContent = finalOutput;
+            }
+            transliterateBtn.disabled = false;
+            transliterateBtn.textContent = "Transliterate";
+        }
+
+        // --- EVENT LISTENERS ---
+        transliterateBtn.addEventListener('click', handleTransliterateClick);
+        clearBtn.addEventListener('click', clearUserChoices);
+
+        // --- INITIALIZATION ---
+        loadUserChoices();
+    </script>
+</body>
+</html>
