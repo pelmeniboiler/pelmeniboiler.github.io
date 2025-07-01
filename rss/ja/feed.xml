@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-	<title>ペリメニボイラー</title>
-	<link>https://pelmeniboiler.github.io/</link>
-	<description>私の好きなイケてるもの。</description>
-	<language>ja</language>
+    <title>ペリメニボイラー</title>
+    <link>https://pelmeniboiler.github.io/</link>
+    <description>私の好きなイケてるもの。</description>
+    <language>ja</language>
     <copyright>2021-2025 Wendy Zhulkovsky PIT License, Several Rights Reserved.</copyright>
     <ttl>60</ttl>
     <image>
@@ -12,113 +12,156 @@
         <title>ペリメニボイラー</title>
         <link>https://pelmeniboiler.github.io/</link>
     </image>
-	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 22:00:59 GMT</lastBuildDate>
-	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
-		<item>
-			<title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
-			<link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
-			<description><![CDATA[
+    <generator>Pelmeniboiler RSS Builder</generator>
+    <lastBuildDate>Tue, 01 Jul 2025 23:06:43 GMT</lastBuildDate>
+    <atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
+        <item>
+            <title>このブログはRSSに対応しました</title>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+            <description><![CDATA[<h1 id="title" data-key="tbns_title">このブログはRSSに対応しました</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">リフレッシュ！サイト・ストラクチャー (Rifresshu! Saito Sutorakuchā)</h2>
+                <p data-key="tbns_p1">以前から私のサイトをご存知の方は、「写真フォルダー」と「プロジェクトフォルダー」を再編成したことにお気づきかもしれません。これらは以前、別々のテーマを使用していて、人生のどの時点でdivや他の重要なHTML要素について学んだかによって、全く違う見た目になっていました。</p>
+                <p data-key="tbns_p2">現在は、どちらのジャンルも2年前に開発した標準の記事レイアウトを使用し、ブログビューアで分類されています。このやり方は、コンテンツのジャンルごとに整理された別々の「フォルダー」を持つという考えからは少し離れてしまうと思いますが、でもまあ、</p>
+                <p data-key="tbns_p3"><ol><li>• 最終的にはブログ記事としてフォーマットされているのだから、そのように扱うべき。</li><li>• この方法の方がはるかに拡張性が高い。</li></ol></p>
+                <p data-key="tbns_p4">カテゴリーを使って自由に分類してみてください。検索機能は、それが必要になるほど記事が増えたら追加します。</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">楽々シンジケーション・システム (Raku-raku Shinjikēshon Shisutemu)</h2>
+                <p data-key="tbns_p5">最近、多くの<abbr title="はい、この言葉を使っています。「ネットワークの民」の方がよかったですか？">ネチズン</abbr>がブログやニュースレターを作成するためのツールとして<a href="https://substack.com/">Substack</a>を選んでいます。Substackは好きですよ！良いプラットフォームです。利用していて楽しいですし、それは主に利用可能なコンテンツのおかげですが、もし彼らがSubstackを使っていなかったら、私が読んでいるブログの半分は見つけられなかっただろうとは言っておきます。</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">Substackの好きなところ：</h3>
+                <p data-key="tbns_p6"><ul><li>• 「過激なコンテンツを取り締まる」ことを原則として拒否している点。</li><li>•出版物の幅が広く、多くの異なる市場を取り込んでいる点。</li><li>• 無料で利用でき、収益を上げたい人には公正なビジネスモデルがある点。</li><li>•クリエイターにお金を渡すのがとても簡単な点。</li><li>• LaTeX対応。</li><li>• Datawrapper対応。</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">Substackの嫌いなところ：</h3>
+                <p data-key="tbns_p7"><ul><li>• メール中心の設計。</li><li>• 私の受信箱は今やSubstackからのメールでいっぱいです。</li><li>• 私のブログを読んでくれる人のメールアドレスは要りません。</li><li>• ニュースレターを読んでいる人のメールアドレスを渡したくありません。</li><li>• カスタムCSSが使えない。</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Substackには絶対に含まれないだろうけど、私が欲しいもの：</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js対応。</li><li>•インタラクティブなデモ。</li></ul><aside>今後の展開のヒントじゃないんだからね。</aside><br></div>ほとんどの人にとって、Substackは公に投稿される長文の文章に関して、まさに求めているものだと思います。メールの受信箱を汚されるのが神聖な儀式に反すると感じる人や、CSSに特にうるさい人にとっては、<a href="https://wordpress.com/">WordPress</a>がおそらく正しい代替案でしょう。私自身は、どちらも選びませんでした。自分でウェブサイトを作ることの学びと苦労は本当に楽しいです。特に、私が驚くほど頭が固く、超人的な忍耐力を持つ存在から一対一の指導を必要とするので、AIが手を貸してくれるようになってからは尚更です。</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">楽勝する術 (Rakushō Suru Sube)</h2>
+                <p data-key="tbns_p8">というわけで、ニュースレターのようなメール中心のソリューションは、その考えだけで吐き気がするので拒否しますが、人々が手動で私のブログをチェックしなければならないというのも嫌いです。解決策は一つしかないですよね？</p>
+                <p data-key="tbns_p9">子供の頃にRSSという概念を思い出しました。かつてインターネット上のあらゆるウェブページにあった、あの小さなオレンジ色の四角いアイコンですよね？私の知識はそこまででした。父がiPadで一番好きだったアプリ、FlipboardがRSSリーダーだということすら知りませんでした。RSSについて学ぶのは、あまり簡単ではありませんでした。検索バーに「RSS」と入力すると、同じ名前のウェブサイトが出てきますが、それはポッドキャスティング専門のようです。Googleが有益な情報よりも優先して表示するのは、RSSフィードの生成を自動化したり、購読を可能にしたりする関連サービスばかりです。</p>
+                <p data-key="tbns_p10">RSSフィードを持つために必要なのが単一のXMLファイルだけだとは、最初はよく分かりませんでした。しかし、最終的にはVScodeに拡張機能 を設定し、ブログフォルダー内のHTMLファイルとそのローカライゼーションからフィードを構築できるようにしました。</p>
+                <p data-key="tbns_p11">これは私の好みにぴったりの解決策です。私のコンテンツをどう見るかは、購読者次第。メールで受け取りたいなら、それは彼らの選択であり、私は一切関与しません。完璧です！</p>
+                <p data-key="tbns_p12">あとは私の<abbr title="4つの言語と、英語の2つの表記法で利用可能です。ホームページのブログビューにある衛星アイコンをクリックしてください。">rssフィード</abbr>を提供するだけ…待って…RSSってどうやって読むの？</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">ろくでもない集金システム (Rokudemonai Shūkin System)</h2>
+                <p data-key="tbns_p13">まだRSSを使っていないけれど使ってみたいという方にお伝えしたいのですが、これは完全に無料です。Androidをお使いなら、<a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>を使ってください。iOSをお使いなら、きっと他の選択肢もあると思いますが、私が保証することはできません。既読・未読を同期したい場合は、自分用のサーバーが必要になるかもしれません。特定の種類のユーザーにとっては非常に価値があるけれど、あなたにとっては気にしないかもしれない、非常に特殊な機能を提供するサービスはたくさんあります。そういったサービスが存在するのは良いことだと思いますが、Googleで検索したときに、あなたのユースケースにとっての正しい解決策よりも優先されて表示されるのは気に入りません。</p>
+
+                <p data-key="tbns_p15"><aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside></p>
+            </section>
+        ]]></description>
+            <pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
+        </item>
+        <item>
+            <title>GraflectとそのIPA対応ガイド</title>
+            <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
+            <description><![CDATA[
             <header>
-                <h1 id="title" data-key="dv_h1">ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
-                <p data-key="dv_p1">ユタのディキシーは、私が写真の趣味を再開した場所です。最初に着いたときにカメラを持っていたら撮れたであろうワシントンやセントジョージの写真はあまりありません。風景や街並みのために作られたかのような、非常に特徴的な地域です。当時は友人のアーロンと一緒に住んでいて、日焼けでかなりダメージを受けていました。</p>
+                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応ガイド</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソン氏の個人ウェブサイトMayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントはKreative Korpのレベッカ・G・ベッテンコート氏による<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967氏のGS Unicode 2.0フォント</a>などでサポートされています。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースです。</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="July" data-key="dv_h2_july"> 7月</h2>
-                <p data-key="dv_p2">その月に<a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a>と<a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKORマクロレンズ</a>を手に入れました。このレンズのオートフォーカスは新しいレンズに比べて非常に遅く、開放では非常にソフトです。しかし非常に安価で、良いポートレートが撮れます。初期の作品のほとんどは、それに慣れようとしていたのと、カメラのモニターからは大丈夫そうに見えたため、あまりにもソフトすぎます。</p>
-                
-                <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ ぬいぐるみ</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
-                <p data-key="dv_p3">私のバジル（OMORI (2020)）のぬいぐるみが、テディベアのミーシャの膝にすっぽり収まっています。左には友人のジュリアが作ったゴンドラ、右には友人のアーロンがKommandoStoreで購入したゴンドラに挟まれています。右のゴンドラの足の間にはオモリ（OMORI (2020)）が見えます。</p>
-
-                <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ ゴンドラ</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
-                <p data-key="dv_p4">ゴンドラ一人。</p>
-                
-                <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ チェリーとパイ</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
-                <p data-key="dv_p5">FLDS（末日聖徒イエス・キリスト教会原理主義派）の訪問販売の女性が、アーロンと私にこのパイ型のチーズケーキを売ってくれました。裏のポーチでチェリーと一緒に食べました。クリーミーで甘く、少し軽く、キャラメルがたっぷりかかっていました。チェリーとの相性も良かったです。</p>
+                <h2 id="consonants" data-key="guide_h2_consonants">子音</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example">音の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>パ</b>ンの [p] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>バ</b>スの [b] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>テ</b>ンキの [t] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ド</b>アの [d] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>カ</b>メラの [k] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ガ</b>ラスの [g] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>フ</b>ァイルの [f] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>ヴ</b>ァイオリンの [v] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">英語の音: <b>th</b>ink の <b>th</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">英語の音: <b>th</b>is の <b>th</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの [s] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの [z] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの [ʃ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">英語の音: occa<b>s</b>ion の [ʒ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>は</b>行の息の音 [h]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの [m] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの [n] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末 [ŋ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend">英語の音: <b>l</b>end の <b>l</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音、<b>r</b>opeのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの [w] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>クソクの [j] の音</td></tr>
+                    </tbody>
+                </table>
             </section>
-            
+        
             <section>
-                <h2 id="Oppie Trip" data-key="dv_h2_oppie"> オッピー旅行</h2>
-                <p data-key="dv_p6">友人のアーロン、ジョシュ、ベアと一緒に「オッペンハイマー」を観に行きました。クールな映画でした。映画の後、ジョシュのテスラに戻る途中でこの写真を撮りました。</p>
-                
-                <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ 大観覧車</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
-                <p data-key="dv_p7">観覧車のゴンドラの中にはテレビがあって、最悪だと聞きました。でも、下から見るとかなりクールですね。</p>
-            </section>
-            
-            <section>
-                <h2 id="Honey Salt" data-key="dv_h2_honey"> ハニーソルトへ</h2>
-                <p data-key="dv_p8">マッカラン空港で友人のデビッドを迎えに行くために、私とアーロンがセントジョージからベガスに出発するスケジュールを間違えてしまいました。週を間違えたのです！私たちはまあまあのレストランであるハニーソルトに行き、クールな人たちに会いました。駐車場にいたクールなゴスっぽい女の子と、レストランで隣に座っていた確かユタからの派手なカップルです。</p>
-            
-                <h3 id="Goth" data-key="dv_h3_goth"> ❏ ゴスの女の子</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
-                <p data-key="dv_p9">インスタとか交換すればよかった！ポーズをとってくれてありがとう、ランダムなベガスのゴスな女の子！</p>
-            </section>
-
-            <section>
-                <h2 id="David" data-key="dv_h2_david"> デイビッドを迎えに</h2>
-                <p data-key="dv_p10">少し後でデイビッドを迎えにベガスに再展開しました。</p>
-            
-                <h3 id="Burger" data-key="dv_h3_burger"> ❏ めちゃくちゃなバーガー</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
-                <p data-key="dv_p11">味は良かったけど、食べるのが不可能でした！馬鹿なバーガーがバラバラになる。パンは美味しかったけど、中身に対してしっかりしすぎていた。</p>
-
-                <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ スクーターマン</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
-                <p data-key="dv_p12">50cc以下のエンジンを積んだ乗り物の群れが、ストリップで私たち三人のそばを通り過ぎました。クールなスクーター。</p>
-
-                <h3 id="GoKart" data-key="dv_h3_gokart"> ❏ ゴーカートマン</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gokart.png" class="article-image">
-                <p data-key="dv_p13">50cc以下のエンジンの群れのもう一人のメンバー。</p>
-
-                <h3 id="Victor" data-key="dv_h3_victor"> ❏ ビクター</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
-                <p data-key="dv_p14">うわー… Fallout New Vegasのビクターだ… 私のこと覚えてるかな？😳</p>
+                <h2 id="vowels" data-key="guide_h2_vowels">母音</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example">音の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">短母音「イ」、<b>イ</b>スのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">英語の音: g<b>oo</b>d の [ʊ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">英語の <b>a</b>ccent の [æ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)、またはシュワー</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「ア」に近い「オ」、母（は<b>は</b>）のように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">英語の音: n<b>ur</b>se の母音（非R音性アクセント）</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
+                    </tbody>
+                </table>
             </section>
 
-            <section>
-                <h2 id="Last" data-key="dv_h2_last"> 最後のベガス旅行</h2>
-                <p data-key="dv_p15">アーロンと私は週末に最後のベガス旅行をしました。二人ともひどい高熱を出し、私はほとんど歩くことも起きていることもできませんでした。恐ろしい夢を見ました。子供の頃に閉じ込められたと夢見た暗い球体が、弱々しく小さくなって私の腕の中に横たわっていました。その息苦しい力は削ぎ落とされていました。それは優しく、促すように私に何かをするように手招きし、かつて使ったある特定の道具の驚くべき精度をそっと私に思い出させました。私の大切な球体がとても可哀想でした。私は私の球体を愛しています。ベガスが一つ建ててくれて嬉しいです。</p>
-            
-                <h3 id="Sign" data-key="dv_h3_sign"> ❏ 北ベガスの看板</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
-                <p data-key="dv_p16">これはアメリカ南西部で撮った中で一番シャープな写真かもしれません…</p>
-
-                <h3 id="North" data-key="dv_h3_north"> ❏ 北部ストリップ</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/north_strip.png" class="article-image">
-                <p data-key="dv_p17">面白い看板！</p>
-
-                <h3 id="Vegas" data-key="dv_h3_vegas"> ❏ ベガスの暗黒面</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vegas.png" class="article-image">
-                <p data-key="dv_p18">ベガスの一部がLEDやネオンで覆われていないことを知っていましたか？夜には光らないんです。不気味！</p>
-
-                <h3 id="Breakfast" data-key="dv_h3_breakfast"> ❏ クソまずい朝食</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/bad_breakfast.png" class="article-image">
-                <p data-key="dv_p19">ひどい朝食でした。オルタナティブなライフスタイルを持つクールな年配の女性に勧められました。古いフルーツとほとんど卵も他のものもないのに5ドル。まだ病気だったし！もっとしっかりしたところに行くべきでした。でも、写真仲間に会えました！</p>
+             <section>
+                <h2 id="other" data-key="guide_h2_other">その他の記号（破擦音、非英語の音、複合音）</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect記号</th>
+                            <th data-key="table_header_ipa">IPA記号</th>
+                            <th data-key="table_header_example_desc">音の例 / 説明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの [tʃ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの [dʒ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">フランス語: h<b>ui</b>t の <b>ui</b> の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の [x] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr [ɾ]</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語: <b>R</b>ammstein の口蓋垂ふるえ音のR [ʁ]</td></tr>
+                    </tbody>
+                </table>
             </section>
-
-            <section>
-                <h2 id="Leaving" data-key="dv_h2_leaving"> 帰宅</h2>
-                <p data-key="dv_p20">バイバイ、セントジョージ！</p>
-            
-                <h3 id="Plane" data-key="dv_h3_plane"> ❏ パインバレー山脈のタービン</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
-                <p data-key="dv_p21">セントジョージでの最後の写真。</p>
-            </section>
-
         ]]></description>
-			<pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
-		</item>
-		<item>
-			<title>エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</title>
-			<link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
-			<description><![CDATA[
+            <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
+        </item>
+        <item>
+            <title>エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</title>
+            <link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
+            <description><![CDATA[
             <header>
                 <h1 id="title" data-key="ep_h1">エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州<br>| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</h1>
                 <p data-key="ep_p1">コネチカットに戻ってから、友人のジュリアと素敵な庭園に行きました。<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html">ユタ</a>で使い始めたのと同じカメラとレンズの組み合わせを使いました。花や虫には良い選択だったと思いますが、次回こういうことをするときは、父の<a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a>ともっと風景向けのレンズを借りて、庭園のレイアウトをもっと撮りたいです。本当に素晴らしいので。水鳥もたくさんいましたが、もっとシャープな写真が撮れたらよかったのに。<br>写真をこんなに圧縮する代わりに、Flickrでホストしてここに埋め込むことを検討すべきだと思います。ディテールが失われすぎています...</p>
@@ -240,117 +283,113 @@
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/aaah.png" class="article-image">
             </section>
         ]]></description>
-			<pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
-		</item>
-		<item>
-			<title>GraflectとそのIPA対応ガイド</title>
-			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
-			<description><![CDATA[
+            <pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
+        </item>
+        <item>
+            <title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
+            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
+            <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応ガイド</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソン氏の個人ウェブサイトMayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントはKreative Korpのレベッカ・G・ベッテンコート氏による<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967氏のGS Unicode 2.0フォント</a>などでサポートされています。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースです。</p>
+                <h1 id="title" data-key="dv_h1">ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
+                <p data-key="dv_p1">ユタのディキシーは、私が写真の趣味を再開した場所です。最初に着いたときにカメラを持っていたら撮れたであろうワシントンやセントジョージの写真はあまりありません。風景や街並みのために作られたかのような、非常に特徴的な地域です。当時は友人のアーロンと一緒に住んでいて、日焼けでかなりダメージを受けていました。</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="consonants" data-key="guide_h2_consonants">子音</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect記号</th>
-                            <th data-key="table_header_ipa">IPA記号</th>
-                            <th data-key="table_header_example">音の例</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>パ</b>ンの [p] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>バ</b>スの [b] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>テ</b>ンキの [t] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ド</b>アの [d] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>カ</b>メラの [k] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ガ</b>ラスの [g] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>フ</b>ァイルの [f] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>ヴ</b>ァイオリンの [v] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">英語の音: <b>th</b>ink の <b>th</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">英語の音: <b>th</b>is の <b>th</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ス</b>ープの [s] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ゾ</b>ウの [z] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>シ</b>ステムの [ʃ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion">英語の音: occa<b>s</b>ion の [ʒ]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>は</b>行の息の音 [h]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>マ</b>マの [m] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>ノ</b>ートの [n] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">英語の音: si<b>ng</b> の語末 [ŋ]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend">英語の音: <b>l</b>end の <b>l</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">アメリカ英語のR音、<b>r</b>opeのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>ワ</b>インの [w] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>ヤ</b>クソクの [j] の音</td></tr>
-                    </tbody>
-                </table>
+                <h2 id="July" data-key="dv_h2_july"> 7月</h2>
+                <p data-key="dv_p2">その月に<a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a>と<a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKORマクロレンズ</a>を手に入れました。このレンズのオートフォーカスは新しいレンズに比べて非常に遅く、開放では非常にソフトです。しかし非常に安価で、良いポートレートが撮れます。初期の作品のほとんどは、それに慣れようとしていたのと、カメラのモニターからは大丈夫そうに見えたため、あまりにもソフトすぎます。</p>
+                
+                <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ ぬいぐるみ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
+                <p data-key="dv_p3">私のバジル（OMORI (2020)）のぬいぐるみが、テディベアのミーシャの膝にすっぽり収まっています。左には友人のジュリアが作ったゴンドラ、右には友人のアーロンがKommandoStoreで購入したゴンドラに挟まれています。右のゴンドラの足の間にはオモリ（OMORI (2020)）が見えます。</p>
+
+                <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ ゴンドラ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
+                <p data-key="dv_p4">ゴンドラ一人。</p>
+                
+                <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ チェリーとパイ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
+                <p data-key="dv_p5">FLDS（末日聖徒イエス・キリスト教会原理主義派）の訪問販売の女性が、アーロンと私にこのパイ型のチーズケーキを売ってくれました。裏のポーチでチェリーと一緒に食べました。クリーミーで甘く、少し軽く、キャラメルがたっぷりかかっていました。チェリーとの相性も良かったです。</p>
             </section>
-        
+            
             <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">母音</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect記号</th>
-                            <th data-key="table_header_ipa">IPA記号</th>
-                            <th data-key="table_header_example">音の例</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">短母音「イ」、<b>イ</b>スのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">英語の音: g<b>oo</b>d の [ʊ]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">英語の <b>a</b>ccent の [æ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)、またはシュワー</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「ア」に近い「オ」、母（は<b>は</b>）のように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">英語の音: n<b>ur</b>se の母音（非R音性アクセント）</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
-                    </tbody>
-                </table>
+                <h2 id="Oppie Trip" data-key="dv_h2_oppie"> オッピー旅行</h2>
+                <p data-key="dv_p6">友人のアーロン、ジョシュ、ベアと一緒に「オッペンハイマー」を観に行きました。クールな映画でした。映画の後、ジョシュのテスラに戻る途中でこの写真を撮りました。</p>
+                
+                <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ 大観覧車</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
+                <p data-key="dv_p7">観覧車のゴンドラの中にはテレビがあって、最悪だと聞きました。でも、下から見るとかなりクールですね。</p>
+            </section>
+            
+            <section>
+                <h2 id="Honey Salt" data-key="dv_h2_honey"> ハニーソルトへ</h2>
+                <p data-key="dv_p8">マッカラン空港で友人のデビッドを迎えに行くために、私とアーロンがセントジョージからベガスに出発するスケジュールを間違えてしまいました。週を間違えたのです！私たちはまあまあのレストランであるハニーソルトに行き、クールな人たちに会いました。駐車場にいたクールなゴスっぽい女の子と、レストランで隣に座っていた確かユタからの派手なカップルです。</p>
+            
+                <h3 id="Goth" data-key="dv_h3_goth"> ❏ ゴスの女の子</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
+                <p data-key="dv_p9">インスタとか交換すればよかった！ポーズをとってくれてありがとう、ランダムなベガスのゴスな女の子！</p>
             </section>
 
-             <section>
-                <h2 id="other" data-key="guide_h2_other">その他の記号（破擦音、非英語の音、複合音）</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect記号</th>
-                            <th data-key="table_header_ipa">IPA記号</th>
-                            <th data-key="table_header_example_desc">音の例 / 説明</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>チ</b>ーズの [tʃ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ジ</b>ャンプの [dʒ] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ユ</b>ニークの「ユ」の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>ウィ</b>ークの「ウィ」の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">フランス語: h<b>ui</b>t の <b>ui</b> の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">ドイツ語: Ba<b>ch</b> の [x] の音</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">スペイン語: pe<b>r</b>o の弾き音のr [ɾ]</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">ドイツ語: <b>R</b>ammstein の口蓋垂ふるえ音のR [ʁ]</td></tr>
-                    </tbody>
-                </table>
+            <section>
+                <h2 id="David" data-key="dv_h2_david"> デイビッドを迎えに</h2>
+                <p data-key="dv_p10">少し後でデイビッドを迎えにベガスに再展開しました。</p>
+            
+                <h3 id="Burger" data-key="dv_h3_burger"> ❏ めちゃくちゃなバーガー</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
+                <p data-key="dv_p11">味は良かったけど、食べるのが不可能でした！馬鹿なバーガーがバラバラになる。パンは美味しかったけど、中身に対してしっかりしすぎていた。</p>
+
+                <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ スクーターマン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
+                <p data-key="dv_p12">50cc以下のエンジンを積んだ乗り物の群れが、ストリップで私たち三人のそばを通り過ぎました。クールなスクーター。</p>
+
+                <h3 id="GoKart" data-key="dv_h3_gokart"> ❏ ゴーカートマン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gokart.png" class="article-image">
+                <p data-key="dv_p13">50cc以下のエンジンの群れのもう一人のメンバー。</p>
+
+                <h3 id="Victor" data-key="dv_h3_victor"> ❏ ビクター</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
+                <p data-key="dv_p14">うわー… Fallout New Vegasのビクターだ… 私のこと覚えてるかな？😳</p>
             </section>
+
+            <section>
+                <h2 id="Last" data-key="dv_h2_last"> 最後のベガス旅行</h2>
+                <p data-key="dv_p15">アーロンと私は週末に最後のベガス旅行をしました。二人ともひどい高熱を出し、私はほとんど歩くことも起きていることもできませんでした。恐ろしい夢を見ました。子供の頃に閉じ込められたと夢見た暗い球体が、弱々しく小さくなって私の腕の中に横たわっていました。その息苦しい力は削ぎ落とされていました。それは優しく、促すように私に何かをするように手招きし、かつて使ったある特定の道具の驚くべき精度をそっと私に思い出させました。私の大切な球体がとても可哀想でした。私は私の球体を愛しています。ベガスが一つ建ててくれて嬉しいです。</p>
+            
+                <h3 id="Sign" data-key="dv_h3_sign"> ❏ 北ベガスの看板</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
+                <p data-key="dv_p16">これはアメリカ南西部で撮った中で一番シャープな写真かもしれません…</p>
+
+                <h3 id="North" data-key="dv_h3_north"> ❏ 北部ストリップ</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/north_strip.png" class="article-image">
+                <p data-key="dv_p17">面白い看板！</p>
+
+                <h3 id="Vegas" data-key="dv_h3_vegas"> ❏ ベガスの暗黒面</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vegas.png" class="article-image">
+                <p data-key="dv_p18">ベガスの一部がLEDやネオンで覆われていないことを知っていましたか？夜には光らないんです。不気味！</p>
+
+                <h3 id="Breakfast" data-key="dv_h3_breakfast"> ❏ クソまずい朝食</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/bad_breakfast.png" class="article-image">
+                <p data-key="dv_p19">ひどい朝食でした。オルタナティブなライフスタイルを持つクールな年配の女性に勧められました。古いフルーツとほとんど卵も他のものもないのに5ドル。まだ病気だったし！もっとしっかりしたところに行くべきでした。でも、写真仲間に会えました！</p>
+            </section>
+
+            <section>
+                <h2 id="Leaving" data-key="dv_h2_leaving"> 帰宅</h2>
+                <p data-key="dv_p20">バイバイ、セントジョージ！</p>
+            
+                <h3 id="Plane" data-key="dv_h3_plane"> ❏ パインバレー山脈のタービン</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
+                <p data-key="dv_p21">セントジョージでの最後の写真。</p>
+            </section>
+
         ]]></description>
-			<pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
-		</item>
-		<item>
-			<title>実験的キーボード「サンシャイン」</title>
-			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
-			<description><![CDATA[
+            <pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
+        </item>
+        <item>
+            <title>実験的キーボード「サンシャイン」</title>
+            <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
+            <description><![CDATA[
             <header>
                 <h1 id="title" data-key="sunshine_h1">実験的キーボード「サンシャイン」</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
@@ -488,47 +527,8 @@
                 <p data-key="bye_p1">私のキーボードの旅を読んでいただきありがとうございました！サンシャインキーボードの製作は、私がこれまで手がけた中で最も挑戦的でやりがいのあるプロジェクトの一つでした。これは単なる道具ではなく、私たちがコンピュータとどう向き合うかという哲学の反映です。ご質問があれば、お気軽にご連絡ください。</p>
             </section>
         ]]></description>
-			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
-		</item>
-		<item>
-			<title>このブログはRSSに対応しました</title>
-			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
-			<description><![CDATA[<h1 id="title" data-key="tbns_title">このブログはRSSに対応しました</h1>
-            <section>
-                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">リフレッシュ！サイト・ストラクチャー (Rifresshu! Saito Sutorakuchā)</h2>
-                <p data-key="tbns_p1">以前から私のサイトをご存知の方は、「写真フォルダー」と「プロジェクトフォルダー」を再編成したことにお気づきかもしれません。これらは以前、別々のテーマを使用していて、人生のどの時点でdivや他の重要なHTML要素について学んだかによって、全く違う見た目になっていました。</p>
-                <p data-key="tbns_p2">現在は、どちらのジャンルも2年前に開発した標準の記事レイアウトを使用し、ブログビューアで分類されています。このやり方は、コンテンツのジャンルごとに整理された別々の「フォルダー」を持つという考えからは少し離れてしまうと思いますが、でもまあ、</p>
-                <p data-key="tbns_p3"><ol><li>• 最終的にはブログ記事としてフォーマットされているのだから、そのように扱うべき。</li><li>• この方法の方がはるかに拡張性が高い。</li></ol></p>
-                <p data-key="tbns_p4">カテゴリーを使って自由に分類してみてください。検索機能は、それが必要になるほど記事が増えたら追加します。</p>
-            </section>
-            <section>
-                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">楽々シンジケーション・システム (Raku-raku Shinjikēshon Shisutemu)</h2>
-                <p data-key="tbns_p5">最近、多くの<abbr title="はい、この言葉を使っています。「ネットワークの民」の方がよかったですか？">ネチズン</abbr>がブログやニュースレターを作成するためのツールとして<a href="https://substack.com/">Substack</a>を選んでいます。Substackは好きですよ！良いプラットフォームです。利用していて楽しいですし、それは主に利用可能なコンテンツのおかげですが、もし彼らがSubstackを使っていなかったら、私が読んでいるブログの半分は見つけられなかっただろうとは言っておきます。</p>
-                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">Substackの好きなところ：</h3>
-                <p data-key="tbns_p6"><ul><li>• 「過激なコンテンツを取り締まる」ことを原則として拒否している点。</li><li>•出版物の幅が広く、多くの異なる市場を取り込んでいる点。</li><li>• 無料で利用でき、収益を上げたい人には公正なビジネスモデルがある点。</li><li>•クリエイターにお金を渡すのがとても簡単な点。</li><li>• LaTeX対応。</li><li>• Datawrapper対応。</li></ul></p>
-                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">Substackの嫌いなところ：</h3>
-                <p data-key="tbns_p7"><ul><li>• メール中心の設計。</li><li>• 私の受信箱は今やSubstackからのメールでいっぱいです。</li><li>• 私のブログを読んでくれる人のメールアドレスは要りません。</li><li>• ニュースレターを読んでいる人のメールアドレスを渡したくありません。</li><li>• カスタムCSSが使えない。</li></ul></p>
-                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Substackには絶対に含まれないだろうけど、私が欲しいもの：</h3>
-                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js対応。</li><li>•インタラクティブなデモ。</li></ul><aside>今後の展開のヒントじゃないんだからね。</aside><br></div>ほとんどの人にとって、Substackは公に投稿される長文の文章に関して、まさに求めているものだと思います。メールの受信箱を汚されるのが神聖な儀式に反すると感じる人や、CSSに特にうるさい人にとっては、<a href="https://wordpress.com/">WordPress</a>がおそらく正しい代替案でしょう。私自身は、どちらも選びませんでした。自分でウェブサイトを作ることの学びと苦労は本当に楽しいです。特に、私が驚くほど頭が固く、超人的な忍耐力を持つ存在から一対一の指導を必要とするので、AIが手を貸してくれるようになってからは尚更です。</p>
-            </section>
-            <section>
-                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">楽勝する術 (Rakushō Suru Sube)</h2>
-                <p data-key="tbns_p8">というわけで、ニュースレターのようなメール中心のソリューションは、その考えだけで吐き気がするので拒否しますが、人々が手動で私のブログをチェックしなければならないというのも嫌いです。解決策は一つしかないですよね？</p>
-                <p data-key="tbns_p9">子供の頃にRSSという概念を思い出しました。かつてインターネット上のあらゆるウェブページにあった、あの小さなオレンジ色の四角いアイコンですよね？私の知識はそこまででした。父がiPadで一番好きだったアプリ、FlipboardがRSSリーダーだということすら知りませんでした。RSSについて学ぶのは、あまり簡単ではありませんでした。検索バーに「RSS」と入力すると、同じ名前のウェブサイトが出てきますが、それはポッドキャスティング専門のようです。Googleが有益な情報よりも優先して表示するのは、RSSフィードの生成を自動化したり、購読を可能にしたりする関連サービスばかりです。</p>
-                <p data-key="tbns_p10">RSSフィードを持つために必要なのが単一のXMLファイルだけだとは、最初はよく分かりませんでした。しかし、最終的にはVScodeに拡張機能 を設定し、ブログフォルダー内のHTMLファイルとそのローカライゼーションからフィードを構築できるようにしました。</p>
-                <p data-key="tbns_p11">これは私の好みにぴったりの解決策です。私のコンテンツをどう見るかは、購読者次第。メールで受け取りたいなら、それは彼らの選択であり、私は一切関与しません。完璧です！</p>
-                <p data-key="tbns_p12">あとは私の<abbr title="4つの言語と、英語の2つの表記法で利用可能です。ホームページのブログビューにある衛星アイコンをクリックしてください。">rssフィード</abbr>を提供するだけ…待って…RSSってどうやって読むの？</p>
-            </section>
-            <section>
-                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">ろくでもない集金システム (Rokudemonai Shūkin System)</h2>
-                <p data-key="tbns_p13">まだRSSを使っていないけれど使ってみたいという方にお伝えしたいのですが、これは完全に無料です。Androidをお使いなら、<a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>を使ってください。iOSをお使いなら、きっと他の選択肢もあると思いますが、私が保証することはできません。既読・未読を同期したい場合は、自分用のサーバーが必要になるかもしれません。特定の種類のユーザーにとっては非常に価値があるけれど、あなたにとっては気にしないかもしれない、非常に特殊な機能を提供するサービスはたくさんあります。そういったサービスが存在するのは良いことだと思いますが、Googleで検索したときに、あなたのユースケースにとっての正しい解決策よりも優先されて表示されるのは気に入りません。</p>
-
-                <p data-key="tbns_p15"><aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside></p>
-            </section>
-        ]]></description>
-			<pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
-		</item>
+            <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+        </item>
 </channel>
 </rss>

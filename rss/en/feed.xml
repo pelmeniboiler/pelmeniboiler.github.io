@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-	<title>Pelmeniboiler</title>
-	<link>https://pelmeniboiler.github.io/</link>
-	<description>Neat stuff I like.</description>
-	<language>en</language>
+    <title>Pelmeniboiler</title>
+    <link>https://pelmeniboiler.github.io/</link>
+    <description>Neat stuff I like.</description>
+    <language>en</language>
     <copyright>2021-2025 Wendy Zhulkovsky PIT License, Several Rights Reserved.</copyright>
     <ttl>60</ttl>
     <image>
@@ -12,113 +12,156 @@
         <title>Pelmeniboiler</title>
         <link>https://pelmeniboiler.github.io/</link>
     </image>
-	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 22:00:59 GMT</lastBuildDate>
-	<atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
-		<item>
-			<title>Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
-			<link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
-			<description><![CDATA[
+    <generator>Pelmeniboiler RSS Builder</generator>
+    <lastBuildDate>Tue, 01 Jul 2025 23:06:42 GMT</lastBuildDate>
+    <atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
+        <item>
+            <title>This Blog Now Supports RSS</title>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+            <description><![CDATA[<h1 id="title" data-key="tbns_title">This Blog Now Supports RSS</h1>
+            <section>
+                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Reorganizing Some Stuff</h2>
+                <p data-key="tbns_p1">If you were familiar with my site before, you may notice I've rearranged my "photo folder" and "projects folder". These used to use different theming and looked totally different based on when in life I had learned about divs or other important html elements.&nbsp;</p>
+                <p data-key="tbns_p2">Now, both genres use the standard article layout I developed 2 years ago, and are sorted in the blog viewer. While I think this way of doing things does take away from the idea of having different "folders" with organized genres of content in them, I think&nbsp;</p>
+                <p data-key="tbns_p3"><ol><li>• Ultimately they're formatted as blog articles and should be treated as such.</li><li>• This method is far more scalable.&nbsp;</li></ol></p>
+                <p data-key="tbns_p4">Feel free to sort through them with the categories. I will add a search function when I have enough posts for that to be necessary.&nbsp;</p>
+            </section>
+            <section>
+                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">Replacing SubStack</h2>
+                <p data-key="tbns_p5">Lately, I've seen many <abbr title="Yes, I'm using that word. Would you have prefered people-of-network?">netizens</abbr>&nbsp;adopt <a href="https://substack.com/">Substack</a>&nbsp;as their tool-of-choice for creating blogs and newsletters. I like Substack! It's a good platform. I enjoy using it, and while that's mostly a result of the content available, I won't pretend I'd have found half the blogs I read had they not used Substack.</p>
+                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">What I like about Substack:</h3>
+                <p data-key="tbns_p6"><ul><li>• Principled refusal to "police extremist content".</li><li>• Great range of publications, it has captured many disparate markets.</li><li>• Free to use, with a fair business model for those who do want to make money.</li><li>• Very easy to give creators money.</li><li>• LaTeX support.</li><li>• Datawrapper support.</li></ul></p>
+                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">What I hate about Substack:</h3>
+                <p data-key="tbns_p7"><ul><li>• Email-centric design.</li><li>• My inbox is now all emails from Substack.</li><li>• I do not want the email addresses of people who read my blog.</li><li>• I do not want to give my email address to people whose newsletters I read.</li><li>• No custom CSS.</li></ul></p>
+                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Things Substack could obviously never include but I want:</h3>
+                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js Support.</li><li>• Interactive demos.</li></ul><aside>Totally not hints of anything to come.</aside><br></div>I think—for most people—Substack is exactly what they're looking for when it comes to publicly-posted long-form writing. For anyone for whom their email inbox is too sacred to profane or is particularly picky about CSS, <a href="https://wordpress.com/">WordPress</a> is probably the right alternative. For me, I've gone with neither. I find it's really fun to learn and struggle through making my own website, especially with AI to hold my hand since I'm phenomenally thickheaded and need one-on-one tutoring from a being with inhuman patience.</p>
+            </section>
+            <section>
+                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">Resolving Significant Snags</h2>
+                <p data-key="tbns_p8">So, I refuse to use email-centric solutions like newsletters because the idea makes me puke, but I also hate the idea of people having to manually check my blog. There's only one solution, isn't there?</p>
+                <p data-key="tbns_p9">I remembered the concept of RSS from when I was a child. The little orange square that once sat on every single webpage on the internet, right? That was as far as my knowledge went. I didn't even know Flipboard, my dad's favorite app on his iPad, was an RSS reader. It was not super easy to learn about. If you type RSS into your search bar, you get a website with the same name that seems to be dedicated to podcasting. There are a ton of services related to automating RSS feed generation and enabling subscription that Google chooses to prioritize over useful information.</p>
+                <p data-key="tbns_p10">It was initially unclear to me that all I needed in order to have an RSS feed was a single XML file, but eventually I set up an extension for my VScode so I could build the feed out of html files in my blog folder and their localizations.&nbsp;&nbsp;</p>
+                <p data-key="tbns_p11">This is exactly the right solution for my preferences. It's up to the subscriber if and how they see my content. If they want it in their email, it's their choice and I will have no part in it. Perfect!</p>
+                <p data-key="tbns_p12">All I have to do now is offer my <abbr title="Available in 4 languages, and 2 orthographies in English, click the satellite icon on my blog view on my homepage.">rss feed</abbr> and... wait... how does one even read RSS?</p>
+            </section>
+            <section>
+                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">Rapacious Subscription Services</h2>
+                <p data-key="tbns_p13">If you do not use RSS yet but would like to, I would like to inform you that it is totally free. If you're on android, use <a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>. If you're on iOS, I'm sure there are also options, but I can't vouch for them. If you want to sync what you've read or not, you might want your own server. There are many services which offer very specific features that you <i>might</i> not care about but are immensely valuable to certain kinds of users. I like that these exist, but I don't like that they are prioritized above the correct solution for your use case if you search for it on Google.</p>
+
+                <p data-key="tbns_p15"><aside>You may want synced read history or services that can scrape from websites that offer incomplete rss feeds, if so, you'll find this very easily.&nbsp;</aside></p>
+            </section>
+        ]]></description>
+            <pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
+        </item>
+        <item>
+            <title>A Guide to Graflect &amp; its IPA Equivalents</title>
+            <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
+            <description><![CDATA[
             <header>
-                <h1 id="title" data-key="dv_h1">Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
-                <p data-key="dv_p1">Utah's Dixie is where I restarted my photography hobby. I didn't get as many pictures of Washington and St. George as I might have taken if I had my camera when I first arrived. It's an incredibly distinct area that seems almost as if it were made for landscapes and cityscapes. I was living with my friend Aaron at the time and getting a lot of sun-damage.</p>
+                <h1 id="title" data-key="guide_h1">A Guide to Graflect &amp; its IPA Equivalents</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography featured on Aaron Paterson's personal website, MayCXC. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created. This chart serves as the first comprehensive resource for this purpose, created to aid in understanding and transcription.</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="July" data-key="dv_h2_july"> July</h2>
-                <p data-key="dv_p2">I got my <a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a> that month and a <a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKOR macro lense.</a> The auto focus on this lense is very sluggish compared to newer lenses, it's also very soft wide-open. It is very cheap though, and shoots good portraits. Most of my early work with this lense is way too soft because I was getting to grips with it and it seemed fine from the camera monitor.</p>
-                
-                <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ Plushies</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
-                <p data-key="dv_p3">My Basil (Omori (2020)) plushy nestled in the lap of my teddy-bear Misha. Flanked by two Gondolas, one made by my friend Julia on the left, and another bought from KommandoStore and owned by my friend Aaron on the right. Omori (Omori (2020)) can be seen between the Gondola on the right's legs.</p>
-
-                <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ Gondola</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
-                <p data-key="dv_p4">Gondola on his own.</p>
-                
-                <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ Cherries and Pie</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
-                <p data-key="dv_p5">A door-to-door FLDS pie saleswoman sold Aaron and I this pie-shaped cheesecake. We had it with cherries on the back porch. It was creamy and sweet, kinda light, and doused in caramel. It served as a good pair with the cherries.</p>
+                <h2 id="consonants" data-key="guide_h2_consonants">Consonants</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect Symbol</th>
+                            <th data-key="table_header_ipa">IPA Symbol</th>
+                            <th data-key="table_header_example">Example Sound</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>p</b> in <b>p</b>lan</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>b</b> in <b>b</b>and</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>t</b> in <b>t</b>end</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>d</b> in len<b>d</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>k</b> in <b>k</b>ick, <b>c</b> in <b>c</b>ool</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>g</b> in <b>g</b>one</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>f</b> in <b>f</b>ail</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>v</b> in <b>v</b>ine</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think"><b>th</b> in <b>th</b>ink</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this"><b>th</b> in <b>th</b>is</td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>s</b> in <b>s</b>outh</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>z</b> in <b>z</b>one</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>sh</b> in <b>sh</b>ut</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>s</b> in occa<b>s</b>ion</td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>h</b> in <b>h</b>ome</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>m</b> in <b>m</b>an</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>n</b> in <b>n</b>orth</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b>ng</b> in lo<b>ng</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>l</b> in <b>l</b>end</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b>r</b> in <b>r</b>ope (American R)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>w</b> in <b>w</b>oman</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>y</b> in <b>y</b>our</td></tr>
+                    </tbody>
+                </table>
             </section>
-            
+        
             <section>
-                <h2 id="Oppie Trip" data-key="dv_h2_oppie"> Oppie Trip</h2>
-                <p data-key="dv_p6">I went to see Oppenheimer with my friends Aaron, Josh, and Bear. It was a cool movie. I got this photo while we made our way back to Josh's Tesla after the film.</p>
-                
-                <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ Big Wheel</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
-                <p data-key="dv_p7">I heard the wheel has TVs inside the cars and sucks. Looks pretty cool from down here though.</p>
-            </section>
-            
-            <section>
-                <h2 id="Honey Salt" data-key="dv_h2_honey"> Honey Salt Run</h2>
-                <p data-key="dv_p8">I made an error in scheduling me and Aaron departing St. George for Vegas to pick up our friend David from McCarran. Wrong week! We went to Honey Salt, an alright restaurant, and met some cool people. A cool goth-looking girl in the parking lot and a fancy couple from Utah IIRC sitting next to us in the restaurant.</p>
-            
-                <h3 id="Goth" data-key="dv_h3_goth"> ❏ Goth Girl</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
-                <p data-key="dv_p9">I wish I took your insta or something! Thanks for posing for me, random Vegas Goth Girl!</p>
-            </section>
-
-            <section>
-                <h2 id="David" data-key="dv_h2_david"> David Aquisition</h2>
-                <p data-key="dv_p10">We redeployed to Vegas a little later to get David.</p>
-            
-                <h3 id="Burger" data-key="dv_h3_burger"> ❏ Messy Burger</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
-                <p data-key="dv_p11">This tasted good but it was impossible to eat! Stupid burger falling apart. Bun was tasty but too structurally sound compared to its contents.</p>
-
-                <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ Scooter Man</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
-                <p data-key="dv_p12">A herd of sub 50cc engine vehicles passed the three of us on the strip. Cool scooter.</p>
-
-                <h3 id="GoKart" data-key="dv_h3_gokart"> ❏ Go-Kart Man</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gokart.png" class="article-image">
-                <p data-key="dv_p13">Another member of the stampede of sub 50cc engines.</p>
-
-                <h3 id="Victor" data-key="dv_h3_victor"> ❏ Victor</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
-                <p data-key="dv_p14">Woah... it's Victor from Fallout New Vegas... I wonder if he remembers me? 😳</p>
+                <h2 id="vowels" data-key="guide_h2_vowels">Vowels</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect Symbol</th>
+                            <th data-key="table_header_ipa">IPA Symbol</th>
+                            <th data-key="table_header_example">Example Sound</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean"><b>ea</b> in l<b>ea</b>n</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in"><b>i</b> in <b>i</b>n</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b>oo</b> in g<b>oo</b>d</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school"><b>oo</b> in sch<b>oo</b>l</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b>e</b> in l<b>e</b>nd</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b>a</b> in <b>a</b>ccent</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> in c<b>a</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>o</b> in h<b>o</b>me</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se (in a non-rhotic accent)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
+                    </tbody>
+                </table>
             </section>
 
-            <section>
-                <h2 id="Last" data-key="dv_h2_last"> Last Trip to Vegas</h2>
-                <p data-key="dv_p15">Aaron and I went to Vegas one last time for a weekend. We both got horrifically high fevers and I could barely walk or stay awake. I had horrifying dreams. A dark sphere I once dreamt I was trapped in as a child lay in my arms, weak and small, its suffocating might whittled away. It beckoned me to do things in a gentle, nudging fashion, softly reminding me of the suprising precision of one particular tool I had used once. I felt so sad for my precious sphere. I love my sphere. I'm glad Vegas built one.</p>
-            
-                <h3 id="Sign" data-key="dv_h3_sign"> ❏ North Vegas Sign</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
-                <p data-key="dv_p16">This might be the sharpest photo I took in the American Southwest...</p>
-
-                <h3 id="North" data-key="dv_h3_north"> ❏ Northern Strip</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/north_strip.png" class="article-image">
-                <p data-key="dv_p17">Interesting sign!</p>
-
-                <h3 id="Vegas" data-key="dv_h3_vegas"> ❏ The Dark Side of Vegas</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vegas.png" class="article-image">
-                <p data-key="dv_p18">Did you know that some parts of Vegas aren't covered in LED's and neon? At night they don't glow. Spooky!</p>
-
-                <h3 id="Breakfast" data-key="dv_h3_breakfast"> ❏ Dogshit Breakfast</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/bad_breakfast.png" class="article-image">
-                <p data-key="dv_p19">Awful breakfast. Was recommended it by a cool older woman with an alternative lifestyle. 5 bucks for old fruit and barely any egg and other stuff. Still was sick too! Should've gone somewhere more hearty. Met a fellow photo hobbyist though!</p>
+             <section>
+                <h2 id="other" data-key="guide_h2_other">Other Symbols (Affricates, Non-English &amp; Compounds)</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th data-key="table_header_symbol">Graflect Symbol</th>
+                            <th data-key="table_header_ipa">IPA Symbol</th>
+                            <th data-key="table_header_example_desc">Example Sound / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>ch</b> in <b>ch</b>ase</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>j</b> in <b>j</b>ump</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>you</b> in <b>you</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>we</b> in <b>we</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">French: <b>ui</b> in h<b>ui</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">German: <b>ch</b> in Ba<b>ch</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Spanish: Flapped <b>r</b> in pe<b>r</b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">German: Guttural <b>r</b> in <b>R</b>ammstein</td></tr>
+                    </tbody>
+                </table>
             </section>
-
-            <section>
-                <h2 id="Leaving" data-key="dv_h2_leaving"> Going Home</h2>
-                <p data-key="dv_p20">Bye bye St. George!</p>
-            
-                <h3 id="Plane" data-key="dv_h3_plane"> ❏ Turbine in the Pine Valley Mountains</h3>
-                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
-                <p data-key="dv_p21">Last photo in St. George.</p>
-            </section>
-
         ]]></description>
-			<pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
-		</item>
-		<item>
-			<title>Elizabeth Park Rose Garden, Hartford, Connecticut| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
-			<link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
-			<description><![CDATA[
+            <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
+        </item>
+        <item>
+            <title>Elizabeth Park Rose Garden, Hartford, Connecticut| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
+            <link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
+            <description><![CDATA[
             <header>
                 <h1 id="title" data-key="ep_h1">Elizabeth Park Rose Garden, Hartford, Connecticut<br>| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
                 <p data-key="ep_p1">When I got back to Connecticut I went to a cool garden with my friend Julia. I used same camera-lens combo I started using in<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html"> Utah</a>. I think was a good choice for the flowers and bugs, but next time I do stuff like this I'll borrow my dad's <a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> with a more landscape-oriented lens to get more of the garden layout because it's really cool. There were a lot of waterfowl as well, I wish I had managed to get sharper pictures of them.<br>I think I should look into using flickr to host these and embed them here instead of compressing them so much. There's so much detail lost...</p>
@@ -240,117 +283,113 @@
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/aaah.png" class="article-image">
             </section>
         ]]></description>
-			<pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
-		</item>
-		<item>
-			<title>A Guide to Graflect &amp; its IPA Equivalents</title>
-			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
-			<description><![CDATA[
+            <pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
+        </item>
+        <item>
+            <title>Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
+            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
+            <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">A Guide to Graflect &amp; its IPA Equivalents</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography featured on Aaron Paterson's personal website, MayCXC. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created. This chart serves as the first comprehensive resource for this purpose, created to aid in understanding and transcription.</p>
+                <h1 id="title" data-key="dv_h1">Dixie and Vegas | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
+                <p data-key="dv_p1">Utah's Dixie is where I restarted my photography hobby. I didn't get as many pictures of Washington and St. George as I might have taken if I had my camera when I first arrived. It's an incredibly distinct area that seems almost as if it were made for landscapes and cityscapes. I was living with my friend Aaron at the time and getting a lot of sun-damage.</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="consonants" data-key="guide_h2_consonants">Consonants</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example">Example Sound</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>p</b> in <b>p</b>lan</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>b</b> in <b>b</b>and</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>t</b> in <b>t</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>d</b> in len<b>d</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>k</b> in <b>k</b>ick, <b>c</b> in <b>c</b>ool</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>g</b> in <b>g</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>f</b> in <b>f</b>ail</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>v</b> in <b>v</b>ine</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think"><b>th</b> in <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this"><b>th</b> in <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>s</b> in <b>s</b>outh</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>z</b> in <b>z</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>sh</b> in <b>sh</b>ut</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>s</b> in occa<b>s</b>ion</td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>h</b> in <b>h</b>ome</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>m</b> in <b>m</b>an</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>n</b> in <b>n</b>orth</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b>ng</b> in lo<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>l</b> in <b>l</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b>r</b> in <b>r</b>ope (American R)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>w</b> in <b>w</b>oman</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>y</b> in <b>y</b>our</td></tr>
-                    </tbody>
-                </table>
+                <h2 id="July" data-key="dv_h2_july"> July</h2>
+                <p data-key="dv_p2">I got my <a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a> that month and a <a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKOR macro lense.</a> The auto focus on this lense is very sluggish compared to newer lenses, it's also very soft wide-open. It is very cheap though, and shoots good portraits. Most of my early work with this lense is way too soft because I was getting to grips with it and it seemed fine from the camera monitor.</p>
+                
+                <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ Plushies</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
+                <p data-key="dv_p3">My Basil (Omori (2020)) plushy nestled in the lap of my teddy-bear Misha. Flanked by two Gondolas, one made by my friend Julia on the left, and another bought from KommandoStore and owned by my friend Aaron on the right. Omori (Omori (2020)) can be seen between the Gondola on the right's legs.</p>
+
+                <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ Gondola</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
+                <p data-key="dv_p4">Gondola on his own.</p>
+                
+                <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ Cherries and Pie</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
+                <p data-key="dv_p5">A door-to-door FLDS pie saleswoman sold Aaron and I this pie-shaped cheesecake. We had it with cherries on the back porch. It was creamy and sweet, kinda light, and doused in caramel. It served as a good pair with the cherries.</p>
             </section>
-        
+            
             <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">Vowels</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example">Example Sound</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean"><b>ea</b> in l<b>ea</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in"><b>i</b> in <b>i</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b>oo</b> in g<b>oo</b>d</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school"><b>oo</b> in sch<b>oo</b>l</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b>e</b> in l<b>e</b>nd</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b>a</b> in <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> in c<b>a</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>o</b> in h<b>o</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se (in a non-rhotic accent)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
-                    </tbody>
-                </table>
+                <h2 id="Oppie Trip" data-key="dv_h2_oppie"> Oppie Trip</h2>
+                <p data-key="dv_p6">I went to see Oppenheimer with my friends Aaron, Josh, and Bear. It was a cool movie. I got this photo while we made our way back to Josh's Tesla after the film.</p>
+                
+                <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ Big Wheel</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
+                <p data-key="dv_p7">I heard the wheel has TVs inside the cars and sucks. Looks pretty cool from down here though.</p>
+            </section>
+            
+            <section>
+                <h2 id="Honey Salt" data-key="dv_h2_honey"> Honey Salt Run</h2>
+                <p data-key="dv_p8">I made an error in scheduling me and Aaron departing St. George for Vegas to pick up our friend David from McCarran. Wrong week! We went to Honey Salt, an alright restaurant, and met some cool people. A cool goth-looking girl in the parking lot and a fancy couple from Utah IIRC sitting next to us in the restaurant.</p>
+            
+                <h3 id="Goth" data-key="dv_h3_goth"> ❏ Goth Girl</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
+                <p data-key="dv_p9">I wish I took your insta or something! Thanks for posing for me, random Vegas Goth Girl!</p>
             </section>
 
-             <section>
-                <h2 id="other" data-key="guide_h2_other">Other Symbols (Affricates, Non-English &amp; Compounds)</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example_desc">Example Sound / Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>ch</b> in <b>ch</b>ase</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>j</b> in <b>j</b>ump</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>you</b> in <b>you</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>we</b> in <b>we</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">French: <b>ui</b> in h<b>ui</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">German: <b>ch</b> in Ba<b>ch</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Spanish: Flapped <b>r</b> in pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">German: Guttural <b>r</b> in <b>R</b>ammstein</td></tr>
-                    </tbody>
-                </table>
+            <section>
+                <h2 id="David" data-key="dv_h2_david"> David Aquisition</h2>
+                <p data-key="dv_p10">We redeployed to Vegas a little later to get David.</p>
+            
+                <h3 id="Burger" data-key="dv_h3_burger"> ❏ Messy Burger</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
+                <p data-key="dv_p11">This tasted good but it was impossible to eat! Stupid burger falling apart. Bun was tasty but too structurally sound compared to its contents.</p>
+
+                <h3 id="Scooter" data-key="dv_h3_scooter"> ❏ Scooter Man</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/scooter.png" class="article-image">
+                <p data-key="dv_p12">A herd of sub 50cc engine vehicles passed the three of us on the strip. Cool scooter.</p>
+
+                <h3 id="GoKart" data-key="dv_h3_gokart"> ❏ Go-Kart Man</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gokart.png" class="article-image">
+                <p data-key="dv_p13">Another member of the stampede of sub 50cc engines.</p>
+
+                <h3 id="Victor" data-key="dv_h3_victor"> ❏ Victor</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vic.png" class="article-image">
+                <p data-key="dv_p14">Woah... it's Victor from Fallout New Vegas... I wonder if he remembers me? 😳</p>
             </section>
+
+            <section>
+                <h2 id="Last" data-key="dv_h2_last"> Last Trip to Vegas</h2>
+                <p data-key="dv_p15">Aaron and I went to Vegas one last time for a weekend. We both got horrifically high fevers and I could barely walk or stay awake. I had horrifying dreams. A dark sphere I once dreamt I was trapped in as a child lay in my arms, weak and small, its suffocating might whittled away. It beckoned me to do things in a gentle, nudging fashion, softly reminding me of the suprising precision of one particular tool I had used once. I felt so sad for my precious sphere. I love my sphere. I'm glad Vegas built one.</p>
+            
+                <h3 id="Sign" data-key="dv_h3_sign"> ❏ North Vegas Sign</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
+                <p data-key="dv_p16">This might be the sharpest photo I took in the American Southwest...</p>
+
+                <h3 id="North" data-key="dv_h3_north"> ❏ Northern Strip</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/north_strip.png" class="article-image">
+                <p data-key="dv_p17">Interesting sign!</p>
+
+                <h3 id="Vegas" data-key="dv_h3_vegas"> ❏ The Dark Side of Vegas</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/vegas.png" class="article-image">
+                <p data-key="dv_p18">Did you know that some parts of Vegas aren't covered in LED's and neon? At night they don't glow. Spooky!</p>
+
+                <h3 id="Breakfast" data-key="dv_h3_breakfast"> ❏ Dogshit Breakfast</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/bad_breakfast.png" class="article-image">
+                <p data-key="dv_p19">Awful breakfast. Was recommended it by a cool older woman with an alternative lifestyle. 5 bucks for old fruit and barely any egg and other stuff. Still was sick too! Should've gone somewhere more hearty. Met a fellow photo hobbyist though!</p>
+            </section>
+
+            <section>
+                <h2 id="Leaving" data-key="dv_h2_leaving"> Going Home</h2>
+                <p data-key="dv_p20">Bye bye St. George!</p>
+            
+                <h3 id="Plane" data-key="dv_h3_plane"> ❏ Turbine in the Pine Valley Mountains</h3>
+                <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
+                <p data-key="dv_p21">Last photo in St. George.</p>
+            </section>
+
         ]]></description>
-			<pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
-		</item>
-		<item>
-			<title>Sunshine Experimental Keyboard</title>
-			<link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
-			<description><![CDATA[
+            <pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
+        </item>
+        <item>
+            <title>Sunshine Experimental Keyboard</title>
+            <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
+            <description><![CDATA[
             <header>
                 <h1 id="title" data-key="sunshine_h1">Sunshine Experimental Keyboard</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
@@ -488,47 +527,8 @@
                 <p data-key="bye_p1">Thanks for reading about my keyboard journey! Building the Sunshine keyboard has been one of the most challenging and rewarding projects I've ever undertaken. It's not just a tool, but a reflection of a philosophy about how we interact with our computers. If you have any questions, feel free to reach out.</p>
             </section>
         ]]></description>
-			<pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
-		</item>
-		<item>
-			<title>This Blog Now Supports RSS</title>
-			<link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
-			<description><![CDATA[<h1 id="title" data-key="tbns_title">This Blog Now Supports RSS</h1>
-            <section>
-                <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Reorganizing Some Stuff</h2>
-                <p data-key="tbns_p1">If you were familiar with my site before, you may notice I've rearranged my "photo folder" and "projects folder". These used to use different theming and looked totally different based on when in life I had learned about divs or other important html elements.&nbsp;</p>
-                <p data-key="tbns_p2">Now, both genres use the standard article layout I developed 2 years ago, and are sorted in the blog viewer. While I think this way of doing things does take away from the idea of having different "folders" with organized genres of content in them, I think&nbsp;</p>
-                <p data-key="tbns_p3"><ol><li>• Ultimately they're formatted as blog articles and should be treated as such.</li><li>• This method is far more scalable.&nbsp;</li></ol></p>
-                <p data-key="tbns_p4">Feel free to sort through them with the categories. I will add a search function when I have enough posts for that to be necessary.&nbsp;</p>
-            </section>
-            <section>
-                <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">Replacing SubStack</h2>
-                <p data-key="tbns_p5">Lately, I've seen many <abbr title="Yes, I'm using that word. Would you have prefered people-of-network?">netizens</abbr>&nbsp;adopt <a href="https://substack.com/">Substack</a>&nbsp;as their tool-of-choice for creating blogs and newsletters. I like Substack! It's a good platform. I enjoy using it, and while that's mostly a result of the content available, I won't pretend I'd have found half the blogs I read had they not used Substack.</p>
-                <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">What I like about Substack:</h3>
-                <p data-key="tbns_p6"><ul><li>• Principled refusal to "police extremist content".</li><li>• Great range of publications, it has captured many disparate markets.</li><li>• Free to use, with a fair business model for those who do want to make money.</li><li>• Very easy to give creators money.</li><li>• LaTeX support.</li><li>• Datawrapper support.</li></ul></p>
-                <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">What I hate about Substack:</h3>
-                <p data-key="tbns_p7"><ul><li>• Email-centric design.</li><li>• My inbox is now all emails from Substack.</li><li>• I do not want the email addresses of people who read my blog.</li><li>• I do not want to give my email address to people whose newsletters I read.</li><li>• No custom CSS.</li></ul></p>
-                <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Things Substack could obviously never include but I want:</h3>
-                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js Support.</li><li>• Interactive demos.</li></ul><aside>Totally not hints of anything to come.</aside><br></div>I think—for most people—Substack is exactly what they're looking for when it comes to publicly-posted long-form writing. For anyone for whom their email inbox is too sacred to profane or is particularly picky about CSS, <a href="https://wordpress.com/">WordPress</a> is probably the right alternative. For me, I've gone with neither. I find it's really fun to learn and struggle through making my own website, especially with AI to hold my hand since I'm phenomenally thickheaded and need one-on-one tutoring from a being with inhuman patience.</p>
-            </section>
-            <section>
-                <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">Resolving Significant Snags</h2>
-                <p data-key="tbns_p8">So, I refuse to use email-centric solutions like newsletters because the idea makes me puke, but I also hate the idea of people having to manually check my blog. There's only one solution, isn't there?</p>
-                <p data-key="tbns_p9">I remembered the concept of RSS from when I was a child. The little orange square that once sat on every single webpage on the internet, right? That was as far as my knowledge went. I didn't even know Flipboard, my dad's favorite app on his iPad, was an RSS reader. It was not super easy to learn about. If you type RSS into your search bar, you get a website with the same name that seems to be dedicated to podcasting. There are a ton of services related to automating RSS feed generation and enabling subscription that Google chooses to prioritize over useful information.</p>
-                <p data-key="tbns_p10">It was initially unclear to me that all I needed in order to have an RSS feed was a single XML file, but eventually I set up an extension for my VScode so I could build the feed out of html files in my blog folder and their localizations.&nbsp;&nbsp;</p>
-                <p data-key="tbns_p11">This is exactly the right solution for my preferences. It's up to the subscriber if and how they see my content. If they want it in their email, it's their choice and I will have no part in it. Perfect!</p>
-                <p data-key="tbns_p12">All I have to do now is offer my <abbr title="Available in 4 languages, and 2 orthographies in English, click the satellite icon on my blog view on my homepage.">rss feed</abbr> and... wait... how does one even read RSS?</p>
-            </section>
-            <section>
-                <h2 id="rapacious-subscription-services" data-key="tbns_h2_rapacious-subscription-services">Rapacious Subscription Services</h2>
-                <p data-key="tbns_p13">If you do not use RSS yet but would like to, I would like to inform you that it is totally free. If you're on android, use <a href="https://f-droid.org/en/packages/com.nononsenseapps.feeder/">Feeder</a>. If you're on iOS, I'm sure there are also options, but I can't vouch for them. If you want to sync what you've read or not, you might want your own server. There are many services which offer very specific features that you <i>might</i> not care about but are immensely valuable to certain kinds of users. I like that these exist, but I don't like that they are prioritized above the correct solution for your use case if you search for it on Google.</p>
-
-                <p data-key="tbns_p15"><aside>You may want synced read history or services that can scrape from websites that offer incomplete rss feeds, if so, you'll find this very easily.&nbsp;</aside></p>
-            </section>
-        ]]></description>
-			<pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
-			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
-		</item>
+            <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+        </item>
 </channel>
 </rss>

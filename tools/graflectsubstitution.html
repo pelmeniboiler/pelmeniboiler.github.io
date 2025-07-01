@@ -17,7 +17,7 @@
             --prompt-bg: #2d2d30;
         }
         body {
-            font-family: "Fairfax HD";
+            font-family: "Fairfax HD", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -134,8 +134,8 @@
     <div class="container">
         <h1></h1>
         <h2>Graflect Transliteration Tool</h2>
-        <p>Enter English text. For ambiguous words, the tool will pause and ask you to choose the correct sound. Your choices can be saved for future use.</p>
-        <textarea id="english-input" placeholder="Enter English text here... e.g., the quick brown fox jumps over the lazy dog"></textarea>
+        <p>Enter English text. The tool will ask you to resolve ambiguous sounds for both vowels and consonants. Your choices can be saved for future use.</p>
+        <textarea id="english-input" placeholder="Enter English text here... e.g., drugs, gem, sit"></textarea>
         <div class="controls">
             <button id="transliterate-btn">Transliterate</button>
             <button id="clear-choices">Clear Saved Choices</button>
@@ -166,42 +166,35 @@
             '/ɑ/': '', '/eɪ/': '', '/ɛə/': '', '/aɪ/': '', '/aʊ/': '', '/oʊ/': '',
             '/ɔ/': '', '/ɜː/': '', '/ɛər/': '', '/tʃ/': '', '/dʒ/': '', '/ju/': '',
             '/wi/': '', '/ɥi/': '', '/x/': '', '/ɾ/': '', '/ʁ/': '',
-            // --- NEW & UPDATED MAPPINGS TO PREVENT IPA LEAKS ---
-            '/ks/': '',  // 'x' sound
-            '/kw/': '',  // 'qu' sound
-            '/ɒ/': '',    // Short 'o' sound (like in 'fox'), mapped to the /ɑ/ Graflect
-            '/uː/': ''   // Long 'oo' sound, mapped to /u/
+            '/ks/': '', '/kw/': '', '/ɒ/': '', '/uː/': ''
+        };
+
+        const defaultWordMap = {
+            'is': '/ɪz/'
         };
 
         const graphemeToIpa = {
             // Longest Graphemes First
-            'ck': '/k/', // NEW RULE: ck is always /k/
-            'qu': '/kw/',
-            'th': ['/θ/', '/ð/'],
-            'sh': '/ʃ/',
-            'ch': ['/tʃ/', '/k/'],
-            'ng': '/ŋ/',
-            'ph': '/f/',
-            'kn': '/n/',
-            'wr': '/r/',
-            'gh': ['/ɡ/', '/f/', ''],
-            'oo': ['/uː/', '/ʊ/', '/ʌ/'],
-            'ee': '/iː/',
-            'ea': ['/iː/', '/ɛ/', '/eɪ/'],
-            'ou': ['/aʊ/', '/oʊ/', '/u/', '/ʌ/'],
-            'ow': ['/aʊ/', '/oʊ/'],
-            'ai': '/eɪ/',
-            'ay': '/eɪ/',
-            // Single Characters
+            'ck': '/k/', 'qu': '/kw/', 'th': ['/θ/', '/ð/'], 'sh': '/ʃ/',
+            'ch': ['/tʃ/', '/k/'], 'ng': '/ŋ/', 'ph': '/f/', 'kn': '/n/', 'wr': '/r/',
+            'gh': ['/ɡ/', '/f/', ''], 'oo': ['/uː/', '/ʊ/', '/ʌ/'], 'ee': '/iː/',
+            'ea': ['/iː/', '/ɛ/', '/eɪ/'], 'ou': ['/aʊ/', '/oʊ/', '/u/', '/ʌ/'],
+            'ow': ['/aʊ/', '/oʊ/'], 'ai': '/eɪ/', 'ay': '/eɪ/',
+            // Vowels
             'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/'], 'e': ['/ɛ/', '/iː/', '/ə/'], 'i': ['/ɪ/', '/aɪ/'], 
-            'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
-            'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
-            'p': '/p/', 'b': '/b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'g': '/ɡ/', 'f': '/f/', 'v': '/v/', 
-            's': '/s/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/', 'r': '/r/', 'w': '/w/',
-            'j': '/dʒ/'
+            'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'],
+            'y': ['/ɪ/', '/aɪ/', '/iː/'],
+            // Ambiguous Consonants
+            's': ['/s/', '/z/'],       // NEW: 's' can be /s/ (sit) or /z/ (drugs)
+            'g': ['/ɡ/', '/dʒ/'],      // NEW: 'g' can be /ɡ/ (goat) or /dʒ/ (gem)
+            'c': ['/k/', '/s/'], 
+            'x': ['/ks/', '/z/'],
+            // Unambiguous Consonants
+            'p': '/p/', 'b': '/b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'f': '/f/',
+            'v': '/v/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/',
+            'r': '/r/', 'w': '/w/', 'j': '/dʒ/'
         };
 
-        // --- DOM ELEMENTS ---
         const inputEl = document.getElementById('english-input');
         const outputEl = document.getElementById('output');
         const transliterateBtn = document.getElementById('transliterate-btn');
@@ -213,9 +206,7 @@
         const rememberCheckbox = document.getElementById('remember-choice-checkbox');
         const promptWordCheckboxEl = document.getElementById('prompt-word-for-checkbox');
 
-        // --- STATE & LOCAL STORAGE ---
         let userChoices = {};
-        // Sort keys by length, descending, to ensure longest match is always found first.
         const graphemeKeys = Object.keys(graphemeToIpa).sort((a, b) => b.length - a.length);
         const ipaKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
 
@@ -235,14 +226,13 @@
             }
         }
 
-        // --- CORE LOGIC ---
         function ipaToGraflect(ipaString) {
             if (!ipaString) return '';
             let result = '';
             let remainingIpa = ipaString;
             while (remainingIpa.length > 0) {
                 let foundMatch = false;
-                for (const key of ipaKeys) { // ipaKeys is pre-sorted to be longest first
+                for (const key of ipaKeys) {
                     if (remainingIpa.startsWith(key)) {
                         result += graflectMap[key];
                         remainingIpa = remainingIpa.substring(key.length);
@@ -251,7 +241,7 @@
                     }
                 }
                 if (!foundMatch) {
-                    result += remainingIpa[0]; // Fallback for unmapped characters (should not happen with good maps)
+                    result += remainingIpa[0];
                     remainingIpa = remainingIpa.substring(1);
                 }
             }
@@ -266,7 +256,6 @@
         }
 
         let currentResolve;
-
         async function promptForChoice(word, grapheme, options, index) {
             const highlightedWord = `${word.substring(0, index)}<span class="prompt-word-highlight">${word.substring(index, index + grapheme.length)}</span>${word.substring(index + grapheme.length)}`;
             promptHeadingEl.innerHTML = `Ambiguity in "${word}"`;
@@ -279,7 +268,7 @@
                 const graflectChars = ipaToGraflect(ipa);
                 button.innerHTML = `${ipa || '(silent)'} → ${graflectChars || ' '}`;
                 button.onclick = () => {
-                    if(currentResolve) {
+                    if (currentResolve) {
                         currentResolve(ipa);
                         currentResolve = null;
                     }
@@ -295,9 +284,14 @@
 
         async function processWord(word) {
             const lowerWord = word.toLowerCase();
+
             if (userChoices[lowerWord]) {
                 return ipaToGraflect(userChoices[lowerWord]);
             }
+            if (defaultWordMap[lowerWord]) {
+                return ipaToGraflect(defaultWordMap[lowerWord]);
+            }
+
             let finalIpa = '';
             let remaining = lowerWord;
             let originalIndex = 0;
@@ -343,11 +337,8 @@
             transliterateBtn.textContent = "Transliterate";
         }
 
-        // --- EVENT LISTENERS ---
         transliterateBtn.addEventListener('click', handleTransliterateClick);
         clearBtn.addEventListener('click', clearUserChoices);
-
-        // --- INITIALIZATION ---
         loadUserChoices();
     </script>
 </body>
