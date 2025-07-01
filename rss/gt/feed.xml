@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 03:40:15 GMT</lastBuildDate>
+	<lastBuildDate>Tue, 01 Jul 2025 16:28:00 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/gt/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>   | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -249,7 +249,7 @@
 			<description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">    &amp;  -- </h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html"></a>          , -.                    .       <a href="https://www.kreativekorp.com/ucsur/">-   (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>,                 <a href="https://www.kreativekorp.com/software/fonts/fairfax/">--</a>  (   ),   <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">--- -  --  </a> .  ,        <abbr title="International Phonetic Alphabet">--</abbr>   .           ,       .</p>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html"></a>          ,    .                    .       <a href="https://www.kreativekorp.com/ucsur/">-   (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>,                 <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>  (   ),   <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0</a> .  ,        <abbr title="International Phonetic Alphabet">--</abbr>   .           ,       .</p>
                 <hr>
             </header>
             
@@ -267,7 +267,7 @@
                         <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b></b>  <b></b><b></b>, <b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b></b>  <b></b></td></tr>
@@ -280,12 +280,12 @@
                         <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"> <b></b>,   <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b></b>  <b></b> ( )</td></tr>
                         <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b></b>  <b></b></td></tr>
                     </tbody>
                 </table>
             </section>
@@ -306,16 +306,16 @@
                         <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_a_in_accent"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b></b>  <b></b> (   )</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b></b>  <b></b> (   )</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_ant"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/oˤʊ/</td><td data-key="example_o_in_hole"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b></b>  <b></b> (- )</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole"><b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b></b>  <b></b> (  - )</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b></b>  <b></b></td></tr>
                     </tbody>
                 </table>
@@ -336,10 +336,10 @@
                         <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b></b>  <b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">: <b></b>  <b></b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">: <b></b>  <b></b></td></tr>
                         <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">: <b></b>  Ba<b></b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">:  <b></b>  pe<b></b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">:  <b></b>  <b></b>ammstein</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">: <b></b>   pe<b></b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">:  <b></b>  <b></b>ammstein</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -527,7 +527,7 @@
                 <p data-key="tbns_p15"><aside>                   ,  , '    .&nbsp;</aside></p>
             </section>
         ]]></description>
-			<pubDate>Tue, 01 Jul 2025 03:40:14 GMT</pubDate>
+			<pubDate>Tue, 01 Jul 2025 16:27:59 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>

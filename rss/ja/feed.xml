@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
 	<generator>VS Code RSS Generator</generator>
-	<lastBuildDate>Tue, 01 Jul 2025 03:40:15 GMT</lastBuildDate>
+	<lastBuildDate>Tue, 01 Jul 2025 16:28:00 GMT</lastBuildDate>
 	<atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
 		<item>
 			<title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
@@ -244,12 +244,12 @@
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
 		</item>
 		<item>
-			<title>GraflectとそのIPA対応記号</title>
+			<title>GraflectとそのIPA対応ガイド</title>
 			<link>https://pelmeniboiler.github.io/blog/graflect.html</link>
 			<description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応記号</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソンの個人ウェブサイト、MayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントのサポートはKreative Korpのレベッカ・G・ベッテンコートによる<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967のGS Unicode 2.0フォント</a>などで利用可能です。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースとして機能します。</p>
+                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応ガイド</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソン氏の個人ウェブサイトMayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントはKreative Korpのレベッカ・G・ベッテンコート氏による<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967氏のGS Unicode 2.0フォント</a>などでサポートされています。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースです。</p>
                 <hr>
             </header>
             
@@ -303,18 +303,18 @@
                     <tbody>
                         <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">長母音「イー」、シ<b>ー</b>ンのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">短母音「イ」、<b>イ</b>スのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">短母音「ウ」、ブ<b>ッ</b>クのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">英語の音: g<b>oo</b>d の [ʊ]</td></tr>
                         <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">長母音「ウー」、シ<b>ュー</b>ズのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">「エ」、<b>エ</b>アコンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_a_in_accent">英語の <b>a</b>ccent の [ɔ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">英語の <b>a</b>ccent の [æ] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)、またはシュワー</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「オ」、<b>オ</b>レンジのように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「ア」に近い「オ」、母（は<b>は</b>）のように</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oˤʊ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">英語の音: n<b>ur</b>se の母音（非R音性アクセント）</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
                     </tbody>
@@ -527,7 +527,7 @@
                 <p data-key="tbns_p15"><aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside></p>
             </section>
         ]]></description>
-			<pubDate>Tue, 01 Jul 2025 03:40:14 GMT</pubDate>
+			<pubDate>Tue, 01 Jul 2025 16:27:59 GMT</pubDate>
 			<guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
 		</item>
 </channel>
