@@ -36,6 +36,14 @@ body {
 body.eink-mode { background-color: var(--bg-color); }
 body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
 
+/* --- E-INK MODE MEDIA STYLES --- */
+/* When e-ink mode is on, force images and iframes to be high-contrast black and white */
+body.eink-mode img,
+body.eink-mode iframe {
+    filter: grayscale(1) brightness(1) contrast(250);
+}
+
+
 /* --- THEME DEFINITIONS --- */
 body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
 body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
