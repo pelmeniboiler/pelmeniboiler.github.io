@@ -15,6 +15,14 @@
             --button-bg: #0e639c;
             --button-hover-bg: #1177bb;
             --prompt-bg: #2d2d30;
+            --success-bg: #2a9d8f;
+            --error-bg: #e76f51;
+            --danger-bg: #c94c4c;
+            --danger-hover-bg: #e15757;
+            --warning-bg: #f4a261;
+            --warning-hover-bg: #e76f51;
+            --info-bg: #e9c46a;
+            --info-hover-bg: #d8b359;
         }
         body {
             font-family: "Fairfax HD", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -42,6 +50,10 @@
             font-size: 2.5em;
             font-family: 'Fairfax HD';
         }
+        .textarea-container {
+            position: relative;
+            width: 100%;
+        }
         textarea, #output-container, #prompt-area {
             width: 100%;
             box-sizing: border-box;
@@ -57,6 +69,7 @@
         textarea {
             min-height: 150px;
             resize: vertical;
+            padding-right: 150px; /* Make space for the button */
         }
         #output-container {
             min-height: 100px;
@@ -70,11 +83,12 @@
         }
         .controls {
             display: flex;
+            flex-wrap: wrap;
             gap: 1em;
             justify-content: center;
             font-family: 'Fairfax HD';
         }
-        button {
+        button, .button-label {
             padding: 0.8em 1.5em;
             font-size: 1em;
             font-family: 'Fairfax HD';
@@ -85,8 +99,9 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s ease;
+            text-align: center;
         }
-        button:hover:not(:disabled) {
+        button:hover:not(:disabled), .button-label:hover {
             background-color: var(--button-hover-bg);
         }
         button:disabled {
@@ -94,10 +109,35 @@
             cursor: not-allowed;
         }
         #clear-choices {
-            background-color: #723c3c;
+            background-color: var(--danger-bg);
         }
         #clear-choices:hover {
-            background-color: #8b4a4a;
+            background-color: var(--danger-hover-bg);
+        }
+        #export-btn {
+            background-color: var(--success-bg);
+        }
+        #export-btn:hover {
+            background-color: #264653;
+        }
+        #manage-dict-btn {
+            background-color: var(--warning-bg);
+        }
+        #manage-dict-btn:hover {
+            background-color: var(--warning-hover-bg);
+        }
+        #diagnostic-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.4em 0.8em;
+            font-size: 0.9em;
+            background-color: var(--info-bg);
+            color: #1e1e1e;
+            font-weight: bold;
+        }
+        #diagnostic-btn:hover {
+            background-color: var(--info-hover-bg);
         }
         #prompt-area {
             margin-top: 1em;
@@ -118,7 +158,7 @@
             background-color: #5a5a5e;
         }
         .remember-choice {
-            margin-top: 1em;
+            margin-top: 1.5em;
             display: flex;
             align-items: center;
         }
@@ -127,23 +167,146 @@
             width: 18px;
             height: 18px;
         }
+        #direct-input-area {
+            margin-top: 1.5em;
+            padding-top: 1em;
+            border-top: 1px solid var(--border-color);
+        }
+        #direct-graflect-input {
+            flex-grow: 1;
+            font-family: 'Fairfax HD';
+            font-size: 1.2em;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 0.5em;
+            border-radius: 3px;
+        }
+        #use-direct-input-btn {
+            padding: 0.5em 1em;
+            font-size: 1em;
+        }
+        #notification {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1em 2em;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            z-index: 1000;
+            transition: top 0.5s ease-in-out;
+        }
+        /* Dictionary Management Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+        .modal-content {
+            background-color: var(--bg-color);
+            margin: 10% auto;
+            padding: 2em;
+            border: 1px solid var(--border-color);
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            color: var(--text-color);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1em;
+            margin-bottom: 1em;
+        }
+        .close-button {
+            color: var(--text-color);
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover {
+            color: var(--primary-color);
+        }
+        #dictionary-list {
+            list-style: none;
+            padding: 0;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        #dictionary-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8em;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #dictionary-list li:last-child {
+            border-bottom: none;
+        }
+        .dictionary-word {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .dictionary-graflect {
+            font-family: 'Fairfax HD';
+            font-size: 1.2em;
+        }
+        .remove-word-btn {
+            background-color: var(--danger-bg);
+            color: white;
+            border: none;
+            padding: 0.4em 0.8em;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .remove-word-btn:hover {
+            background-color: var(--danger-hover-bg);
+        }
     </style>
 </head>
 <body>
+    <div id="notification"></div>
 
     <div class="container">
         <h1></h1>
         <h2>Graflect Transliteration Tool</h2>
-        <p>Enter English text. The tool will ask you to resolve ambiguous sounds for both vowels and consonants. Your choices can be saved for future use.</p>
-        <textarea id="english-input" placeholder="Enter English text here... e.g., drugs, gem, sit"></textarea>
+        <p>Enter English text. The tool will ask you to resolve ambiguous sounds. Your choices can be saved for future use, imported, and exported.</p>
+        <div class="textarea-container">
+            <textarea id="english-input" placeholder="Enter English text here, or try the diagnostic paragraph..."></textarea>
+            <button id="diagnostic-btn">Insert Diagnostic</button>
+        </div>
         <div class="controls">
             <button id="transliterate-btn">Transliterate</button>
             <button id="clear-choices">Clear Saved Choices</button>
+            <button id="export-btn">Export Dictionary</button>
+            <label for="import-input" class="button-label">Import Dictionary</label>
+            <input type="file" id="import-input" accept=".json" style="display: none;">
+            <button id="manage-dict-btn">Manage Dictionary</button>
         </div>
         <div id="prompt-area" style="display: none;">
             <h3 id="prompt-heading"></h3>
             <p id="prompt-instruction"></p>
             <div id="prompt-buttons-container" class="choice-buttons"></div>
+            
+            <div id="direct-input-area">
+                <label for="direct-graflect-input">Or enter direct Graflect substitution:</label>
+                <div style="display: flex; gap: 0.5em; margin-top: 0.5em;">
+                    <input type="text" id="direct-graflect-input">
+                    <button id="use-direct-input-btn">Use</button>
+                </div>
+            </div>
+
             <div class="remember-choice">
                 <input type="checkbox" id="remember-choice-checkbox" checked>
                 <label for="remember-choice-checkbox">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
@@ -152,6 +315,19 @@
         <h2>Result:</h2>
         <div id="output-container">
             <span id="output"></span>
+        </div>
+    </div>
+
+    <!-- Dictionary Management Modal -->
+    <div id="dictionary-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Saved Words</h2>
+                <span class="close-button" id="close-modal-btn">&times;</span>
+            </div>
+            <ul id="dictionary-list">
+                <!-- Content will be generated by JavaScript -->
+            </ul>
         </div>
     </div>
 
@@ -166,49 +342,109 @@
             '/ɑ/': '', '/eɪ/': '', '/ɛə/': '', '/aɪ/': '', '/aʊ/': '', '/oʊ/': '',
             '/ɔ/': '', '/ɜː/': '', '/ɛər/': '', '/tʃ/': '', '/dʒ/': '', '/ju/': '',
             '/wi/': '', '/ɥi/': '', '/x/': '', '/ɾ/': '', '/ʁ/': '',
-            '/ks/': '', '/kw/': '', '/ɒ/': '', '/uː/': ''
+            '/ks/': '', '/kw/': '', '/ɒ/': '', '/uː/': '',
+            '/ɔɪ/': '', '/ʃən/': '', '/ʒən/': '', '/ʃəs/': '',
+            '/ʃəl/': '', '/ʒər/': '', '/ʃʊər/': '', '/tʃər/': '',
+            '/sk/': '', '/səl/': '', '/ɛks/': '',
+            '/ɛɡz/': '', '/ɡw/': '', '/juː/': '', '/ndʒ/': ''
         };
 
         const defaultWordMap = {
-            'is': '/ɪz/'
+            'a': '', 'about': '', 'all': '', 'also': '', 'an': '', 'and': '',
+            'any': '', 'are': '', 'as': '', 'at': '', 'be': '', 'because': '',
+            'been': '', 'before': '', 'but': '', 'by': '', 'can': '',
+            'change': '', 'come': '', 'could': '', 'day': '', 'do': '', 'down': '',
+            'each': '', 'even': '', 'find': '', 'first': '', 'for': '',
+            'from': '', 'get': '', 'give': '', 'go': '', 'good': '',
+            'great': '', 'had': '', 'has': '', 'have': '', 'he': '',
+            'her': '', 'here': '', 'him': '', 'his': '', 'how': '',
+            'i': '', 'if': '', 'in': '', 'into': '', 'is': '', 'it': '',
+            'its': '', 'just': '', 'know': '', 'like': '', 'long': '',
+            'look': '', 'made': '', 'make': '', 'man': '', 'many': '',
+            'me': '', 'more': '', 'most': '', 'my': '', 'new': '',
+            'no': '', 'not': '', 'now': '', 'of': '', 'on': '',
+            'one': '', 'only': '', 'or': '', 'other': '', 'our': '',
+            'out': '', 'over': '', 'people': '', 'place': '',
+            'said': '', 'same': '', 'see': '', 'she': '', 'so': '',
+            'some': '', 'take': '', 'than': '', 'that': '', 'the': '',
+            'their': '', 'them': '', 'then': '', 'there': '', 'these': '',
+            'they': '', 'thing': '', 'think': '', 'this': '', 'those': '',
+            'time': '', 'to': '', 'two': '', 'up': '', 'use': '',
+            'very': '', 'want': '', 'was': '', 'water': '',
+            'way': '', 'we': '', 'well': '', 'were': '', 'what': '',
+            'when': '', 'where': '', 'which': '', 'who': '', 'why': '',
+            'will': '', 'with': '', 'work': '', 'would': '', 'year': '',
+            'you': '', 'your': ''
         };
 
         const graphemeToIpa = {
-            // Longest Graphemes First
+            'tious': '/ʃəs/', 'cious': '/ʃəs/', 'ssion': '/ʃən/', 'stle': '/səl/',
+            'sion': ['/ʃən/', '/ʒən/'], 'tion': '/ʃən/', 'cian': '/ʃən/',
+            'tial': '/ʃəl/', 'cial': '/ʃəl/', 'sure': ['/ʒər/', '/ʃʊər/'],
+            'ture': '/tʃər/', 'dge': '/dʒ/', 'eigh': '/eɪ/', 'igh': '/aɪ/',
+            'tch': '/tʃ/', 'age': ['/ɪdʒ/', '/eɪdʒ/'], 'ex': ['/ɛks/', '/ɛɡz/'],
+            'nge': '/ndʒ/', 'que': '/k/', 'lk': '/k/', 'lm': '/m/', 'mb': '/m/', 'bt': '/t/',
+            'ps': '/s/', 'pn': '/n/', 'rh': '/r/',
+            'sch': ['/sk/', '/ʃ/'], 'eau': ['/oʊ/', '/juː/'],
+            'sc': ['/sk/', '/s/'], 'gu': ['/ɡ/', '/ɡw/'],
             'ck': '/k/', 'qu': '/kw/', 'th': ['/θ/', '/ð/'], 'sh': '/ʃ/',
-            'ch': ['/tʃ/', '/k/'], 'ng': '/ŋ/', 'ph': '/f/', 'kn': '/n/', 'wr': '/r/',
-            'gh': ['/ɡ/', '/f/', ''], 'oo': ['/uː/', '/ʊ/', '/ʌ/'], 'ee': '/iː/',
+            'ch': ['/tʃ/', '/k/', '/ʃ/'], 'ng': '/ŋ/', 'ph': '/f/', 'kn': '/n/', 'wr': '/r/',
+            'gh': ['/ɡ/', '/f/', ''], 'oo': ['/uː/', '/ʊ/', '/ʌ/'], 'ee': ['/iː/', '/ɪ/'],
             'ea': ['/iː/', '/ɛ/', '/eɪ/'], 'ou': ['/aʊ/', '/oʊ/', '/u/', '/ʌ/'],
-            'ow': ['/aʊ/', '/oʊ/'], 'ai': '/eɪ/', 'ay': '/eɪ/',
-            // Vowels
-            'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/'], 'e': ['/ɛ/', '/iː/', '/ə/'], 'i': ['/ɪ/', '/aɪ/'], 
-            'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'],
-            'y': ['/ɪ/', '/aɪ/', '/iː/'],
-            // Ambiguous Consonants
-            's': ['/s/', '/z/'],       // NEW: 's' can be /s/ (sit) or /z/ (drugs)
-            'g': ['/ɡ/', '/dʒ/'],      // NEW: 'g' can be /ɡ/ (goat) or /dʒ/ (gem)
-            'c': ['/k/', '/s/'], 
-            'x': ['/ks/', '/z/'],
-            // Unambiguous Consonants
+            'ow': ['/aʊ/', '/oʊ/', '/u/'], 'ew': ['/ju/', '/uː/'],
+            'au': '/ɔ/', 'oi': '/ɔɪ/', 'oy': '/ɔɪ/',
+            'ai': ['/eɪ/', '/ɛ/'], 'ay': '/eɪ/',
+            'll': '/l/', 'ss': '/s/', 'ff': '/f/', 'rr': '/r/', 'pp': '/p/', 'bb': '/b/', 
+            'dd': '/d/', 'tt': '/t/', 'mm': '/m/', 'nn': '/n/',
+            'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/'], 'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/'],
+            'i': ['/ɪ/', '/aɪ/', '/iː/'], 'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
+            'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
+            's': ['/s/', '/z/'], 'g': ['/ɡ/', '/dʒ/'], 'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
             'p': '/p/', 'b': '/b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'f': '/f/',
             'v': '/v/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/',
             'r': '/r/', 'w': '/w/', 'j': '/dʒ/'
         };
+        
+        const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. All people have a time to find their own way. If you look for it, you may get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road. How did he know? It was the first time they had been over there. I will give him a call now.";
 
+        // --- DOM ELEMENTS ---
         const inputEl = document.getElementById('english-input');
         const outputEl = document.getElementById('output');
         const transliterateBtn = document.getElementById('transliterate-btn');
+        const diagnosticBtn = document.getElementById('diagnostic-btn');
         const clearBtn = document.getElementById('clear-choices');
+        const exportBtn = document.getElementById('export-btn');
+        const importInput = document.getElementById('import-input');
+        const manageDictBtn = document.getElementById('manage-dict-btn');
+        const dictionaryModal = document.getElementById('dictionary-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const dictionaryListEl = document.getElementById('dictionary-list');
+        const notificationEl = document.getElementById('notification');
         const promptAreaEl = document.getElementById('prompt-area');
         const promptHeadingEl = document.getElementById('prompt-heading');
         const promptInstructionEl = document.getElementById('prompt-instruction');
         const promptButtonsEl = document.getElementById('prompt-buttons-container');
         const rememberCheckbox = document.getElementById('remember-choice-checkbox');
         const promptWordCheckboxEl = document.getElementById('prompt-word-for-checkbox');
+        const directGraflectInput = document.getElementById('direct-graflect-input');
+        const useDirectInputBtn = document.getElementById('use-direct-input-btn');
 
+        // --- STATE ---
         let userChoices = {};
+        let currentResolve;
         const graphemeKeys = Object.keys(graphemeToIpa).sort((a, b) => b.length - a.length);
         const ipaKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
+
+        // --- FUNCTIONS ---
+
+        function showNotification(message, isError = false) {
+            notificationEl.textContent = message;
+            notificationEl.style.backgroundColor = isError ? 'var(--error-bg)' : 'var(--success-bg)';
+            notificationEl.style.top = '20px';
+            setTimeout(() => {
+                notificationEl.style.top = '-100px';
+            }, 3000);
+        }
 
         function loadUserChoices() {
             const stored = localStorage.getItem('graflectUserChoices');
@@ -222,7 +458,7 @@
                 localStorage.removeItem('graflectUserChoices');
                 userChoices = {};
                 outputEl.textContent = '';
-                alert("Saved choices cleared.");
+                showNotification("Saved choices cleared.");
             }
         }
 
@@ -255,27 +491,42 @@
             return text[0];
         }
 
-        let currentResolve;
         async function promptForChoice(word, grapheme, options, index) {
+            transliterateBtn.disabled = true;
             const highlightedWord = `${word.substring(0, index)}<span class="prompt-word-highlight">${word.substring(index, index + grapheme.length)}</span>${word.substring(index + grapheme.length)}`;
             promptHeadingEl.innerHTML = `Ambiguity in "${word}"`;
             promptInstructionEl.innerHTML = `Choose the sound for the highlighted part: ${highlightedWord}`;
             promptWordCheckboxEl.textContent = word;
             promptButtonsEl.innerHTML = '';
-            options.forEach(ipa => {
+            directGraflectInput.value = '';
+
+            const allOptions = [...options, '']; 
+
+            allOptions.forEach(ipa => {
                 if (ipa === undefined) return;
                 const button = document.createElement('button');
                 const graflectChars = ipaToGraflect(ipa);
-                button.innerHTML = `${ipa || '(silent)'} → ${graflectChars || ' '}`;
+                button.innerHTML = ipa ? `${ipa} → ${graflectChars}` : 'Silent → (nothing)';
                 button.onclick = () => {
                     if (currentResolve) {
-                        currentResolve(ipa);
+                        currentResolve({ type: 'ipa', value: ipa });
                         currentResolve = null;
                     }
                     promptAreaEl.style.display = 'none';
+                    transliterateBtn.disabled = false;
                 };
                 promptButtonsEl.appendChild(button);
             });
+
+            useDirectInputBtn.onclick = () => {
+                 if (currentResolve) {
+                    currentResolve({ type: 'direct', value: directGraflectInput.value });
+                    currentResolve = null;
+                }
+                promptAreaEl.style.display = 'none';
+                transliterateBtn.disabled = false;
+            };
+
             promptAreaEl.style.display = 'block';
             return new Promise(resolve => {
                 currentResolve = resolve;
@@ -286,42 +537,53 @@
             const lowerWord = word.toLowerCase();
 
             if (userChoices[lowerWord]) {
-                return ipaToGraflect(userChoices[lowerWord]);
+                return userChoices[lowerWord];
             }
             if (defaultWordMap[lowerWord]) {
-                return ipaToGraflect(defaultWordMap[lowerWord]);
+                return defaultWordMap[lowerWord];
             }
 
-            let finalIpa = '';
+            let finalGraflect = '';
             let remaining = lowerWord;
             let originalIndex = 0;
+
             while (remaining.length > 0) {
                 const grapheme = findLongestGrapheme(remaining);
-                let ipaOptions = graphemeToIpa[grapheme];
+                const ipaOptions = graphemeToIpa[grapheme];
+
                 if (typeof ipaOptions === 'string') {
-                    finalIpa += ipaOptions;
+                    finalGraflect += ipaToGraflect(ipaOptions);
                 } else if (Array.isArray(ipaOptions)) {
-                    const chosenIpa = await promptForChoice(word, grapheme, ipaOptions, originalIndex);
-                    if (chosenIpa) finalIpa += chosenIpa;
+                    const choice = await promptForChoice(word, grapheme, ipaOptions, originalIndex);
+                    let segmentGraflect = '';
+                    if (choice.type === 'ipa') {
+                        segmentGraflect = ipaToGraflect(choice.value);
+                    } else { 
+                        segmentGraflect = choice.value;
+                    }
+                    finalGraflect += segmentGraflect;
                 } else {
-                    finalIpa += grapheme;
+                    finalGraflect += grapheme;
                 }
                 remaining = remaining.substring(grapheme.length);
                 originalIndex += grapheme.length;
             }
-            if (rememberCheckbox.checked) {
-                userChoices[lowerWord] = finalIpa;
+
+            if (rememberCheckbox.checked && promptAreaEl.style.display === 'none') {
+                userChoices[lowerWord] = finalGraflect;
                 saveUserChoices();
             }
-            return ipaToGraflect(finalIpa);
+            return finalGraflect;
         }
 
         async function handleTransliterateClick() {
             transliterateBtn.disabled = true;
             transliterateBtn.textContent = "Processing...";
+            outputEl.textContent = '';
             const text = inputEl.value;
             const parts = text.split(/(\s+|[.,!?;:"()'-])/g);
             let finalOutput = '';
+
             for (const part of parts) {
                 if (!part) continue;
                 if (part.match(/(\s+|[.,!?;:"()'-]|\d+)/)) {
@@ -333,12 +595,125 @@
                 }
                 outputEl.textContent = finalOutput;
             }
+            
             transliterateBtn.disabled = false;
             transliterateBtn.textContent = "Transliterate";
         }
 
+        function handleExportClick() {
+            const dictionaryString = JSON.stringify(userChoices, null, 2);
+            if (dictionaryString === '{}') {
+                showNotification("No saved choices to export.", true);
+                return;
+            }
+            const blob = new Blob([dictionaryString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'graflect_dictionary.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification("Dictionary exported!");
+        }
+
+        function handleImportChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedChoices = JSON.parse(e.target.result);
+                    if (typeof importedChoices !== 'object' || importedChoices === null || Array.isArray(importedChoices)) {
+                        throw new Error("Invalid format. File must contain a JSON object.");
+                    }
+                    userChoices = importedChoices;
+                    saveUserChoices();
+                    outputEl.textContent = '';
+                    showNotification("Dictionary imported successfully!");
+                } catch (error) {
+                    showNotification("Error: Could not import file. " + error.message, true);
+                } finally {
+                    importInput.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function handleDiagnosticClick() {
+            inputEl.value = diagnosticParagraph;
+            showNotification("Diagnostic paragraph inserted.");
+        }
+
+        function populateDictionaryModal() {
+            dictionaryListEl.innerHTML = ''; // Clear existing list
+            const sortedWords = Object.keys(userChoices).sort();
+
+            if (sortedWords.length === 0) {
+                dictionaryListEl.innerHTML = '<li>Your dictionary is empty.</li>';
+                return;
+            }
+
+            sortedWords.forEach(word => {
+                const li = document.createElement('li');
+                
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'dictionary-word';
+                wordSpan.textContent = word;
+
+                const graflectSpan = document.createElement('span');
+                graflectSpan.className = 'dictionary-graflect';
+                graflectSpan.textContent = userChoices[word];
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-word-btn';
+                removeBtn.textContent = 'Remove';
+                removeBtn.onclick = () => {
+                    delete userChoices[word];
+                    saveUserChoices();
+                    populateDictionaryModal(); // Refresh the list
+                    showNotification(`'${word}' removed from dictionary.`);
+                };
+
+                const textDiv = document.createElement('div');
+                textDiv.style.display = 'flex';
+                textDiv.style.gap = '1em';
+                textDiv.style.alignItems = 'center';
+                textDiv.appendChild(wordSpan);
+                textDiv.appendChild(graflectSpan);
+
+                li.appendChild(textDiv);
+                li.appendChild(removeBtn);
+                dictionaryListEl.appendChild(li);
+            });
+        }
+
+        function openDictionaryModal() {
+            populateDictionaryModal();
+            dictionaryModal.style.display = 'block';
+        }
+
+        function closeDictionaryModal() {
+            dictionaryModal.style.display = 'none';
+        }
+
+        // --- EVENT LISTENERS ---
         transliterateBtn.addEventListener('click', handleTransliterateClick);
+        diagnosticBtn.addEventListener('click', handleDiagnosticClick);
         clearBtn.addEventListener('click', clearUserChoices);
+        exportBtn.addEventListener('click', handleExportClick);
+        importInput.addEventListener('change', handleImportChange);
+        manageDictBtn.addEventListener('click', openDictionaryModal);
+        closeModalBtn.addEventListener('click', closeDictionaryModal);
+        // Close modal if user clicks outside of the content area
+        window.addEventListener('click', (event) => {
+            if (event.target == dictionaryModal) {
+                closeDictionaryModal();
+            }
+        });
+        
+        // --- INITIALIZATION ---
         loadUserChoices();
     </script>
 </body>
