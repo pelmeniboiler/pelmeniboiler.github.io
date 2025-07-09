@@ -62,7 +62,6 @@ function initializeGraflectTool() {
         'sch': ['/sk/', '/ʃ/'], 'eau': ['/oʊ/', '/juː/'],
         'sc': ['/sk/', '/s/'], 'gu': ['/ɡ/', '/ɡw/'],
         'ck': '/k/', 'qu': '/kw/', 'th': ['/θ/', '/ð/'], 'sh': '/ʃ/',
-        // UPDATED: Added /x/ as an option for "ch"
         'ch': ['/tʃ/', '/k/', '/ʃ/', '/x/'], 
         'ng': '/ŋ/', 'ph': '/f/', 'kn': '/n/', 'wr': '/r/',
         'gh': ['/ɡ/', '/f/', ''], 'oo': ['/uː/', '/ʊ/', '/ʌ/'], 'ee': ['/iː/', '/ɪ/'],
@@ -72,13 +71,17 @@ function initializeGraflectTool() {
         'ai': ['/eɪ/', '/ɛ/'], 'ay': '/eɪ/',
         'll': '/l/', 'ss': '/s/', 'ff': '/f/', 'rr': '/r/', 'pp': '/p/', 'bb': '/b/', 
         'dd': '/d/', 'tt': '/t/', 'mm': '/m/', 'nn': '/n/',
-        'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/', '/ɛə/'], 'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/', '/ɛə/'],
-        'i': ['/ɪ/', '/aɪ/', '/iː/'], 'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
+        'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/', '/ɛə/', '/aɪ/'], 
+        'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/', '/ɛə/'],
+        'i': ['/ɪ/', '/aɪ/', '/iː/'], 
+        'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
         'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
         's': ['/s/', '/z/'], 'g': ['/ɡ/', '/dʒ/'], 'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
         'p': '/p/', 'b': ' /b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'f': '/f/',
         'v': '/v/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/',
-        'r': '/r/', 'w': '/w/', 'j': '/dʒ/'
+        // UPDATED: Changed 'r' to be an array of options
+        'r': ['/r/', '/ɛər/', '/ɜː/', '/ʁ/'], 
+        'w': '/w/', 'j': '/dʒ/'
     };
     
     const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. So, all people have a time to find their own way. If you look for it, you may also get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road and go down to the water. How did he know? It was the first time they had been over there. I will give him a call now.";
