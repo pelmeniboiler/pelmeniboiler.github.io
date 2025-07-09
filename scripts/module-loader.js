@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modules = [
         { id: 'settings-module-placeholder', path: '/modules/settings-module.html' },
         { id: 'start-menu-module-placeholder', path: '/modules/start-menu-module.html' },
-        { id: 'chirper-demo-placeholder', path: '/modules/blog/demos/replab.html' }
+        { id: 'chirper-demo-placeholder', path: '/modules/blog/demos/replab.html' },
+        { id: 'graflect-module-placeholder', path: '/modules/blog/demos/graflectsubstitution.html' },
     ];
 
     // Defines the scripts that depend on the modules being loaded first.

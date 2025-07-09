@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graflect Transliteration Tool</title>
+    <style>
+        /* * This component is designed to be embedded in a page that already has the user's
+         * custom stylesheet (pelmeni2025.css). It uses CSS variables from that sheet.
+         * The font is assumed to be loaded by the parent page.
+         * Minimal structural and specific styles are defined here.
+        */
+
+        /* Component-Specific Layout */
+        .graflect-tool-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            height: 100%;
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            border: 2px solid var(--border-color, #000);
+            flex-shrink: 0;
+        }
+        .active-dict-display {
+            font-style: italic;
+        }
+        #active-dict-name {
+            font-weight: bold;
+        }
+        .textarea-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+        }
+        #english-input {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            resize: none;
+            padding: 1em;
+            padding-right: 150px; /* Space for button */
+            border: 2px solid var(--border-color, #000);
+            background-color: var(--win-bg-color, #fff);
+            color: var(--text-color, #000);
+            font-family: inherit;
+            font-size: 1.1em;
+        }
+        #diagnostic-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+        }
+        #output-container {
+            min-height: 80px;
+            border: 2px solid var(--border-color, #000);
+            padding: 1em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: var(--bg-color, #fff);
+        }
+        #output {
+            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
+            font-size: 1.5em;
+        }
+
+        /* Modal Styles (from user example) */
+        .ledger-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        .ledger-modal-overlay.hidden {
+            display: none;
+        }
+        .ledger-modal-overlay .window {
+             width: 90%;
+             max-width: 600px;
+        }
+        
+        /* Modal List Styling */
+        .modal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .modal-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8em;
+            border-bottom: 2px solid var(--border-color, #000);
+        }
+        .modal-list li:last-child {
+            border-bottom: none;
+        }
+        .dict-info .name { font-weight: bold; }
+        .dict-info .author { font-style: italic; font-size: 0.9em; }
+        .dict-edit-input {
+            background-color: var(--win-bg-color, #fff);
+            border: 2px solid var(--border-color, #000);
+            color: var(--text-color, #000);
+            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            padding: 0.2em;
+            flex-grow: 1;
+            margin-left: 1em;
+        }
+        .dict-btn-group button, .dict-btn-group .button-label {
+             margin-left: 0.5em;
+        }
+        .modal-footer {
+            margin-top: 1.5em;
+            padding-top: 1.5em;
+            border-top: 2px solid var(--border-color, #000);
+            display: flex;
+            gap: 1em;
+            justify-content: flex-end;
+        }
+
+        /* Prompt Modal Specifics */
+        #prompt-area .content {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+        #prompt-area .choice-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5em;
+        }
+        #prompt-area .direct-input-area {
+             border-top: 2px solid var(--border-color, #000);
+             padding-top: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="window">
+        <div class="title-bar">
+            <span class="title" data-key="graflect_tool_title"> Graflect Transliteration Tool</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="content graflect-tool-content">
+            <div class="tool-header">
+                <div class="active-dict-display">
+                    <span data-key="active_dict_label">Active Dictionary:</span> <span id="active-dict-name"></span>
+                </div>
+                <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn">Manage Dictionaries</button>
+            </div>
+            <div class="textarea-container">
+                <textarea id="english-input" data-key-placeholder="textarea_placeholder" placeholder="Enter English text here, or try the diagnostic paragraph..."></textarea>
+                <button id="diagnostic-btn" class="normal-btn" data-key="insert_diagnostic_btn">Insert Diagnostic</button>
+            </div>
+            <div class="controls">
+                <button id="transliterate-btn" class="normal-btn" data-key="transliterate_btn">Transliterate</button>
+            </div>
+            <div>
+                <h2 data-key="result_heading">Result:</h2>
+                <div id="output-container">
+                    <span id="output" class="graflect-font"></span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="dictionary-manager-modal" class="ledger-modal-overlay hidden">
+        <div class="window">
+            <div class="title-bar">
+                <span class="title" data-key="win_manage_dicts_title">Manage Dictionaries</span>
+                <button class="modal-close" id="close-manager-btn">&times;</button>
+            </div>
+            <div class="content">
+                <ul id="dictionary-list" class="modal-list"></ul>
+                <div class="modal-footer">
+                    <button id="new-dict-btn" class="normal-btn" data-key="new_dict_btn">New Empty Dictionary</button>
+                    <label for="import-input" class="button-label normal-btn" data-key="import_dict_btn">Import Dictionary</label>
+                    <input type="file" id="import-input" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="word-editor-modal" class="ledger-modal-overlay hidden">
+         <div class="window">
+            <div class="title-bar">
+                <h2 id="word-editor-title" class="title" data-key="win_edit_dict_title">Edit Dictionary</h2>
+                <button class="modal-close" id="close-editor-btn">&times;</button>
+            </div>
+            <div class="content">
+                <ul id="word-list" class="modal-list"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <div id="prompt-area" class="ledger-modal-overlay hidden">
+        <div class="window">
+             <div class="title-bar">
+                <h3 id="prompt-heading" class="title"></h3>
+                <button class="modal-close" id="close-prompt-btn">&times;</button>
+            </div>
+            <div class="content">
+                <p id="prompt-instruction"></p>
+                <div id="prompt-buttons-container" class="choice-buttons"></div>
+                <div class="direct-input-area">
+                    <label for="direct-graflect-input" data-key="direct_input_label">Or enter direct Graflect substitution:</label>
+                    <div style="display: flex; gap: 0.5em; margin-top: 0.5em;">
+                        <input type="text" id="direct-graflect-input" class="graflect-font">
+                        <button id="use-direct-input-btn" class="normal-btn" data-key="use_btn">Use</button>
+                    </div>
+                </div>
+                <div class="remember-choice">
+                    <input type="checkbox" id="remember-choice-checkbox" checked>
+                    <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification"></div>
+
+   
+</body>
+</html>
