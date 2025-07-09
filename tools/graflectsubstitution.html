@@ -50,6 +50,11 @@
             font-size: 2.5em;
             font-family: 'Fairfax HD';
         }
+        .active-dict-display {
+            text-align: center;
+            font-style: italic;
+            color: var(--info-bg);
+        }
         .textarea-container {
             position: relative;
             width: 100%;
@@ -107,18 +112,6 @@
         button:disabled {
             background-color: #555;
             cursor: not-allowed;
-        }
-        #clear-choices {
-            background-color: var(--danger-bg);
-        }
-        #clear-choices:hover {
-            background-color: var(--danger-hover-bg);
-        }
-        #export-btn {
-            background-color: var(--success-bg);
-        }
-        #export-btn:hover {
-            background-color: #264653;
         }
         #manage-dict-btn {
             background-color: var(--warning-bg);
@@ -199,7 +192,7 @@
             z-index: 1000;
             transition: top 0.5s ease-in-out;
         }
-        /* Dictionary Management Modal */
+        /* Modal Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -210,14 +203,15 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
         }
         .modal-content {
             background-color: var(--bg-color);
-            margin: 10% auto;
             padding: 2em;
             border: 1px solid var(--border-color);
-            width: 80%;
-            max-width: 600px;
+            width: 90%;
+            max-width: 700px;
             border-radius: 8px;
             color: var(--text-color);
         }
@@ -238,40 +232,77 @@
         .close-button:hover {
             color: var(--primary-color);
         }
-        #dictionary-list {
+        .modal-list {
             list-style: none;
             padding: 0;
             max-height: 50vh;
             overflow-y: auto;
         }
-        #dictionary-list li {
+        .modal-list li {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0.8em;
             border-bottom: 1px solid var(--border-color);
         }
-        #dictionary-list li:last-child {
+        .modal-list li:last-child {
             border-bottom: none;
         }
-        .dictionary-word {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        .dictionary-graflect {
+        .dict-info .name { font-weight: bold; color: var(--primary-color); }
+        .dict-info .author { font-style: italic; font-size: 0.9em; }
+        .dict-info .description { font-size: 0.9em; margin-top: 0.5em; }
+        .dict-edit-input {
+            background-color: var(--input-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
             font-family: 'Fairfax HD';
             font-size: 1.2em;
+            padding: 0.2em;
+            border-radius: 3px;
+            flex-grow: 1;
+            margin-left: 1em;
         }
-        .remove-word-btn {
-            background-color: var(--danger-bg);
+        .dict-btn {
+             background-color: var(--button-bg);
             color: white;
             border: none;
             padding: 0.4em 0.8em;
             border-radius: 4px;
             cursor: pointer;
+            margin-left: 0.5em;
         }
-        .remove-word-btn:hover {
+        .dict-btn.remove, .dict-btn.delete {
+            background-color: var(--danger-bg);
+        }
+        .dict-btn.remove:hover, .dict-btn.delete:hover {
             background-color: var(--danger-hover-bg);
+        }
+        .dict-btn.save, .dict-btn.select {
+            background-color: var(--success-bg);
+        }
+        .modal-footer {
+            margin-top: 1.5em;
+            padding-top: 1.5em;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 1em;
+            justify-content: flex-end;
+        }
+        .modal-form-group {
+            margin-bottom: 1em;
+        }
+        .modal-form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        .modal-form-group input, .modal-form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.5em;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
         }
     </style>
 </head>
@@ -281,18 +312,16 @@
     <div class="container">
         <h1></h1>
         <h2>Graflect Transliteration Tool</h2>
-        <p>Enter English text. The tool will ask you to resolve ambiguous sounds. Your choices can be saved for future use, imported, and exported.</p>
+        <div class="active-dict-display">
+            Active Dictionary: <span id="active-dict-name"></span>
+        </div>
         <div class="textarea-container">
             <textarea id="english-input" placeholder="Enter English text here, or try the diagnostic paragraph..."></textarea>
             <button id="diagnostic-btn">Insert Diagnostic</button>
         </div>
         <div class="controls">
             <button id="transliterate-btn">Transliterate</button>
-            <button id="clear-choices">Clear Saved Choices</button>
-            <button id="export-btn">Export Dictionary</button>
-            <label for="import-input" class="button-label">Import Dictionary</label>
-            <input type="file" id="import-input" accept=".json" style="display: none;">
-            <button id="manage-dict-btn">Manage Dictionary</button>
+            <button id="manage-dict-btn">Manage Dictionaries</button>
         </div>
         <div id="prompt-area" style="display: none;">
             <h3 id="prompt-heading"></h3>
@@ -318,16 +347,29 @@
         </div>
     </div>
 
-    <!-- Dictionary Management Modal -->
-    <div id="dictionary-modal" class="modal-overlay">
+    <!-- Modals -->
+    <div id="dictionary-manager-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Saved Words</h2>
-                <span class="close-button" id="close-modal-btn">&times;</span>
+                <h2>Manage Dictionaries</h2>
+                <span class="close-button" id="close-manager-btn">&times;</span>
             </div>
-            <ul id="dictionary-list">
-                <!-- Content will be generated by JavaScript -->
-            </ul>
+            <ul id="dictionary-list" class="modal-list"></ul>
+            <div class="modal-footer">
+                <button id="new-dict-btn" class="dict-btn save">New Empty Dictionary</button>
+                <label for="import-input" class="button-label">Import Dictionary</label>
+                <input type="file" id="import-input" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <div id="word-editor-modal" class="modal-overlay">
+         <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="word-editor-title">Edit Dictionary</h2>
+                <span class="close-button" id="close-editor-btn">&times;</span>
+            </div>
+            <ul id="word-list" class="modal-list"></ul>
         </div>
     </div>
 
@@ -350,30 +392,30 @@
         };
 
         const defaultWordMap = {
-            'a': '', 'about': '', 'all': '', 'also': '', 'an': '', 'and': '',
-            'any': '', 'are': '', 'as': '', 'at': '', 'be': '', 'because': '',
-            'been': '', 'before': '', 'but': '', 'by': '', 'can': '',
-            'change': '', 'come': '', 'could': '', 'day': '', 'do': '', 'down': '',
-            'each': '', 'even': '', 'find': '', 'first': '', 'for': '',
-            'from': '', 'get': '', 'give': '', 'go': '', 'good': '',
+            'a': '', 'an': '',
+            'are': '', 'as': '', 'at': '', 'be': '', 'because': '',
+            'been': '', 'before': '', 'but': '', 'by': '',
+            'change': '', 'come': '', 'could': '', 'day': '', 'do': '',
+            'each': '', 'even': '', 'first': '', 'for': '',
+            'from': '', 'get': '', 'give': '',
             'great': '', 'had': '', 'has': '', 'have': '', 'he': '',
-            'her': '', 'here': '', 'him': '', 'his': '', 'how': '',
+            'her': '', 'here': '', 'him': '', 'his': '',
             'i': '', 'if': '', 'in': '', 'into': '', 'is': '', 'it': '',
-            'its': '', 'just': '', 'know': '', 'like': '', 'long': '',
-            'look': '', 'made': '', 'make': '', 'man': '', 'many': '',
+            'its': '', 'just': '', 'like': '',
+            'made': '', 'make': '',
             'me': '', 'more': '', 'most': '', 'my': '', 'new': '',
-            'no': '', 'not': '', 'now': '', 'of': '', 'on': '',
-            'one': '', 'only': '', 'or': '', 'other': '', 'our': '',
-            'out': '', 'over': '', 'people': '', 'place': '',
-            'said': '', 'same': '', 'see': '', 'she': '', 'so': '',
+            'of': '', 'on': '',
+            'one': '', 'only': '', 'or': '', 'other': '',
+            'over': '', 'people': '', 'place': '',
+            'said': '', 'same': '', 'see': '', 'she': '',
             'some': '', 'take': '', 'than': '', 'that': '', 'the': '',
             'their': '', 'them': '', 'then': '', 'there': '', 'these': '',
             'they': '', 'thing': '', 'think': '', 'this': '', 'those': '',
             'time': '', 'to': '', 'two': '', 'up': '', 'use': '',
-            'very': '', 'want': '', 'was': '', 'water': '',
-            'way': '', 'we': '', 'well': '', 'were': '', 'what': '',
+            'very': '', 'want': '', 'was': '',
+            'way': '', 'we': '', 'well': '', 'were': '',
             'when': '', 'where': '', 'which': '', 'who': '', 'why': '',
-            'will': '', 'with': '', 'work': '', 'would': '', 'year': '',
+            'will': '', 'with': '', 'work': '', 'would': '', 'year': '',
             'you': '', 'your': ''
         };
 
@@ -396,7 +438,7 @@
             'ai': ['/eɪ/', '/ɛ/'], 'ay': '/eɪ/',
             'll': '/l/', 'ss': '/s/', 'ff': '/f/', 'rr': '/r/', 'pp': '/p/', 'bb': '/b/', 
             'dd': '/d/', 'tt': '/t/', 'mm': '/m/', 'nn': '/n/',
-            'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/'], 'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/'],
+            'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/', '/ɛə/'], 'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/', '/ɛə/'],
             'i': ['/ɪ/', '/aɪ/', '/iː/'], 'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
             'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
             's': ['/s/', '/z/'], 'g': ['/ɡ/', '/dʒ/'], 'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
@@ -405,20 +447,27 @@
             'r': '/r/', 'w': '/w/', 'j': '/dʒ/'
         };
         
-        const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. All people have a time to find their own way. If you look for it, you may get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road. How did he know? It was the first time they had been over there. I will give him a call now.";
+        const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. So, all people have a time to find their own way. If you look for it, you may also get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road and go down to the water. How did he know? It was the first time they had been over there. I will give him a call now.";
 
         // --- DOM ELEMENTS ---
         const inputEl = document.getElementById('english-input');
         const outputEl = document.getElementById('output');
         const transliterateBtn = document.getElementById('transliterate-btn');
         const diagnosticBtn = document.getElementById('diagnostic-btn');
-        const clearBtn = document.getElementById('clear-choices');
-        const exportBtn = document.getElementById('export-btn');
-        const importInput = document.getElementById('import-input');
         const manageDictBtn = document.getElementById('manage-dict-btn');
-        const dictionaryModal = document.getElementById('dictionary-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
+        const activeDictNameEl = document.getElementById('active-dict-name');
+        
+        // Modals
+        const dictionaryManagerModal = document.getElementById('dictionary-manager-modal');
+        const wordEditorModal = document.getElementById('word-editor-modal');
+        const closeModalManagerBtn = document.getElementById('close-manager-btn');
+        const closeWordEditorBtn = document.getElementById('close-editor-btn');
         const dictionaryListEl = document.getElementById('dictionary-list');
+        const wordListEl = document.getElementById('word-list');
+        const wordEditorTitleEl = document.getElementById('word-editor-title');
+        const newDictBtn = document.getElementById('new-dict-btn');
+        const importInput = document.getElementById('import-input');
+
         const notificationEl = document.getElementById('notification');
         const promptAreaEl = document.getElementById('prompt-area');
         const promptHeadingEl = document.getElementById('prompt-heading');
@@ -430,7 +479,8 @@
         const useDirectInputBtn = document.getElementById('use-direct-input-btn');
 
         // --- STATE ---
-        let userChoices = {};
+        let dictionaries = [];
+        let activeDictionaryIndex = 0;
         let currentResolve;
         const graphemeKeys = Object.keys(graphemeToIpa).sort((a, b) => b.length - a.length);
         const ipaKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
@@ -446,19 +496,40 @@
             }, 3000);
         }
 
-        function loadUserChoices() {
-            const stored = localStorage.getItem('graflectUserChoices');
-            userChoices = stored ? JSON.parse(stored) : {};
+        function getActiveDictionary() {
+            return dictionaries[activeDictionaryIndex];
         }
-        function saveUserChoices() {
-            localStorage.setItem('graflectUserChoices', JSON.stringify(userChoices));
+
+        function loadDictionaries() {
+            const storedDicts = localStorage.getItem('graflectDictionaries');
+            const storedIndex = localStorage.getItem('graflectActiveDictIndex');
+
+            if (storedDicts) {
+                dictionaries = JSON.parse(storedDicts);
+                activeDictionaryIndex = storedIndex ? parseInt(storedIndex, 10) : 0;
+            } else {
+                // First time load: create default dictionary
+                dictionaries = [{
+                    name: "Default",
+                    author: "System",
+                    description: "Default dictionary with common English words.",
+                    words: { ...defaultWordMap }
+                }];
+                activeDictionaryIndex = 0;
+            }
+            updateActiveDictDisplay();
+            saveAllDictionaries();
         }
-        function clearUserChoices() {
-            if (confirm("Are you sure you want to delete all saved word preferences? This cannot be undone.")) {
-                localStorage.removeItem('graflectUserChoices');
-                userChoices = {};
-                outputEl.textContent = '';
-                showNotification("Saved choices cleared.");
+
+        function saveAllDictionaries() {
+            localStorage.setItem('graflectDictionaries', JSON.stringify(dictionaries));
+            localStorage.setItem('graflectActiveDictIndex', activeDictionaryIndex);
+        }
+        
+        function updateActiveDictDisplay() {
+            const activeDict = getActiveDictionary();
+            if (activeDict) {
+                activeDictNameEl.textContent = activeDict.name;
             }
         }
 
@@ -535,14 +606,12 @@
 
         async function processWord(word) {
             const lowerWord = word.toLowerCase();
+            const activeDict = getActiveDictionary();
 
-            if (userChoices[lowerWord]) {
-                return userChoices[lowerWord];
+            if (activeDict.words[lowerWord]) {
+                return activeDict.words[lowerWord];
             }
-            if (defaultWordMap[lowerWord]) {
-                return defaultWordMap[lowerWord];
-            }
-
+            
             let finalGraflect = '';
             let remaining = lowerWord;
             let originalIndex = 0;
@@ -570,8 +639,8 @@
             }
 
             if (rememberCheckbox.checked && promptAreaEl.style.display === 'none') {
-                userChoices[lowerWord] = finalGraflect;
-                saveUserChoices();
+                activeDict.words[lowerWord] = finalGraflect;
+                saveAllDictionaries();
             }
             return finalGraflect;
         }
@@ -600,22 +669,19 @@
             transliterateBtn.textContent = "Transliterate";
         }
 
-        function handleExportClick() {
-            const dictionaryString = JSON.stringify(userChoices, null, 2);
-            if (dictionaryString === '{}') {
-                showNotification("No saved choices to export.", true);
-                return;
-            }
+        function handleExportClick(dictIndex) {
+            const dictionary = dictionaries[dictIndex];
+            const dictionaryString = JSON.stringify(dictionary, null, 2);
             const blob = new Blob([dictionaryString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'graflect_dictionary.json';
+            a.download = `${dictionary.name.replace(/\s+/g, '_')}_graflect.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showNotification("Dictionary exported!");
+            showNotification(`Dictionary "${dictionary.name}" exported!`);
         }
 
         function handleImportChange(event) {
@@ -624,14 +690,14 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const importedChoices = JSON.parse(e.target.result);
-                    if (typeof importedChoices !== 'object' || importedChoices === null || Array.isArray(importedChoices)) {
-                        throw new Error("Invalid format. File must contain a JSON object.");
+                    const importedDict = JSON.parse(e.target.result);
+                    if (typeof importedDict !== 'object' || !importedDict.name || !importedDict.words) {
+                        throw new Error("Invalid format. File must be a valid dictionary object.");
                     }
-                    userChoices = importedChoices;
-                    saveUserChoices();
-                    outputEl.textContent = '';
-                    showNotification("Dictionary imported successfully!");
+                    dictionaries.push(importedDict);
+                    saveAllDictionaries();
+                    populateDictionaryManager();
+                    showNotification(`Dictionary "${importedDict.name}" imported successfully!`);
                 } catch (error) {
                     showNotification("Error: Could not import file. " + error.message, true);
                 } finally {
@@ -646,36 +712,124 @@
             showNotification("Diagnostic paragraph inserted.");
         }
 
-        function populateDictionaryModal() {
-            dictionaryListEl.innerHTML = ''; // Clear existing list
-            const sortedWords = Object.keys(userChoices).sort();
+        function openDictionaryManager() {
+            populateDictionaryManager();
+            dictionaryManagerModal.style.display = 'flex';
+        }
 
-            if (sortedWords.length === 0) {
-                dictionaryListEl.innerHTML = '<li>Your dictionary is empty.</li>';
-                return;
-            }
+        function populateDictionaryManager() {
+            dictionaryListEl.innerHTML = '';
+            dictionaries.forEach((dict, index) => {
+                const li = document.createElement('li');
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'dict-info';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'name';
+                nameSpan.textContent = dict.name + (index === activeDictionaryIndex ? ' (Active)' : '');
 
+                const authorSpan = document.createElement('span');
+                authorSpan.className = 'author';
+                authorSpan.textContent = `by ${dict.author}`;
+
+                infoDiv.appendChild(nameSpan);
+                infoDiv.appendChild(authorSpan);
+                
+                const buttonDiv = document.createElement('div');
+                
+                const selectBtn = document.createElement('button');
+                selectBtn.textContent = 'Select';
+                selectBtn.className = 'dict-btn select';
+                selectBtn.disabled = index === activeDictionaryIndex;
+                selectBtn.onclick = () => {
+                    activeDictionaryIndex = index;
+                    saveAllDictionaries();
+                    updateActiveDictDisplay();
+                    populateDictionaryManager();
+                    showNotification(`"${dict.name}" is now the active dictionary.`);
+                };
+
+                const exportBtn = document.createElement('button');
+                exportBtn.textContent = 'Export';
+                exportBtn.className = 'dict-btn';
+                exportBtn.onclick = () => handleExportClick(index);
+
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Edit';
+                editBtn.className = 'dict-btn';
+                editBtn.onclick = () => openWordEditor(index);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'dict-btn delete';
+                deleteBtn.onclick = () => {
+                    if (confirm(`Are you sure you want to delete the "${dict.name}" dictionary? This cannot be undone.`)) {
+                        dictionaries.splice(index, 1);
+                        if (activeDictionaryIndex >= index) {
+                            activeDictionaryIndex = Math.max(0, activeDictionaryIndex - 1);
+                        }
+                        if (dictionaries.length === 0) createNewDictionary(true); // Create a new default if all are deleted
+                        saveAllDictionaries();
+                        updateActiveDictDisplay();
+                        populateDictionaryManager();
+                    }
+                };
+
+                buttonDiv.appendChild(selectBtn);
+                buttonDiv.appendChild(exportBtn);
+                buttonDiv.appendChild(editBtn);
+                buttonDiv.appendChild(deleteBtn);
+                
+                li.appendChild(infoDiv);
+                li.appendChild(buttonDiv);
+                dictionaryListEl.appendChild(li);
+            });
+        }
+        
+        function createNewDictionary(isDefault = false) {
+            const name = isDefault ? "Default" : prompt("Enter a name for your new dictionary:");
+            if (!name && !isDefault) return;
+
+            const author = isDefault ? "System" : prompt("Enter your name (Author):");
+            if (!author && !isDefault) return;
+
+            const newDict = {
+                name: name,
+                author: author,
+                description: isDefault ? "Default dictionary." : "",
+                words: isDefault ? { ...defaultWordMap } : {}
+            };
+            dictionaries.push(newDict);
+            activeDictionaryIndex = dictionaries.length - 1;
+            saveAllDictionaries();
+            updateActiveDictDisplay();
+            populateDictionaryManager();
+            showNotification(`Created and selected new dictionary: "${name}"`);
+        }
+
+        function openWordEditor(dictIndex) {
+            wordEditorTitleEl.textContent = `Editing: ${dictionaries[dictIndex].name}`;
+            wordListEl.innerHTML = '';
+            
+            const sortedWords = Object.keys(dictionaries[dictIndex].words).sort();
             sortedWords.forEach(word => {
                 const li = document.createElement('li');
-                
                 const wordSpan = document.createElement('span');
                 wordSpan.className = 'dictionary-word';
                 wordSpan.textContent = word;
 
                 const graflectSpan = document.createElement('span');
                 graflectSpan.className = 'dictionary-graflect';
-                graflectSpan.textContent = userChoices[word];
+                graflectSpan.textContent = dictionaries[dictIndex].words[word];
 
+                const editBtn = document.createElement('button');
+                editBtn.className = 'dict-btn edit';
+                editBtn.textContent = 'Edit';
+                
                 const removeBtn = document.createElement('button');
-                removeBtn.className = 'remove-word-btn';
+                removeBtn.className = 'dict-btn remove';
                 removeBtn.textContent = 'Remove';
-                removeBtn.onclick = () => {
-                    delete userChoices[word];
-                    saveUserChoices();
-                    populateDictionaryModal(); // Refresh the list
-                    showNotification(`'${word}' removed from dictionary.`);
-                };
-
+                
                 const textDiv = document.createElement('div');
                 textDiv.style.display = 'flex';
                 textDiv.style.gap = '1em';
@@ -683,38 +837,86 @@
                 textDiv.appendChild(wordSpan);
                 textDiv.appendChild(graflectSpan);
 
+                const buttonDiv = document.createElement('div');
+                buttonDiv.appendChild(editBtn);
+                buttonDiv.appendChild(removeBtn);
+
                 li.appendChild(textDiv);
-                li.appendChild(removeBtn);
-                dictionaryListEl.appendChild(li);
+                li.appendChild(buttonDiv);
+                wordListEl.appendChild(li);
+
+                removeBtn.onclick = () => {
+                    delete dictionaries[dictIndex].words[word];
+                    saveAllDictionaries();
+                    li.remove();
+                    showNotification(`'${word}' removed.`);
+                };
+
+                editBtn.onclick = () => {
+                    textDiv.innerHTML = '';
+                    const wordLabel = document.createElement('span');
+                    wordLabel.className = 'dictionary-word';
+                    wordLabel.textContent = word;
+
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.className = 'dict-edit-input';
+                    editInput.value = dictionaries[dictIndex].words[word];
+                    
+                    textDiv.appendChild(wordLabel);
+                    textDiv.appendChild(editInput);
+                    editInput.focus();
+
+                    buttonDiv.innerHTML = '';
+                    const saveBtn = document.createElement('button');
+                    saveBtn.className = 'dict-btn save';
+                    saveBtn.textContent = 'Save';
+                    
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'dict-btn';
+                    cancelBtn.textContent = 'Cancel';
+
+                    buttonDiv.appendChild(saveBtn);
+                    buttonDiv.appendChild(cancelBtn);
+
+                    saveBtn.onclick = () => {
+                        dictionaries[dictIndex].words[word] = editInput.value;
+                        saveAllDictionaries();
+                        openWordEditor(dictIndex); // Refresh list
+                        showNotification(`'${word}' updated.`);
+                    };
+                    cancelBtn.onclick = () => {
+                        openWordEditor(dictIndex); // Refresh list
+                    };
+                };
             });
-        }
 
-        function openDictionaryModal() {
-            populateDictionaryModal();
-            dictionaryModal.style.display = 'block';
-        }
-
-        function closeDictionaryModal() {
-            dictionaryModal.style.display = 'none';
+            dictionaryManagerModal.style.display = 'none';
+            wordEditorModal.style.display = 'flex';
         }
 
         // --- EVENT LISTENERS ---
         transliterateBtn.addEventListener('click', handleTransliterateClick);
         diagnosticBtn.addEventListener('click', handleDiagnosticClick);
-        clearBtn.addEventListener('click', clearUserChoices);
-        exportBtn.addEventListener('click', handleExportClick);
+        manageDictBtn.addEventListener('click', openDictionaryManager);
+        newDictBtn.addEventListener('click', () => createNewDictionary(false));
         importInput.addEventListener('change', handleImportChange);
-        manageDictBtn.addEventListener('click', openDictionaryModal);
-        closeModalBtn.addEventListener('click', closeDictionaryModal);
-        // Close modal if user clicks outside of the content area
+
+        closeModalManagerBtn.addEventListener('click', () => dictionaryManagerModal.style.display = 'none');
+        closeWordEditorBtn.addEventListener('click', () => {
+            wordEditorModal.style.display = 'none';
+            openDictionaryManager(); // Go back to manager
+        });
         window.addEventListener('click', (event) => {
-            if (event.target == dictionaryModal) {
-                closeDictionaryModal();
+            if (event.target == dictionaryManagerModal) dictionaryManagerModal.style.display = 'none';
+            if (event.target == wordEditorModal) {
+                 wordEditorModal.style.display = 'none';
+                 openDictionaryManager();
             }
         });
         
         // --- INITIALIZATION ---
-        loadUserChoices();
+        loadDictionaries();
     </script>
 </body>
 </html>
