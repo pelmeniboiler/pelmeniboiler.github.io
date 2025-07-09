@@ -16,11 +16,16 @@
   --sb-thumb-background-color: var(--win-bg-color, #ffffff);
   --sb-thumb-border-color: var(--border-color, #000000);
   --sb-size: 16px;
-  /* Funky Mode defaults, overridden by JS */
-  --funky-bg-color: #b1de75;
-  --funky-text-color: #b000b5;
-  --funky-border-color: #eb01a5;
-  --funky-accent-color: #fa6607;
+  
+  /* Generic variables for color themes, updated by JS */
+  --theme-bg-color: #b1de75;
+  --theme-text-color: #b000b5;
+  --theme-border-color: #eb01a5;
+  --theme-accent-color: #fa6607;
+  
+  /* Link hover variables */
+  --link-hover-bg: var(--text-color);
+  --link-hover-color: var(--bg-color);
 }
 
 /* Base body styles */
@@ -34,7 +39,13 @@ body {
 }
 /* E-Ink / LCD mode has highest priority for background */
 body.eink-mode { background-color: var(--bg-color); }
-body.lcd-mode { background-image: url('../tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
+body.lcd-mode { 
+    background-image: url('../tokyo3.gif'); 
+    background-repeat: repeat; 
+    background-position: center; 
+    background-size: cover;
+    background-color: var(--bg-color); /* Fallback color */
+}
 
 /* --- E-INK MODE MEDIA STYLES --- */
 /* When e-ink mode is on, force images and iframes to be high-contrast black and white */
@@ -47,17 +58,52 @@ body.eink-mode iframe {
 /* --- THEME DEFINITIONS --- */
 body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
 body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
-body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
+
+/* All color themes use the generic theme variables set by JS */
+body.funky-mode,
+body.champagne-mode,
+body.bubblegum-mode,
+body.techelet-mode,
+body.zelyonny-mode,
+body.akai-mode,
+body.rindswurst-mode {
+  --bg-color: var(--theme-bg-color);
+  --win-bg-color: var(--theme-bg-color);
+  --text-color: var(--theme-text-color);
+  --border-color: var(--theme-border-color);
+  --inv-bg-color: var(--theme-border-color);
+  --inv-text-color: var(--theme-bg-color);
+  /* Override link hover colors for these themes */
+  --link-hover-bg: var(--theme-accent-color);
+  --link-hover-color: var(--theme-bg-color);
+}
 
 
 /* --- STATIC ELEMENT STYLES --- */
 body { color: var(--text-color); }
 
 .symbol {
-
-        font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
-        font-weight: normal; 
+    font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
+    font-weight: normal; 
 }
+
+/* --- SVG LOGO STYLING --- */
+.logo-image-container svg, .start-button svg {
+    object-fit: contain;
+}
+.logo-image-container svg {
+    width: 100px;
+    height: 100px;
+}
+.start-button svg {
+    width: 20px;
+    height: 20px;
+}
+/* This rule colors the SVG paths with the current theme's text color */
+.logo-image-container svg path, .start-button svg path {
+    fill: var(--text-color);
+}
+
 
 .window { 
     position: absolute;
@@ -92,7 +138,7 @@ body { color: var(--text-color); }
 .setting-group-inline { display: flex; align-items: center; gap: 10px; }
 .setting-divider { border: none; height: 2px; background-color: var(--border-color); margin: 20px 0; }
 .setting-group { display: flex; flex-direction: column; align-items: flex-start; }
-.radio-label { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; }
+.radio-label { display: flex; align-items: center; gap: 0.5em; margin-bottom: 8px; cursor: pointer; }
 input[type="radio"], input[type="checkbox"] { margin-right: 8px; accent-color: var(--text-color); }
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
 p { font-size: 14px; margin-bottom: 0.8em; }
@@ -106,17 +152,22 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 /* --- INTERACTIVE ELEMENT STYLES (HOVER, FOCUS, ACTIVE, ETC) --- */
 *:focus { outline: none; }
 ::selection { background-color: var(--text-color); color: var(--bg-color); }
-body.funky-mode ::selection { background-color: var(--funky-accent-color); color: var(--funky-bg-color); }
+body.funky-mode ::selection,
+body.champagne-mode ::selection,
+body.bubblegum-mode ::selection,
+body.techelet-mode ::selection,
+body.zelyonny-mode ::selection,
+body.akai-mode ::selection,
+body.rindswurst-mode ::selection { 
+    background-color: var(--theme-accent-color); 
+    color: var(--theme-bg-color); 
+}
 
 a:link, a:visited { color: var(--text-color); text-decoration: none; }
 a:hover, a:active, a:focus-visible {
-    background-color: var(--text-color);
-    color: var(--bg-color);
+    background-color: var(--link-hover-bg);
+    color: var(--link-hover-color);
     text-decoration: underline;
-}
-body.funky-mode a:hover, body.funky-mode a:active, body.funky-mode a:focus-visible {
-    background-color: var(--funky-accent-color);
-    color: var(--funky-bg-color);
 }
 
 .close-btn, .normal-btn, .window-list li, .settings-nav li { cursor: pointer; }
@@ -133,19 +184,11 @@ body.funky-mode a:hover, body.funky-mode a:active, body.funky-mode a:focus-visib
     background-color: var(--text-color);
     color: var(--win-bg-color);
 }
-body.funky-mode .normal-btn:hover, body.funky-mode .normal-btn:active, body.funky-mode .normal-btn:focus-visible {
-    background-color: var(--funky-accent-color);
-    color: var(--funky-bg-color);
-}
 
 .window-list li:hover, .window-list li:focus-visible,
 .settings-nav li:hover, .settings-nav li:focus-visible {
     background-color: var(--text-color);
     color: var(--bg-color);
-}
-body.funky-mode .settings-nav li:hover, body.funky-mode .settings-nav li:focus-visible {
-    background-color: var(--funky-accent-color);
-    color: var(--funky-bg-color);
 }
 
 .dropdown:focus-visible,
@@ -154,43 +197,49 @@ input:focus-visible {
     outline-offset: 2px;
 }
 body.funky-mode .dropdown:focus-visible,
-body.funky-mode input:focus-visible {
-     outline-color: var(--funky-border-color);
+body.funky-mode input:focus-visible,
+body.champagne-mode .dropdown:focus-visible,
+body.champagne-mode input:focus-visible,
+body.bubblegum-mode .dropdown:focus-visible,
+body.bubblegum-mode input:focus-visible,
+body.techelet-mode .dropdown:focus-visible,
+body.techelet-mode input:focus-visible,
+body.zelyonny-mode .dropdown:focus-visible,
+body.zelyonny-mode input:focus-visible,
+body.akai-mode .dropdown:focus-visible,
+body.akai-mode input:focus-visible,
+body.rindswurst-mode .dropdown:focus-visible,
+body.rindswurst-mode input:focus-visible {
+     outline-color: var(--theme-border-color);
 }
 
-/* --- SCROLLBAR STYLES --- *//* --- SCROLLBAR STYLES --- */
-/* Find this section in your CSS file */
-
-/* Add .settings-content to this rule */
+/* --- SCROLLBAR STYLES --- */
 body::-webkit-scrollbar,
 .content::-webkit-scrollbar,
 .window-list::-webkit-scrollbar,
-.settings-content::-webkit-scrollbar { /* ADD THIS SELECTOR */
+.settings-content::-webkit-scrollbar {
   width: var(--sb-size);
   height: var(--sb-size);
 }
 
-/* Add .settings-content to this rule */
 body::-webkit-scrollbar-track,
 .content::-webkit-scrollbar-track,
 .window-list::-webkit-scrollbar-track,
-.settings-content::-webkit-scrollbar-track { /* ADD THIS SELECTOR */
-  background: var(--sb-track-color);
+.settings-content::-webkit-scrollbar-track {
+  background: var(--win-bg-color);
 }
 
-/* Add .settings-content to this rule */
 body::-webkit-scrollbar-thumb,
 .content::-webkit-scrollbar-thumb,
 .window-list::-webkit-scrollbar-thumb,
-.settings-content::-webkit-scrollbar-thumb { /* ADD THIS SELECTOR */
-  background: var(--sb-thumb-background-color);
-  border: 2px solid var(--sb-thumb-border-color);
+.settings-content::-webkit-scrollbar-thumb {
+  background: var(--win-bg-color);
+  border: 2px solid var(--border-color);
 }
 
-/* And finally, add it to the Firefox fallback */
 @supports not selector(::-webkit-scrollbar) {
-  body, .content, .window-list, .settings-content { /* ADD .settings-content HERE */
-    scrollbar-color: var(--sb-thumb-border-color) var(--sb-track-color);
+  body, .content, .window-list, .settings-content {
+    scrollbar-color: var(--border-color) var(--win-bg-color);
     scrollbar-width: thin;
   }
 }
@@ -379,8 +428,8 @@ body::-webkit-scrollbar-thumb,
     }
     body.funky-mode .filter-btn.active,
     body.funky-mode .filter-btn:hover:not(.active) {
-        background-color: var(--funky-accent-color);
-        color: var(--funky-bg-color);
+        background-color: var(--theme-accent-color);
+        color: var(--theme-bg-color);
     }
     .rss-dropdown-container {
         position: relative; /* Anchor for the dropdown */
@@ -478,8 +527,8 @@ details.inline-details summary:focus-visible {
 /* Funky mode variant for hover/focus */
 body.funky-mode details.inline-details summary:hover,
 body.funky-mode details.inline-details summary:focus-visible {
-  background-color: var(--funky-accent-color);
-  color: var(--funky-bg-color);
+  background-color: var(--theme-accent-color);
+  color: var(--theme-bg-color);
 }
 
 /* This is the panel that appears when the details element is open */

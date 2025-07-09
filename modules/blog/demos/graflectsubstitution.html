@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graflect Transliteration Tool</title>
     <style>
-        /* * This component is designed to be embedded in a page that already has the user's
-         * custom stylesheet (pelmeni2025.css). It uses CSS variables from that sheet.
-         * The font is assumed to be loaded by the parent page.
-         * Minimal structural and specific styles are defined here.
-        */
-
         /* Component-Specific Layout */
         .graflect-tool-content {
             display: flex;
@@ -65,15 +59,18 @@
             border: 2px solid var(--border-color, #000);
             padding: 1em;
             white-space: pre-wrap;
-            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-wrap: break-word; 
             background-color: var(--bg-color, #fff);
+            max-width: 100%; /* Ensure it doesn't overflow parent */
+            box-sizing: border-box;
         }
         #output {
             font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
             font-size: 1.5em;
         }
 
-        /* Modal Styles (from user example) */
+        /* Modal Styles */
         .ledger-modal-overlay {
             position: fixed;
             inset: 0;
@@ -91,7 +88,25 @@
              max-width: 600px;
         }
         
-        /* Modal List Styling */
+        .modal-close { 
+            cursor: pointer;
+            color: var(--inv-text-color); 
+            background: transparent; 
+            border: none; 
+            font-size: 20px; 
+            font-weight: bold; 
+            padding: 0 4px; 
+        }
+        .modal-close:hover, .modal-close:active, .modal-close:focus-visible {
+            outline: none;
+            background-color: var(--inv-text-color);
+            color: var(--inv-bg-color);
+        }
+
+        /* * Modal List Styling 
+         * Scrollbar styles are inherited from the parent stylesheet (pelmeni2025.css)
+         * to ensure consistency across the application.
+        */
         .modal-list {
             list-style: none;
             padding: 0;
@@ -111,6 +126,14 @@
         }
         .dict-info .name { font-weight: bold; }
         .dict-info .author { font-style: italic; font-size: 0.9em; }
+        
+        #word-editor-modal .dictionary-word {
+            opacity: 0.5;
+        }
+        #word-editor-modal .dictionary-graflect {
+            opacity: 1;
+        }
+
         .dict-edit-input {
             background-color: var(--win-bg-color, #fff);
             border: 2px solid var(--border-color, #000);
@@ -131,13 +154,19 @@
             display: flex;
             gap: 1em;
             justify-content: flex-end;
+            align-items: center;
         }
 
-        /* Prompt Modal Specifics */
-        #prompt-area .content {
+        /* Inline Prompt Area */
+        #prompt-area {
+            border: 2px dashed var(--border-color, #000);
+            padding: 1em;
             display: flex;
             flex-direction: column;
             gap: 1em;
+        }
+        #prompt-area.hidden {
+            display: none;
         }
         #prompt-area .choice-buttons {
             display: flex;
@@ -148,13 +177,51 @@
              border-top: 2px solid var(--border-color, #000);
              padding-top: 1em;
         }
+        .prompt-word-highlight {
+            border-bottom: 2px dotted var(--text-color, #000);
+            padding-bottom: 1px;
+        }
+
+        /* Notification Banner - NO ANIMATION */
+        #notification-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--win-bg-color, #fff);
+            color: var(--text-color, #000);
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color, #000);
+            z-index: 100;
+        }
+        #notification-banner.hidden {
+            display: none;
+        }
+
+        /* Form styling for new dictionary modal */
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+        .modal-form label {
+            font-weight: bold;
+        }
+        .modal-form input {
+            padding: 0.5em;
+            border: 2px solid var(--border-color, #000);
+            background-color: var(--win-bg-color, #fff);
+            color: var(--text-color, #000);
+        }
     </style>
 </head>
 <body>
 
-    <main class="window">
+    <main class="window init-closed" style="min-width: 1600px; max-width: 2400px;">
         <div class="title-bar">
-            <span class="title" data-key="graflect_tool_title"> Graflect Transliteration Tool</span>
+            <!-- UPDATED: Ensured symbol class is on the emoji span -->
+            <span class="title" data-key="translit_tools_title"><span class="symbol">🧰</span> graflect.translit</span>
             <button class="close-btn">&times;</button>
         </div>
         <div class="content graflect-tool-content">
@@ -162,8 +229,13 @@
                 <div class="active-dict-display">
                     <span data-key="active_dict_label">Active Dictionary:</span> <span id="active-dict-name"></span>
                 </div>
-                <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn">Manage Dictionaries</button>
+                <!-- UPDATED: Added emoji to button -->
+                <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn"><span class="symbol">📖</span> Manage Dictionaries</button>
             </div>
+            <!-- NEW: Explanatory text for dictionary management -->
+            <p class="tool-explanation" data-key="graflect_tool_explanation" style="font-size: 0.9em; opacity: 0.8; text-align: center; margin: -0.5em 0 0.5em 0;">
+                Use the "Manage Dictionaries" button to edit words and match the transliteration to your own accent.
+            </p>
             <div class="textarea-container">
                 <textarea id="english-input" data-key-placeholder="textarea_placeholder" placeholder="Enter English text here, or try the diagnostic paragraph..."></textarea>
                 <button id="diagnostic-btn" class="normal-btn" data-key="insert_diagnostic_btn">Insert Diagnostic</button>
@@ -171,6 +243,24 @@
             <div class="controls">
                 <button id="transliterate-btn" class="normal-btn" data-key="transliterate_btn">Transliterate</button>
             </div>
+            
+            <div id="prompt-area" class="hidden">
+                <h3 id="prompt-heading"></h3>
+                <p id="prompt-instruction"></p>
+                <div id="prompt-buttons-container" class="choice-buttons"></div>
+                <div class="direct-input-area">
+                    <label for="direct-graflect-input" data-key="direct_input_label">Or enter direct Graflect substitution:</label>
+                    <div style="display: flex; gap: 0.5em; margin-top: 0.5em;">
+                        <input type="text" id="direct-graflect-input" class="graflect-font">
+                        <button id="use-direct-input-btn" class="normal-btn" data-key="use_btn">Use</button>
+                    </div>
+                </div>
+                <div class="remember-choice">
+                    <input type="checkbox" id="remember-choice-checkbox" checked>
+                    <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
+                </div>
+            </div>
+
             <div>
                 <h2 data-key="result_heading">Result:</h2>
                 <div id="output-container">
@@ -180,7 +270,7 @@
         </div>
     </main>
 
-    <!-- Modals -->
+    <!-- Dictionary Manager Modal -->
     <div id="dictionary-manager-modal" class="ledger-modal-overlay hidden">
         <div class="window">
             <div class="title-bar">
@@ -198,6 +288,7 @@
         </div>
     </div>
 
+    <!-- Word Editor Modal -->
     <div id="word-editor-modal" class="ledger-modal-overlay hidden">
          <div class="window">
             <div class="title-bar">
@@ -210,32 +301,46 @@
         </div>
     </div>
     
-    <div id="prompt-area" class="ledger-modal-overlay hidden">
-        <div class="window">
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="ledger-modal-overlay hidden">
+        <div class="window" style="max-width: 450px;">
              <div class="title-bar">
-                <h3 id="prompt-heading" class="title"></h3>
-                <button class="modal-close" id="close-prompt-btn">&times;</button>
+                <h3 id="confirmation-title" class="title">Confirmation</h3>
             </div>
             <div class="content">
-                <p id="prompt-instruction"></p>
-                <div id="prompt-buttons-container" class="choice-buttons"></div>
-                <div class="direct-input-area">
-                    <label for="direct-graflect-input" data-key="direct_input_label">Or enter direct Graflect substitution:</label>
-                    <div style="display: flex; gap: 0.5em; margin-top: 0.5em;">
-                        <input type="text" id="direct-graflect-input" class="graflect-font">
-                        <button id="use-direct-input-btn" class="normal-btn" data-key="use_btn">Use</button>
-                    </div>
-                </div>
-                <div class="remember-choice">
-                    <input type="checkbox" id="remember-choice-checkbox" checked>
-                    <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
+                <p id="confirmation-message"></p>
+                <div class="modal-footer" style="justify-content: center;">
+                    <button id="confirm-yes-btn" class="normal-btn">Yes</button>
+                    <button id="confirm-no-btn" class="normal-btn">No</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div id="notification"></div>
 
+    <!-- Modal for creating a new dictionary -->
+    <div id="new-dictionary-modal" class="ledger-modal-overlay hidden">
+        <div class="window" style="max-width: 450px;">
+            <div class="title-bar">
+                <h3 class="title">Create New Dictionary</h3>
+                <button class="modal-close" id="close-new-dict-btn">&times;</button>
+            </div>
+            <div class="content">
+                <div class="modal-form">
+                    <label for="new-dict-name-input">Dictionary Name:</label>
+                    <input type="text" id="new-dict-name-input" placeholder="e.g., My Custom Accent">
+                    <label for="new-dict-author-input">Author Name:</label>
+                    <input type="text" id="new-dict-author-input" placeholder="e.g., Your Name">
+                </div>
+                <div class="modal-footer" style="justify-content: flex-end;">
+                    <button id="cancel-new-dict-btn" class="normal-btn">Cancel</button>
+                    <button id="save-new-dict-btn" class="normal-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Banner -->
+    <div id="notification-banner" class="hidden"></div>
    
 </body>
 </html>

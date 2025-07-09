@@ -7,8 +7,6 @@ function setupSettings() {
     const getElement = (id) => document.getElementById(id);
     const body = document.body;
     const welcomeText = getElement('welcome-text');
-    const logoImg = getElement('logo-img');
-    const startMenuLogo = getElement('start-menu-logo');
     
     // --- Custom Language Dropdown Elements ---
     const langDropdown = getElement('language-select-custom');
@@ -25,9 +23,49 @@ function setupSettings() {
     const THEME_KEY = 'pelmeniboiler-theme';
     const MODE_KEY = 'pelmeniboiler-mode';
     const LANG_KEY = 'pelmeniboiler-lang';
+    const LAST_COLOR_THEME_KEY = 'pelmeniboiler-last-color-theme';
+
+
+    // --- Color Theme Definitions ---
+    const colorThemes = {
+        funky: { random: true }, // Special case
+        champagne: { bg: '#F7E7CE', text: '#4A403A', border: '#D4AF37', accent: '#A47C48' },
+        bubblegum: { bg: '#FBCFF3', text: '#A62675', border: '#DE3163', accent: '#FF69B4' },
+        techelet: { bg: '#E6E6FA', text: '#001F3F', border: '#4169E1', accent: '#87CEEB' },
+        zelyonny: { bg: '#DFF0D8', text: '#2E4620', border: '#3C763D', accent: '#5CB85C' },
+        akai: { bg: '#FFEBEE', text: '#6D0000', border: '#C62828', accent: '#E53935' },
+        rindswurst: { bg: '#F5E6E0', text: '#5D4037', border: '#8D6E63', accent: '#A1887F' }
+    };
 
     // Variable to hold translation data once it's fetched
     let loadedTranslations = {};
+
+    /**
+     * Fetches an SVG file and replaces an <img> element with its inline content.
+     * This allows the SVG to be styled with CSS.
+     * @param {HTMLElement} imgElement - The <img> element to replace.
+     * @param {string} svgPath - The path to the .svg file.
+     */
+    async function injectSVG(imgElement, svgPath) {
+        if (!imgElement) return;
+        try {
+            const response = await fetch(svgPath);
+            if (!response.ok) throw new Error(`SVG not found at ${svgPath}`);
+            const svgText = await response.text();
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+            const svgElement = svgDoc.querySelector('svg');
+            if (svgElement) {
+                // Copy ID and classes from the original image to the new SVG element
+                svgElement.id = imgElement.id;
+                imgElement.classList.forEach(c => svgElement.classList.add(c));
+                imgElement.parentElement.replaceChild(svgElement, imgElement);
+            }
+        } catch (error) {
+            console.error('Failed to inject SVG:', error);
+        }
+    }
+
 
     // --- Settings Window Tab Navigation ---
     if (settingsNavItems.length > 0) {
@@ -57,20 +95,36 @@ function setupSettings() {
         }
     }
 
-    // --- E-ink / LCD Mode Logic ---
-    function applyMode(mode) {
-        if (mode === "lcd") {
-            body.classList.add("lcd-mode");
-            body.classList.remove("eink-mode");
-            if (einkToggle) einkToggle.checked = false;
-        } else {
-            body.classList.remove("lcd-mode");
-            body.classList.add("eink-mode");
-            if (einkToggle) einkToggle.checked = true;
+     // --- E-ink / LCD Mode Logic ---
+     function applyMode(mode) {
+        const isEink = mode === "eink";
+        body.classList.toggle("eink-mode", isEink);
+        body.classList.toggle("lcd-mode", !isEink);
+        if (einkToggle) einkToggle.checked = isEink;
+
+        const themeSettingGroup = getElement('theme-setting-group');
+        themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
+            label.style.opacity = isEink ? '0.5' : '1';
+            const radio = label.querySelector('input');
+            radio.disabled = isEink;
+        });
+
+        const currentTheme = localStorage.getItem(THEME_KEY) || 'light';
+        const isCurrentThemeColor = colorThemes.hasOwnProperty(currentTheme);
+
+        if (isEink && isCurrentThemeColor) {
+            // If switching to e-ink from a color theme, fall back to light
+            applyTheme('light');
+        } else if (!isEink && !isCurrentThemeColor) {
+             // If switching back to LCD from an e-ink theme, restore the last color theme
+             const lastColorTheme = localStorage.getItem(LAST_COLOR_THEME_KEY) || 'funky';
+             applyTheme(lastColorTheme);
         }
+
         localStorage.setItem(MODE_KEY, mode);
         updateWelcomeText();
     }
+
 
     if (einkToggle) {
         einkToggle.addEventListener('change', () => {
@@ -80,24 +134,40 @@ function setupSettings() {
 
     // --- Theme Logic ---
     function applyTheme(theme) {
-        body.classList.remove('light-mode', 'dark-mode', 'funky-mode');
+        // Remove all potential theme classes before adding the new one
+        body.className = body.className.replace(/\b\w+-mode\b/g, '');
         body.classList.add(`${theme}-mode`);
+        // Re-apply the display mode class (eink or lcd)
+        body.classList.add(localStorage.getItem(MODE_KEY) === 'lcd' ? 'lcd-mode' : 'eink-mode');
         
-        const newSrc = theme === 'dark' || theme === 'funky' ? '/logo/shzh-white.svg' : '/logo/shzh.svg';
-        
-        if (logoImg) logoImg.src = newSrc;
-        if (startMenuLogo) startMenuLogo.src = newSrc;
-        if (theme === 'funky') {
-            const randomHue = () => Math.floor(Math.random() * 360);
-            const baseHue = randomHue();
-            const accentHue = (baseHue + 150) % 360;
-            document.documentElement.style.setProperty('--funky-bg-color', `hsl(${baseHue}, 20%, 10%)`);
-            document.documentElement.style.setProperty('--funky-text-color', `hsl(${baseHue}, 15%, 85%)`);
-            document.documentElement.style.setProperty('--funky-border-color', `hsl(${accentHue}, 80%, 70%)`);
-            document.documentElement.style.setProperty('--funky-accent-color', `hsl(${accentHue}, 70%, 55%)`);
+        const themeColors = colorThemes[theme];
+        if (themeColors) {
+            if (themeColors.random) {
+                const randomHue = () => Math.floor(Math.random() * 360);
+                const baseHue = randomHue();
+                const accentHue = (baseHue + 150) % 360;
+                
+                // Generate a random background lightness and a contrasting text lightness
+                const bgLightness = 20 + Math.random() * 60; // Random lightness between 20% (dark) and 80% (light)
+                const textLightness = bgLightness > 50 ? 15 : 85; // Ensure contrast
+
+                document.documentElement.style.setProperty('--theme-bg-color', `hsl(${baseHue}, 50%, ${bgLightness}%)`);
+                document.documentElement.style.setProperty('--theme-text-color', `hsl(${baseHue}, 15%, ${textLightness}%)`);
+                document.documentElement.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
+                document.documentElement.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
+            } else {
+                 document.documentElement.style.setProperty('--theme-bg-color', themeColors.bg);
+                 document.documentElement.style.setProperty('--theme-text-color', themeColors.text);
+                 document.documentElement.style.setProperty('--theme-border-color', themeColors.border);
+                 document.documentElement.style.setProperty('--theme-accent-color', themeColors.accent);
+            }
+            // Only save color themes to this key
+            localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         }
+        
         const radioToCheck = document.querySelector(`input[name="theme"][value="${theme}"]`);
         if(radioToCheck) radioToCheck.checked = true;
+        
         localStorage.setItem(THEME_KEY, theme);
     }
 
@@ -126,16 +196,7 @@ function setupSettings() {
         document.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
             if (translations[lang] && translations[lang][key]) {
-                if (elem.tagName === 'INPUT' && elem.type === 'radio') {
-                    const label = elem.parentElement;
-                    if (label.nodeName === 'LABEL') {
-                        label.innerHTML = ''; 
-                        label.appendChild(elem);
-                        label.appendChild(document.createTextNode(' ' + translations[lang][key]));
-                    }
-                } else {
-                    elem.innerHTML = translations[lang][key];
-                }
+                 elem.innerHTML = translations[lang][key];
             }
         });
         document.documentElement.lang = lang;
@@ -219,10 +280,20 @@ function setupSettings() {
 
     // --- Initialization ---
     async function initialize() {
-        const savedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        applyTheme(savedTheme);
+        // Inject SVGs first
+        const logoImg = getElement('logo-img');
+        const startMenuLogo = getElement('start-menu-logo');
+        if (logoImg) {
+            await injectSVG(logoImg, '/logo/shzh.svg');
+        }
+        if (startMenuLogo) {
+            await injectSVG(startMenuLogo, '/logo/shzh.svg');
+        }
 
+        const savedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         const savedMode = localStorage.getItem(MODE_KEY) || 'eink';
+        
+        applyTheme(savedTheme);
         applyMode(savedMode);
 
         const savedLang = localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0];
