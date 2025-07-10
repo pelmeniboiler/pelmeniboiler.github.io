@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 01 Jul 2025 23:06:43 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jul 2025 14:56:44 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ru/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Этот блог теперь поддерживает RSS</title>
@@ -55,15 +55,23 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>Руководство по Graflect и его эквивалентам в МФА</title>
+            <title>Введение в Graflect и инструмент для транслитерации</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">Руководство по Graflect и его эквивалентам в МФА</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Графлект</a> — это фонетическая орфография, представленная на личном веб-сайте Аарона Патерсона, MayCXC. Её символы тонко отражают фонетические черты звуков, что позволяет передавать широкий спектр акцентов английского и даже других языков. Орфография включена в <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, а поддержка шрифтов доступна от таких создателей, как Ребекка Г. Беттанкур из Kreative Korp в шрифте <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> (используемом на этой странице) и в шрифте <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0 от greenstar967</a>. На сегодняшний день не существует общедоступного руководства, сопоставляющего Graflect с <abbr title="International Phonetic Alphabet">Международным фонетическим алфавитом (МФА)</abbr>. Эта таблица служит первым всеобъемлющим ресурсом для этой цели, созданным для облегчения понимания и транскрипции.</p>
-                <hr>
+                <h1 id="title" data-key="guide_h1">Введение в Graflect и инструмент для транслитерации</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Графлект</a> — это фонетическая орфография, представленная на личном веб-сайте Аарона Патерсона, MayCXC. Её символы тонко отражают фонетические черты звуков, что позволяет передавать широкий спектр акцентов английского и даже других языков. Орфография включена в <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, а поддержка шрифтов доступна от таких создателей, как Ребекка Г. Беттанкур из Kreative Korp в шрифте <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> (используемом на этой странице) и в шрифте <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0 от greenstar97</a>. <del datetime="2025-07-06T01:43:00EDT">На сегодняшний день не существует общедоступного руководства, сопоставляющего Graflect с <abbr title="International Phonetic Alphabet">Международным фонетическим алфавитом (МФА)</abbr>.</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">Было опубликовано официальное руководство по сопоставлению Graflect и МФА</a>.</ins> Моя таблица служит первым ресурсом для этой цели, но считайте её устаревшей и, пожалуйста, обращайтесь к официальной.</p>
             </header>
-            
+            <section>
+                <p data-key="graflect_example_p">Вот пример абзаца, написанного на Графлекте. Надеюсь, мой голос передан верно.</p>
+                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+            </section>
+            <hr>
+            <section>
+                <h2 id="translit-tool" data-key="guide_h2_tool">Инструмент транслитерации</h2>
+                <p data-key="guide_p_tool">В лаунчере программ (program.launcher) вы можете найти инструмент для транслитерации любого текста в Graflect. Изначально предполагалось, что инструмент будет работать, применяя набор правил замены графем на фонемы, но предугадать все возможные преобразования было бы абсурдно и бессмысленно. Поскольку у Graflect есть фонетические возможности, логично их использовать. Вот почему этот инструмент — в основном просто настраиваемая система словарей. Он поставляется с небольшим стандартным словарём, основанным на моём акценте, но когда инструмент встречает слово или звукосочетание с несколькими возможными произношениями (например, «ch» в «chase» и «loch»), он предложит вам выбрать правильный вариант. Сохраняя свой выбор, вы можете создать личный словарь, который точно отражает ваш собственный акцент. Используйте кнопку «Управление словарями» внутри инструмента для просмотра, редактирования, импорта и экспорта ваших пользовательских списков слов, что может помочь вам научиться читать и писать на Graflect. Если вы переведёте что-нибудь интересное, пожалуйста, дайте мне знать!</p>
+            </section>
+            <hr>
             <section>
                 <h2 id="consonants" data-key="guide_h2_consonants">Согласные</h2>
                 <table>
@@ -121,12 +129,12 @@
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">Шва (<b>ə</b>), как первая <b>о</b> в слове к<b>о</b>ро́ва</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>о</b> в слове д<b>о</b>м</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>ей</b> в слове р<b>ей</b>д</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">Как <b>э</b> в слове <b>кэ</b>ш</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> в слове мур<b>а</b>вей (ant)</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ай</b> в слове м<b>ай</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ау</b> в слове п<b>ау</b>за</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>оу</b> в слове ш<b>оу</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">Более глубокий и округленный звук 'оу', как в английском h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">Гласный в английском n<b>ur</b>se (в неротическом акценте)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> в слове n<b>ur</b>se, но с британским акцентом</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">Как <b>э</b> в слове м<b>э</b>р</td></tr>
                     </tbody>
                 </table>

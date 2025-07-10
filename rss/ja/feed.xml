@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 01 Jul 2025 23:06:43 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jul 2025 14:56:44 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>このブログはRSSに対応しました</title>
@@ -55,15 +55,23 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>GraflectとそのIPA対応ガイド</title>
+            <title>Graflect入門と文字変換ツール</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">GraflectとそのIPA対応ガイド</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソン氏の個人ウェブサイトMayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントはKreative Korpのレベッカ・G・ベッテンコート氏による<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967氏のGS Unicode 2.0フォント</a>などでサポートされています。現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていません。この表は、理解と転写を助けるために作成された、この目的のための最初の包括的なリソースです。</p>
-                <hr>
+                <h1 id="title" data-key="guide_h1">Graflect入門と文字変換ツール</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">グラフレクト</a>は、アーロン・パターソン氏の個人ウェブサイトMayCXCで紹介されている表音正書法です。その設計は「素性的（フィーチュラル）」であり、各記号の形とそれが表す音の音韻的特徴との間には、一見して明らかではないながらも、体系的な論理が込められています。これにより、英語の多様なアクセントや他の言語さえも表現することができます。この正書法は<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>に含まれており、フォントはKreative Korpのレベッカ・G・ベッテンコート氏による<a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>フォント（このページで使用）や、<a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967氏のGS Unicode 2.0フォント</a>などでサポートされています。<del datetime="2025-07-06T01:43:00EDT">現在まで、Graflectを<abbr title="International Phonetic Alphabet">国際音声記号（IPA）</abbr>に対応付ける公的なガイドは作成されていませんでした。</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">GraflectとIPAを対応付ける公式ガイド</a>が投稿されました。</ins> 私のチャートはこの目的のための最初のリソースとして役立ちますが、古いものと考えて公式ガイドを参照してください。</p>
             </header>
-            
+            <section>
+                <p data-key="graflect_example_p">これはグラフレクトで書かれた段落の例です。私の声が正しく伝わるといいのですが。</p>
+                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+            </section>
+            <hr>
+            <section>
+                <h2 id="translit-tool" data-key="guide_h2_tool">文字変換ツール</h2>
+                <p data-key="guide_p_tool">program.launcherには、任意のテキストをGraflectに変換するツールがあります。当初、このツールは書記素から音素への置換ルールを適用して機能することを意図していましたが、考えられるすべての変換を予測するのは不合理で自己破壊的です。Graflectには表音能力があるので、それらを使用するのが理にかなっています。そのため、このツールは主にカスタマイズ可能な辞書システムです。私のアクセントに基づいた小さなデフォルト辞書が付属していますが、ツールが複数の発音可能性がある単語や音の組み合わせ（「chase」の「ch」対「loch」の「ch」など）に遭遇すると、正しい選択を促します。選択を保存することで、あなた自身のアクセントを正確に反映する個人辞書を構築できます。ツール内の「辞書を管理」ボタンを使用して、カスタム単語リストを表示、編集、インポート、エクスポートでき、Graflectの読み書きを学ぶのに役立ちます。何かクールなものを翻訳したら、ぜひ教えてください！</p>
+            </section>
+            <hr>
             <section>
                 <h2 id="consonants" data-key="guide_h2_consonants">子音</h2>
                 <table>
@@ -121,12 +129,12 @@
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">英語の c<b>u</b>p の母音 (中舌母音)、またはシュワー</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">「ア」に近い「オ」、母（は<b>は</b>）のように</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">二重母音「エイ」、ゲ<b>ー</b>ムのように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">英語の c<b>a</b>t の [æ] の音</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b>nt (アリ) の <b>a</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">二重母音「アイ」、<b>アイ</b>スのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">二重母音「アウ」、<b>アウ</b>トのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">二重母音「オウ」、<b>オー</b>プンのように</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">より深く丸みのある「オウ」の音、英語の h<b>o</b>le のように</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">英語の音: n<b>ur</b>se の母音（非R音性アクセント）</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">n<b>ur</b>se の <b>ur</b>、ただしイギリスアクセントで</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">「エア」、<b>エア</b>のように</td></tr>
                     </tbody>
                 </table>

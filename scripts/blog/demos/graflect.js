@@ -20,37 +20,63 @@ function initializeGraflectTool() {
         '/ɔɪ/': '', '/ʃən/': '', '/ʒən/': '', '/ʃəs/': '',
         '/ʃəl/': '', '/ʒər/': '', '/ʃʊər/': '', '/tʃər/': '',
         '/sk/': '', '/səl/': '', '/ɛks/': '',
-        '/ɛɡz/': '', '/ɡw/': '', '/juː/': '', '/ndʒ/': ''
+        '/ɛɡz/': '', '/ɡw/': '', '/juː/': '', '/ndʒ/': '',
+        '/ɔːl/': '' // NEW
     };
 
     const defaultWordMap = {
-        'a': '', 'an': '',
+        'a': '', 'an': '',
+        'and': '', 
         'are': '', 'as': '', 'at': '', 'be': '', 'because': '',
         'been': '', 'before': '', 'but': '', 'by': '',
+        'call': '',
+        'can': '',
         'change': '', 'come': '', 'could': '', 'day': '', 'do': '',
-        'each': '', 'even': '', 'first': '', 'for': '',
+        'down': '',
+        'each': '', 'even': '', 'first': '',
+        'find': '',
+        'for': '',
         'from': '', 'get': '', 'give': '',
+        'go': '',
+        'good': '',
         'great': '', 'had': '', 'has': '', 'have': '', 'he': '',
-        'her': '', 'here': '', 'him': '', 'his': '',
-        'i': '', 'if': '', 'in': '', 'into': '', 'is': '', 'it': '',
-        'its': '', 'just': '', 'like': '',
+        'her': '',
+        'here': '', 'him': '', 'his': '', 'how': '',
+        'i': '', 'if': '', 'in': '', 'into': '',
+        'is': '', 'it': '',
+        'its': '', 'just': '', 'know': '',
+        'like': '',
+        'long': '',
+        'look': '',
         'made': '', 'make': '',
+        'man': '',
+        'may': '',
         'me': '', 'more': '', 'most': '', 'my': '', 'new': '',
+        'not': '',
+        'now': '',
         'of': '', 'on': '',
-        'one': '', 'only': '', 'or': '', 'other': '',
-        'over': '', 'people': '', 'place': '',
+        'one': '', 'only': '', 'or': '', 'other': '',
+        'out': '',
+        'over': '',
+        'people': '', 'place': '',
         'said': '', 'same': '', 'see': '', 'she': '',
-        'some': '', 'take': '', 'than': '', 'that': '', 'the': '',
+        'so': '',
+        'some': '', 'take': '', 'than': '',
+        'that': '', 'the': '',
         'their': '', 'them': '', 'then': '', 'there': '', 'these': '',
         'they': '', 'thing': '', 'think': '', 'this': '', 'those': '',
         'time': '', 'to': '', 'two': '', 'up': '', 'use': '',
         'very': '', 'want': '', 'was': '',
-        'way': '', 'we': '', 'well': '', 'were': '',
+        'water': '',
+        'way': '', 'we': '', 'well': '', 'were': '',
+        'what': '',
         'when': '', 'where': '', 'which': '', 'who': '', 'why': '',
-        'will': '', 'with': '', 'work': '', 'would': '', 'year': '',
-        'you': '', 'your': ''
+        'will': '', 'with': '', 'work': '',
+        'would': '', 'year': '',
+        'you': '', 'your': ''
     };
 
+    // UPDATED: Added all single consonants and fixed other rules.
     const graphemeToIpa = {
         'tious': '/ʃəs/', 'cious': '/ʃəs/', 'ssion': '/ʃən/', 'stle': '/səl/',
         'sion': ['/ʃən/', '/ʒən/'], 'tion': '/ʃən/', 'cian': '/ʃən/',
@@ -69,6 +95,7 @@ function initializeGraflectTool() {
         'ow': ['/aʊ/', '/oʊ/', '/u/'], 'ew': ['/ju/', '/uː/'],
         'au': '/ɔ/', 'oi': '/ɔɪ/', 'oy': '/ɔɪ/',
         'ai': ['/eɪ/', '/ɛ/'], 'ay': '/eɪ/',
+        'all': '/ɔːl/',
         'll': '/l/', 'ss': '/s/', 'ff': '/f/', 'rr': '/r/', 'pp': '/p/', 'bb': '/b/', 
         'dd': '/d/', 'tt': '/t/', 'mm': '/m/', 'nn': '/n/',
         'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/', '/ɛə/', '/aɪ/'], 
@@ -77,11 +104,10 @@ function initializeGraflectTool() {
         'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
         'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
         's': ['/s/', '/z/'], 'g': ['/ɡ/', '/dʒ/'], 'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
-        'p': '/p/', 'b': ' /b/', 't': '/t/', 'd': '/d/', 'k': '/k/', 'f': '/f/',
-        'v': '/v/', 'z': '/z/', 'h': '/h/', 'm': '/m/', 'n': '/n/', 'l': '/l/',
-        // UPDATED: Changed 'r' to be an array of options
-        'r': ['/r/', '/ɛər/', '/ɜː/', '/ʁ/'], 
-        'w': '/w/', 'j': '/dʒ/'
+        'p': ['/p/'], 'b': ['/b/'], 't': ['/t/'], 'h': ['/h/', '/dʒ/'],
+        'l': ['/l/'], 'w': ['/w/'], 'r': ['/r/', '/ɛər/', '/ɜː/', '/ʁ/'], 
+        'j': '/dʒ/', 'd': '/d/', 'f': '/f/', 'k': '/k/', 'm': '/m/',
+        'n': '/n/', 'v': '/v/', 'z': '/z/'
     };
     
     const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. So, all people have a time to find their own way. If you look for it, you may also get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road and go down to the water. How did he know? It was the first time they had been over there. I will give him a call now.";
@@ -229,7 +255,8 @@ function initializeGraflectTool() {
                 }
             }
             if (!foundMatch) {
-                result += remainingIpa[0];
+                // UPDATED: Log error instead of passing through invalid characters
+                console.error(`No Graflect mapping found for IPA segment: ${remainingIpa[0]}`);
                 remainingIpa = remainingIpa.substring(1);
             }
         }
@@ -252,7 +279,7 @@ function initializeGraflectTool() {
         promptButtonsEl.innerHTML = '';
         directGraflectInput.value = '';
 
-        const allOptions = [...options, '']; 
+        const allOptions = [...new Set([...options, ''])]; 
 
         allOptions.forEach(ipa => {
             if (ipa === undefined) return;
@@ -297,6 +324,7 @@ function initializeGraflectTool() {
         let finalGraflect = '';
         let remaining = lowerWord;
         let originalIndex = 0;
+        let wasPrompted = false;
 
         while (remaining.length > 0) {
             const grapheme = findLongestGrapheme(remaining);
@@ -305,6 +333,7 @@ function initializeGraflectTool() {
             if (typeof ipaOptions === 'string') {
                 finalGraflect += ipaToGraflect(ipaOptions);
             } else if (Array.isArray(ipaOptions)) {
+                wasPrompted = true;
                 const choice = await promptForChoice(word, grapheme, ipaOptions, originalIndex);
                 let segmentGraflect = '';
                 if (choice.type === 'ipa') {
@@ -314,13 +343,14 @@ function initializeGraflectTool() {
                 }
                 finalGraflect += segmentGraflect;
             } else {
-                finalGraflect += grapheme;
+                // UPDATED: Log error instead of passing through invalid characters
+                console.error(`No IPA mapping found for grapheme: "${grapheme}" in word "${word}"`);
             }
             remaining = remaining.substring(grapheme.length);
             originalIndex += grapheme.length;
         }
 
-        if (rememberCheckbox.checked && !promptAreaEl.classList.contains('hidden')) {
+        if (rememberCheckbox.checked && wasPrompted) {
             activeDict.words[lowerWord] = finalGraflect;
             saveAllDictionaries();
         }
@@ -347,6 +377,27 @@ function initializeGraflectTool() {
             outputEl.textContent = finalOutput;
         }
         
+        // --- DEBUG CHECK for invalid characters ---
+        const invalidChars = new Set();
+        const allowedChars = new Set(".,!?;:\"()'- \n\t0123456789".split(''));
+        for (const char of finalOutput) {
+            const code = char.charCodeAt(0);
+            const isGraflect = code >= 0xEC70 && code <= 0xECEF;
+            const isAllowed = allowedChars.has(char);
+
+            if (!isGraflect && !isAllowed) {
+                invalidChars.add(char);
+            }
+        }
+
+        if (invalidChars.size > 0) {
+            // UPDATED: More explicit error message
+            console.error(
+                "DEBUG CHECK FAILED: Invalid characters found in final output.", 
+                { invalidChars: Array.from(invalidChars) }
+            );
+        }
+
         transliterateBtn.disabled = false;
         transliterateBtn.textContent = "Transliterate";
     }

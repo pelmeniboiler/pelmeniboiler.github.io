@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 01 Jul 2025 23:06:42 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jul 2025 14:56:43 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>This Blog Now Supports RSS</title>
@@ -55,15 +55,23 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>A Guide to Graflect &amp; its IPA Equivalents</title>
+            <title>An intro to Graflect &amp; a Transliteration Tool</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">A Guide to Graflect &amp; its IPA Equivalents</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography featured on Aaron Paterson's personal website, MayCXC. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created. This chart serves as the first comprehensive resource for this purpose, created to aid in understanding and transcription.</p>
-                <hr>
+                <h1 id="title" data-key="guide_h1">An intro to Graflect &amp; a Transliteration Tool</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography featured on Aaron Paterson's personal website, MayCXC. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. <del datetime="2025-07-06T01:43:00EDT">To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created.</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">An official guide mapping Graflect to IPA</a> has been posted.</ins> My chart serves as the first resource for this purpose, but consider it outdated and please defer to the official one.</p>
             </header>
-            
+            <section>
+                <p data-key="graflect_example_p">Here is an example paragraph written in Graflect, I hope my voice comes through.</p>
+                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+            </section>
+            <hr>
+            <section>
+                <h2 id="translit-tool" data-key="guide_h2_tool">Transliteration Tool</h2>
+                <p data-key="guide_p_tool">In the program.launcher, you can find a tool to transliterate any text to Graflect. Initially, the tool was meant to function by applying a set of grapheme-to-phoneme rules for substitution, but pre-empting every possible conversion would be absurd and self defeating. Since Graflect has phonetic capabilities, it only makes sense to use them. That's why this tool is mostly just a customizable dictionary system. It comes with a small default dictionary based on my accent, but when the tool encounters a word or sound combination with multiple possible pronunciations (like the "ch" in "chase" vs. "loch"), it will prompt you for the correct choice. By saving your choices, you can build a personal dictionary that accurately reflects your own accent. Use the "Manage Dictionaries" button inside the tool to view, edit, import, and export your custom word lists, which can help you to learn reading and writing in Graflect. If you translate anything cool, please let me know!</p>
+            </section>
+            <hr>
             <section>
                 <h2 id="consonants" data-key="guide_h2_consonants">Consonants</h2>
                 <table>
@@ -121,12 +129,12 @@
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> in c<b>a</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> in ant</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>o</b> in h<b>o</b>me</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se (in a non-rhotic accent)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se but with a British Accent</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
                     </tbody>
                 </table>

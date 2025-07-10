@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 01 Jul 2025 23:06:43 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jul 2025 14:56:44 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Dieser Blog unterstützt jetzt RSS</title>
@@ -55,15 +55,23 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>Ein Leitfaden für Graflect und seine IPA-Entsprechungen</title>
+            <title>Eine Einführung in Graflect &amp; ein Transliterationswerkzeug</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">Ein Leitfaden für Graflect und seine IPA-Entsprechungen</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> ist eine phonetische Orthographie, die auf der persönlichen Website von Aaron Paterson, MayCXC, vorgestellt wird. Sie ist subtil merkmalsbasiert und kann eine Vielzahl von Akzenten im Englischen und sogar in anderen Sprachen wiedergeben. Die Orthographie ist im <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a> enthalten. Schriftunterstützung ist von Entwicklern wie Rebecca G. Bettencourt von Kreative Korp mit der <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>-Schrift (wie auf dieser Seite zu sehen) und der <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0-Schrift von greenstar967</a> verfügbar. Bisher wurde kein öffentlicher Leitfaden erstellt, der Graflect dem <abbr title="International Phonetic Alphabet">Internationalen Phonetischen Alphabet (IPA)</abbr> zuordnet. Diese Tabelle dient als erste umfassende Ressource für diesen Zweck und wurde erstellt, um das Verständnis und die Transkription zu erleichtern.</p>
-                <hr>
+                <h1 id="title" data-key="guide_h1">Eine Einführung in Graflect &amp; ein Transliterationswerkzeug</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> ist eine phonetische Orthographie, die auf der persönlichen Website von Aaron Paterson, MayCXC, vorgestellt wird. Sie ist subtil merkmalsbasiert und kann eine Vielzahl von Akzenten im Englischen und sogar in anderen Sprachen wiedergeben. Die Orthographie ist im <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a> enthalten. Schriftunterstützung ist von Entwicklern wie Rebecca G. Bettencourt von Kreative Korp mit der <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a>-Schrift (wie auf dieser Seite zu sehen) und der <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0-Schrift von greenstar967</a> verfügbar. <del datetime="2025-07-06T01:43:00EDT">Bisher wurde kein öffentlicher Leitfaden erstellt, der Graflect dem <abbr title="International Phonetic Alphabet">Internationalen Phonetischen Alphabet (IPA)</abbr> zuordnet.</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">Ein offizieller Leitfaden zur Zuordnung von Graflect zu IPA</a> wurde veröffentlicht.</ins> Meine Tabelle dient als erste Ressource für diesen Zweck, aber betrachten Sie sie als veraltet und beziehen Sie sich bitte auf die offizielle.</p>
             </header>
-            
+            <section>
+                <p data-key="graflect_example_p">Hier ist ein Beispielabsatz in Graflect, ich hoffe, meine Stimme kommt gut durch.</p>
+                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+            </section>
+            <hr>
+            <section>
+                <h2 id="translit-tool" data-key="guide_h2_tool">Transliterationswerkzeug</h2>
+                <p data-key="guide_p_tool">Im program.launcher finden Sie ein Werkzeug, um beliebigen Text in Graflect zu transliterieren. Ursprünglich sollte das Werkzeug durch die Anwendung einer Reihe von Graphem-zu-Phonem-Regeln für die Substitution funktionieren, aber jede mögliche Konvertierung vorwegzunehmen, wäre absurd und selbstzerstörerisch. Da Graflect phonetische Fähigkeiten besitzt, ist es nur sinnvoll, diese auch zu nutzen. Deshalb ist dieses Werkzeug größtenteils nur ein anpassbares Wörterbuchsystem. Es wird mit einem kleinen Standardwörterbuch geliefert, das auf meinem Akzent basiert. Wenn das Werkzeug jedoch auf ein Wort oder eine Lautkombination mit mehreren möglichen Aussprachen stößt (wie das „ch“ in „chase“ vs. „loch“), werden Sie zur richtigen Auswahl aufgefordert. Indem Sie Ihre Auswahl speichern, können Sie ein persönliches Wörterbuch erstellen, das Ihren eigenen Akzent genau widerspiegelt. Verwenden Sie die Schaltfläche „Wörterbücher verwalten“ im Werkzeug, um Ihre benutzerdefinierten Wortlisten anzuzeigen, zu bearbeiten, zu importieren und zu exportieren, was Ihnen beim Erlernen des Lesens und Schreibens in Graflect helfen kann. Wenn Sie etwas Cooles übersetzen, lassen Sie es mich bitte wissen!</p>
+            </section>
+            <hr>
             <section>
                 <h2 id="consonants" data-key="guide_h2_consonants">Konsonanten</h2>
                 <table>
@@ -121,12 +129,12 @@
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">Schwa-Laut (<b>ə</b>), wie das <b>e</b> in bitt<b>e</b></td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">Offenes <b>o</b> wie in <b>o</b>ffen</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">Englischer Diphthong wie in g<b>a</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">Wie <b>a</b> im englischen c<b>a</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> wie in <b>A</b>meise</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ei</b> wie in m<b>ei</b>n</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>au</b> wie in H<b>au</b>s</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">Geschlossenes <b>o</b> wie in B<b>oo</b>t</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">Ein tieferer, gerundeter o-Laut, wie im englischen h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">Vokal wie in engl. n<b>ur</b>se (in einem nicht-rhotischen Akzent)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se aber mit einem britischen Akzent</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>ä</b> wie in B<b>ä</b>r</td></tr>
                     </tbody>
                 </table>

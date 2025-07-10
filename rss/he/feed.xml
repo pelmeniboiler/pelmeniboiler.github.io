@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 01 Jul 2025 23:06:43 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jul 2025 14:56:44 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/he/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>הבלוג תומך עכשיו ב-RSS</title>
@@ -55,15 +55,23 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>מדריך ל-Graflect ומקבילותיו ב-IPA</title>
+            <title>מבוא ל-Graflect וכלי לתעתיק</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">מדריך ל-Graflect ומקבילותיו ב-IPA</h1>
-                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> היא אורתוגרפיה פונטית המוצגת באתר האישי של אהרון פטרסון, MayCXC. היא בעלת אופי תכונתי מעודן ומסוגלת לייצג מגוון רחב של מבטאים באנגלית ואף בשפות אחרות. האורתוגרפיה כלולה ב-<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, ותמיכה בגופנים זמינה מיוצרים כמו רבקה ג. בטנקורט מ-Kreative Korp בגופן <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> (המוצג בדף זה), ובגופן <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0 של greenstar967</a>. נכון להיום, לא נוצר מדריך ציבורי הממפה את Graflect ל<abbr title="International Phonetic Alphabet">אלפבית הפונטי הבינלאומי (IPA)</abbr>. טבלה זו משמשת כמשאב המקיף הראשון למטרה זו, ונוצרה כדי לסייע בהבנה ובתעתיק.</p>
-                <hr>
+                <h1 id="title" data-key="guide_h1">מבוא ל-Graflect וכלי לתעתיק</h1>
+                <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> היא אורתוגרפיה פונטית המוצגת באתר האישי של אהרון פטרסון, MayCXC. היא בעלת אופי תכונתי מעודן ומסוגלת לייצג מגוון רחב של מבטאים באנגלית ואף בשפות אחרות. האורתוגרפיה כלולה ב-<a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, ותמיכה בגופנים זמינה מיוצרים כמו רבקה ג. בטנקורט מ-Kreative Korp בגופן <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> (המוצג בדף זה), ובגופן <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">GS Unicode 2.0 של greenstar967</a>. <del datetime="2025-07-06T01:43:00EDT">נכון להיום, לא נוצר מדריך ציבורי הממפה את Graflect ל<abbr title="International Phonetic Alphabet">אלפבית הפונטי הבינלאומי (IPA)</abbr>.</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">פורסם מדריך רשמי הממפה את Graflect ל-IPA</a>.</ins> הטבלה שלי משמשת כמשאב הראשון למטרה זו, אך יש להחשיבה כמיושנת ולהעדיף את המדריך הרשמי.</p>
             </header>
-            
+            <section>
+                <p data-key="graflect_example_p">הנה פסקה לדוגמה כתובה בגרַפְלֶקְט, אני מקווה שהקול שלי נשמע כראוי.</p>
+                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+            </section>
+            <hr>
+            <section>
+                <h2 id="translit-tool" data-key="guide_h2_tool">כלי תעתיק</h2>
+                <p data-key="guide_p_tool">במפעיל התוכניות (program.launcher), תוכלו למצוא כלי לתעתיק כל טקסט ל-Graflect. בתחילה, הכלי היה אמור לפעול על ידי החלת סט של חוקי החלפה מגְרָפֶמָה-לְפוֹנֶמָה, אך ניסיון לחזות כל המרה אפשרית יהיה אבסורדי ויביס את המטרה. מכיוון של-Graflect יש יכולות פונטיות, הגיוני פשוט להשתמש בהן. לכן הכלי הזה הוא בעיקר מערכת מילונים ניתנת להתאמה אישית. הוא מגיע עם מילון ברירת מחדל קטן המבוסס על המבטא שלי, אך כאשר הכלי נתקל במילה או צירוף צלילים עם מספר הגיות אפשריות (כמו "ch" ב-"chase" לעומת "loch"), הוא יבקש מכם את הבחירה הנכונה. על ידי שמירת בחירותיכם, תוכלו לבנות מילון אישי המשקף במדויק את המבטא שלכם. השתמשו בכפתור "נהל מילונים" בתוך הכלי כדי להציג, לערוך, לייבא ולייצא את רשימות המילים המותאמות אישית שלכם, מה שיכול לעזור לכם ללמוד לקרוא ולכתוב ב-Graflect. אם תתרגמו משהו מגניב, אנא ידעו אותי!</p>
+            </section>
+            <hr>
             <section>
                 <h2 id="consonants" data-key="guide_h2_consonants">עיצורים</h2>
                 <table>
@@ -121,12 +129,12 @@
                         <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">שווא נע (ə), כמו באות <b>אֲ</b> במילה <b>אֲ</b>דָמָה</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">קמץ קטן (צליל 'אוֹ'), כמו במילה ת<b>ָ</b>כנית</td></tr>
                         <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">צירה (צליל 'איי'), כמו במילה שֵׁ<b>ם</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant">פתח, כמו במילה האנגלית c<b>a</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> במילה נמל<b>ה</b> (ant)</td></tr>
                         <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">פתח ו-י' (ַי), כמו במילה בַּ<b>יִ</b>ת</td></tr>
                         <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">אנגלית: <b>ou</b> במילה s<b>ou</b>th</td></tr>
                         <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">חולם (צליל 'אוֹ'), כמו במילה <b>כֹּ</b>ה</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">חולם עמוק יותר, כמו במילה האנגלית h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r">אנגלית: תנועה במילה n<b>ur</b>se (במבטא לא-רוטי)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> במילה n<b>ur</b>se אבל במבטא בריטי</td></tr>
                         <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">אנגלית: <b>air</b> במילה <b>air</b></td></tr>
                     </tbody>
                 </table>
