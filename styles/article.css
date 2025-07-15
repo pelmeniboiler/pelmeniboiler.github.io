@@ -1,10 +1,15 @@
+/*
+ * article.css
+ * Styles specific to article pages, including the navigation and main content windows.
+ * This version includes distinct styles for desktop and mobile views.
+ */
+
 .article-content {
     overflow-y: auto; /* Allow vertical scrolling */
     height: 100%;
     padding: 10px;
 }
 
-/* Styles for images within the article */
 .article-image {
     max-width: 100%;
     height: auto;
@@ -15,10 +20,10 @@
 
 /* --- DESKTOP STYLES (769px and wider) --- */
 @media (min-width: 769px) {
-    /* Ensure the main gallery window's content area fills the available space */
+    /* Main content window takes up the remaining space */
     #gallery-window .content {
         padding: 0;
-        max-height: none; /* Override any potential max-height from other styles */ 
+        max-height: none;
         top: 0;
         left: 260px;
         right: 0;
@@ -27,39 +32,35 @@
         overflow-x: hidden;
     }
 
-    /* This rule now ONLY applies on desktop screens. */
+    /* Desktop navigation window with constrained height and scrolling content */
     #nav-window {
-        max-height: fit-content;
-        top: 0px;
-        left: 0px;
-        width: 250px;
-        height:fit-content;
-        min-height: fit-content;
         position: absolute;
+        top: 20px;
+        left: 10px;
+        width: 250px;
+        height: auto;
+        max-height: calc(100vh - 40px); /* Constrain height to viewport with margins */
         z-index: 3;
+        display: flex; /* Ensure flex properties apply */
+        flex-direction: column;
+    }
+
+    #nav-window .content {
+        max-height: none; /* Allows content to fill the parent's height */
+        overflow-y: auto; /* Enables scrolling within the nav content */
     }
 }
 
-body {
-    overflow: hidden; 
-}
 /* --- MOBILE STYLES (768px and narrower) --- */
-
-/* Prevents the body from scrolling when the fullscreen menu is open */
-.body-no-scroll {
-    overflow: hidden;
-}
-
 @media (max-width: 768px) {
-
-    /* Re-enable vertical scrolling on mobile so articles can be read */
+    /* Allow the main body to scroll on mobile */
     body {
         overflow-y: auto;
     }
 
-    /* This rule applies to all windows EXCEPT our special nav pendant. */
-    .window:not(.nav-pendant) {
-        position: relative !important; /* Make sure it overrides the base absolute position */
+    /* Standard windows become part of the document flow */
+    .window:not(#nav-window) {
+        position: relative !important;
         width: auto !important;
         left: 0 !important;
         top: 0 !important;
@@ -67,19 +68,18 @@ body {
         z-index: auto !important;
     }
 
-    /* --- Nav Pendant Styles --- */
+    /* --- Mobile Navigation Pendant Styles --- */
 
-    /* Base style for the nav "pendant" when it's a collapsed button. */
-    .window#nav-window.nav-pendant {
+    /* Collapsed state: A floating button */
+    .window#nav-window {
         position: fixed !important;
-        /* These 'auto' rules are added to unset any inline top/left styles from JS */
         top: auto !important;
         left: auto !important;
         bottom: 80px !important;
         right: 20px !important;
         width: 50px;
         height: 50px;
-        border-radius: 0px;
+        border-radius: 0;
         z-index: 999 !important;
         cursor: pointer;
         display: flex;
@@ -90,59 +90,55 @@ body {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
-    /* Hide the original window components when collapsed */
-    .nav-pendant:not(.expanded) .title-bar,
-    .nav-pendant:not(.expanded) .content {
+    /* Hide original window parts when collapsed */
+    .window#nav-window:not(.expanded) .title-bar,
+    .window#nav-window:not(.expanded) .content {
         display: none;
     }
 
-    /* The '◈' symbol inside the button */
-    .window#nav-window.nav-pendant::before {
+    /* Display the '◈' symbol for the button */
+    .window#nav-window::before {
         content: '◈';
         font-family: 'Symbola', sans-serif;
         font-size: 28px;
         color: var(--inv-text-color);
     }
     
-    /* When expanded, hide the symbol */
-    .window#nav-window.nav-pendant.expanded::before {
+    /* Hide the symbol when expanded */
+    .window#nav-window.expanded::before {
         display: none;
     }
 
-    /* Style for when the button is tapped and EXPANDED. */
-    .window#nav-window.nav-pendant.expanded {
-        /* Use inset properties with a margin for a cleaner overlay effect */
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        /* Remove fixed width/height to respect the inset properties */
-        width: auto;
-        height: auto;
+    /* Expanded state: A full-screen overlay */
+    .window#nav-window.expanded {
+        top: 10px !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        width: auto !important;
+        height: auto !important;
         margin: 0;
-        border-radius: 0px;
-        z-index: 1001 !important;
         cursor: default;
-        display: flex;
-        flex-direction: column;
         background-color: var(--win-bg-color);
         border: 2px solid var(--border-color);
-        box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-        color: var(--text-color); /* Explicitly set text color for legibility */
+        color: var(--text-color);
+        box-sizing: border-box; /* Ensures padding/border are included in the element's total size */
     }
 
-    /* When expanded, show the original window components again */
-    .nav-pendant.expanded .title-bar {
+    /* Show original window parts when expanded */
+    .window#nav-window.expanded .title-bar {
         display: flex;
-        height: auto;
-        width: 100%;
         cursor: default;
+        width: 100%; /* **FIX:** Make title bar full width */
+        height: auto; /* **FIX:** Allow height to adjust to content, overriding fixed height */
     }
     
-    .nav-pendant.expanded .content {
+    /* This makes the content area scrollable within the expanded overlay */
+    .window#nav-window.expanded .content {
         display: block;
         flex-grow: 1; /* Allow content to fill the remaining space */
-        overflow-y: auto;
+        overflow-y: auto; /* **THIS ENABLES SCROLLING** */
         padding: 1rem;
+        max-height: none; /* Ensure it's not limited by other rules */
     }
 }
