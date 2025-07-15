@@ -5,9 +5,7 @@
 function setupStartMenu() {
     // --- Basic setup ---
     const startMenu = document.querySelector('.start-menu');
-    // Important: check if the start menu exists before proceeding.
     if (!startMenu) {
-        // console.log("Start menu not found on this page, skipping setup.");
         return;
     }
     
@@ -30,7 +28,6 @@ function setupStartMenu() {
             listItem.setAttribute('tabindex', '0');
             const titleElement = closedItemWindow.querySelector('.title');
 
-            // Determine the window title using translation data
             const titleKey = titleElement ? titleElement.getAttribute('data-key') : null;
             const titleText = (titleKey && translations && translations[lang] && translations[lang][titleKey]) ?
                 translations[lang][titleKey] :
@@ -41,7 +38,6 @@ function setupStartMenu() {
             const openHandler = (e) => {
                 e.preventDefault();
                 openWindow(closedItemWindow, translations, lang);
-                // On mobile, close the start menu after opening a window
                 if (isMobile() && startMenu.classList.contains('open')) {
                     startMenu.classList.remove('open');
                 }
@@ -59,7 +55,16 @@ function setupStartMenu() {
     }
 
     function openWindow(windowToOpen, translations, lang) {
-        windowToOpen.style.display = 'flex'; // Use flex to match your CSS
+        // On mobile, the nav window is handled separately. Clicking it in the start menu should expand it.
+        if (isMobile() && windowToOpen.id === 'nav-window') {
+            if (!windowToOpen.classList.contains('expanded')) {
+                windowToOpen.classList.add('expanded');
+                document.body.classList.add('body-no-scroll');
+            }
+            return;
+        }
+
+        windowToOpen.style.display = 'flex';
         windowToOpen.classList.remove('init-closed');
 
         if (!isMobile()) {
@@ -72,6 +77,14 @@ function setupStartMenu() {
     }
 
     function closeWindow(windowToClose, translations, lang) {
+        // On mobile, the nav window is only collapsed, not truly "closed".
+        if (isMobile() && windowToClose.id === 'nav-window') {
+            windowToClose.classList.remove('expanded');
+            document.body.classList.remove('body-no-scroll');
+            // IMPORTANT: Do not add it to the closedWindows array.
+            return;
+        }
+
         windowToClose.style.display = 'none';
         if (!closedWindows.includes(windowToClose)) {
             closedWindows.push(windowToClose);
@@ -79,20 +92,63 @@ function setupStartMenu() {
         updateWindowList(translations, lang);
     }
 
+    /**
+     * UPDATED: Handles the special behavior of the navigation window on mobile devices.
+     * It now uses a single event handler on the window itself.
+     */
+    function setupMobileNav() {
+        if (!isMobile()) return;
+
+        const navWindow = document.getElementById('nav-window');
+        if (!navWindow) return;
+
+        // Use a data attribute to prevent attaching listeners multiple times.
+        if (navWindow.dataset.mobileNavSetup) return;
+        navWindow.dataset.mobileNavSetup = 'true';
+
+        const closeBtn = navWindow.querySelector('.close-btn');
+
+        // This class triggers the CSS to turn it into a button.
+        navWindow.classList.add('nav-pendant');
+        navWindow.style.display = 'flex'; // Ensure it's visible
+
+        // Add a single click handler to the nav window.
+        const navClickHandler = (event) => {
+            // If the click is on the close button, collapse the menu.
+            if (closeBtn && closeBtn.contains(event.target)) {
+                event.stopPropagation();
+                navWindow.classList.remove('expanded');
+                document.body.classList.remove('body-no-scroll');
+                return;
+            }
+
+            // If the menu is NOT expanded, any other click should expand it.
+            if (!navWindow.classList.contains('expanded')) {
+                event.stopPropagation();
+                navWindow.classList.add('expanded');
+                document.body.classList.add('body-no-scroll');
+            }
+        };
+
+        navWindow.addEventListener('click', navClickHandler);
+    }
+
     function setupWindowInteractions(translations, lang) {
         windows.forEach((window) => {
+            // Mobile nav window has its own logic, so we skip it here.
+            if (isMobile() && window.id === 'nav-window') {
+                return;
+            }
+
             const titleBar = window.querySelector('.title-bar');
             const closeBtn = window.querySelector('.close-btn');
 
-            // --- Close button logic ---
             if (closeBtn) {
-                // To prevent multiple listeners, we replace the node
                 const newBtn = closeBtn.cloneNode(true);
                 closeBtn.parentNode.replaceChild(newBtn, closeBtn);
                 newBtn.addEventListener('click', () => closeWindow(window, translations, lang));
             }
 
-            // --- Desktop-only: Dragging logic ---
             if (!isMobile() && titleBar) {
                 let offsetX = 0, offsetY = 0;
                 
@@ -128,9 +184,7 @@ function setupStartMenu() {
         }
     }
 
-    // --- Main Initialization Logic ---
     function initialize(translations, lang) {
-        // Find all initially closed windows
         windows.forEach(win => {
             const isExplicitlyClosed = win.classList.contains('init-closed');
             const isVisuallyHidden = getComputedStyle(win).display === 'none';
@@ -139,110 +193,70 @@ function setupStartMenu() {
             }
         });
 
-        // --- NEW: Arrange initially open windows to prevent overlap on desktop ---
         if (!isMobile()) {
             const openWindows = Array.from(windows).filter(win => !closedWindows.includes(win));
             const placedRects = [];
-            const margin = 15; // The pixel space to leave between windows
+            const margin = 15;
 
-            // Helper function to check for overlap between two rectangles
-            const doRectsOverlap = (r1, r2) => {
-                return !(r1.right < r2.left || 
-                         r1.left > r2.right || 
-                         r1.bottom < r2.top || 
-                         r1.top > r2.bottom);
-            };
+            const doRectsOverlap = (r1, r2) => !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
 
             openWindows.forEach(win => {
-                // To get accurate dimensions, the window must be positioned absolutely and be part of the layout.
-                // We make it invisible initially to avoid a flash of content at the wrong position.
                 win.style.position = 'absolute';
                 win.style.visibility = 'hidden';
-                win.style.display = 'flex'; // Ensure it's displayed to get dimensions
+                win.style.display = 'flex';
 
                 let currentRect = win.getBoundingClientRect();
-                
-                // We'll work with a mutable copy of the rectangle's properties.
-                let newRect = {
-                    left: currentRect.left,
-                    top: currentRect.top,
-                    width: currentRect.width,
-                    height: currentRect.height,
-                };
-
+                let newRect = { left: currentRect.left, top: currentRect.top, width: currentRect.width, height: currentRect.height };
                 let hasCollision;
-                // Keep checking for collisions and moving the window until it's in a free spot.
+                
                 do {
                     hasCollision = false;
                     for (const placedRect of placedRects) {
-                        const potentialRect = {
-                            left: newRect.left,
-                            top: newRect.top,
-                            right: newRect.left + newRect.width,
-                            bottom: newRect.top + newRect.height,
-                        };
-
+                        const potentialRect = { left: newRect.left, top: newRect.top, right: newRect.left + newRect.width, bottom: newRect.top + newRect.height };
                         if (doRectsOverlap(potentialRect, placedRect)) {
                             hasCollision = true;
-                            // Collision detected! Move the current window down, just below the one it collided with.
                             newRect.top = placedRect.bottom + margin;
-                            // Break the inner loop and re-check against ALL previously placed windows
-                            // from the new position, as it might cause a new collision.
                             break; 
                         }
                     }
                 } while (hasCollision);
 
-                // Once we have a collision-free position, apply it to the window and make it visible.
                 win.style.left = `${newRect.left}px`;
                 win.style.top = `${newRect.top}px`;
                 win.style.visibility = 'visible';
 
-                // Add the final, confirmed position to our array of placed rectangles for checking subsequent windows.
-                placedRects.push({
-                    left: newRect.left,
-                    top: newRect.top,
-                    right: newRect.left + newRect.width,
-                    bottom: newRect.top + newRect.height,
-                });
+                placedRects.push({ left: newRect.left, top: newRect.top, right: newRect.left + newRect.width, bottom: newRect.top + newRect.height });
             });
         }
-        // --- End of new section ---
 
         setupWindowInteractions(translations, lang);
         setupMobileMenu();
+        setupMobileNav(); // Handles the nav pendant
         updateWindowList(translations, lang);
     }
     
     // --- Event Listener ---
-    // This is the key part. We listen for the custom event from settings.js
     document.addEventListener('translationsReady', (event) => {
         const { translations, lang } = event.detail;
         initialize(translations, lang);
 
-        // Re-initialize on resize to switch between mobile/desktop modes.
-        // A full reload is a simple way to handle the complexity of changing modes.
         let wasMobile = isMobile(); 
-
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 const isNowMobile = isMobile();
-                // ONLY reload if the state has changed (e.g., portrait to landscape)
                 if (isNowMobile !== wasMobile) {
                     location.reload();
                 }
             }, 250);
         });
-    }, { once: true }); // Use 'once' to ensure it only runs one time.
+    }, { once: true });
 
-    // Fallback: If settings.js finishes before this script runs, the data will be on the window.
     if (window.translationsData) {
         const { translations, lang } = window.translationsData;
         initialize(translations, lang);
     }
 }
 
-// Run the setup function
 setupStartMenu();

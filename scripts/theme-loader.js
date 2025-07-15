@@ -4,7 +4,7 @@
  * This script is intended to be placed in the <head> of the document.
  * It's a self-executing function that runs immediately to prevent a "flash of unstyled content" (FOUC).
  * It reads the user's saved theme and mode from localStorage and applies the corresponding
- * classes to the <html> element before the page content is rendered.
+ * classes to both the <html> and <body> elements before the page content is rendered.
  */
 (function() {
     // Define the keys used for storing settings in localStorage.
@@ -20,29 +20,33 @@
         const mode = savedMode || 'lcd';
         let theme;
 
-        // UPDATED LOGIC:
-        // Prevent color themes from being applied in e-ink mode.
+        // Logic to prevent color themes in e-ink mode.
         if (mode === 'eink') {
-            // If mode is 'eink', the theme can only be 'light' or 'dark'.
-            // We check if the saved theme is specifically 'dark', otherwise we default to 'light'.
-            // This prevents an invalid state, e.g., 'champagne-mode' with 'eink-mode'.
             theme = (savedTheme === 'dark') ? 'dark' : 'light';
         } else {
-            // If mode is 'lcd', we can use any saved theme.
             // Fall back to OS preference, and finally default to 'light'.
             theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         }
         
-        // Get a reference to the root <html> element.
+        // Get references to the root <html> and the <body> elements.
         const docEl = document.documentElement;
-
-        // Add the theme and mode classes. This is the crucial step that prevents FOUC.
-        // CSS can now use selectors like `.dark-mode` or `.eink-mode` to apply styles instantly.
+        
+        // This is the crucial step that prevents FOUC.
+        // We apply the classes immediately.
         docEl.classList.add(`${theme}-mode`, `${mode}-mode`);
+        
+        // **FIX:** We also need to apply the classes to the body as soon as it exists.
+        // We use a simple interval check which is very fast and reliable.
+        const bodyApplyInterval = setInterval(function() {
+            if (document.body) {
+                document.body.classList.add(`${theme}-mode`, `${mode}-mode`);
+                clearInterval(bodyApplyInterval);
+            }
+        }, 1);
+
 
     } catch (e) {
-        // If any error occurs (e.g., localStorage is disabled in private browsing),
-        // log the error and allow the page to load with default styles.
+        // If any error occurs (e.g., localStorage is disabled), log it.
         console.error("Failed to apply initial theme from theme-loader.js", e);
     }
 })();
