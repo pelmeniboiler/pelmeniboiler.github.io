@@ -148,8 +148,13 @@
         // Wait for the document to be fully loaded before running the script
         document.addEventListener('DOMContentLoaded', () => {
 
+            // List of ISO 3166-1 alpha-2 country codes for generating flags
+            const countryCodes = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW'];
+
             // Define the Unicode blocks to display
             const unicodeBlocks = [
+                // NEW: Added a block for National Flags, using the countryCodes array
+                { name: 'National Flags', type: 'flags', codes: countryCodes },
                 { name: 'Miscellaneous Symbols', start: 0x2600, end: 0x26FF },
                 { name: 'Dingbats', start: 0x2700, end: 0x27BF },
                 { name: 'Miscellaneous Symbols and Arrows', start: 0x2B00, end: 0x2BFF },
@@ -170,23 +175,18 @@
             // Function to show the "Copied!" notification
             let notificationTimeout;
             function showNotification() {
-                // Clear any existing timeout to prevent it from hiding prematurely
-                if (notificationTimeout) {
-                    clearTimeout(notificationTimeout);
-                }
+                if (notificationTimeout) clearTimeout(notificationTimeout);
                 notification.classList.add('show');
-                // Set a new timeout to hide the notification after 2 seconds
                 notificationTimeout = setTimeout(() => {
                     notification.classList.remove('show');
                 }, 2000);
             }
 
             // Function to copy text to clipboard
-            // Uses the document.execCommand for better compatibility in sandboxed environments
             function copyToClipboard(text) {
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
-                textarea.style.position = 'fixed'; // Prevent scrolling to bottom of page in MS Edge.
+                textarea.style.position = 'fixed';
                 textarea.style.opacity = '0';
                 document.body.appendChild(textarea);
                 textarea.select();
@@ -201,46 +201,63 @@
             
             // Loop through each defined block and generate the HTML
             unicodeBlocks.forEach(block => {
-                // Create a container for the block
                 const blockDiv = document.createElement('div');
                 blockDiv.className = 'unicode-block';
 
-                // Create the title for the block
                 const blockTitle = document.createElement('h2');
-                blockTitle.textContent = `${block.name} (U+${block.start.toString(16).toUpperCase()} - U+${block.end.toString(16).toUpperCase()})`;
+                // Adjust title based on block type
+                if (block.type === 'flags') {
+                    blockTitle.textContent = block.name;
+                } else {
+                    blockTitle.textContent = `${block.name} (U+${block.start.toString(16).toUpperCase()} - U+${block.end.toString(16).toUpperCase()})`;
+                }
                 blockDiv.appendChild(blockTitle);
 
-                // Create the grid for symbols
                 const gridDiv = document.createElement('div');
                 gridDiv.className = 'symbol-grid';
 
-                // Loop through the codepoint range for the current block
-                for (let i = block.start; i <= block.end; i++) {
-                    const char = String.fromCodePoint(i);
-                    const codePoint = `U+${i.toString(16).toUpperCase().padStart(4, '0')}`;
-
-                    // Create the individual item container
+                // Helper function to create a symbol item
+                function createSymbolItem(char, codeText) {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'symbol-item';
                     itemDiv.title = `Click to copy ${char}`;
 
-                    // Create the symbol span
                     const symbolSpan = document.createElement('span');
                     symbolSpan.className = 'symbol';
                     symbolSpan.textContent = char;
 
-                    // Create the code point display
                     const codeTag = document.createElement('code');
-                    codeTag.textContent = codePoint;
+                    codeTag.textContent = codeText;
                     
-                    // Add a click event listener to copy the symbol
-                    itemDiv.addEventListener('click', () => {
-                        copyToClipboard(char);
-                    });
+                    itemDiv.addEventListener('click', () => copyToClipboard(char));
                     
                     itemDiv.appendChild(symbolSpan);
                     itemDiv.appendChild(codeTag);
                     gridDiv.appendChild(itemDiv);
+                }
+
+                // Check if the block is for flags and process it differently
+                if (block.type === 'flags') {
+                    block.codes.forEach(countryCode => {
+                        // A flag emoji is created by converting each letter of a country code
+                        // to a "Regional Indicator Symbol" codepoint.
+                        // 'A' (U+0041) becomes Regional Indicator Symbol Letter A (U+1F1E6).
+                        const regionalIndicatorA = 0x1F1E6;
+                        const charCodeA = 'A'.charCodeAt(0);
+                        
+                        const codePoint1 = regionalIndicatorA + countryCode.charCodeAt(0) - charCodeA;
+                        const codePoint2 = regionalIndicatorA + countryCode.charCodeAt(1) - charCodeA;
+
+                        const flagEmoji = String.fromCodePoint(codePoint1, codePoint2);
+                        createSymbolItem(flagEmoji, countryCode);
+                    });
+                } else {
+                    // Loop through the codepoint range for standard blocks
+                    for (let i = block.start; i <= block.end; i++) {
+                        const char = String.fromCodePoint(i);
+                        const codePoint = `U+${i.toString(16).toUpperCase().padStart(4, '0')}`;
+                        createSymbolItem(char, codePoint);
+                    }
                 }
 
                 blockDiv.appendChild(gridDiv);

@@ -2,20 +2,22 @@
 // This script loads HTML modules into placeholders and then loads the dependent scripts.
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Module Loader: DOMContentLoaded event fired. Starting module loading process.");
+
     // Defines which modules to load and where to put them.
-    // FIXED: Paths are now root-relative to work from any page depth.
     const modules = [
         { id: 'settings-module-placeholder', path: '/modules/settings-module.html' },
         { id: 'start-menu-module-placeholder', path: '/modules/start-menu-module.html' },
         { id: 'chirper-demo-placeholder', path: '/modules/blog/demos/replab.html' },
         { id: 'graflect-module-placeholder', path: '/modules/blog/demos/graflectsubstitution.html' },
+        { id: 'share-module-placeholder', path: '/modules/share-module.html' },
     ];
 
     // Defines the scripts that depend on the modules being loaded first.
-    // FIXED: Paths are now root-relative. Corrected 'start menu.js' to 'start-menu.js' as spaces in filenames can cause issues.
     const dependentScripts = [
         '/scripts/settings.js',
-        '/scripts/start-menu.js'
+        '/scripts/start-menu.js',
+        '/scripts/share.js'
     ];
 
     /**
@@ -27,49 +29,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadModule = async (id, path) => {
         const placeholder = document.getElementById(id);
         if (!placeholder) {
-            // No error log for placeholders that may not exist on every page.
             return;
         }
         try {
             const response = await fetch(path);
             if (!response.ok) {
-                throw new Error(`Failed to fetch module from ${path}: ${response.statusText}`);
+                throw new Error(`Failed to fetch module: ${response.status} ${response.statusText}`);
             }
             const html = await response.text();
-            placeholder.outerHTML = html; // Replace placeholder with the module content
+            placeholder.outerHTML = html;
         } catch (error) {
-            console.error(`Error loading module ${path}:`, error);
-            // Optional: display an error message in the placeholder
+            console.error(`Module Loader: Error loading module for '${id}' from '${path}'.`);
             if (placeholder) {
                  placeholder.innerHTML = `<p style="color: red;">Error loading component.</p>`;
             }
+            throw error;
         }
     };
 
     /**
-     * Appends a script to the document's body.
+     * UPDATED: Appends a script and returns a Promise that resolves when the script is loaded.
      * @param {string} src - The source path of the script.
+     * @returns {Promise<void>}
      */
     const loadScript = (src) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.defer = true; // Ensure scripts are executed in order after parsing
-        document.body.appendChild(script);
+        return new Promise((resolve, reject) => {
+            console.log(`Module Loader: Appending script '${src}'.`);
+            const script = document.createElement('script');
+            script.src = src;
+            script.defer = true;
+            script.onload = () => {
+                console.log(`Module Loader: Script '${src}' has loaded successfully.`);
+                resolve();
+            };
+            script.onerror = () => {
+                console.error(`Module Loader: Failed to load script '${src}'.`);
+                reject(new Error(`Script load error for ${src}`));
+            };
+            document.body.appendChild(script);
+        });
     };
 
     /**
      * Main function to load all modules and then all dependent scripts.
      */
     const initialize = async () => {
-        // Create an array of promises for loading all modules concurrently.
+        console.log("Module Loader: Initializing modules...");
         const modulePromises = modules.map(module => loadModule(module.id, module.path));
         
-        // Wait for all HTML modules to be fetched and injected.
-        await Promise.all(modulePromises);
+        const results = await Promise.allSettled(modulePromises);
         
-        // Once modules are loaded, load and execute the dependent JavaScript files.
-        dependentScripts.forEach(scriptSrc => loadScript(scriptSrc));
+        results.forEach((result, index) => {
+            if (result.status === 'rejected') {
+                console.warn(`Module Loader: Module '${modules[index].path}' failed to load. This might be okay if the module isn't needed on this page.`);
+            }
+        });
+
+        console.log("Module Loader: All modules settled. Waiting for dependent scripts to load...");
+        
+        // UPDATED: Wait for all dependent scripts to finish loading before proceeding.
+        try {
+            await Promise.all(dependentScripts.map(scriptSrc => loadScript(scriptSrc)));
+            console.log("Module Loader: All dependent scripts have loaded.");
+        } catch (error) {
+            console.error("Module Loader: A critical dependent script failed to load. Halting execution.", error);
+            return; // Stop if a script fails
+        }
+        
+        console.log("Module Loader: Firing 'modulesLoaded' event.");
         document.dispatchEvent(new CustomEvent('modulesLoaded'));
+        console.log("Module Loader: 'modulesLoaded' event has been dispatched.");
     };
 
     // Start the process.

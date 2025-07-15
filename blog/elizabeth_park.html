@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
+    <script src="/scripts/theme-loader.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="epark">
@@ -25,14 +26,6 @@
             font-size: 20px;
             margin: 0 0 10px;
         }
-        .normal-btn {
-            border: 2px solid black;
-            background-color: white;
-            color: black;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
         body {
             max-width: 100%;
             overflow-x: hidden;
@@ -41,7 +34,7 @@
 </head>
 <body class="eink-mode light-mode">
 
-    <nav id="nav-window" class="window" style="top: 0; left: 0; min-height: fit-content; width: 260px; position: absolute; z-index: 3;">
+    <nav id="nav-window" class="window">
         <div class="title-bar">
             <span class="title" data-key="ep_wingallerynav_title">◈ gallery.nav</span>
             <button class="close-btn">&times;</button>
@@ -96,7 +89,7 @@
         </div>
     </nav> 
 
-    <div class="window" style="top: 58%; left: 69%; z-index: 4;">
+    <div class="window init-closed" style="top: 58%; left: 69%; z-index: 4;">
         <div class="title-bar">
             <span class="title" data-key="win_music_title">𝄆 music.ogg</span>
             <button class="close-btn">&times;</button>
@@ -240,7 +233,7 @@
     
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
-    
+    <div id="share-module-placeholder"></div>
     <script src="/scripts/module-loader.js" defer></script>
     <script>
         // Make the audio play function available globally

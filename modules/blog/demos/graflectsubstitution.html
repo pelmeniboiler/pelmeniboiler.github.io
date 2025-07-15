@@ -62,7 +62,7 @@
             overflow-wrap: break-word;
             word-wrap: break-word; 
             background-color: var(--bg-color, #fff);
-            max-width: 100%; /* Ensure it doesn't overflow parent */
+            max-width: 100%;
             box-sizing: border-box;
         }
         #output {
@@ -103,16 +103,14 @@
             color: var(--inv-bg-color);
         }
 
-        /* * Modal List Styling 
-         * Scrollbar styles are inherited from the parent stylesheet (pelmeni2025.css)
-         * to ensure consistency across the application.
-        */
+        #dictionary-editor-modal .content {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
         .modal-list {
             list-style: none;
             padding: 0;
             margin: 0;
-            max-height: 60vh;
-            overflow-y: auto;
         }
         .modal-list li {
             display: flex;
@@ -127,10 +125,12 @@
         .dict-info .name { font-weight: bold; }
         .dict-info .author { font-style: italic; font-size: 0.9em; }
         
-        #word-editor-modal .dictionary-word {
+        #dictionary-editor-modal .dictionary-word, #dictionary-editor-modal .grapheme-key {
             opacity: 0.5;
+            font-family: inherit;
+            font-size: 1em;
         }
-        #word-editor-modal .dictionary-graflect {
+        #dictionary-editor-modal .dictionary-graflect, #dictionary-editor-modal .grapheme-output {
             opacity: 1;
         }
 
@@ -138,12 +138,19 @@
             background-color: var(--win-bg-color, #fff);
             border: 2px solid var(--border-color, #000);
             color: var(--text-color, #000);
-            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
-            font-size: 1.2em;
             padding: 0.2em;
             flex-grow: 1;
             margin-left: 1em;
         }
+        .graflect-font-input {
+            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+        }
+        .english-font-input {
+            font-family: inherit;
+            font-size: 1em;
+        }
+
         .dict-btn-group button, .dict-btn-group .button-label {
              margin-left: 0.5em;
         }
@@ -199,7 +206,7 @@
             display: none;
         }
 
-        /* Form styling for new dictionary modal */
+        /* Form styling for modals */
         .modal-form {
             display: flex;
             flex-direction: column;
@@ -214,14 +221,39 @@
             background-color: var(--win-bg-color, #fff);
             color: var(--text-color, #000);
         }
+
+        /* Tab styles for dictionary editor */
+        .editor-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color, #000);
+            margin-bottom: 1em;
+        }
+        .editor-tab {
+            padding: 0.5em 1em;
+            cursor: pointer;
+            border: 2px solid var(--border-color, #000);
+            border-bottom: none;
+            background-color: var(--bg-color, #eee);
+            opacity: 0.7;
+            margin-bottom: -2px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .editor-tab.active {
+            background-color: var(--win-bg-color, #fff);
+            border-bottom: 2px solid var(--win-bg-color, #fff);
+            opacity: 1;
+        }
+        .editor-content.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <main class="window init-closed" style="max-width: 2400px;">
+    <main class="window init-closed" style="min-width: 600px; max-width: 800px;">
         <div class="title-bar">
-            <!-- UPDATED: Ensured symbol class is on the emoji span -->
-            <span class="title" data-key="translit_tools_title"><span class="symbol">🧰</span> graflect.translit</span>
+            <span class="title" data-key="win_tools_title"><span class="symbol">🧰</span> graflect.translit</span>
             <button class="close-btn">&times;</button>
         </div>
         <div class="content graflect-tool-content">
@@ -229,12 +261,10 @@
                 <div class="active-dict-display">
                     <span data-key="active_dict_label">Active Dictionary:</span> <span id="active-dict-name"></span>
                 </div>
-                <!-- UPDATED: Added emoji to button -->
                 <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn"><span class="symbol">📖</span> Manage Dictionaries</button>
             </div>
-            <!-- NEW: Explanatory text for dictionary management -->
             <p class="tool-explanation" data-key="graflect_tool_explanation" style="font-size: 0.9em; opacity: 0.8; text-align: center; margin: -0.5em 0 0.5em 0;">
-                Use the "Manage Dictionaries" button to edit words and match the transliteration to your own accent.
+                Use the "Manage Dictionaries" button to edit words and grapheme rules to match the transliteration to your own accent.
             </p>
             <div class="textarea-container">
                 <textarea id="english-input" data-key-placeholder="textarea_placeholder" placeholder="Enter English text here, or try the diagnostic paragraph..."></textarea>
@@ -257,7 +287,8 @@
                 </div>
                 <div class="remember-choice">
                     <input type="checkbox" id="remember-choice-checkbox" checked>
-                    <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for the word "<span id="prompt-word-for-checkbox"></span>"</label>
+                    <!-- UPDATED: Restored span to fix bug -->
+                    <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for "<span id="prompt-word-for-checkbox"></span>"</label>
                 </div>
             </div>
 
@@ -288,15 +319,27 @@
         </div>
     </div>
 
-    <!-- Word Editor Modal -->
-    <div id="word-editor-modal" class="ledger-modal-overlay hidden">
+    <!-- Dictionary Editor Modal -->
+    <div id="dictionary-editor-modal" class="ledger-modal-overlay hidden">
          <div class="window">
             <div class="title-bar">
-                <h2 id="word-editor-title" class="title" data-key="win_edit_dict_title">Edit Dictionary</h2>
+                <h2 id="dictionary-editor-title" class="title" data-key="win_edit_dict_title">Edit Dictionary</h2>
                 <button class="modal-close" id="close-editor-btn">&times;</button>
             </div>
             <div class="content">
-                <ul id="word-list" class="modal-list"></ul>
+                <div class="editor-tabs">
+                    <button id="words-tab" class="editor-tab active">Words</button>
+                    <button id="graphemes-tab" class="editor-tab">Graphemes</button>
+                </div>
+                <div id="words-editor-content" class="editor-content">
+                    <ul id="word-list" class="modal-list"></ul>
+                </div>
+                <div id="graphemes-editor-content" class="editor-content hidden">
+                    <ul id="grapheme-list" class="modal-list"></ul>
+                    <div class="modal-footer" style="justify-content: flex-end;">
+                         <button id="add-grapheme-btn" class="normal-btn">Add New Grapheme Rule</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

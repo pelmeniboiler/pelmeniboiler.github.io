@@ -7,107 +7,65 @@
  */
 function initializeGraflectTool() {
     // --- DATA MAPPINGS ---
-    const graflectMap = {
-        '/p/': '', '/b/': '', '/t/': '', '/d/': '', '/k/': '', '/ɡ/': '',
-        '/f/': '', '/v/': '', '/θ/': '', '/ð/': '', '/s/': '', '/z/': '',
-        '/ʃ/': '', '/ʒ/': '', '/h/': '', '/m/': '', '/n/': '', '/ŋ/': '',
-        '/l/': '', '/r/': '', '/w/': '', '/j/': '', '/iː/': '', '/ɪ/': '',
-        '/ʊ/': '', '/u/': '', '/ɛ/': '', '/æ/': '', '/ʌ/': '', '/ə/': '',
-        '/ɑ/': '', '/eɪ/': '', '/ɛə/': '', '/aɪ/': '', '/aʊ/': '', '/oʊ/': '',
-        '/ɔ/': '', '/ɜː/': '', '/ɛər/': '', '/tʃ/': '', '/dʒ/': '', '/ju/': '',
-        '/wi/': '', '/ɥi/': '', '/x/': '', '/ɾ/': '', '/ʁ/': '',
-        '/ks/': '', '/kw/': '', '/ɒ/': '', '/uː/': '',
-        '/ɔɪ/': '', '/ʃən/': '', '/ʒən/': '', '/ʃəs/': '',
-        '/ʃəl/': '', '/ʒər/': '', '/ʃʊər/': '', '/tʃər/': '',
-        '/sk/': '', '/səl/': '', '/ɛks/': '',
-        '/ɛɡz/': '', '/ɡw/': '', '/juː/': '', '/ndʒ/': '',
-        '/ɔːl/': '' // NEW
-    };
-
     const defaultWordMap = {
-        'a': '', 'an': '',
-        'and': '', 
-        'are': '', 'as': '', 'at': '', 'be': '', 'because': '',
-        'been': '', 'before': '', 'but': '', 'by': '',
-        'call': '',
-        'can': '',
-        'change': '', 'come': '', 'could': '', 'day': '', 'do': '',
-        'down': '',
-        'each': '', 'even': '', 'first': '',
-        'find': '',
-        'for': '',
-        'from': '', 'get': '', 'give': '',
-        'go': '',
-        'good': '',
-        'great': '', 'had': '', 'has': '', 'have': '', 'he': '',
-        'her': '',
-        'here': '', 'him': '', 'his': '', 'how': '',
-        'i': '', 'if': '', 'in': '', 'into': '',
-        'is': '', 'it': '',
-        'its': '', 'just': '', 'know': '',
-        'like': '',
-        'long': '',
-        'look': '',
-        'made': '', 'make': '',
-        'man': '',
-        'may': '',
-        'me': '', 'more': '', 'most': '', 'my': '', 'new': '',
-        'not': '',
-        'now': '',
-        'of': '', 'on': '',
-        'one': '', 'only': '', 'or': '', 'other': '',
-        'out': '',
-        'over': '',
-        'people': '', 'place': '',
-        'said': '', 'same': '', 'see': '', 'she': '',
-        'so': '',
-        'some': '', 'take': '', 'than': '',
-        'that': '', 'the': '',
-        'their': '', 'them': '', 'then': '', 'there': '', 'these': '',
-        'they': '', 'thing': '', 'think': '', 'this': '', 'those': '',
-        'time': '', 'to': '', 'two': '', 'up': '', 'use': '',
-        'very': '', 'want': '', 'was': '',
-        'water': '',
-        'way': '', 'we': '', 'well': '', 'were': '',
-        'what': '',
-        'when': '', 'where': '', 'which': '', 'who': '', 'why': '',
-        'will': '', 'with': '', 'work': '',
-        'would': '', 'year': '',
-        'you': '', 'your': ''
+        'a': '', 'an': '', 'and': '', 'are': '', 'as': '',
+        'at': '', 'be': '', 'because': '', 'been': '',
+        'before': '', 'but': '', 'by': '', 'call': '',
+        'can': '', 'change': '', 'come': '', 'could': '',
+        'day': '', 'do': '', 'down': '', 'each': '',
+        'even': '', 'first': '', 'find': '', 'for': '',
+        'from': '', 'get': '', 'give': '', 'go': '',
+        'good': '', 'great': '', 'had': '', 'has': '',
+        'have': '', 'he': '', 'her': '', 'here': '',
+        'him': '', 'his': '', 'how': '', 'i': '', 'if': '',
+        'in': '', 'into': '', 'is': '', 'it': '', 'its': '',
+        'just': '', 'know': '', 'like': '', 'long': '',
+        'look': '', 'made': '', 'make': '', 'man': '',
+        'may': '', 'me': '', 'more': '', 'most': '',
+        'my': '', 'new': '', 'not': '', 'now': '', 'of': '',
+        'on': '', 'one': '', 'only': '', 'or': '',
+        'other': '', 'out': '', 'over': '', 'people': '',
+        'place': '', 'said': '', 'same': '', 'see': '',
+        'she': '', 'so': '', 'some': '', 'take': '',
+        'than': '', 'that': '', 'the': '', 'their': '',
+        'them': '', 'then': '', 'there': '', 'these': '',
+        'they': '', 'thing': '', 'think': '', 'this': '',
+        'those': '', 'time': '', 'to': '', 'two': '',
+        'up': '', 'use': '', 'very': '', 'want': '',
+        'was': '', 'water': '', 'way': '', 'we': '',
+        'well': '', 'were': '', 'what': '', 'when': '',
+        'where': '', 'which': '', 'who': '', 'why': '',
+        'will': '', 'with': '', 'work': '', 'would': '',
+        'year': '', 'you': '', 'your': '', 'own': '',
+        'also': '', 'about': '', 'came': '',
+        'house': '', 'road': '', 'did': '', 'ball': '',
+        'session': '', 'all': ''
     };
-
-    // UPDATED: Added all single consonants and fixed other rules.
-    const graphemeToIpa = {
-        'tious': '/ʃəs/', 'cious': '/ʃəs/', 'ssion': '/ʃən/', 'stle': '/səl/',
-        'sion': ['/ʃən/', '/ʒən/'], 'tion': '/ʃən/', 'cian': '/ʃən/',
-        'tial': '/ʃəl/', 'cial': '/ʃəl/', 'sure': ['/ʒər/', '/ʃʊər/'],
-        'ture': '/tʃər/', 'dge': '/dʒ/', 'eigh': '/eɪ/', 'igh': '/aɪ/',
-        'tch': '/tʃ/', 'age': ['/ɪdʒ/', '/eɪdʒ/'], 'ex': ['/ɛks/', '/ɛɡz/'],
-        'nge': '/ndʒ/', 'que': '/k/', 'lk': '/k/', 'lm': '/m/', 'mb': '/m/', 'bt': '/t/',
-        'ps': '/s/', 'pn': '/n/', 'rh': '/r/',
-        'sch': ['/sk/', '/ʃ/'], 'eau': ['/oʊ/', '/juː/'],
-        'sc': ['/sk/', '/s/'], 'gu': ['/ɡ/', '/ɡw/'],
-        'ck': '/k/', 'qu': '/kw/', 'th': ['/θ/', '/ð/'], 'sh': '/ʃ/',
-        'ch': ['/tʃ/', '/k/', '/ʃ/', '/x/'], 
-        'ng': '/ŋ/', 'ph': '/f/', 'kn': '/n/', 'wr': '/r/',
-        'gh': ['/ɡ/', '/f/', ''], 'oo': ['/uː/', '/ʊ/', '/ʌ/'], 'ee': ['/iː/', '/ɪ/'],
-        'ea': ['/iː/', '/ɛ/', '/eɪ/'], 'ou': ['/aʊ/', '/oʊ/', '/u/', '/ʌ/'],
-        'ow': ['/aʊ/', '/oʊ/', '/u/'], 'ew': ['/ju/', '/uː/'],
-        'au': '/ɔ/', 'oi': '/ɔɪ/', 'oy': '/ɔɪ/',
-        'ai': ['/eɪ/', '/ɛ/'], 'ay': '/eɪ/',
-        'all': '/ɔːl/',
-        'll': '/l/', 'ss': '/s/', 'ff': '/f/', 'rr': '/r/', 'pp': '/p/', 'bb': '/b/', 
-        'dd': '/d/', 'tt': '/t/', 'mm': '/m/', 'nn': '/n/',
-        'a': ['/æ/', '/eɪ/', '/ɑ/', '/ə/', '/ɔ/', '/ɛə/', '/aɪ/'], 
-        'e': ['/ɛ/', '/iː/', '/ə/', '/ɪ/', '/ɛə/'],
-        'i': ['/ɪ/', '/aɪ/', '/iː/'], 
-        'o': ['/ɒ/', '/oʊ/', '/ʌ/', '/u/', '/ɔ/'], 
-        'u': ['/ʌ/', '/u/', '/ʊ/', '/ju/'], 'y': ['/ɪ/', '/aɪ/', '/iː/'],
-        's': ['/s/', '/z/'], 'g': ['/ɡ/', '/dʒ/'], 'c': ['/k/', '/s/'], 'x': ['/ks/', '/z/'],
-        'p': ['/p/'], 'b': ['/b/'], 't': ['/t/'], 'h': ['/h/', '/dʒ/'],
-        'l': ['/l/'], 'w': ['/w/'], 'r': ['/r/', '/ɛər/', '/ɜː/', '/ʁ/'], 
-        'j': '/dʒ/', 'd': '/d/', 'f': '/f/', 'k': '/k/', 'm': '/m/',
-        'n': '/n/', 'v': '/v/', 'z': '/z/'
+    
+    const vowelPool = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+    const defaultGraphemeMap = {
+        'tious': '', 'cious': '', 'ssion': '', 'stle': '',
+        'sion': ['', ''], 'tion': '', 'cian': '',
+        'tial': '', 'cial': '', 'sure': '', 'ture': '',
+        'dge': '', 'eigh': '', 'igh': '', 'tch': '', 'age': ['', ''],
+        'ex': ['', '', '', ''], 'nge': '', 'que': '', 'lk': '', 'lm': '',
+        'mb': '', 'bt': '', 'ps': '', 'pn': '', 'rh': '',
+        'sch': ['', ''], 'sci': ['', ''], 'eau': ['', ''],
+        'sc': ['', ''], 'gu': ['', ''], 'ck': '', 'qu': '',
+        'th': ['', ''], 'sh': '', 'ch': ['', '', '', ''],
+        'ng': '', 'ph': '', 'kn': '', 'wr': '', 'gh': ['', '', ''],
+        'oo': ['', '', ''], 'ee': ['', ''], 'ea': ['', '', ''],
+        'ou': ['', '', '', ''], 'ow': ['', '', ''],
+        'ew': ['', ''], 'au': '', 'oi': '', 'oy': '',
+        'ai': ['', ''], 'ay': '', 'll': '', 'ss': ['', ''], 'ff': '',
+        'rr': '', 'pp': '', 'bb': '', 'dd': '', 'tt': '', 'mm': '',
+        'nn': '', 'a': vowelPool, 'e': vowelPool, 'i': vowelPool,
+        'o': vowelPool, 'u': vowelPool, 'y': vowelPool,
+        's': ['', ''], 'g': ['', ''],
+        'c': ['', ''], 'x': ['', ''], 'p': '', 'b': '',
+        't': '', 'h': ['', ''], 'l': '', 'w': '',
+        'r': ['', '', '', ''], 'j': '', 'd': '', 'f': '',
+        'k': '', 'm': '', 'n': '', 'v': '', 'z': '', 'tr': ''
     };
     
     const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. So, all people have a time to find their own way. If you look for it, you may also get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road and go down to the water. How did he know? It was the first time they had been over there. I will give him a call now.";
@@ -122,21 +80,30 @@ function initializeGraflectTool() {
     
     // Modals
     const dictionaryManagerModal = document.getElementById('dictionary-manager-modal');
-    const wordEditorModal = document.getElementById('word-editor-modal');
+    const dictionaryEditorModal = document.getElementById('dictionary-editor-modal');
     const confirmationModal = document.getElementById('confirmation-modal');
     const newDictionaryModal = document.getElementById('new-dictionary-modal');
+    
     const closeModalManagerBtn = document.getElementById('close-manager-btn');
-    const closeWordEditorBtn = document.getElementById('close-editor-btn');
+    const closeEditorBtn = document.getElementById('close-editor-btn');
     const confirmYesBtn = document.getElementById('confirm-yes-btn');
     const confirmNoBtn = document.getElementById('confirm-no-btn');
     const confirmationMessageEl = document.getElementById('confirmation-message');
 
     // Dictionary Manager Elements
     const dictionaryListEl = document.getElementById('dictionary-list');
-    const wordListEl = document.getElementById('word-list');
-    const wordEditorTitleEl = document.getElementById('word-editor-title');
     const newDictBtn = document.getElementById('new-dict-btn');
     const importInput = document.getElementById('import-input');
+
+    // Dictionary Editor Elements
+    const dictionaryEditorTitleEl = document.getElementById('dictionary-editor-title');
+    const wordsTab = document.getElementById('words-tab');
+    const graphemesTab = document.getElementById('graphemes-tab');
+    const wordsEditorContent = document.getElementById('words-editor-content');
+    const graphemesEditorContent = document.getElementById('graphemes-editor-content');
+    const wordListEl = document.getElementById('word-list');
+    const graphemeListEl = document.getElementById('grapheme-list');
+    const addGraphemeBtn = document.getElementById('add-grapheme-btn');
 
     // New Dictionary Modal Elements
     const closeNewDictBtn = document.getElementById('close-new-dict-btn');
@@ -154,9 +121,9 @@ function initializeGraflectTool() {
     const promptInstructionEl = promptAreaEl.querySelector('#prompt-instruction');
     const promptButtonsEl = promptAreaEl.querySelector('#prompt-buttons-container');
     const rememberCheckbox = promptAreaEl.querySelector('#remember-choice-checkbox');
-    const promptWordCheckboxEl = promptAreaEl.querySelector('#prompt-word-for-checkbox');
-    const directGraflectInput = promptAreaEl.querySelector('#direct-graflect-input');
-    const useDirectInputBtn = promptAreaEl.querySelector('#use-direct-input-btn');
+    const promptWordCheckboxEl = document.getElementById('prompt-word-for-checkbox');
+    const directGraflectInput = document.getElementById('direct-graflect-input');
+    const useDirectInputBtn = document.getElementById('use-direct-input-btn');
 
     // --- STATE ---
     let dictionaries = [];
@@ -164,21 +131,15 @@ function initializeGraflectTool() {
     let currentResolve;
     let confirmationCallback;
     let notificationTimeout;
-    const graphemeKeys = Object.keys(graphemeToIpa).sort((a, b) => b.length - a.length);
-    const ipaKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
+    let currentlyEditingDictIndex = -1;
 
     // --- FUNCTIONS ---
 
     function showNotification(message) {
         if (!notificationBannerEl) return;
-        
-        if (notificationTimeout) {
-            clearTimeout(notificationTimeout);
-        }
-
+        if (notificationTimeout) clearTimeout(notificationTimeout);
         notificationBannerEl.textContent = message;
         notificationBannerEl.classList.remove('hidden');
-        
         notificationTimeout = setTimeout(() => {
             notificationBannerEl.classList.add('hidden');
         }, 3000);
@@ -200,7 +161,8 @@ function initializeGraflectTool() {
             name: "Wendy's Accent",
             author: "Wendy Zhulkovsky",
             description: "Default dictionary with common English words.",
-            words: { ...defaultWordMap }
+            words: { ...defaultWordMap },
+            graphemes: { ...defaultGraphemeMap }
         };
     }
 
@@ -209,16 +171,20 @@ function initializeGraflectTool() {
         const storedIndex = localStorage.getItem('graflectActiveDictIndex');
         let parsedDicts = [];
         try {
-            if (storedDicts) {
-                parsedDicts = JSON.parse(storedDicts);
-            }
+            if (storedDicts) parsedDicts = JSON.parse(storedDicts);
         } catch (e) {
             console.error("Could not parse dictionaries from localStorage:", e);
             parsedDicts = [];
         }
 
         if (parsedDicts.length > 0) {
-            dictionaries = parsedDicts;
+            dictionaries = parsedDicts.map(dict => {
+                const newDict = { ...dict };
+                if (!newDict.graphemes || Object.keys(newDict.graphemes).length === 0) {
+                    newDict.graphemes = { ...defaultGraphemeMap };
+                }
+                return newDict;
+            });
             activeDictionaryIndex = storedIndex ? parseInt(storedIndex, 10) : 0;
         } else {
             dictionaries = [createDefaultDictionary()];
@@ -239,37 +205,7 @@ function initializeGraflectTool() {
             activeDictNameEl.textContent = activeDict.name;
         }
     }
-
-    function ipaToGraflect(ipaString) {
-        if (!ipaString) return '';
-        let result = '';
-        let remainingIpa = ipaString;
-        while (remainingIpa.length > 0) {
-            let foundMatch = false;
-            for (const key of ipaKeys) {
-                if (remainingIpa.startsWith(key)) {
-                    result += graflectMap[key];
-                    remainingIpa = remainingIpa.substring(key.length);
-                    foundMatch = true;
-                    break;
-                }
-            }
-            if (!foundMatch) {
-                // UPDATED: Log error instead of passing through invalid characters
-                console.error(`No Graflect mapping found for IPA segment: ${remainingIpa[0]}`);
-                remainingIpa = remainingIpa.substring(1);
-            }
-        }
-        return result;
-    }
-
-    function findLongestGrapheme(text) {
-        for (const key of graphemeKeys) {
-            if (text.startsWith(key)) return key;
-        }
-        return text[0];
-    }
-
+    
     async function promptForChoice(word, grapheme, options, index) {
         transliterateBtn.disabled = true;
         const highlightedWord = `${word.substring(0, index)}<span class="prompt-word-highlight">${grapheme}</span>${word.substring(index + grapheme.length)}`;
@@ -281,15 +217,14 @@ function initializeGraflectTool() {
 
         const allOptions = [...new Set([...options, ''])]; 
 
-        allOptions.forEach(ipa => {
-            if (ipa === undefined) return;
+        allOptions.forEach(graflect => {
+            if (graflect === undefined) return;
             const button = document.createElement('button');
             button.className = 'normal-btn';
-            const graflectChars = ipaToGraflect(ipa);
-            button.innerHTML = ipa ? `${ipa} → <span class="graflect-font">${graflectChars}</span>` : 'Silent → (nothing)';
+            button.innerHTML = graflect ? `<span class="graflect-font">${graflect}</span>` : 'Silent → (nothing)';
             button.onclick = () => {
                 if (currentResolve) {
-                    currentResolve({ type: 'ipa', value: ipa });
+                    currentResolve(graflect);
                     currentResolve = null;
                 }
                 promptAreaEl.classList.add('hidden');
@@ -300,7 +235,7 @@ function initializeGraflectTool() {
 
         useDirectInputBtn.onclick = () => {
              if (currentResolve) {
-                currentResolve({ type: 'direct', value: directGraflectInput.value });
+                currentResolve(directGraflectInput.value);
                 currentResolve = null;
             }
             promptAreaEl.classList.add('hidden');
@@ -326,25 +261,33 @@ function initializeGraflectTool() {
         let originalIndex = 0;
         let wasPrompted = false;
 
-        while (remaining.length > 0) {
-            const grapheme = findLongestGrapheme(remaining);
-            const ipaOptions = graphemeToIpa[grapheme];
+        const graphemeMap = activeDict.graphemes || {};
+        const graphemeKeys = Object.keys(graphemeMap).sort((a, b) => b.length - a.length);
 
-            if (typeof ipaOptions === 'string') {
-                finalGraflect += ipaToGraflect(ipaOptions);
-            } else if (Array.isArray(ipaOptions)) {
+        const findLongestMatch = (text) => {
+            for (const key of graphemeKeys) {
+                if (text.startsWith(key)) return key;
+            }
+            return null;
+        };
+
+        while (remaining.length > 0) {
+            const grapheme = findLongestMatch(remaining);
+            if (!grapheme) {
+                console.error(`No grapheme rule found for character: "${remaining[0]}" in word "${word}"`);
+                finalGraflect += remaining[0];
+                remaining = remaining.substring(1);
+                continue;
+            }
+
+            const graflectOptions = graphemeMap[grapheme];
+
+            if (typeof graflectOptions === 'string') {
+                finalGraflect += graflectOptions;
+            } else if (Array.isArray(graflectOptions)) {
                 wasPrompted = true;
-                const choice = await promptForChoice(word, grapheme, ipaOptions, originalIndex);
-                let segmentGraflect = '';
-                if (choice.type === 'ipa') {
-                    segmentGraflect = ipaToGraflect(choice.value);
-                } else { 
-                    segmentGraflect = choice.value;
-                }
-                finalGraflect += segmentGraflect;
-            } else {
-                // UPDATED: Log error instead of passing through invalid characters
-                console.error(`No IPA mapping found for grapheme: "${grapheme}" in word "${word}"`);
+                const choice = await promptForChoice(word, grapheme, graflectOptions, originalIndex);
+                finalGraflect += choice;
             }
             remaining = remaining.substring(grapheme.length);
             originalIndex += grapheme.length;
@@ -377,7 +320,6 @@ function initializeGraflectTool() {
             outputEl.textContent = finalOutput;
         }
         
-        // --- DEBUG CHECK for invalid characters ---
         const invalidChars = new Set();
         const allowedChars = new Set(".,!?;:\"()'- \n\t0123456789".split(''));
         for (const char of finalOutput) {
@@ -391,7 +333,6 @@ function initializeGraflectTool() {
         }
 
         if (invalidChars.size > 0) {
-            // UPDATED: More explicit error message
             console.error(
                 "DEBUG CHECK FAILED: Invalid characters found in final output.", 
                 { invalidChars: Array.from(invalidChars) }
@@ -427,6 +368,7 @@ function initializeGraflectTool() {
                 if (typeof importedDict !== 'object' || !importedDict.name || !importedDict.words) {
                     throw new Error("Invalid format. File must be a valid dictionary object.");
                 }
+                importedDict.graphemes = importedDict.graphemes || { ...defaultGraphemeMap };
                 dictionaries.push(importedDict);
                 saveAllDictionaries();
                 populateDictionaryManager();
@@ -490,7 +432,7 @@ function initializeGraflectTool() {
             const editBtn = document.createElement('button');
             editBtn.textContent = 'Edit';
             editBtn.className = 'dict-btn normal-btn';
-            editBtn.onclick = () => openWordEditor(index);
+            editBtn.onclick = () => openDictionaryEditor(index);
 
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Delete';
@@ -536,12 +478,11 @@ function initializeGraflectTool() {
             return;
         }
 
-        const newDict = {
-            name: name,
-            author: author,
-            description: "",
-            words: {}
-        };
+        const newDict = createDefaultDictionary();
+        newDict.name = name;
+        newDict.author = author;
+        newDict.words = {};
+
         dictionaries.push(newDict);
         activeDictionaryIndex = dictionaries.length - 1;
         saveAllDictionaries();
@@ -555,92 +496,192 @@ function initializeGraflectTool() {
         showNotification(`Created and selected new dictionary: "${name}"`);
     }
 
-    function openWordEditor(dictIndex) {
-        wordEditorTitleEl.textContent = `Editing: ${dictionaries[dictIndex].name}`;
-        wordListEl.innerHTML = '';
+    function openDictionaryEditor(dictIndex) {
+        currentlyEditingDictIndex = dictIndex;
+        dictionaryEditorTitleEl.textContent = `Editing: ${dictionaries[dictIndex].name}`;
         
-        const sortedWords = Object.keys(dictionaries[dictIndex].words).sort();
+        wordsTab.classList.add('active');
+        graphemesTab.classList.remove('active');
+        wordsEditorContent.classList.remove('hidden');
+        graphemesEditorContent.classList.add('hidden');
+
+        populateWordList(dictIndex);
+        populateGraphemeList(dictIndex);
+
+        dictionaryManagerModal.classList.add('hidden');
+        dictionaryEditorModal.classList.remove('hidden');
+    }
+
+    function populateWordList(dictIndex) {
+        wordListEl.innerHTML = '';
+        const dictionary = dictionaries[dictIndex];
+        const sortedWords = Object.keys(dictionary.words || {}).sort();
+        
         sortedWords.forEach(word => {
-            const li = document.createElement('li');
-            const wordSpan = document.createElement('span');
-            wordSpan.className = 'dictionary-word';
-            wordSpan.textContent = word;
+            const li = createEditableListItem(word, dictionary.words[word], dictIndex, 'word');
+            wordListEl.appendChild(li);
+        });
+    }
 
-            const graflectSpan = document.createElement('span');
-            graflectSpan.className = 'dictionary-graflect graflect-font';
-            graflectSpan.textContent = dictionaries[dictIndex].words[word];
+    function populateGraphemeList(dictIndex) {
+        graphemeListEl.innerHTML = '';
+        const dictionary = dictionaries[dictIndex];
+        const graphemes = dictionary.graphemes || {};
+        const sortedGraphemes = Object.keys(graphemes).sort((a,b) => b.length - a.length || a.localeCompare(b));
 
+        addGraphemeBtn.onclick = () => {
+            const newLi = createEditableListItem('', '', dictIndex, 'grapheme', true);
+            graphemeListEl.prepend(newLi);
+            newLi.querySelector('.english-font-input').focus();
+        };
+
+        sortedGraphemes.forEach(grapheme => {
+            const li = createEditableListItem(grapheme, graphemes[grapheme], dictIndex, 'grapheme');
+            graphemeListEl.appendChild(li);
+        });
+    }
+
+    function createEditableListItem(key, value, dictIndex, type, isNew = false) {
+        const li = document.createElement('li');
+        const textDiv = document.createElement('div');
+        textDiv.style.display = 'flex';
+        textDiv.style.gap = '1em';
+        textDiv.style.alignItems = 'center';
+        textDiv.style.flexGrow = '1';
+
+        const buttonDiv = document.createElement('div');
+        const dictionary = dictionaries[dictIndex];
+        const dataMap = type === 'word' ? dictionary.words : dictionary.graphemes;
+
+        const renderDisplayMode = (currentKey, currentValue) => {
+            textDiv.innerHTML = '';
+            buttonDiv.innerHTML = '';
+
+            const keySpan = document.createElement('span');
+            keySpan.className = type === 'word' ? 'dictionary-word' : 'grapheme-key';
+            keySpan.textContent = type === 'word' ? currentKey : `"${currentKey}"`;
+
+            const valueSpan = document.createElement('span');
+            valueSpan.className = `graflect-font ${type === 'word' ? 'dictionary-graflect' : 'grapheme-output'}`;
+            let displayValue = currentValue;
+            if (Array.isArray(displayValue)) {
+                displayValue = `[${displayValue.map(v => `'${v}'`).join(', ')}]`;
+            }
+            valueSpan.textContent = `→ ${displayValue}`;
+            
             const editBtn = document.createElement('button');
             editBtn.className = 'dict-btn edit normal-btn';
             editBtn.textContent = 'Edit';
-            
+
             const removeBtn = document.createElement('button');
             removeBtn.className = 'dict-btn remove normal-btn';
             removeBtn.textContent = 'Remove';
             
-            const textDiv = document.createElement('div');
-            textDiv.style.display = 'flex';
-            textDiv.style.gap = '1em';
-            textDiv.style.alignItems = 'center';
-            textDiv.appendChild(wordSpan);
-            textDiv.appendChild(graflectSpan);
-
-            const buttonDiv = document.createElement('div');
+            textDiv.appendChild(keySpan);
+            textDiv.appendChild(valueSpan);
             buttonDiv.appendChild(editBtn);
             buttonDiv.appendChild(removeBtn);
 
-            li.appendChild(textDiv);
-            li.appendChild(buttonDiv);
-            wordListEl.appendChild(li);
+            editBtn.onclick = () => renderEditMode(currentKey, currentValue);
 
             removeBtn.onclick = () => {
-                delete dictionaries[dictIndex].words[word];
+                delete dataMap[currentKey];
                 saveAllDictionaries();
                 li.remove();
-                showNotification(`'${word}' removed.`);
+                showNotification(`Rule for "${currentKey}" removed.`);
+            };
+        };
+
+        const renderEditMode = (currentKey, currentValue) => {
+            textDiv.innerHTML = '';
+            buttonDiv.innerHTML = '';
+
+            const keyInput = document.createElement('input');
+            keyInput.type = 'text';
+            keyInput.className = 'dict-edit-input english-font-input';
+            keyInput.value = currentKey;
+            keyInput.placeholder = type;
+            keyInput.readOnly = !isNew;
+
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.className = 'dict-edit-input graflect-font-input';
+            let displayValue = currentValue;
+            if (Array.isArray(displayValue)) {
+                displayValue = `[${displayValue.map(v => `'${v}'`).join(', ')}]`;
+            }
+            valueInput.value = displayValue;
+            valueInput.placeholder = 'graflect output';
+            
+            textDiv.appendChild(keyInput);
+            textDiv.appendChild(valueInput);
+            if (!isNew) valueInput.focus(); else keyInput.focus();
+
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'dict-btn save normal-btn';
+            saveBtn.textContent = 'Save';
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'dict-btn normal-btn';
+            cancelBtn.textContent = 'Cancel';
+
+            buttonDiv.appendChild(saveBtn);
+            buttonDiv.appendChild(cancelBtn);
+
+            saveBtn.onclick = () => {
+                const newKey = keyInput.value.trim().toLowerCase();
+                let newValue = valueInput.value.trim();
+
+                if (!newKey) {
+                    showNotification("Grapheme/word cannot be empty.");
+                    return;
+                }
+
+                if (newValue.startsWith('[') && newValue.endsWith(']')) {
+                    try {
+                        const arrayValue = JSON.parse(newValue.replace(/'/g, '"'));
+                        if (Array.isArray(arrayValue)) {
+                            newValue = arrayValue;
+                        }
+                    } catch(e) {
+                        showNotification("Invalid array format. Use single quotes, e.g., ['', '']");
+                        return;
+                    }
+                }
+
+                if (!isNew && newKey !== currentKey) {
+                    delete dataMap[currentKey];
+                }
+                
+                dataMap[newKey] = newValue;
+                saveAllDictionaries();
+                
+                if (isNew) {
+                    type === 'word' ? populateWordList(dictIndex) : populateGraphemeList(dictIndex);
+                } else {
+                    renderDisplayMode(newKey, newValue);
+                }
+                showNotification(`Rule for "${newKey}" saved.`);
             };
 
-            editBtn.onclick = () => {
-                textDiv.innerHTML = '';
-                const wordLabel = document.createElement('span');
-                wordLabel.className = 'dictionary-word';
-                wordLabel.textContent = word;
-
-                const editInput = document.createElement('input');
-                editInput.type = 'text';
-                editInput.className = 'dict-edit-input graflect-font';
-                editInput.value = dictionaries[dictIndex].words[word];
-                
-                textDiv.appendChild(wordLabel);
-                textDiv.appendChild(editInput);
-                editInput.focus();
-
-                buttonDiv.innerHTML = '';
-                const saveBtn = document.createElement('button');
-                saveBtn.className = 'dict-btn save normal-btn';
-                saveBtn.textContent = 'Save';
-                
-                const cancelBtn = document.createElement('button');
-                cancelBtn.className = 'dict-btn normal-btn';
-                cancelBtn.textContent = 'Cancel';
-
-                buttonDiv.appendChild(saveBtn);
-                buttonDiv.appendChild(cancelBtn);
-
-                saveBtn.onclick = () => {
-                    dictionaries[dictIndex].words[word] = editInput.value;
-                    saveAllDictionaries();
-                    openWordEditor(dictIndex); // Refresh list
-                    showNotification(`'${word}' updated.`);
-                };
-                cancelBtn.onclick = () => {
-                    openWordEditor(dictIndex); // Refresh list
-                };
+            cancelBtn.onclick = () => {
+                if(isNew) {
+                    li.remove();
+                } else {
+                    renderDisplayMode(currentKey, currentValue);
+                }
             };
-        });
+        };
 
-        dictionaryManagerModal.classList.add('hidden');
-        wordEditorModal.classList.remove('hidden');
+        if (isNew) {
+            renderEditMode('', '');
+        } else {
+            renderDisplayMode(key, value);
+        }
+
+        li.appendChild(textDiv);
+        li.appendChild(buttonDiv);
+        return li;
     }
 
     // --- EVENT LISTENERS ---
@@ -649,17 +690,26 @@ function initializeGraflectTool() {
     if (manageDictBtn) manageDictBtn.addEventListener('click', openDictionaryManager);
     if (importInput) importInput.addEventListener('change', handleImportChange);
 
-    // Dictionary Manager Listeners
     if (newDictBtn) newDictBtn.addEventListener('click', () => newDictionaryModal.classList.remove('hidden'));
     if (closeModalManagerBtn) closeModalManagerBtn.addEventListener('click', () => dictionaryManagerModal.classList.add('hidden'));
     
-    // Word Editor Listeners
-    if (closeWordEditorBtn) closeWordEditorBtn.addEventListener('click', () => {
-        wordEditorModal.classList.add('hidden');
+    if (closeEditorBtn) closeEditorBtn.addEventListener('click', () => {
+        dictionaryEditorModal.classList.add('hidden');
         openDictionaryManager();
     });
+    if (wordsTab) wordsTab.addEventListener('click', () => {
+        wordsTab.classList.add('active');
+        graphemesTab.classList.remove('active');
+        wordsEditorContent.classList.remove('hidden');
+        graphemesEditorContent.classList.add('hidden');
+    });
+    if (graphemesTab) graphemesTab.addEventListener('click', () => {
+        graphemesTab.classList.add('active');
+        wordsTab.classList.remove('active');
+        graphemesEditorContent.classList.remove('hidden');
+        wordsEditorContent.classList.add('hidden');
+    });
     
-    // Confirmation Modal Listeners
     if (confirmNoBtn) confirmNoBtn.addEventListener('click', () => {
         confirmationModal.classList.add('hidden');
         confirmationCallback = null;
@@ -672,7 +722,6 @@ function initializeGraflectTool() {
         confirmationCallback = null;
     });
 
-    // New Dictionary Modal Listeners
     const closeAndClearNewDictModal = () => {
         newDictionaryModal.classList.add('hidden');
         newDictNameInput.value = '';
@@ -685,3 +734,6 @@ function initializeGraflectTool() {
     // --- INITIALIZATION ---
     loadDictionaries();
 }
+
+// UPDATED: Add the event listener to automatically initialize the tool.
+document.addEventListener('modulesLoaded', initializeGraflectTool);

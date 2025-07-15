@@ -139,6 +139,76 @@ function setupStartMenu() {
             }
         });
 
+        // --- NEW: Arrange initially open windows to prevent overlap on desktop ---
+        if (!isMobile()) {
+            const openWindows = Array.from(windows).filter(win => !closedWindows.includes(win));
+            const placedRects = [];
+            const margin = 15; // The pixel space to leave between windows
+
+            // Helper function to check for overlap between two rectangles
+            const doRectsOverlap = (r1, r2) => {
+                return !(r1.right < r2.left || 
+                         r1.left > r2.right || 
+                         r1.bottom < r2.top || 
+                         r1.top > r2.bottom);
+            };
+
+            openWindows.forEach(win => {
+                // To get accurate dimensions, the window must be positioned absolutely and be part of the layout.
+                // We make it invisible initially to avoid a flash of content at the wrong position.
+                win.style.position = 'absolute';
+                win.style.visibility = 'hidden';
+                win.style.display = 'flex'; // Ensure it's displayed to get dimensions
+
+                let currentRect = win.getBoundingClientRect();
+                
+                // We'll work with a mutable copy of the rectangle's properties.
+                let newRect = {
+                    left: currentRect.left,
+                    top: currentRect.top,
+                    width: currentRect.width,
+                    height: currentRect.height,
+                };
+
+                let hasCollision;
+                // Keep checking for collisions and moving the window until it's in a free spot.
+                do {
+                    hasCollision = false;
+                    for (const placedRect of placedRects) {
+                        const potentialRect = {
+                            left: newRect.left,
+                            top: newRect.top,
+                            right: newRect.left + newRect.width,
+                            bottom: newRect.top + newRect.height,
+                        };
+
+                        if (doRectsOverlap(potentialRect, placedRect)) {
+                            hasCollision = true;
+                            // Collision detected! Move the current window down, just below the one it collided with.
+                            newRect.top = placedRect.bottom + margin;
+                            // Break the inner loop and re-check against ALL previously placed windows
+                            // from the new position, as it might cause a new collision.
+                            break; 
+                        }
+                    }
+                } while (hasCollision);
+
+                // Once we have a collision-free position, apply it to the window and make it visible.
+                win.style.left = `${newRect.left}px`;
+                win.style.top = `${newRect.top}px`;
+                win.style.visibility = 'visible';
+
+                // Add the final, confirmed position to our array of placed rectangles for checking subsequent windows.
+                placedRects.push({
+                    left: newRect.left,
+                    top: newRect.top,
+                    right: newRect.left + newRect.width,
+                    bottom: newRect.top + newRect.height,
+                });
+            });
+        }
+        // --- End of new section ---
+
         setupWindowInteractions(translations, lang);
         setupMobileMenu();
         updateWindowList(translations, lang);

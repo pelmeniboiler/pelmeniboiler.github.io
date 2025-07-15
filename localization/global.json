@@ -34,7 +34,9 @@
     "settings_theme_btn_light": "Light Mode",
     "settings_mode_btn_lcd": "⇒ lcd mode",
     "settings_mode_btn_eink": "⇒ e-ink mode",
-    "start_menu_btn": "program.launcher"
+    "start_menu_btn": "program.launcher",
+    "share_copy_url_tooltip": "Copy link to selection",
+    "share_copy_page_link_tooltip": "Copy link to page"
   },
   "he": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> מוזיקה.ogg",
@@ -71,7 +73,9 @@
     "settings_theme_btn_light": "מצב בהיר",
     "settings_mode_btn_lcd": "⇒ מצב lcd",
     "settings_mode_btn_eink": "⇒ מצב e-ink",
-    "start_menu_btn": "מפעיל.launcher"
+    "start_menu_btn": "מפעיל.launcher",
+    "share_copy_url_tooltip": "העתק קישור לבחירה",
+    "share_copy_page_link_tooltip": "העתק קישור לדף"
   },
   "ru": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> музыка.ogg",
@@ -108,7 +112,9 @@
     "settings_theme_btn_light": "Светлый режим",
     "settings_mode_btn_lcd": "⇒ режим lcd",
     "settings_mode_btn_eink": "⇒ режим e-ink",
-    "start_menu_btn": "запуск.launcher"
+    "start_menu_btn": "запуск.launcher",
+    "share_copy_url_tooltip": "Скопировать ссылку на выделенное",
+    "share_copy_page_link_tooltip": "Скопировать ссылку на страницу"
   },
   "ja": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> 音楽.ogg",
@@ -145,7 +151,9 @@
     "settings_theme_btn_light": "ライトモード",
     "settings_mode_btn_lcd": "⇒ lcd モード",
     "settings_mode_btn_eink": "⇒ e-ink モード",
-    "start_menu_btn": "プログラム.launcher"
+    "start_menu_btn": "プログラム.launcher",
+    "share_copy_url_tooltip": "選択範囲へのリンクをコピー",
+    "share_copy_page_link_tooltip": "ページへのリンクをコピー"
   },
   "de": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> musik.ogg",
@@ -182,7 +190,9 @@
     "settings_theme_btn_light": "Heller Modus",
     "settings_mode_btn_lcd": "⇒ LCD-Modus",
     "settings_mode_btn_eink": "⇒ E-Ink-Modus",
-    "start_menu_btn": "programm.launcher"
+    "start_menu_btn": "programm.launcher",
+    "share_copy_url_tooltip": "Link zur Auswahl kopieren",
+    "share_copy_page_link_tooltip": "Link zur Seite kopieren"
   },
   "gt": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> .ogg",
@@ -217,6 +227,8 @@
     "settings_theme_btn_light": " ",
     "settings_mode_btn_lcd": "⇒ lcd ",
     "settings_mode_btn_eink": "⇒ e-ink ",
-    "start_menu_btn": "."
+    "start_menu_btn": ".",
+    "share_copy_url_tooltip": "   ",
+    "share_copy_page_link_tooltip": "    "
   }
 }

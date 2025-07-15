@@ -6,6 +6,7 @@
 function setupSettings() {
     const getElement = (id) => document.getElementById(id);
     const body = document.body;
+    const docEl = document.documentElement; // Get reference to <html>
     const welcomeText = getElement('welcome-text');
     
     // --- Custom Language Dropdown Elements ---
@@ -27,14 +28,10 @@ function setupSettings() {
 
 
     // --- Color Theme Definitions ---
+    // MODIFIED: Only the 'funky' theme needs a JS definition now.
+    // The rest are handled by themes.css.
     const colorThemes = {
-        funky: { random: true }, // Special case
-        champagne: { bg: '#F7E7CE', text: '#4A403A', border: '#D4AF37', accent: '#A47C48' },
-        bubblegum: { bg: '#FBCFF3', text: '#A62675', border: '#DE3163', accent: '#FF69B4' },
-        techelet: { bg: '#E6E6FA', text: '#001F3F', border: '#4169E1', accent: '#87CEEB' },
-        zelyonny: { bg: '#DFF0D8', text: '#2E4620', border: '#3C763D', accent: '#5CB85C' },
-        akai: { bg: '#FFEBEE', text: '#6D0000', border: '#C62828', accent: '#E53935' },
-        rindswurst: { bg: '#F5E6E0', text: '#5D4037', border: '#8D6E63', accent: '#A1887F' }
+        funky: { random: true }
     };
 
     // Variable to hold translation data once it's fetched
@@ -56,7 +53,6 @@ function setupSettings() {
             const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
             const svgElement = svgDoc.querySelector('svg');
             if (svgElement) {
-                // Copy ID and classes from the original image to the new SVG element
                 svgElement.id = imgElement.id;
                 imgElement.classList.forEach(c => svgElement.classList.add(c));
                 imgElement.parentElement.replaceChild(svgElement, imgElement);
@@ -72,11 +68,9 @@ function setupSettings() {
         settingsNavItems.forEach(item => {
             item.addEventListener('click', () => {
                 const targetId = `settings-page-${item.dataset.target}`;
-                // Deactivate current active elements
                 document.querySelectorAll('.settings-page.active, .settings-nav li.active').forEach(activeEl => {
                     activeEl.classList.remove('active');
                 });
-                // Activate new target page and nav item
                 const targetPage = getElement(targetId);
                 if (targetPage) targetPage.classList.add('active');
                 item.classList.add('active');
@@ -87,7 +81,7 @@ function setupSettings() {
     // --- Welcome Text Update Logic ---
     function updateWelcomeText() {
         if (!welcomeText) return;
-        const mode = body.classList.contains('eink-mode') ? 'eink' : 'lcd';
+        const mode = docEl.classList.contains('eink-mode') ? 'eink' : 'lcd';
         const lang = localStorage.getItem(LANG_KEY) || 'en';
         const welcomeKey = mode === 'eink' ? 'welcome_text_eink' : 'welcome_text_lcd';
         if (loadedTranslations[lang] && loadedTranslations[lang][welcomeKey]) {
@@ -98,25 +92,26 @@ function setupSettings() {
      // --- E-ink / LCD Mode Logic ---
      function applyMode(mode) {
         const isEink = mode === "eink";
-        body.classList.toggle("eink-mode", isEink);
-        body.classList.toggle("lcd-mode", !isEink);
+        // Use documentElement for class manipulation
+        docEl.classList.toggle("eink-mode", isEink);
+        docEl.classList.toggle("lcd-mode", !isEink);
         if (einkToggle) einkToggle.checked = isEink;
 
         const themeSettingGroup = getElement('theme-setting-group');
-        themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
-            label.style.opacity = isEink ? '0.5' : '1';
-            const radio = label.querySelector('input');
-            radio.disabled = isEink;
-        });
+        if (themeSettingGroup) {
+            themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
+                label.style.opacity = isEink ? '0.5' : '1';
+                const radio = label.querySelector('input');
+                if (radio) radio.disabled = isEink;
+            });
+        }
 
         const currentTheme = localStorage.getItem(THEME_KEY) || 'light';
-        const isCurrentThemeColor = colorThemes.hasOwnProperty(currentTheme);
+        const isCurrentThemeColor = colorThemes.hasOwnProperty(currentTheme) || !['light', 'dark'].includes(currentTheme);
 
         if (isEink && isCurrentThemeColor) {
-            // If switching to e-ink from a color theme, fall back to light
             applyTheme('light');
-        } else if (!isEink && !isCurrentThemeColor) {
-             // If switching back to LCD from an e-ink theme, restore the last color theme
+        } else if (!isEink && docEl.classList.contains('light-mode')) {
              const lastColorTheme = localStorage.getItem(LAST_COLOR_THEME_KEY) || 'funky';
              applyTheme(lastColorTheme);
         }
@@ -134,35 +129,37 @@ function setupSettings() {
 
     // --- Theme Logic ---
     function applyTheme(theme) {
-        // Remove all potential theme classes before adding the new one
-        body.className = body.className.replace(/\b\w+-mode\b/g, '');
-        body.classList.add(`${theme}-mode`);
-        // Re-apply the display mode class (eink or lcd)
-        body.classList.add(localStorage.getItem(MODE_KEY) === 'lcd' ? 'lcd-mode' : 'eink-mode');
+        // Remove all other theme classes from the <html> element
+        const themeClasses = [...docEl.classList].filter(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode'].includes(c));
+        docEl.classList.remove(...themeClasses);
         
-        const themeColors = colorThemes[theme];
-        if (themeColors) {
-            if (themeColors.random) {
-                const randomHue = () => Math.floor(Math.random() * 360);
-                const baseHue = randomHue();
-                const accentHue = (baseHue + 150) % 360;
-                
-                // Generate a random background lightness and a contrasting text lightness
-                const bgLightness = 20 + Math.random() * 60; // Random lightness between 20% (dark) and 80% (light)
-                const textLightness = bgLightness > 50 ? 15 : 85; // Ensure contrast
+        // Add the new theme class
+        docEl.classList.add(`${theme}-mode`);
+        
+        // Special handling for the random 'funky' theme remains in JS
+        if (theme === 'funky') {
+            const randomHue = () => Math.floor(Math.random() * 360);
+            const baseHue = randomHue();
+            const accentHue = (baseHue + 150) % 360;
+            const bgLightness = 20 + Math.random() * 60;
+            const textLightness = bgLightness > 50 ? 15 : 85;
 
-                document.documentElement.style.setProperty('--theme-bg-color', `hsl(${baseHue}, 50%, ${bgLightness}%)`);
-                document.documentElement.style.setProperty('--theme-text-color', `hsl(${baseHue}, 15%, ${textLightness}%)`);
-                document.documentElement.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
-                document.documentElement.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
-            } else {
-                 document.documentElement.style.setProperty('--theme-bg-color', themeColors.bg);
-                 document.documentElement.style.setProperty('--theme-text-color', themeColors.text);
-                 document.documentElement.style.setProperty('--theme-border-color', themeColors.border);
-                 document.documentElement.style.setProperty('--theme-accent-color', themeColors.accent);
-            }
-            // Only save color themes to this key
+            docEl.style.setProperty('--theme-bg-color', `hsl(${baseHue}, 50%, ${bgLightness}%)`);
+            docEl.style.setProperty('--theme-text-color', `hsl(${baseHue}, 15%, ${textLightness}%)`);
+            docEl.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
+            docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
+        } else {
+            // For all other themes, clear the inline styles to let the CSS file take over.
+            docEl.style.removeProperty('--theme-bg-color');
+            docEl.style.removeProperty('--theme-text-color');
+            docEl.style.removeProperty('--theme-border-color');
+            docEl.style.removeProperty('--theme-accent-color');
+            
+            // If it's not a light/dark theme, save it as the last used color theme.
+            if (theme !== 'light' && theme !== 'dark') {
+                localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
+            }
         }
         
         const radioToCheck = document.querySelector(`input[name="theme"][value="${theme}"]`);
@@ -179,7 +176,7 @@ function setupSettings() {
         });
     }
 
-    // --- Language Logic ---
+    // --- Language Logic (No changes needed here) ---
     function deepMerge(target, source) {
         if (!source) return target;
         for (const lang in source) {
@@ -192,123 +189,99 @@ function setupSettings() {
     }
 
     function applyTranslationsToPage(translations, lang) {
-        if (!translations[lang]) lang = 'en'; // Fallback to English
+        if (!translations[lang]) lang = 'en';
         document.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
-            if (translations[lang] && translations[lang][key]) {
-                 elem.innerHTML = translations[lang][key];
-            }
+            if (translations[lang] && translations[lang][key]) elem.innerHTML = translations[lang][key];
+        });
+        document.querySelectorAll('[data-title-key]').forEach(elem => {
+            const key = elem.getAttribute('data-title-key');
+            if (translations[lang] && translations[lang][key]) elem.title = translations[lang][key];
         });
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
-        
-        // Update the custom dropdown display
         if (langDropdownValue && langDropdownMenu) {
             const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${lang}"]`);
-            if (selectedItem) {
-                langDropdownValue.textContent = selectedItem.textContent;
-            }
+            if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
         }
-
         localStorage.setItem(LANG_KEY, lang);
-        
         window.translationsData = { translations, lang };
         document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations, lang } }));
     }
 
     async function loadAndSetLanguage(lang) {
         try {
-            // Define paths for core translation files
             const globalTranslationsPath = '/localization/global.json';
             const pageSourceName = document.querySelector('meta[name="translation-source"]')?.content;
             const pageTranslationsPath = pageSourceName ? `/localization/${pageSourceName}.json` : null;
-
-            // Start fetching core files and the blog manifest concurrently.
             const globalPromise = fetch(globalTranslationsPath);
             const pagePromise = pageTranslationsPath ? fetch(pageTranslationsPath) : Promise.resolve(null);
-            const blogManifestPromise = fetch('/blog/blog-manifest.json').catch(e => {
-                console.warn("Blog manifest not found. Blog post-specific translations will be unavailable.", e);
-                return null; // Don't break if the manifest is missing
-            });
-
-            // Await the manifest first, as we need its content to know what else to fetch.
+            const blogManifestPromise = fetch('/blog/blog-manifest.json').catch(() => null);
             const blogManifestRes = await blogManifestPromise;
             let blogTranslationPromises = [];
-
             if (blogManifestRes && blogManifestRes.ok) {
                 const blogManifest = await blogManifestRes.json();
                 if(Array.isArray(blogManifest)) {
-                    // Get a unique set of translation source names from the blog posts.
                     const blogTranslationSources = [...new Set(blogManifest.map(post => post.translationSource).filter(Boolean))];
-                    // Create fetch promises for each unique blog translation file.
-                    blogTranslationPromises = blogTranslationSources.map(source =>
-                        fetch(`/localization/${source}.json`).catch(e => {
-                            console.warn(`Could not load translation source: ${source}.json`, e);
-                            return null; // Return null on failure to not break Promise.all
-                        })
-                    );
+                    blogTranslationPromises = blogTranslationSources.map(source => fetch(`/localization/${source}.json`).catch(() => null));
                 }
             }
-            
-            // Wait for ALL translation files (core and blog-specific) to finish loading.
-            const allResponses = await Promise.all([
-                globalPromise,
-                pagePromise,
-                ...blogTranslationPromises
-            ]);
-            
-            // Filter out any failed or null fetches and check responses.
-            const successfulResponses = allResponses.filter(Boolean);
-            successfulResponses.forEach(res => {
-                if (!res.ok) throw new Error(`Failed to fetch ${res.url}: ${res.statusText}`);
-            });
-
-            // Convert all successful responses to JSON.
+            const allResponses = await Promise.all([globalPromise, pagePromise, ...blogTranslationPromises]);
+            const successfulResponses = allResponses.filter(Boolean).filter(res => res.ok);
             const allJsonData = await Promise.all(successfulResponses.map(res => res.json()));
-            
-            // Deep merge all translation objects into the master list, starting with an empty object.
             loadedTranslations = allJsonData.reduce((acc, data) => deepMerge(acc, data), {});
-            
-            // Finally, apply the fully merged translations to the page.
             applyTranslationsToPage(loadedTranslations, lang);
-
         } catch (error) {
             console.error("Error loading translations:", error);
-            applyTranslationsToPage({}, 'en'); // Fallback to empty on error
+            applyTranslationsToPage({}, 'en');
         }
     }
+
+    function getInitialLanguage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const langFromUrl = urlParams.get('l');
+        if (langFromUrl) {
+            localStorage.setItem(LANG_KEY, langFromUrl);
+            return langFromUrl;
+        }
+        return localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0] || 'en';
+    }
+
 
     // --- Initialization ---
     async function initialize() {
-        // Inject SVGs first
-        const logoImg = getElement('logo-img');
-        const startMenuLogo = getElement('start-menu-logo');
-        if (logoImg) {
-            await injectSVG(logoImg, '/logo/shzh.svg');
-        }
-        if (startMenuLogo) {
-            await injectSVG(startMenuLogo, '/logo/shzh.svg');
-        }
+        // Inject SVGs
+        await Promise.all([
+            injectSVG(getElement('logo-img'), '/logo/shzh.svg'),
+            injectSVG(getElement('start-menu-logo'), '/logo/shzh.svg')
+        ]);
 
+        // The theme and mode are already applied by theme-loader.js.
+        // We just need to sync the UI controls (radios, toggles) to match the state.
         const savedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        const savedMode = localStorage.getItem(MODE_KEY) || 'eink';
+        const savedMode = localStorage.getItem(MODE_KEY) || 'lcd';
         
-        applyTheme(savedTheme);
-        applyMode(savedMode);
+        // Sync UI without re-applying the whole theme logic
+        if (einkToggle) einkToggle.checked = savedMode === 'eink';
+        const radioToCheck = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
+        if(radioToCheck) radioToCheck.checked = true;
 
-        const savedLang = localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0];
-        await loadAndSetLanguage(savedLang);
+        // If the saved theme was funky, we need to run applyTheme once to generate the colors.
+        if (savedTheme === 'funky') {
+            applyTheme('funky');
+        }
+
+        // Load language
+        const initialLang = getInitialLanguage();
+        await loadAndSetLanguage(initialLang);
     }
     
-    // --- Custom Dropdown Logic ---
+    // --- Custom Dropdown Logic (No changes needed) ---
     if (langDropdown) {
-        // Toggle dropdown visibility
         langDropdownToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent window click listener from firing immediately
+            e.stopPropagation();
             langDropdownMenu.classList.toggle('show');
         });
-
-        // Handle language selection
         langDropdownItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -317,15 +290,12 @@ function setupSettings() {
                 langDropdownMenu.classList.remove('show');
             });
         });
-
-        // Close dropdown if clicked outside
         window.addEventListener('click', () => {
             if (langDropdownMenu.classList.contains('show')) {
                 langDropdownMenu.classList.remove('show');
             }
         });
     }
-
 
     initialize();
 
@@ -340,4 +310,4 @@ function setupSettings() {
 }
 
 // Run the setup function
-setupSettings();
+document.addEventListener('modulesLoaded', setupSettings);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
+    <script src="/scripts/theme-loader.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="graflect_ipa">
@@ -46,7 +47,7 @@
 </head>
 <body class="eink-mode light-mode">
 
-    <nav id="nav-window" class="window" style="top: 0; left: 0; min-height: fit-content; width: 260px; position: absolute; z-index: 3;">
+    <nav id="nav-window" class="window">
         <div class="title-bar">
             <span class="title" data-key="win_article_nav_title">◈ article.nav</span>
             <button class="close-btn">&times;</button>
@@ -179,10 +180,11 @@
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
     <div id="graflect-module-placeholder"></div>
-
+    <div id="share-module-placeholder"></div>
     <!-- Scripts -->
+     <script src="/scripts/blog/demos/graflect.js" defer></script>
     <script src="/scripts/module-loader.js" defer></script>
-    <script src="/scripts/blog/demos/graflect.js" defer></script>
+    
     <script>
         // This trigger waits for the signal from module-loader.js that all modules
         // (including the Graflect tool's HTML) have been injected into the page.
