@@ -35,8 +35,8 @@
     /* Desktop navigation window with constrained height and scrolling content */
     #nav-window {
         position: absolute;
-        top: 20px;
-        left: 10px;
+        top: 0px;
+        left: 0px;
         width: 250px;
         height: auto;
         max-height: calc(100vh - 40px); /* Constrain height to viewport with margins */
