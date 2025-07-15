@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Thu, 10 Jul 2025 14:56:43 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 15 Jul 2025 17:16:45 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>This Blog Now Supports RSS</title>
@@ -55,11 +55,11 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
         </item>
         <item>
-            <title>An intro to Graflect &amp; a Transliteration Tool</title>
+            <title>An Intro to Graflect &amp; a Transliteration Tool</title>
             <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="guide_h1">An intro to Graflect &amp; a Transliteration Tool</h1>
+                <h1 id="title" data-key="guide_h1">An Intro to Graflect &amp; a Transliteration Tool</h1>
                 <p id="intro" data-key="guide_p1"><a href="https://maycxc.github.io/prop.html">Graflect</a> is a phonetic orthography featured on Aaron Paterson's personal website, MayCXC. It is subtly featural and is capable of rendering a wide variety of accents in English and even other languages. The orthography is included in the <a href="https://www.kreativekorp.com/ucsur/">Under-ConScript Unicode Registry (<abbr title="Under-ConScript Unicode Registry">UCSUR</abbr>)</a>, and font support is available from creators like Rebecca G. Bettencourt of Kreative Korp in the <a href="https://www.kreativekorp.com/software/fonts/fairfax/">FairfaxHD</a> font (as seen on page), and in <a href="https://fontstruct.com/fontstructions/show/1961216/gs-unicode-2-0-plane-0">greenstar967's GS Unicode 2.0 font</a>. <del datetime="2025-07-06T01:43:00EDT">To date, no public guide mapping Graflect to the <abbr title="International Phonetic Alphabet">IPA</abbr> has been created.</del> <ins><a href="https://github.com/MayCXC/maycxc.github.io/commit/a57aebf6957afdf1056169bd5493dea04f49e0e2">An official guide mapping Graflect to IPA</a> has been posted.</ins> My chart serves as the first resource for this purpose, but consider it outdated and please defer to the official one.</p>
             </header>
             <section>

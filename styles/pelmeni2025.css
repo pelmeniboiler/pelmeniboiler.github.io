@@ -14,7 +14,14 @@
   font-family: 'Garamond';
   src: url('fonts/EBGaramond.ttf') format('truetype');
 }
-
+@font-face {
+  font-family: 'FrankRuhl';
+  src: url('fonts/FrankRuhl.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Noto Emoji';
+  src: url('fonts/NotoEmoji.ttf') format('truetype');
+}
 /* --- THEME DEFINITIONS --- */
 :root {
   --bg-color: #ffffff; 
@@ -73,7 +80,7 @@
 
 /* --- BASE & MODE STYLES --- */
 body {
-    font-family: 'Garamond', Times, serif, FairfaxHD;
+    font-family: Garamond, FrankRuhl, serif, FairfaxHD;
     margin: 0; padding: 0; line-height: 1.5;
     transition: background-color 0.3s ease, color 0.3s ease;
     padding-bottom: 40px; 

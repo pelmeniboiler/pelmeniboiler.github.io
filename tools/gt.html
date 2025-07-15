@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graflect Transliteration Tool</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        /* --- APP-SPECIFIC STYLES --- */
+        /* All styles are now prefixed with .transliterator- to avoid conflicts. */
+        .transliterator-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .transliterator-window {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            z-index: 1;
+            height: auto; 
+            min-height: 400px;
+            background-color: var(--win-bg-color); 
+            border: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transliterator-title-bar {
+            background-color: var(--inv-bg-color); 
+            color: var(--inv-text-color); 
+            border-bottom: 2px solid var(--border-color); 
+            cursor: move; 
+            padding: 0 6px; 
+            display: flex; 
+            align-items: center; 
+            flex-shrink: 0; 
+            height: 28px; 
+            box-sizing: border-box; 
+        }
+
+        .transliterator-title {
+            color: var(--inv-text-color); 
+            font-weight: bold; 
+            flex-grow: 1; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        
+        .transliterator-content {
+            padding: 10px; 
+            overflow-y: auto; 
+            flex-grow: 1; 
+            min-height: 0;
+            max-height: none;
+        }
+        
+        .transliterator-h2, .transliterator-h3 {
+            margin: 0 0 0.6em 0; 
+            padding: 0; 
+            font-weight: bold; 
+        }
+
+        .transliterator-p {
+            font-size: 14px; 
+            margin-bottom: 0.8em; 
+        }
+
+        .transliterator-error-container {
+            color: #c62828;
+            background-color: #ffebee;
+            border: 1px solid #c62828;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: none;
+            border-radius: 4px;
+        }
+
+        .transliterator-file-loader {
+            padding: 20px;
+            border: 2px dashed var(--border-color);
+            text-align: center;
+            margin-bottom: 20px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .transliterator-file-loader.dragover {
+            background-color: var(--inv-bg-color);
+            border-color: var(--inv-text-color);
+        }
+        
+        .transliterator-file-loader.dragover .transliterator-p,
+        .transliterator-file-loader.dragover .transliterator-h3 {
+             color: var(--inv-text-color);
+        }
+
+        .transliterator-file-input {
+            border: 2px solid var(--border-color);
+            padding: 8px;
+            cursor: pointer;
+            background-color: var(--win-bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .transliterator-app {
+            display: none;
+        }
+        
+        .transliterator-app.active {
+            display: block;
+        }
+
+        .transliterator-line-display, .transliterator-segment-display {
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 20px;
+            background-color: var(--bg-color);
+            min-height: 50px;
+            line-height: 1.6;
+            overflow-wrap: break-word;
+        }
+        
+        .transliterator-segment-display {
+            min-height: 30px;
+            background-color: var(--inv-bg-color);
+            color: var(--inv-text-color);
+        }
+
+        .transliterator-input {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            background-color: var(--win-bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1em;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        
+        .transliterator-submit-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .transliterator-progress-container {
+            width: 100%;
+            height: 25px;
+            border: 2px solid var(--border-color);
+            background-color: var(--bg-color);
+            margin-top: 20px;
+            padding: 2px;
+            box-sizing: border-box;
+        }
+
+        .transliterator-progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--text-color);
+            transition: width 0.3s ease-in-out;
+        }
+        
+        .transliterator-progress-label {
+            margin-top: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .transliterator-segment-progress-label {
+            font-weight: bold;
+        }
+        
+        /* --- Graflect Input Grid Styles --- */
+        .transliterator-input-grid {
+            margin-top: 15px;
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* This ensures equal column widths */
+        }
+        .transliterator-input-grid button {
+            width: 100%;
+            height: 2.5rem;
+            font-size: 1.25em;
+            padding: 0;
+            /* Inherit button styles from the main theme */
+            border: 2px solid var(--border-color); 
+            background-color: var(--win-bg-color); 
+            color: var(--text-color); 
+            cursor: pointer;
+        }
+        .transliterator-input-grid button:hover {
+            background-color: var(--text-color);
+            color: var(--win-bg-color);
+        }
+        .transliterator-input-grid .graflect {
+             font-family: 'FairfaxHD', Garamond, serif; /* Ensure Graflect font is used */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="transliterator-window" id="transliterator-window">
+        <div class="transliterator-title-bar">
+            <span class="transliterator-title">Graflect Transliteration Tool</span>
+        </div>
+        <div class="transliterator-content">
+            <div id="error-container" class="transliterator-error-container"></div>
+
+            <div id="file-loader-container" class="transliterator-file-loader">
+                <h3 class="transliterator-h3">Load Localization File</h3>
+                <p class="transliterator-p">Select or drag & drop your localization JSON file to begin.</p>
+                <input type="file" id="json-file-input" class="transliterator-file-input" accept=".json">
+            </div>
+
+            <div id="transliterator-app" class="transliterator-app">
+                <h2 class="transliterator-h2">Current Line:</h2>
+                <div id="english-line-container" class="transliterator-line-display"></div>
+
+                <h2 class="transliterator-h2">Segment to Transliterate <span id="segment-progress-label" class="transliterator-segment-progress-label"></span>:</h2>
+                <div id="current-segment-container" class="transliterator-segment-display"></div>
+
+                <h2 class="transliterator-h2">Graflect Input:</h2>
+                <textarea id="graflect-input" class="transliterator-input" placeholder="Enter your transliteration here..."></textarea>
+                
+                <table class="transliterator-input-grid">
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1"><button data-action="tab">⮑</button></td>
+                        <td colspan="1"><button data-action="delete">⌦</button></td>
+                        <td colspan="3"><button class="graflect" data-action="space"></button></td>
+                        <td colspan="1"><button data-action="backspace">⌫</button></td>
+                        <td colspan="1"><button data-action="enter">↵</button></td>
+                    </tr>
+                </table>
+
+                <button id="submit-btn" class="normal-btn transliterator-submit-btn" style="margin-top: 15px;">Submit Segment</button>
+
+                <div class="transliterator-progress-container">
+                    <div id="progress-bar" class="transliterator-progress-bar"></div>
+                </div>
+                <div id="progress-label" class="transliterator-progress-label">0 / 0</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+
+    <script>
+    window.onload = () => {
+        // --- DOM Elements ---
+        const jsonFileInput = document.getElementById('json-file-input');
+        const fileLoaderContainer = document.getElementById('file-loader-container');
+        const transliteratorApp = document.getElementById('transliterator-app');
+        const errorContainer = document.getElementById('error-container');
+        const englishLineContainer = document.getElementById('english-line-container');
+        const currentSegmentContainer = document.getElementById('current-segment-container');
+        const segmentProgressLabel = document.getElementById('segment-progress-label');
+        const graflectInput = document.getElementById('graflect-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressLabel = document.getElementById('progress-label');
+        const inputGrid = document.querySelector('.transliterator-input-grid');
+
+        // --- State Management ---
+        let allLines = [];
+        let currentLineIndex = 0;
+        let graflectTranslations = {};
+        let currentLineParts = [];
+        let textPartsToTranslate = [];
+        let currentTextPartIndex = 0;
+        let transliteratedSegments = [];
+
+        // --- Web Audio API Setup ---
+        let audioCtx;
+        function playSound() {
+            if (!audioCtx) {
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.error("Web Audio API is not supported.");
+                    return;
+                }
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const randomBaseFreq = 300 + Math.random() * 300;
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(randomBaseFreq, now);
+            oscillator.frequency.exponentialRampToValueAtTime(randomBaseFreq * 0.5, now + 0.15);
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.5, now + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            oscillator.start(now);
+            oscillator.stop(now + 0.2);
+        }
+
+        // --- Core Logic ---
+        function displayError(message) {
+            errorContainer.textContent = message;
+            errorContainer.style.display = 'block';
+        }
+
+        function initializeApp(localizationData) {
+            errorContainer.style.display = 'none';
+            if (!localizationData || !localizationData.en) {
+                displayError("Invalid JSON. Must have an 'en' key.");
+                return;
+            }
+            
+            allLines = Object.entries(localizationData.en).map(([key, value]) => ({ key, value }));
+            currentLineIndex = 0;
+            graflectTranslations = {};
+            
+            transliteratorApp.classList.add('active');
+            startNewLine();
+        }
+
+        function startNewLine() {
+            if (currentLineIndex >= allLines.length) {
+                finishTranslation();
+                return;
+            }
+
+            updateOverallProgress();
+            const currentLine = allLines[currentLineIndex];
+            englishLineContainer.innerHTML = currentLine.value;
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(`<body>${currentLine.value}</body>`, 'text/html');
+            currentLineParts = Array.from(doc.body.childNodes).map(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    return { type: 'text', content: node.textContent };
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    return { type: 'element', content: node.outerHTML };
+                }
+                return null;
+            }).filter(part => part && (part.type === 'element' || part.content.trim() !== ''));
+
+            textPartsToTranslate = currentLineParts.filter(p => p.type === 'text');
+            currentTextPartIndex = 0;
+            transliteratedSegments = [];
+            
+            if (textPartsToTranslate.length === 0 && currentLineParts.length > 0) {
+                 finalizeLineAndProceed();
+            } else if (textPartsToTranslate.length === 0 && currentLineParts.length === 0) {
+                 // Handle completely empty lines
+                 const currentLineKey = allLines[currentLineIndex].key;
+                 graflectTranslations[currentLineKey] = "";
+                 currentLineIndex++;
+                 startNewLine();
+            }
+            else {
+                displayNextSegment();
+            }
+        }
+
+        function displayNextSegment() {
+            if (currentTextPartIndex >= textPartsToTranslate.length) {
+                finalizeLineAndProceed();
+                return;
+            }
+
+            const segment = textPartsToTranslate[currentTextPartIndex];
+            currentSegmentContainer.textContent = segment.content;
+            segmentProgressLabel.textContent = `(${currentTextPartIndex + 1}/${textPartsToTranslate.length})`;
+            graflectInput.value = '';
+            graflectInput.focus();
+            submitBtn.textContent = 'Submit Segment';
+        }
+        
+        function finalizeLineAndProceed() {
+            let finalString = "";
+            let transliteratedIndex = 0;
+            currentLineParts.forEach(part => {
+                if (part.type === 'text') {
+                    finalString += transliteratedSegments[transliteratedIndex] || '';
+                    transliteratedIndex++;
+                } else {
+                    finalString += part.content;
+                }
+            });
+
+            const currentLineKey = allLines[currentLineIndex].key;
+            graflectTranslations[currentLineKey] = finalString;
+            
+            currentLineIndex++;
+            startNewLine();
+        }
+
+        function finishTranslation() {
+            englishLineContainer.innerHTML = '<strong>All lines completed!</strong>';
+            currentSegmentContainer.textContent = '---';
+            segmentProgressLabel.textContent = '';
+            graflectInput.disabled = true;
+            graflectInput.value = '';
+            graflectInput.placeholder = 'Done!';
+            submitBtn.textContent = 'Copy JSON to Clipboard';
+        }
+
+        function updateOverallProgress() {
+            const percentage = allLines.length > 0 ? ((currentLineIndex) / allLines.length) * 100 : 0;
+            progressBar.style.width = `${percentage}%`;
+            progressLabel.textContent = `${currentLineIndex} / ${allLines.length}`;
+        }
+
+        function handleSubmit() {
+            if (currentLineIndex >= allLines.length) {
+                handleCopy();
+                return;
+            }
+
+            transliteratedSegments.push(graflectInput.value);
+            playSound();
+            currentTextPartIndex++;
+            displayNextSegment();
+        }
+
+        function handleCopy() {
+            const finalObject = { gt: graflectTranslations };
+            const jsonString = JSON.stringify(finalObject, null, 2);
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = jsonString;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Copied!' : 'Copy failed!';
+                submitBtn.textContent = msg;
+            } catch (err) {
+                displayError('Failed to copy text: ' + err);
+                submitBtn.textContent = 'Copy Failed';
+            }
+
+            document.body.removeChild(tempTextArea);
+            
+            setTimeout(() => {
+                if (currentLineIndex >= allLines.length) {
+                    submitBtn.textContent = 'Copy JSON to Clipboard';
+                }
+            }, 2000);
+        }
+        
+        function handleFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    initializeApp(data);
+                } catch (error) {
+                    displayError('Error parsing JSON file: ' + error.message);
+                }
+            };
+            reader.onerror = () => displayError('Error reading file.');
+            reader.readAsText(file);
+        }
+
+        function insertAtCursor(text) {
+            const start = graflectInput.selectionStart;
+            const end = graflectInput.selectionEnd;
+            const currentText = graflectInput.value;
+            const newText = currentText.substring(0, start) + text + currentText.substring(end);
+            graflectInput.value = newText;
+            graflectInput.selectionStart = graflectInput.selectionEnd = start + text.length;
+            graflectInput.focus();
+        }
+
+        // --- Event Listeners ---
+        submitBtn.addEventListener('click', handleSubmit);
+        graflectInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitBtn.click();
+            }
+        });
+
+        jsonFileInput.addEventListener('change', (event) => handleFile(event.target.files[0]));
+
+        fileLoaderContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileLoaderContainer.classList.add('dragover');
+        });
+
+        fileLoaderContainer.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileLoaderContainer.classList.remove('dragover');
+        });
+
+        fileLoaderContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileLoaderContainer.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        inputGrid.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const action = e.target.dataset.action;
+                const char = e.target.textContent;
+                
+                if (action) {
+                    switch (action) {
+                        case 'enter':
+                            submitBtn.click();
+                            break;
+                        case 'space':
+                            insertAtCursor(' ');
+                            break;
+                        case 'backspace':
+                            graflectInput.value = graflectInput.value.slice(0, -1);
+                            break;
+                        case 'delete':
+                             // This is a simplified delete, more complex logic needed for cursor position
+                            break;
+                        case 'tab':
+                            insertAtCursor('\t');
+                            break;
+                    }
+                } else {
+                    insertAtCursor(char);
+                }
+            }
+        });
+
+    };
+    </script>
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>
