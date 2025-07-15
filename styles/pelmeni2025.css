@@ -12,33 +12,21 @@
 }
 
 /* --- THEME DEFINITIONS --- */
-/*
- * The theme-loader.js script adds the appropriate class to the :root (<html>) element before render.
- * This section defines all variables for all themes.
-*/
-
-/* 1. Default Variables (Light Mode) */
 :root {
-  /* Base color palette */
   --bg-color: #ffffff; 
   --text-color: #000000; 
   --border-color: #000000; 
   --inv-bg-color: #000000; 
   --inv-text-color: #ffffff; 
   --win-bg-color: #ffffff;
-  
-  /* Link hover colors */
   --link-hover-bg: var(--text-color);
   --link-hover-color: var(--bg-color);
-
-  /* Scrollbar variables */
   --sb-track-color: var(--win-bg-color, #ffffff);
   --sb-thumb-background-color: var(--win-bg-color, #ffffff);
   --sb-thumb-border-color: var(--border-color, #000000);
   --sb-size: 16px;
 }
 
-/* 2. Dark Mode */
 :root.dark-mode {
   --bg-color: #000000; 
   --text-color: #ffffff; 
@@ -48,118 +36,36 @@
   --win-bg-color: #000000;
 }
 
-/* 3. Color Themes */
-/* These themes define a palette and map it to the variables used by components. */
-
 :root.champagne-mode {
     --theme-bg-color: #F7E7CE;
     --theme-text-color: #4A403A;
     --theme-border-color: #D4AF37;
     --theme-accent-color: #A47C48;
-    
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
 :root.bubblegum-mode {
-    --theme-bg-color: #FBCFF3;
-    --theme-text-color: #A62675;
-    --theme-border-color: #DE3163;
-    --theme-accent-color: #FF69B4;
-
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --theme-bg-color: #FBCFF3; --theme-text-color: #A62675; --theme-border-color: #DE3163; --theme-accent-color: #FF69B4;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
 :root.techelet-mode {
-    --theme-bg-color: #E6E6FA;
-    --theme-text-color: #001F3F;
-    --theme-border-color: #4169E1;
-    --theme-accent-color: #87CEEB;
-
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --theme-bg-color: #E6E6FA; --theme-text-color: #001F3F; --theme-border-color: #4169E1; --theme-accent-color: #87CEEB;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
 :root.zelyonny-mode {
-    --theme-bg-color: #DFF0D8;
-    --theme-text-color: #2E4620;
-    --theme-border-color: #3C763D;
-    --theme-accent-color: #5CB85C;
-
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --theme-bg-color: #DFF0D8; --theme-text-color: #2E4620; --theme-border-color: #3C763D; --theme-accent-color: #5CB85C;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
 :root.akai-mode {
-    --theme-bg-color: #FFEBEE;
-    --theme-text-color: #6D0000;
-    --theme-border-color: #C62828;
-    --theme-accent-color: #E53935;
-
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --theme-bg-color: #FFEBEE; --theme-text-color: #6D0000; --theme-border-color: #C62828; --theme-accent-color: #E53935;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
 :root.rindswurst-mode {
-    --theme-bg-color: #F5E6E0;
-    --theme-text-color: #5D4037;
-    --theme-border-color: #8D6E63;
-    --theme-accent-color: #A1887F;
-
-    --bg-color: var(--theme-bg-color);
-    --win-bg-color: var(--theme-bg-color);
-    --text-color: var(--theme-text-color);
-    --border-color: var(--theme-border-color);
-    --inv-bg-color: var(--theme-border-color);
-    --inv-text-color: var(--theme-bg-color);
-    --link-hover-bg: var(--theme-accent-color);
-    --link-hover-color: var(--theme-bg-color);
+    --theme-bg-color: #F5E6E0; --theme-text-color: #5D4037; --theme-border-color: #8D6E63; --theme-accent-color: #A1887F;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
-
-/* 4. Funky Mode (JS-driven) */
-/* For funky mode, JS will set these variables directly as inline styles on the :root element. */
 :root.funky-mode {
-    --bg-color: var(--theme-bg-color, #b1de75);
-    --win-bg-color: var(--theme-bg-color, #b1de75);
-    --text-color: var(--theme-text-color, #b000b5);
-    --border-color: var(--theme-border-color, #eb01a5);
-    --inv-bg-color: var(--theme-border-color, #eb01a5);
-    --inv-text-color: var(--theme-bg-color, #b1de75);
-    --link-hover-bg: var(--theme-accent-color, #fa6607);
-    --link-hover-color: var(--theme-bg-color, #b1de75);
+    --bg-color: var(--theme-bg-color, #b1de75); --win-bg-color: var(--theme-bg-color, #b1de75); --text-color: var(--theme-text-color, #b000b5); --border-color: var(--theme-border-color, #eb01a5); --inv-bg-color: var(--theme-border-color, #eb01a5); --inv-text-color: var(--theme-bg-color, #b1de75); --link-hover-bg: var(--theme-accent-color, #fa6607); --link-hover-color: var(--theme-bg-color, #b1de75);
 }
-
 
 /* --- BASE & MODE STYLES --- */
 body {
@@ -169,10 +75,9 @@ body {
     padding-bottom: 40px; 
     overflow: hidden;
     color: var(--text-color); 
-    background-color: var(--bg-color); /* Applied universally */
+    background-color: var(--bg-color);
 }
 
-/* E-Ink / LCD mode has highest priority for background image */
 body.lcd-mode { 
     background-image: url('../tokyo3.gif'); 
     background-repeat: repeat; 
@@ -186,13 +91,18 @@ body.eink-mode iframe {
     filter: grayscale(1) brightness(1) contrast(250);
 }
 
+/* **FIX:** When lcd mode is on, explicitly remove any filters from images and iframes. */
+/* This ensures that styles from e-ink mode are correctly overridden. */
+body.lcd-mode img,
+body.lcd-mode iframe {
+    filter: none;
+}
 
 /* --- STATIC ELEMENT STYLES --- */
 .symbol {
     font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
     font-weight: normal; 
 }
-
 .logo-image-container svg, .start-button svg {
     object-fit: contain;
 }
@@ -207,7 +117,6 @@ body.eink-mode iframe {
 .logo-image-container svg path, .start-button svg path {
     fill: var(--text-color);
 }
-
 .window { 
     position: absolute;
     background-color: var(--win-bg-color); 
@@ -248,7 +157,6 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 .content h3 { padding-left: 1em; }
 .content ul, .content ol { padding-left: 2em; list-style: none; margin: 0; }
 .content ul li a, .content ol li a { padding-left: 1em; display: inline-block; }
-
 
 /* --- INTERACTIVE ELEMENT STYLES --- */
 *:focus { outline: none; }
@@ -324,14 +232,12 @@ body::-webkit-scrollbar,
   width: var(--sb-size);
   height: var(--sb-size);
 }
-
 body::-webkit-scrollbar-track,
 .content::-webkit-scrollbar-track,
 .window-list::-webkit-scrollbar-track,
 .settings-content::-webkit-scrollbar-track {
   background: var(--win-bg-color);
 }
-
 body::-webkit-scrollbar-thumb,
 .content::-webkit-scrollbar-thumb,
 .window-list::-webkit-scrollbar-thumb,
@@ -339,7 +245,6 @@ body::-webkit-scrollbar-thumb,
   background: var(--win-bg-color);
   border: 2px solid var(--border-color);
 }
-
 @supports not selector(::-webkit-scrollbar) {
   body, .content, .window-list, .settings-content {
     scrollbar-color: var(--border-color) var(--win-bg-color);
@@ -408,7 +313,6 @@ body::-webkit-scrollbar-thumb,
     .content { max-height: none; }
 }
 
-/* ... (Remaining styles from pelmeni2025.css) ... */
 .custom-dropdown {
     position: relative;
     width: 100%;

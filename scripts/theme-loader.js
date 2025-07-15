@@ -1,10 +1,12 @@
 /**
- * theme-loader.js
+ * theme-loader.js (Robust Version)
  *
- * This script is intended to be placed in the <head> of the document.
- * It's a self-executing function that runs immediately to prevent a "flash of unstyled content" (FOUC).
+ * This script runs immediately to prevent a "flash of unstyled content" (FOUC).
  * It reads the user's saved theme and mode from localStorage and applies the corresponding
- * classes to both the <html> and <body> elements before the page content is rendered.
+ * classes to both the <html> and <body> elements.
+ *
+ * This version is designed to be robust and will REMOVE any hardcoded theme/mode
+ * classes from the <body> tag to ensure the user's settings are always respected.
  */
 (function() {
     // Define the keys used for storing settings in localStorage.
@@ -16,37 +18,58 @@
         const savedTheme = localStorage.getItem(THEME_KEY);
         const savedMode = localStorage.getItem(MODE_KEY);
 
-        // Determine the mode to apply, defaulting to 'lcd'.
+        // Determine the mode to apply, defaulting to 'lcd' if no setting is found.
         const mode = savedMode || 'lcd';
         let theme;
 
-        // Logic to prevent color themes in e-ink mode.
+        // Prevent color themes from being applied in e-ink mode.
         if (mode === 'eink') {
+            // If mode is 'eink', the theme can only be 'light' or 'dark'.
             theme = (savedTheme === 'dark') ? 'dark' : 'light';
         } else {
-            // Fall back to OS preference, and finally default to 'light'.
+            // If mode is 'lcd', use any saved theme, fall back to OS preference, then default to 'light'.
             theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         }
         
-        // Get references to the root <html> and the <body> elements.
         const docEl = document.documentElement;
-        
-        // This is the crucial step that prevents FOUC.
-        // We apply the classes immediately.
-        docEl.classList.add(`${theme}-mode`, `${mode}-mode`);
-        
-        // **FIX:** We also need to apply the classes to the body as soon as it exists.
-        // We use a simple interval check which is very fast and reliable.
-        const bodyApplyInterval = setInterval(function() {
-            if (document.body) {
-                document.body.classList.add(`${theme}-mode`, `${mode}-mode`);
-                clearInterval(bodyApplyInterval);
-            }
-        }, 1);
+        const correctThemeClass = `${theme}-mode`;
+        const correctModeClass = `${mode}-mode`;
 
+        // Apply correct classes to the <html> element immediately.
+        docEl.classList.add(correctThemeClass, correctModeClass);
+
+        /**
+         * This function finds the <body> tag, removes any outdated theme or mode classes
+         * that might be hardcoded in the HTML, and applies the correct ones from localStorage.
+         */
+        const fixBodyClasses = () => {
+            if (!document.body) return; // Body element doesn't exist yet.
+
+            // Find all classes on the body that end with '-mode'.
+            const classesToRemove = [...document.body.classList].filter(c => c.endsWith('-mode'));
+            
+            // Remove any incorrect classes.
+            if (classesToRemove.length > 0) {
+                document.body.classList.remove(...classesToRemove);
+            }
+
+            // Add the correct, user-selected classes.
+            document.body.classList.add(correctThemeClass, correctModeClass);
+        };
+
+        // A MutationObserver is the modern, efficient way to wait for the <body> to be added to the DOM.
+        // It's faster and more reliable than using setInterval.
+        const observer = new MutationObserver((mutations, obs) => {
+            if (document.body) {
+                fixBodyClasses();
+                obs.disconnect(); // We've done our job, so we can stop observing.
+            }
+        });
+
+        // Start observing the document for changes.
+        observer.observe(document.documentElement, { childList: true, subtree: true });
 
     } catch (e) {
-        // If any error occurs (e.g., localStorage is disabled), log it.
         console.error("Failed to apply initial theme from theme-loader.js", e);
     }
 })();
