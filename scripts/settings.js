@@ -1,6 +1,7 @@
 // settings.js
 // This version is updated to manage theme/mode classes on both <html> and <body>
 // to ensure consistency and support for existing CSS rules.
+// It also includes logic to dynamically update the favicon color based on the theme.
 
 function setupSettings() {
     // Helper to quickly get elements by their ID
@@ -36,6 +37,58 @@ function setupSettings() {
 
     // --- STATE ---
     let loadedTranslations = {}; // To store all loaded language data
+
+    // --- UPDATED FAVICON LOGIC ---
+    /**
+     * Updates the site's favicon based on the current theme's text color.
+     * This version parses the SVG and directly manipulates its path elements
+     * for a more robust result than regex replacement.
+     */
+    async function updateFavicon() {
+        const faviconLink = document.getElementById('dynamic-favicon');
+        if (!faviconLink) return; // Exit if the favicon link isn't in the HTML
+
+        try {
+            // Get the computed value of the --text-color CSS variable from the root element
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
+            
+            // Fetch the raw text content of the SVG logo file
+            const response = await fetch('/logo/shzh.svg');
+            if (!response.ok) throw new Error('Could not fetch SVG logo.');
+            const svgText = await response.text();
+
+            // Use the DOMParser to turn the SVG text into a manipulable document
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+            
+            // Get the root <svg> element
+            const svgElement = svgDoc.querySelector('svg');
+            if (!svgElement) throw new Error('No SVG element found in the fetched file.');
+
+            // Find all <path> elements within the SVG and set their fill attribute.
+            // This will override any existing fill color or add it if it's missing.
+            const paths = svgElement.querySelectorAll('path');
+            paths.forEach(path => {
+                path.setAttribute('fill', textColor);
+            });
+
+            // Serialize the modified SVG document back into a string
+            const serializer = new XMLSerializer();
+            const modifiedSvgText = serializer.serializeToString(svgElement);
+
+            // Encode the modified SVG into a Base64 string and create a data URI
+            const faviconUri = `data:image/svg+xml;base64,${btoa(modifiedSvgText)}`;
+            
+            // Set the new data URI as the href for the favicon link
+            faviconLink.href = faviconUri;
+
+        } catch (error) {
+            console.error('Failed to update favicon:', error);
+            // If anything goes wrong, fall back to the default static SVG
+            faviconLink.href = '/logo/shzh.svg';
+        }
+    }
+    // --- END UPDATED FAVICON LOGIC ---
 
     /**
      * Injects an SVG file's content directly into the DOM, replacing an <img> element.
@@ -191,6 +244,9 @@ function setupSettings() {
         
         // Save the theme choice to localStorage.
         localStorage.setItem(THEME_KEY, theme);
+
+        // Call the new function to update the favicon after the theme has been applied.
+        updateFavicon();
     }
 
     if (themeRadios.length > 0) {
@@ -339,6 +395,9 @@ function setupSettings() {
         // Load and apply the initial language.
         const initialLang = getInitialLanguage();
         await loadAndSetLanguage(initialLang);
+
+        // Update the favicon on initial page load
+        await updateFavicon();
     }
     
     // Setup the language dropdown interactivity.
