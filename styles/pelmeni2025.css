@@ -10,6 +10,10 @@
   font-family: 'Symbola';
   src: url('fonts/Symbola.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'Garamond';
+  src: url('fonts/EBGaramond.ttf') format('truetype');
+}
 
 /* --- THEME DEFINITIONS --- */
 :root {
@@ -69,7 +73,7 @@
 
 /* --- BASE & MODE STYLES --- */
 body {
-    font-family: 'Times New Roman', Times, serif, FairfaxHD;
+    font-family: 'Garamond', Times, serif, FairfaxHD;
     margin: 0; padding: 0; line-height: 1.5;
     transition: background-color 0.3s ease, color 0.3s ease;
     padding-bottom: 40px; 
