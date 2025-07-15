@@ -1,15 +1,13 @@
 // settings.js
-// No longer needs a DOMContentLoaded wrapper, as scripts/module-loader.js ensures the DOM is ready.
+// This version is updated to manage theme/mode classes on both <html> and <body>
+// to ensure consistency and support for existing CSS rules.
 
-// --- DOM Element References ---
-// Encapsulate in a function to avoid polluting the global scope
 function setupSettings() {
     const getElement = (id) => document.getElementById(id);
     const body = document.body;
-    const docEl = document.documentElement; // Get reference to <html>
+    const docEl = document.documentElement; // Reference to <html>
     const welcomeText = getElement('welcome-text');
     
-    // --- Custom Language Dropdown Elements ---
     const langDropdown = getElement('language-select-custom');
     const langDropdownToggle = langDropdown?.querySelector('.custom-dropdown-toggle');
     const langDropdownValue = getElement('language-select-value');
@@ -20,29 +18,17 @@ function setupSettings() {
     const themeRadios = document.querySelectorAll('input[name="theme"]');
     const settingsNavItems = document.querySelectorAll('.settings-nav li');
 
-    // --- Settings Keys ---
     const THEME_KEY = 'pelmeniboiler-theme';
     const MODE_KEY = 'pelmeniboiler-mode';
     const LANG_KEY = 'pelmeniboiler-lang';
     const LAST_COLOR_THEME_KEY = 'pelmeniboiler-last-color-theme';
 
-
-    // --- Color Theme Definitions ---
-    // MODIFIED: Only the 'funky' theme needs a JS definition now.
-    // The rest are handled by themes.css.
     const colorThemes = {
         funky: { random: true }
     };
 
-    // Variable to hold translation data once it's fetched
     let loadedTranslations = {};
 
-    /**
-     * Fetches an SVG file and replaces an <img> element with its inline content.
-     * This allows the SVG to be styled with CSS.
-     * @param {HTMLElement} imgElement - The <img> element to replace.
-     * @param {string} svgPath - The path to the .svg file.
-     */
     async function injectSVG(imgElement, svgPath) {
         if (!imgElement) return;
         try {
@@ -62,8 +48,6 @@ function setupSettings() {
         }
     }
 
-
-    // --- Settings Window Tab Navigation ---
     if (settingsNavItems.length > 0) {
         settingsNavItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -78,7 +62,6 @@ function setupSettings() {
         });
     }
 
-    // --- Welcome Text Update Logic ---
     function updateWelcomeText() {
         if (!welcomeText) return;
         const mode = docEl.classList.contains('eink-mode') ? 'eink' : 'lcd';
@@ -89,12 +72,14 @@ function setupSettings() {
         }
     }
 
-     // --- E-ink / LCD Mode Logic ---
-     function applyMode(mode) {
+    function applyMode(mode) {
         const isEink = mode === "eink";
-        // Use documentElement for class manipulation
+        // FIX: Apply mode classes to both <html> and <body>
         docEl.classList.toggle("eink-mode", isEink);
+        body.classList.toggle("eink-mode", isEink);
         docEl.classList.toggle("lcd-mode", !isEink);
+        body.classList.toggle("lcd-mode", !isEink);
+
         if (einkToggle) einkToggle.checked = isEink;
 
         const themeSettingGroup = getElement('theme-setting-group');
@@ -111,7 +96,7 @@ function setupSettings() {
 
         if (isEink && isCurrentThemeColor) {
             applyTheme('light');
-        } else if (!isEink && docEl.classList.contains('light-mode')) {
+        } else if (!isEink && (docEl.classList.contains('light-mode') || docEl.classList.contains('dark-mode'))) {
              const lastColorTheme = localStorage.getItem(LAST_COLOR_THEME_KEY) || 'funky';
              applyTheme(lastColorTheme);
         }
@@ -120,23 +105,25 @@ function setupSettings() {
         updateWelcomeText();
     }
 
-
     if (einkToggle) {
         einkToggle.addEventListener('change', () => {
             applyMode(einkToggle.checked ? "eink" : "lcd");
         });
     }
 
-    // --- Theme Logic ---
     function applyTheme(theme) {
-        // Remove all other theme classes from the <html> element
-        const themeClasses = [...docEl.classList].filter(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode'].includes(c));
-        docEl.classList.remove(...themeClasses);
+        // Helper to get all theme classes (e.g., 'dark-mode') from an element
+        const themeClassesToRemove = (target) => 
+            [...target.classList].filter(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode'].includes(c));
+
+        // FIX: Remove old theme classes from both <html> and <body>
+        docEl.classList.remove(...themeClassesToRemove(docEl));
+        body.classList.remove(...themeClassesToRemove(body));
         
-        // Add the new theme class
+        // FIX: Add the new theme class to both
         docEl.classList.add(`${theme}-mode`);
+        body.classList.add(`${theme}-mode`);
         
-        // Special handling for the random 'funky' theme remains in JS
         if (theme === 'funky') {
             const randomHue = () => Math.floor(Math.random() * 360);
             const baseHue = randomHue();
@@ -150,13 +137,11 @@ function setupSettings() {
             docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         } else {
-            // For all other themes, clear the inline styles to let the CSS file take over.
             docEl.style.removeProperty('--theme-bg-color');
             docEl.style.removeProperty('--theme-text-color');
             docEl.style.removeProperty('--theme-border-color');
             docEl.style.removeProperty('--theme-accent-color');
             
-            // If it's not a light/dark theme, save it as the last used color theme.
             if (theme !== 'light' && theme !== 'dark') {
                 localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
             }
@@ -176,7 +161,6 @@ function setupSettings() {
         });
     }
 
-    // --- Language Logic (No changes needed here) ---
     function deepMerge(target, source) {
         if (!source) return target;
         for (const lang in source) {
@@ -247,36 +231,36 @@ function setupSettings() {
         return localStorage.getItem(LANG_KEY) || navigator.language.split('-')[0] || 'en';
     }
 
-
-    // --- Initialization ---
     async function initialize() {
-        // Inject SVGs
         await Promise.all([
             injectSVG(getElement('logo-img'), '/logo/shzh.svg'),
             injectSVG(getElement('start-menu-logo'), '/logo/shzh.svg')
         ]);
 
-        // The theme and mode are already applied by theme-loader.js.
-        // We just need to sync the UI controls (radios, toggles) to match the state.
-        const savedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        const savedMode = localStorage.getItem(MODE_KEY) || 'lcd';
+        // FIX: Sync classes from <html> (set by theme-loader) to <body>
+        const classesOnHtml = [...docEl.classList];
+        const modeClasses = classesOnHtml.filter(c => c.endsWith('-mode'));
+        body.classList.add(...modeClasses);
+
+        // Sync UI controls to match the state that's already been set.
+        const isEink = docEl.classList.contains('eink-mode');
+        if (einkToggle) einkToggle.checked = isEink;
         
-        // Sync UI without re-applying the whole theme logic
-        if (einkToggle) einkToggle.checked = savedMode === 'eink';
-        const radioToCheck = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
-        if(radioToCheck) radioToCheck.checked = true;
+        const currentThemeClass = modeClasses.find(c => c !== 'eink-mode' && c !== 'lcd-mode');
+        if (currentThemeClass) {
+            const themeValue = currentThemeClass.replace('-mode', '');
+            const radioToCheck = document.querySelector(`input[name="theme"][value="${themeValue}"]`);
+            if(radioToCheck) radioToCheck.checked = true;
 
-        // If the saved theme was funky, we need to run applyTheme once to generate the colors.
-        if (savedTheme === 'funky') {
-            applyTheme('funky');
+            if (themeValue === 'funky') {
+                applyTheme('funky');
+            }
         }
-
-        // Load language
+        
         const initialLang = getInitialLanguage();
         await loadAndSetLanguage(initialLang);
     }
     
-    // --- Custom Dropdown Logic (No changes needed) ---
     if (langDropdown) {
         langDropdownToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -309,5 +293,4 @@ function setupSettings() {
     }
 }
 
-// Run the setup function
 document.addEventListener('modulesLoaded', setupSettings);

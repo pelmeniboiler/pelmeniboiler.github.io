@@ -16,13 +16,23 @@
         const savedTheme = localStorage.getItem(THEME_KEY);
         const savedMode = localStorage.getItem(MODE_KEY);
 
-        // Determine the theme to apply.
-        // It falls back to checking the user's OS preference, and finally defaults to 'light'.
-        const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        
-        // Determine the mode to apply, defaulting to 'eink'.
-        const mode = savedMode || 'eink';
+        // Determine the mode to apply, defaulting to 'lcd'.
+        const mode = savedMode || 'lcd';
+        let theme;
 
+        // UPDATED LOGIC:
+        // Prevent color themes from being applied in e-ink mode.
+        if (mode === 'eink') {
+            // If mode is 'eink', the theme can only be 'light' or 'dark'.
+            // We check if the saved theme is specifically 'dark', otherwise we default to 'light'.
+            // This prevents an invalid state, e.g., 'champagne-mode' with 'eink-mode'.
+            theme = (savedTheme === 'dark') ? 'dark' : 'light';
+        } else {
+            // If mode is 'lcd', we can use any saved theme.
+            // Fall back to OS preference, and finally default to 'light'.
+            theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        }
+        
         // Get a reference to the root <html> element.
         const docEl = document.documentElement;
 
