@@ -16,6 +16,8 @@
     <link rel="alternate" type="application/rss+xml" title="German RSS Feed" href="https://pelmeniboiler.github.io/rss/de/feed.xml">
     <link rel="alternate" type="application/rss+xml" title="Graflect RSS Feed" href="https://pelmeniboiler.github.io/rss/gt/feed.xml">
     <link rel="alternate" type="application/rss+xml" title="Russian RSS Feed" href="https://pelmeniboiler.github.io/rss/ru/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <style>
         body.lcd-mode { background-image: url('tokyo3.gif'); background-repeat: repeat; background-position: center; background-size: cover; }
@@ -29,7 +31,12 @@
     <!-- Window Content -->
     <div class="window" style="top: 2%; left: 2%; z-index: 4;">
         <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
-        <div class="content"><h1 data-key="welcome_h1">pelmeniboiler</h1><p id="welcome-text" data-key="welcome_text_eink">Welcome!</p></div>
+        <div class="content">
+            <h1 data-key="welcome_h1">pelmeniboiler</h1>
+            <!-- **MODIFIED:** Replaced the single #welcome-text p with two separate paragraphs for each mode -->
+            <p class="welcome-text-eink" data-key="welcome_text_eink"></p>
+            <p class="welcome-text-lcd" data-key="welcome_text_lcd"></p>
+        </div>
     </div>
 
     <div class="window" style="top: 12%; left: 40%; z-index: 2;">

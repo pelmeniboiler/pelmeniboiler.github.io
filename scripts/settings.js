@@ -1,7 +1,7 @@
-// settings.js
 // This version is updated to manage theme/mode classes on both <html> and <body>
 // to ensure consistency and support for existing CSS rules.
 // It also includes logic to dynamically update the favicon color based on the theme.
+// **REMOVED:** The redundant updateWelcomeText() function.
 
 function setupSettings() {
     // Helper to quickly get elements by their ID
@@ -10,7 +10,6 @@ function setupSettings() {
     // --- DOM ELEMENT REFERENCES ---
     const body = document.body;
     const docEl = document.documentElement; // Reference to <html> element
-    const welcomeText = getElement('welcome-text');
     
     // Language dropdown elements
     const langDropdown = getElement('language-select-custom');
@@ -134,17 +133,9 @@ function setupSettings() {
     }
 
     /**
-     * Updates the welcome text on the main page based on the current mode (e-ink/lcd).
+     * **REMOVED:** The updateWelcomeText function is no longer needed.
+     * CSS now handles showing/hiding the correct welcome text.
      */
-    function updateWelcomeText() {
-        if (!welcomeText) return;
-        const mode = docEl.classList.contains('eink-mode') ? 'eink' : 'lcd';
-        const lang = localStorage.getItem(LANG_KEY) || 'en';
-        const welcomeKey = mode === 'eink' ? 'welcome_text_eink' : 'welcome_text_lcd';
-        if (loadedTranslations[lang] && loadedTranslations[lang][welcomeKey]) {
-            welcomeText.innerHTML = loadedTranslations[lang][welcomeKey];
-        }
-    }
 
     /**
      * Applies the display mode (e-ink or lcd) to the page.
@@ -185,7 +176,7 @@ function setupSettings() {
         }
 
         localStorage.setItem(MODE_KEY, mode);
-        updateWelcomeText();
+        // **REMOVED:** The call to updateWelcomeText() is no longer necessary.
     }
 
     if (einkToggle) {

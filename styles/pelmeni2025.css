@@ -169,6 +169,16 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 .content ul, .content ol { padding-left: 2em; list-style: none; margin: 0; }
 .content ul li a, .content ol li a { padding-left: 1em; display: inline-block; }
 
+/* --- **NEW** WELCOME TEXT VISIBILITY RULES --- */
+/* By default, hide the LCD text and show the E-Ink text */
+.welcome-text-lcd { display: none; }
+.welcome-text-eink { display: block; }
+
+/* When lcd-mode is active, flip the visibility */
+.lcd-mode .welcome-text-lcd { display: block; }
+.lcd-mode .welcome-text-eink { display: none; }
+
+
 /* --- INTERACTIVE ELEMENT STYLES --- */
 *:focus { outline: none; }
 ::selection { background-color: var(--text-color); color: var(--bg-color); }
