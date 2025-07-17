@@ -45,6 +45,69 @@
             max-width: 100%;    
             overflow-x: hidden;
         }
+        /* --- SLUG Converter Module Styles --- */
+
+            /* The main container for the converter, targeting its unique ID */
+            #slug-converter-module .content {
+                display: flex;
+                flex-direction: column;
+                gap: 1em; /* Space between elements */
+                height: 100%;
+                padding: 1em; /* Internal padding for the content area */
+            }
+
+            /* The container for the two text areas */
+            #slug-converter-module .text-areas {
+                display: flex;
+                flex-direction: column; /* Stack on top of each other by default */
+                gap: 1em;
+                flex-grow: 1; /* Allows this area to fill available vertical space */
+            }
+
+            /* On wider screens, place text areas side-by-side */
+            @media (min-width: 768px) {
+                #slug-converter-module .text-areas {
+                    flex-direction: row;
+                }
+            }
+
+            /* General styling for both textareas */
+            #slug-converter-module textarea {
+                width: 100%;
+                height: 200px;
+                box-sizing: border-box;
+                resize: vertical;
+                padding: 1em;
+                font-size: 1.1em;
+                /* Using your site's theme variables */
+                border: 2px solid var(--border-color);
+                background-color: var(--win-bg-color);
+                color: var(--text-color);
+                font-family: inherit; /* Inherit the default font */
+            }
+
+            /* Specific font for the Graflect input textarea */
+            #slug-converter-module #graflect-input {
+                font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
+                font-size: 1.5em;
+            }
+
+            /* Specific font and background for the SLUG output textarea */
+            #slug-converter-module #slug-output {
+                font-family: 'Courier New', monospace;
+                /* Using a secondary background color for contrast, from your theme */
+                background-color: var(--bg-color);
+            }
+
+            /* Container for the button(s) at the bottom */
+            #slug-converter-module .converter-buttons {
+                display: flex;
+                justify-content: center;
+                padding-top: 1em;
+                /* Using your site's theme variable for the border */
+                border-top: 2px solid var(--border-color);
+            }
+
     </style>
 </head>
 <body class="eink-mode light-mode">
@@ -56,6 +119,9 @@
         </div>
         <div class="content">
             <h2><a href="#intro" data-key="gt_nav_h2_intro">Introduction</a></h2>
+            <h3><a href="#slug">SLUG</a></h3>
+            <h3><a href="#translit-tool" data-key="guide_h2_tool">Translit.tool</a></h3>
+            <h2><a href="#consonants" data-key="guide_h2_table">Table</a></h2>
             <h3><a href="#consonants" data-key="gt_nav_h3_consonants">&ensp;Consonants</a></h3>
             <h3><a href="#vowels" data-key="gt_nav_h3_vowels">&ensp;Vowels</a></h3>
             <h3><a href="#other" data-key="gt_nav_h3_other">&ensp;Other Symbols</a></h3>
@@ -75,7 +141,13 @@
             </header>
             <section>
                 <p data-key="graflect_example_p">Here is an example paragraph written in Graflect, I hope my voice comes through.<br></p>
-                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+                <aside> , . . , , , , , , . <br>  .    ,    : <br>&emsp;" ,    " <br>&emsp;" "</aside>
+            </section>
+            <hr>
+            <section id="slug">
+                <h2 data-key="slug_section_title">SLUG: A Romanization for Graflect</h2>
+                <p data-key="slug_section_p1">To make Graflect easier to type and discuss on systems without the proper font support, this guide proposes <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. The goal is to provide a true one-to-one mapping from Graflect symbols to easily-typed characters. This version uses common letters, digraphs, and a few with diacritics available on most keyboards.</p>
+                <aside>wxns yu bīkxm fxmilyr with græflekt, yu wil faind it pásibl tü hīr mai æksent in mai raiting. ai wxz bōrn in nü yōrk tü izrēlī änd rxšin p4ints. mai fämxlī spīks 4xbik, jrmin, ingliš, hībrü, rxšin, änd yidiš, änd ai grü xp in kxnetikit. ai xsüm dhis ál inflüensiz how ai spīk änd rait in græflekt. græflekt iz imenslī powrfl fōr raiting dhī æksents xv pīpl hü hæv spōkn ingliš dh4 hōl laivz, bxt its álsō ēbl tü rndr dhōs xv pīpl hü lrnd ingliš æz ē sekind längyj:<br>&emsp;"fōrh īnstxnz, dīs īz khow mai īzrhelī fámīlī tōk án zī fōn"<br>&emsp;"mai bábüšká tálks mōrr rrxsīyn"</aside>
             </section>
             <hr>
             <section>
@@ -92,89 +164,93 @@
                         <tr>
                             <th data-key="table_header_symbol">Graflect Symbol</th>
                             <th data-key="table_header_ipa">IPA Symbol</th>
+                            <th>SLUG</th>
                             <th data-key="table_header_example">Example Sound</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>p</b> in <b>p</b>lan</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>b</b> in <b>b</b>and</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>t</b> in <b>t</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>d</b> in len<b>d</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>k</b> in <b>k</b>ick, <b>c</b> in <b>c</b>ool</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>g</b> in <b>g</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>f</b> in <b>f</b>ail</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>v</b> in <b>v</b>ine</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think"><b>th</b> in <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this"><b>th</b> in <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>s</b> in <b>s</b>outh</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>z</b> in <b>z</b>one</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>sh</b> in <b>sh</b>ut</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>s</b> in occa<b>s</b>ion</td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>h</b> in <b>h</b>ome</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>m</b> in <b>m</b>an</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>n</b> in <b>n</b>orth</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long"><b>ng</b> in lo<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>l</b> in <b>l</b>end</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope"><b>r</b> in <b>r</b>ope (American R)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman"><b>w</b> in <b>w</b>oman</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>y</b> in <b>y</b>our</td></tr>
-                    </tbody>
-                </table>
-            </section>
-        
-            <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">Vowels</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Graflect Symbol</th>
-                            <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example">Example Sound</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean"><b>ea</b> in l<b>ea</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in"><b>i</b> in <b>i</b>n</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good"><b>oo</b> in g<b>oo</b>d</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school"><b>oo</b> in sch<b>oo</b>l</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b>e</b> in l<b>e</b>nd</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent"><b>a</b> in <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> in ant</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>o</b> in h<b>o</b>me</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se but with a British Accent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td>p</td><td data-key="example_p_in_plan"><b>p</b> in <b>p</b>lan</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td>b</td><td data-key="example_b_in_band"><b>b</b> in <b>b</b>and</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td>t</td><td data-key="example_t_in_tend"><b>t</b> in <b>t</b>end</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td>d</td><td data-key="example_d_in_lend"><b>d</b> in len<b>d</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td>k</td><td data-key="example_k_in_kick"><b>k</b> in <b>k</b>ick, <b>c</b> in <b>c</b>ool</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td>g</td><td data-key="example_g_in_gone"><b>g</b> in <b>g</b>one</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td>f</td><td data-key="example_f_in_fail"><b>f</b> in <b>f</b>ail</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td>v</td><td data-key="example_v_in_vine"><b>v</b> in <b>v</b>ine</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td>th</td><td data-key="example_th_in_think"><b>th</b> in <b>th</b>ink</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td>dh</td><td data-key="example_th_in_this"><b>th</b> in <b>th</b>is</td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td>s</td><td data-key="example_s_in_south"><b>s</b> in <b>s</b>outh</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td>z</td><td data-key="example_z_in_zone"><b>z</b> in <b>z</b>one</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td>š</td><td data-key="example_sh_in_shut"><b>sh</b> in <b>sh</b>ut</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td>ž</td><td data-key="example_s_in_occasion"><b>s</b> in occa<b>s</b>ion</td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td>h</td><td data-key="example_h_in_home"><b>h</b> in <b>h</b>ome</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td>m</td><td data-key="example_m_in_man"><b>m</b> in <b>m</b>an</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td>n</td><td data-key="example_n_in_north"><b>n</b> in <b>n</b>orth</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td>ng</td><td data-key="example_ng_in_long"><b>ng</b> in lo<b>ng</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td>l</td><td data-key="example_l_in_lend"><b>l</b> in <b>l</b>end</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td>r</td><td data-key="example_r_in_rope"><b>r</b> in <b>r</b>ope (American R)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td>w</td><td data-key="example_w_in_woman"><b>w</b> in <b>w</b>oman</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td>y</td><td data-key="example_y_in_your"><b>y</b> in <b>y</b>our</td></tr>
                     </tbody>
                 </table>
             </section>
 
-             <section>
-                <h2 id="other" data-key="guide_h2_other">Other Symbols (Affricates, Non-English & Compounds)</h2>
-                 <table>
+            <section>
+                <h2 id="vowels" data-key="guide_h2_vowels">Vowels</h2>
+                <table>
                     <thead>
                         <tr>
                             <th data-key="table_header_symbol">Graflect Symbol</th>
                             <th data-key="table_header_ipa">IPA Symbol</th>
-                            <th data-key="table_header_example_desc">Example Sound / Description</th>
+                            <th>SLUG</th>
+                            <th data-key="table_header_example">Example Sound</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>ch</b> in <b>ch</b>ase</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>j</b> in <b>j</b>ump</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>you</b> in <b>you</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>we</b> in <b>we</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">French: <b>ui</b> in h<b>ui</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">German: <b>ch</b> in Ba<b>ch</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Spanish: Flapped <b>r</b> in pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">German: Guttural <b>r</b> in <b>R</b>ammstein</td></tr>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td>ī</td><td data-key="example_ea_in_lean"><b>ea</b> in l<b>ea</b>n</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td>i</td><td data-key="example_i_in_in"><b>i</b> in <b>i</b>n</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td>u</td><td data-key="example_oo_in_good"><b>oo</b> in g<b>oo</b>d</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td>ü</td><td data-key="example_oo_in_school"><b>oo</b> in sch<b>oo</b>l</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td>e</td><td data-key="example_e_in_lend"><b>e</b> in l<b>e</b>nd</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td>æ</td><td data-key="example_a_in_accent"><b>a</b> in <b>a</b>ccent</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td>x</td><td data-key="example_u_in_tug"><b>u</b> in t<b>u</b>g (also used for schwa)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td>á</td><td data-key="example_o_in_soft"><b>o</b> in s<b>o</b>ft</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td>ē</td><td data-key="example_a_in_game"><b>a</b> in g<b>a</b>me</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td>ä</td><td data-key="example_a_in_ant"><b>a</b> in ant</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td>ai</td><td data-key="example_ye_in_bye"><b>ye</b> in b<b>ye</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td>ow</td><td data-key="example_ou_in_south"><b>ou</b> in s<b>ou</b>th</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td>ō</td><td data-key="example_o_in_home"><b>o</b> in h<b>o</b>me</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td>aw</td><td data-key="example_o_in_hole"><b>o</b> in h<b>o</b>le</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td>ö</td><td data-key="example_british_r"><b>ur</b> in n<b>ur</b>se but with a British Accent</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td>4</td><td data-key="example_air_in_air"><b>air</b> in <b>air</b></td></tr>
                     </tbody>
                 </table>
             </section>
+
+            <section>
+                <h2 id="other" data-key="guide_h2_other">Other Symbols</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Graflect</th>
+                            <th>IPA</th>
+                            <th>SLUG</th>
+                            <th>Example / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td>c</td><td><b>ch</b>ase</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td>j</td><td><b>j</b>ump</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td>yu</td><td><b>you</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td>we</td><td><b>we</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td>yh</td><td>French: h<b>ui</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td>kh</td><td>German: Ba<b>ch</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td>rr</td><td>Spanish: pe<b>r</b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td>rh</td><td>German: <b>R</b>ammstein</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
         </article>
     </main>
     
@@ -183,20 +259,28 @@
     <div id="start-menu-module-placeholder"></div>
     <div id="graflect-module-placeholder"></div>
     <div id="share-module-placeholder"></div>
+    <div id="slug-module-placeholder"></div>
     <!-- Scripts -->
-     <script src="/scripts/blog/demos/graflect.js" defer></script>
+    <script src="/scripts/blog/demos/graflect.js" defer></script>
+    <script src="/scripts/blog/demos/slug.js" defer></script>
     <script src="/scripts/module-loader.js" defer></script>
-    
-    <script>
+
+     <script>
         // This trigger waits for the signal from module-loader.js that all modules
-        // (including the Graflect tool's HTML) have been injected into the page.
+        // have been injected into the page.
         document.addEventListener('modulesLoaded', () => {
-            // Check if the initialization function from graflect.js exists before calling it.
-            // This prevents errors if the script hasn't loaded for some reason.
+            // Check for and initialize the original Graflect tool
             if (typeof initializeGraflectTool === 'function') {
                 initializeGraflectTool();
             } else {
-                console.error("Graflect tool initialization function not found.");
+                console.log("Graflect tool (English->Graflect) not found on this page.");
+            }
+
+            // Check for and initialize the new SLUG converter tool
+            if (typeof initializeSlugConverter === 'function') {
+                initializeSlugConverter();
+            } else {
+                console.log("SLUG converter not found on this page.");
             }
         });
     </script>
