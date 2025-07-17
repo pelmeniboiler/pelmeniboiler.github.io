@@ -33,7 +33,7 @@
 }
 /* --- THEME DEFINITIONS --- */
 :root {
-  --font-body: Garamond, FrankRuhl, serif, FairfaxHD;
+  --font-body: 'FrankRuhl-Liga', Garamond, serif, FairfaxHD;
   /* **MODIFIED** Updated the font stack to use the new unique font name. */
   --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android Emoji', 'TwitterBWEmoji.ttf';
 

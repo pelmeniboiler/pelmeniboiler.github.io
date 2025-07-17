@@ -176,7 +176,7 @@
     "slug_output_placeholder": "SLUG output appears here...",
     "slug_clear_btn": "Clear",
     "slug_section_title": "SLUG: A Romanization for Graflect",
-    "slug_section_p1": "To make Graflect easier to type and discuss on systems without the proper font support, this guide proposes <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. The goal is to provide a true one-to-one mapping from Graflect symbols to easily-typed characters. This version uses common letters, digraphs, and a few with diacritics available on most keyboards."
+    "slug_section_p1": "To make Graflect easier to type and discuss on systems without the proper font support, this guide proposes <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. The goal is to provide a mapping from Graflect symbols to easily-typed glyphs. This version uses common letters, digraphs, and a few with diacritics available on most keyboards."
   },
   "he": {
     "graflect_ipa_title": "▤ טבלת Graflect וכלי תעתיק",
