@@ -216,6 +216,32 @@ p { font-size: 14px; margin-bottom: 0.8em; }
     color: var(--theme-bg-color); 
 }
 
+/* --- NEW ---: Persistent highlight for shared text */
+
+.shared-highlight {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  
+  /* --- ADDED --- */
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  /* By not specifying a text-decoration-color, it will match the text color above */
+  text-underline-offset: 2px;
+}
+
+/* Overrides for specific themes to use their accent colors */
+:root.funky-mode .shared-highlight,
+:root.champagne-mode .shared-highlight,
+:root.bubblegum-mode .shared-highlight,
+:root.techelet-mode .shared-highlight,
+:root.zelyonny-mode .shared-highlight,
+:root.akai-mode .shared-highlight,
+:root.rindswurst-mode .shared-highlight { 
+    background-color: var(--theme-accent-color); 
+    color: var(--theme-bg-color); 
+    /* No additional rules needed, the wavy line will correctly inherit the color */
+}
+
 a:link, a:visited { color: var(--text-color); text-decoration: none; }
 a:hover, a:active, a:focus-visible {
     background-color: var(--link-hover-bg);
