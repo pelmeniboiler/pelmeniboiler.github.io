@@ -4,10 +4,22 @@
  * This version includes distinct styles for desktop and mobile views.
  */
 
-.article-content {
+#gallery-window .content {
     overflow-y: auto; /* Allow vertical scrolling */
     height: 100%;
-    padding: 10px;
+    padding: 1rem; /* Reduced padding for a more subtle look */
+}
+
+/* Indent paragraphs within the article for better readability */
+#gallery-window .content p {
+    text-indent: 1em; /* Reduced indent for a more subtle effect */
+}
+
+/* Allow asides to break out of the container's padding for a full-width effect */
+#gallery-window .content aside {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding: 0.5rem 1rem; /* Add padding back to the aside's content */
 }
 
 .article-image {
@@ -22,7 +34,7 @@
 @media (min-width: 769px) {
     /* Main content window takes up the remaining space */
     #gallery-window .content {
-        padding: 0;
+        padding: 1.5rem; /* Reduced padding for desktop view */
         max-height: none;
         top: 0;
         left: 260px;
@@ -30,6 +42,13 @@
         bottom: 0;
         max-width: 100%;
         overflow-x: hidden;
+    }
+
+    /* Adjust aside for desktop padding */
+    #gallery-window .content aside {
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding: 1rem 1.5rem;
     }
 
     /* Desktop navigation window with constrained height and scrolling content */
