@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/styles/article.css">
 </head>
 <body class="eink-mode light-mode">
-    <nav id="nav-window" class="window" style="top: 0; left: 0; width: 260px; height: fit-content; position: absolute; z-index: 3;">
+    <nav id="nav-window" class="window">
         <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ coal.nav</span><button class="close-btn">&times;</button></div>
         <div class="content">
         <ul>
@@ -39,9 +39,14 @@
 
         </article>
 </main>
-    <div id="settings-module-placeholder"></div>
+    
     <div id="start-menu-module-placeholder"></div>
     <script src="/scripts/module-loader.js" defer></script>
+    <!-- Add this where you want the generator to appear -->
+    <div id="filtertakeout-module-placeholder"></div>
+    <div id="settings-module-placeholder"></div>
+
+    
     <script>
         // This script is self-contained and does not rely on external libraries.
         function setupChirperModals() {
@@ -86,5 +91,14 @@
         // that all modules have been injected into the page.
         document.addEventListener('modulesLoaded', setupChirperModals);
     </script>
+    <script>
+        document.addEventListener('modulesLoaded', () => {
+
+            if (typeof initializeFilterTakeout === 'function') {
+                initializeFilterTakeout();
+            }
+        });
+    </script>
+    <script src="/scripts/blog/demos/filtertakeout.js" defer></script>
 </body>
 </html>

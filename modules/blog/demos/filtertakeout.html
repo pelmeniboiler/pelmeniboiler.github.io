@@ -1,0 +1,129 @@
+<!-- 
+  This is the HTML module for the X Quality Filter Generator.
+  It has been updated to use the classes and structure from your pelmeni2025.css stylesheet.
+-->
+<main id="filter-takeout-module" class="window init-closed">
+  <div class="title-bar">
+    <span class="title" data-key="win_filter_takeout_title"><span class="symbol">🚫</span> filter.takeout</span>
+    <button class="close-btn">&times;</button>
+  </div>
+  <div class="content">
+    <h1>X Quality Filter Script Generator</h1>
+    <p>Select which sets of emojis you want to block. The script will be generated for you to paste into Tampermonkey.</p>
+
+    <div id="categories">
+        <h2>Categories</h2>
+        <div class="category-grid">
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-all">
+                    <strong>Literally Every Emoji</strong>
+                </label>
+                <div class="category-description">Blocks any and all emojis.</div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-flags" class="category-checkbox">
+                    <span>Flags</span>
+                </label>
+                <div class="category-preview symbol" id="preview-flags"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-faces" class="category-checkbox">
+                    <span>Faces & People</span>
+                </label>
+                <div class="category-preview symbol" id="preview-faces"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-symbols" class="category-checkbox">
+                    <span>Symbols & Pictographs</span>
+                </label>
+                <div class="category-preview symbol" id="preview-symbols"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-political" class="category-checkbox">
+                    <span>Political</span>
+                </label>
+                <div class="category-preview symbol" id="preview-political"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-religious" class="category-checkbox">
+                    <span>Religious</span>
+                </label>
+                <div class="category-preview symbol" id="preview-religious"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-edgy" class="category-checkbox">
+                    <span>Edgy / Aggressive</span>
+                </label>
+                <div class="category-preview symbol" id="preview-edgy"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-slop" class="category-checkbox">
+                    <span>Slop / Spam</span>
+                </label>
+                <div class="category-preview symbol" id="preview-slop"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-finance" class="category-checkbox">
+                    <span>Fake Finance</span>
+                </label>
+                <div class="category-preview symbol" id="preview-finance"></div>
+            </div>
+            <!-- Category Item -->
+            <div class="category-item">
+                <label>
+                    <input type="checkbox" id="cat-events" class="category-checkbox">
+                    <span>Global Events</span>
+                </label>
+                <div class="category-preview symbol" id="preview-events"></div>
+            </div>
+        </div>
+        <!-- Custom Emojis -->
+        <div style="margin-top: 1em;">
+             <label for="custom-emojis"><strong>Custom Emojis</strong></label>
+             <p>Add any other emojis you want to block, separated by spaces or commas.</p>
+             <textarea id="custom-emojis" rows="3" placeholder="🍉 🌻 ☭ ..." class="symbol"></textarea>
+        </div>
+    </div>
+    <!-- Live Preview -->
+    <div id="live-preview-container" style="margin-top: 1em;">
+        <h3>Live Preview of Blocked Emojis</h3>
+        <div id="live-preview-box" class="preview-box symbol">
+            <span>Your selected emojis will appear here...</span>
+        </div>
+        <p id="preview-count" style="text-align: right; font-size: 0.9em;"></p>
+    </div>
+    <div style="margin-top: 1em;">
+        <button id="generate-btn" class="normal-btn">
+            Generate Script
+        </button>
+    </div>
+    <div id="output-container" class="hidden" style="margin-top: 1em;">
+        <h2>Your Custom Script</h2>
+        <div class="output-wrapper" style="position: relative;">
+            <textarea id="output-script" rows="15" readonly></textarea>
+            <button id="copy-btn" class="normal-btn" style="position: absolute; top: 5px; right: 5px;">
+                Copy
+            </button>
+        </div>
+    </div>
+     <p id="copy-feedback" hidden>Copied to clipboard!</p>
+  </div>
+</main>

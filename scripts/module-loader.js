@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'share-module-placeholder', path: '/modules/share-module.html' },
         { id: 'chirper-demo-placeholder', path: '/modules/blog/demos/replab.html' },
         { id: 'graflect-module-placeholder', path: '/modules/blog/demos/graflectsubstitution.html' },
-        { id: 'slug-module-placeholder', path: '/modules/blog/demos/slug.html' }
+        { id: 'slug-module-placeholder', path: '/modules/blog/demos/slug.html' },
+        { id: 'filtertakeout-module-placeholder', path: '/modules/blog/demos/filtertakeout.html' }
     ];
 
     // Defines the scripts that depend on the modules being loaded first.

@@ -7,8 +7,9 @@
   src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Symbola';
-  src: url('fonts/Symbola.ttf') format('truetype');
+  /* **MODIFIED** Changed font-family to a unique name to avoid browser cache conflicts. */
+  font-family: 'SymbolaNoRI';
+  src: url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Garamond';
@@ -19,13 +20,22 @@
   src: url('fonts/FrankRuhl.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Noto Emoji';
-  src: url('fonts/NotoEmoji.ttf') format('truetype');
+  font-family: 'Noto EmojiNoRI';
+  src: url('fonts/NotoEmoji-Regular-NoRI.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Android EmojiNoRI';
+  src: url('fonts/AndroidEmojiNoRI.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'TwitterBWEmoji.ttf';
+  src: url('fonts/TwitterColorEmoji-SVGinOT.ttf') format('truetype');
 }
 /* --- THEME DEFINITIONS --- */
 :root {
   --font-body: Garamond, FrankRuhl, serif, FairfaxHD;
-  --font-emoji: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji';
+  /* **MODIFIED** Updated the font stack to use the new unique font name. */
+  --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android Emoji', 'TwitterBWEmoji.ttf', 'Segoe UI Emoji';
 
   --bg-color: #ffffff; 
   --text-color: #000000; 
@@ -99,23 +109,32 @@ body.lcd-mode {
     background-size: cover;
 }
 
-/* When e-ink mode is on, force images and iframes to be high-contrast */
+/* --- E-INK & LCD MODE STYLES --- */
+/* When e-ink mode is on, force images and iframes to be high-contrast monochrome. */
 body.eink-mode img,
 body.eink-mode iframe {
     filter: grayscale(1) brightness(1) contrast(250);
 }
 
-/* **FIX:** When lcd mode is on, explicitly remove any filters from images and iframes. */
-/* This ensures that styles from e-ink mode are correctly overridden. */
+/* When lcd mode is on, explicitly remove any filters from images and iframes. */
 body.lcd-mode img,
 body.lcd-mode iframe {
     filter: none;
 }
 
+/* **NEW** Apply crisp, monochrome filter to emojis ONLY in e-ink mode. */
+body.eink-mode .symbol {
+    /* This filter creates the high-contrast, black-and-white look the user preferred. */
+    filter: grayscale(1) brightness(.55) contrast(10);
+}
+
+
 /* --- STATIC ELEMENT STYLES --- */
 .symbol {
     font-family: var(--font-emoji);
-    font-weight: normal; 
+    font-weight: normal;
+    display: inline-block; /* Ensures proper rendering */
+    /* Default emoji style is now plain, allowing theme-specific overrides above. */
 }
 .logo-image-container svg, .start-button svg {
     object-fit: contain;
@@ -172,7 +191,7 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 .content ul, .content ol { padding-left: 2em; list-style: none; margin: 0; }
 .content ul li a, .content ol li a { padding-left: 1em; display: inline-block; }
 
-/* --- **NEW** WELCOME TEXT VISIBILITY RULES --- */
+/* --- WELCOME TEXT VISIBILITY RULES --- */
 /* By default, hide the LCD text and show the E-Ink text */
 .welcome-text-lcd { display: none; }
 .welcome-text-eink { display: block; }

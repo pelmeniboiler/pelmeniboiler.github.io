@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unicode Symbol and Emoji Viewer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Corrected link to the monochrome Noto Emoji font -->
+
     
     <style>
         :root {
@@ -37,8 +35,8 @@
         body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
         body { color: var(--text-color); }
         .symbol {
-            /* Updated font stack to prioritize Noto Emoji (monochrome) */
-            font-family: 'Symbola', 'Noto Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+            /* Updated font stack to prioritize Noto EmojiNoRI (monochrome) */
+            font-family: 'Symbola', 'Noto EmojiNoRI', 'Segoe UI Emoji', 'Apple Color Emoji', AndroidEmoji;
             font-weight: normal; /* Resetting weight to normal for monochrome font */
         }
         .window {
