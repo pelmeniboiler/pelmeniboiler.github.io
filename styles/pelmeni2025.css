@@ -7,7 +7,6 @@
   src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
 }
 @font-face {
-  /* **MODIFIED** Changed font-family to a unique name to avoid browser cache conflicts. */
   font-family: 'SymbolaNoRI';
   src: url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
 }
@@ -258,7 +257,14 @@ a:hover, a:active, a:focus-visible {
     color: var(--inv-bg-color);
 }
 
-.normal-btn { border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); padding: 6px 12px; }
+/* UPDATED: Added font-family: inherit to ensure buttons use the body's font stack */
+.normal-btn { 
+    border: 2px solid var(--border-color); 
+    background-color: var(--win-bg-color); 
+    color: var(--text-color); 
+    padding: 6px 12px; 
+    font-family: inherit; 
+}
 .normal-btn:hover, .normal-btn:active, .normal-btn:focus-visible {
     background-color: var(--text-color);
     color: var(--win-bg-color);

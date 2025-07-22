@@ -68,7 +68,7 @@
         }
         
         .transliterator-h2, .transliterator-h3 {
-            margin: 0 0 0.6em 0; 
+            margin: 0 0 0.3em 0; /* Reduced bottom margin */
             padding: 0; 
             font-weight: bold; 
         }
@@ -123,36 +123,164 @@
             display: block;
         }
 
-        .transliterator-line-display, .transliterator-segment-display {
+        .transliterator-line-display, .transliterator-segment-display, .transliterator-existing-preview {
             padding: 15px;
             border: 2px solid var(--border-color);
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced bottom margin */
             background-color: var(--bg-color);
             min-height: 50px;
             line-height: 1.6;
             overflow-wrap: break-word;
+            font-size: 1.2em;
         }
         
         .transliterator-segment-display {
             min-height: 30px;
             background-color: var(--inv-bg-color);
             color: var(--inv-text-color);
+            font-size: 1em;
         }
 
-        .transliterator-input {
+        /* NEW: Styles for the existing translation preview */
+        .transliterator-existing-preview-container.hidden {
+            display: none;
+        }
+        .transliterator-existing-preview {
+            background-color: var(--bg-color);
+            line-height: 2.5; /* Increased line-height to accommodate ruby */
+        }
+        .transliterator-existing-preview ruby {
+            font-size: inherit;
+            line-height: 1;
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 1em; /* Space for the ruby text */
+        }
+        .transliterator-existing-preview rt {
+            position: absolute;
+            top: -1.4em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6em;
+            font-family: monospace;
+            color: var(--inv-text-color);
+            background-color: var(--inv-bg-color);
+            padding: 1px 3px;
+            border-radius: 3px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+
+        /* --- Rich Input Area Styles --- */
+        .transliterator-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+            background-color: var(--win-bg-color);
+            resize: vertical;
+            overflow: auto;
+            min-height: 100px;
+        }
+
+        .transliterator-input, #graflect-preview {
             width: 100%;
-            height: 100px;
+            min-height: 100px;
+            height: 100%;
+            padding: 10px;
+            border: none; /* Border is now on the wrapper */
+            background-color: transparent;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1.2em;
+            line-height: 2;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+        }
+        
+        .transliterator-input {
+            resize: none; /* Resizing is on the wrapper */
+            z-index: 2; /* Textarea is on top to receive input */
+        }
+        
+        #graflect-preview {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            z-index: 1; /* Preview is in the background */
+            user-select: none;
+            overflow: hidden; /* Hide potential scrollbars on the preview itself */
+        }
+        
+        /* When slug view is active, the textarea's text becomes invisible, but the caret remains */
+        .transliterator-input.slug-active {
+            color: transparent;
+            caret-color: var(--text-color);
+        }
+
+        .transliterator-toggle-container {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Added gap for spacing between toggles */
+        }
+        
+        #slug-toggle, #slug-input-toggle {
+            margin-right: 8px;
+        }
+
+        /* --- NEW SLUG Input Styles --- */
+        .transliterator-slug-input-container {
+            margin-bottom: 10px;
+        }
+        
+        .transliterator-slug-input-container.hidden {
+            display: none;
+        }
+
+        #slug-input {
+            width: 100%;
+            min-height: 80px;
             padding: 10px;
             border: 2px solid var(--border-color);
             background-color: var(--win-bg-color);
             color: var(--text-color);
-            font-family: inherit;
-            font-size: 1em;
-            margin-bottom: 20px;
+            font-family: monospace; /* Monospace is good for this kind of input */
+            font-size: 1.1em;
+            line-height: 1.5;
             box-sizing: border-box;
             resize: vertical;
         }
-        
+
+
+        /* --- Ruby (SLUG) Styles for input preview --- */
+        #graflect-preview ruby {
+            font-size: inherit;
+            line-height: 1;
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 1em; /* Space for the ruby text */
+        }
+        #graflect-preview rt {
+            position: absolute;
+            top: -1.4em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6em;
+            font-family: monospace;
+            color: var(--inv-text-color);
+            background-color: var(--inv-bg-color);
+            padding: 1px 3px;
+            border-radius: 3px;
+            user-select: none; /* Prevent selecting the SLUG text */
+            -webkit-user-select: none;
+        }
+
+
         .transliterator-submit-btn {
             width: 100%;
             padding: 12px 20px;
@@ -232,13 +360,38 @@
                 <h2 class="transliterator-h2">Current Line:</h2>
                 <div id="english-line-container" class="transliterator-line-display"></div>
 
+                <!-- NEW: Container for existing translation preview -->
+                <div id="existing-graflect-container" class="transliterator-existing-preview-container hidden">
+                    <h3 class="transliterator-h3">Existing Graflect Translation:</h3>
+                    <div id="existing-graflect-preview" class="transliterator-existing-preview"></div>
+                </div>
+
                 <h2 class="transliterator-h2">Segment to Transliterate <span id="segment-progress-label" class="transliterator-segment-progress-label"></span>:</h2>
                 <div id="current-segment-container" class="transliterator-segment-display"></div>
 
-                <h2 class="transliterator-h2">Graflect Input:</h2>
-                <textarea id="graflect-input" class="transliterator-input" placeholder="Enter your transliteration here..."></textarea>
+                <h2 class="transliterator-h2">Input:</h2>
+                <div class="transliterator-toggle-container">
+                    <div>
+                        <input type="checkbox" id="slug-toggle">
+                        <label for="slug-toggle">Show Graflect Preview</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="slug-input-toggle">
+                        <label for="slug-input-toggle">Show SLUG Input</label>
+                    </div>
+                </div>
+                
+                <div id="slug-input-container" class="transliterator-slug-input-container hidden">
+                    <textarea id="slug-input" placeholder="Enter SLUG text here... e.g., 'pīpr'" spellcheck="false"></textarea>
+                </div>
+
+                <div id="input-wrapper" class="transliterator-input-wrapper">
+                    <div id="graflect-preview"></div>
+                    <textarea id="graflect-input" class="transliterator-input" placeholder="Enter your Graflect transliteration here..." spellcheck="false"></textarea>
+                </div>
                 
                 <table class="transliterator-input-grid">
+                    <!-- Grid content remains the same -->
                     <tr>
                         <td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td><td><button class="graflect"></button></td>
                     </tr>
@@ -297,15 +450,51 @@
         const progressBar = document.getElementById('progress-bar');
         const progressLabel = document.getElementById('progress-label');
         const inputGrid = document.querySelector('.transliterator-input-grid');
+        const slugToggle = document.getElementById('slug-toggle');
+        const graflectPreview = document.getElementById('graflect-preview');
+        const slugInputToggle = document.getElementById('slug-input-toggle');
+        const slugInputContainer = document.getElementById('slug-input-container');
+        const slugInput = document.getElementById('slug-input');
+        // NEW DOM Elements for existing translation preview
+        const existingGraflectContainer = document.getElementById('existing-graflect-container');
+        const existingGraflectPreview = document.getElementById('existing-graflect-preview');
+
 
         // --- State Management ---
         let allLines = [];
+        let existingTranslations = {}; // NEW: To store existing gt translations
         let currentLineIndex = 0;
         let graflectTranslations = {};
         let currentLineParts = [];
         let textPartsToTranslate = [];
         let currentTextPartIndex = 0;
         let transliteratedSegments = [];
+
+        // --- SLUG Conversion Maps ---
+        const slugMap = {
+            '': 'p', '': 'b', '': 't', '': 'd', '': 'k', '': 'g',
+            '': 'f', '': 'v', '': 'th', '': 'dh', '': 's', '': 'z',
+            '': 'š', '': 'ž', '': 'h', '': 'm', '': 'n', '': 'ng',
+            '': 'l', '': 'r', '': 'w', '': 'y', '': 'ī', '': 'i',
+            '': 'u', '': 'ü', '': 'e', '': 'æ', '': 'x', '': 'á',
+            '': 'ē', '': 'ä', '': 'ai', '': 'ow', '': 'ō', '': 'õ',
+            '': 'ö', '': '4', '': 'c', '': 'j', '': 'yü', '': 'wī',
+            '': 'yh', '': 'kh', '': 'rr', '': 'rh', '' : 'rä',
+            '': ' ' 
+        };
+        
+        let graflectMap = {};
+        let sortedGraflectMapKeys = [];
+
+        function createReverseMap() {
+            graflectMap = {};
+            for (const key in slugMap) {
+                graflectMap[slugMap[key]] = key;
+            }
+            sortedGraflectMapKeys = Object.keys(graflectMap).sort((a, b) => b.length - a.length);
+        }
+        createReverseMap();
+
 
         // --- Web Audio API Setup ---
         let audioCtx;
@@ -354,12 +543,66 @@
             }
             
             allLines = Object.entries(localizationData.en).map(([key, value]) => ({ key, value }));
+            // NEW: Load existing translations if they exist in the file
+            existingTranslations = localizationData.gt || {};
+            // Initialize the working translations with the existing ones
+            graflectTranslations = { ...existingTranslations };
+
             currentLineIndex = 0;
-            graflectTranslations = {};
             
             transliteratorApp.classList.add('active');
             startNewLine();
         }
+
+        // NEW: Generic function to render Graflect text with ruby SLUGs
+        function renderGraflectWithRuby(graflectText) {
+            let html = '';
+            let currentGraflectWord = '';
+            let currentSlugWord = '';
+            
+            // This function processes the currently buffered word and adds it to the HTML
+            const processCurrentWord = () => {
+                if (currentGraflectWord) {
+                    html += `<ruby>${currentGraflectWord}<rt>${currentSlugWord}</rt></ruby>`;
+                    currentGraflectWord = '';
+                    currentSlugWord = '';
+                }
+            };
+
+            // This function handles non-Graflect characters (like HTML tags)
+            const processNonGraflect = (text) => {
+                 // First, process any pending Graflect word
+                processCurrentWord();
+                // Then, append the non-Graflect text directly
+                html += text;
+            }
+
+            // A regex to find either a Graflect character or other content.
+            // It matches any character in the slugMap, or any sequence of characters NOT in the slugMap.
+            // It also specifically handles spaces and newlines.
+            const graflectCharsRegex = new RegExp(`([${Object.keys(slugMap).join('')}])|(\\s+)|([^${Object.keys(slugMap).join('')}\\s]+)`, 'g');
+            
+            graflectText.replace(graflectCharsRegex, (match, graflectChar, space, other) => {
+                if (graflectChar) {
+                    // It's a single Graflect character
+                    currentGraflectWord += graflectChar;
+                    currentSlugWord += slugMap[graflectChar];
+                } else {
+                    // It's a space, newline, or some other text (like an HTML tag)
+                    processCurrentWord(); // Finalize the word before the space/tag
+                    if (space) {
+                       html += space.replace(/\n/g, '<br>'); // Handle spaces and newlines
+                    } else if (other) {
+                       html += other; // Add other content like tags
+                    }
+                }
+                return ''; // replace function expects a return
+            });
+
+            processCurrentWord(); // Process any remaining word at the end of the string
+            return html;
+        }
+
 
         function startNewLine() {
             if (currentLineIndex >= allLines.length) {
@@ -370,6 +613,16 @@
             updateOverallProgress();
             const currentLine = allLines[currentLineIndex];
             englishLineContainer.innerHTML = currentLine.value;
+
+            // NEW: Check for and display existing translation
+            const existingLineTranslation = existingTranslations[currentLine.key];
+            if (existingLineTranslation) {
+                existingGraflectPreview.innerHTML = renderGraflectWithRuby(existingLineTranslation);
+                existingGraflectContainer.classList.remove('hidden');
+            } else {
+                existingGraflectContainer.classList.add('hidden');
+            }
+
 
             const parser = new DOMParser();
             const doc = parser.parseFromString(`<body>${currentLine.value}</body>`, 'text/html');
@@ -389,7 +642,6 @@
             if (textPartsToTranslate.length === 0 && currentLineParts.length > 0) {
                  finalizeLineAndProceed();
             } else if (textPartsToTranslate.length === 0 && currentLineParts.length === 0) {
-                 // Handle completely empty lines
                  const currentLineKey = allLines[currentLineIndex].key;
                  graflectTranslations[currentLineKey] = "";
                  currentLineIndex++;
@@ -410,6 +662,8 @@
             currentSegmentContainer.textContent = segment.content;
             segmentProgressLabel.textContent = `(${currentTextPartIndex + 1}/${textPartsToTranslate.length})`;
             graflectInput.value = '';
+            slugInput.value = '';
+            graflectInput.dispatchEvent(new Event('input'));
             graflectInput.focus();
             submitBtn.textContent = 'Submit Segment';
         }
@@ -427,7 +681,13 @@
             });
 
             const currentLineKey = allLines[currentLineIndex].key;
-            graflectTranslations[currentLineKey] = finalString;
+            // Only update if there was something to translate
+            if (textPartsToTranslate.length > 0) {
+                 graflectTranslations[currentLineKey] = finalString;
+            } else if (graflectTranslations[currentLineKey] === undefined) {
+                 // If there was nothing to translate and no existing translation, save the original HTML structure
+                 graflectTranslations[currentLineKey] = allLines[currentLineIndex].value;
+            }
             
             currentLineIndex++;
             startNewLine();
@@ -437,9 +697,13 @@
             englishLineContainer.innerHTML = '<strong>All lines completed!</strong>';
             currentSegmentContainer.textContent = '---';
             segmentProgressLabel.textContent = '';
+            existingGraflectContainer.classList.add('hidden'); // Hide preview on finish
             graflectInput.disabled = true;
+            slugInput.disabled = true;
             graflectInput.value = '';
+            slugInput.value = '';
             graflectInput.placeholder = 'Done!';
+            slugInput.placeholder = 'Done!';
             submitBtn.textContent = 'Copy JSON to Clipboard';
         }
 
@@ -510,7 +774,43 @@
             graflectInput.value = newText;
             graflectInput.selectionStart = graflectInput.selectionEnd = start + text.length;
             graflectInput.focus();
+            graflectInput.dispatchEvent(new Event('input'));
         }
+
+        function updateSlugPreview() {
+            const text = graflectInput.value;
+            // We can reuse the same rendering function!
+            graflectPreview.innerHTML = renderGraflectWithRuby(text);
+        }
+
+        function syncScroll() {
+            graflectPreview.scrollTop = graflectInput.scrollTop;
+            graflectPreview.scrollLeft = graflectInput.scrollLeft;
+        }
+        
+        function convertSlugToGraflect() {
+            let inputText = slugInput.value;
+            let outputText = '';
+            let i = 0;
+            while (i < inputText.length) {
+                let foundMatch = false;
+                for (const key of sortedGraflectMapKeys) {
+                    if (inputText.substring(i, i + key.length) === key) {
+                        outputText += graflectMap[key];
+                        i += key.length;
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (!foundMatch) {
+                    outputText += inputText[i];
+                    i++;
+                }
+            }
+            graflectInput.value = outputText;
+            graflectInput.dispatchEvent(new Event('input'));
+        }
+
 
         // --- Event Listeners ---
         submitBtn.addEventListener('click', handleSubmit);
@@ -528,13 +828,11 @@
             e.stopPropagation();
             fileLoaderContainer.classList.add('dragover');
         });
-
         fileLoaderContainer.addEventListener('dragleave', (e) => {
             e.preventDefault();
             e.stopPropagation();
             fileLoaderContainer.classList.remove('dragover');
         });
-
         fileLoaderContainer.addEventListener('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -559,10 +857,17 @@
                             insertAtCursor(' ');
                             break;
                         case 'backspace':
-                            graflectInput.value = graflectInput.value.slice(0, -1);
+                            const start = graflectInput.selectionStart;
+                            const end = graflectInput.selectionEnd;
+                            if (start > 0 && start === end) {
+                                graflectInput.value = graflectInput.value.substring(0, start - 1) + graflectInput.value.substring(end);
+                                graflectInput.selectionStart = graflectInput.selectionEnd = start - 1;
+                            } else {
+                                graflectInput.value = graflectInput.value.slice(0, -1);
+                            }
+                            graflectInput.dispatchEvent(new Event('input'));
                             break;
                         case 'delete':
-                             // This is a simplified delete, more complex logic needed for cursor position
                             break;
                         case 'tab':
                             insertAtCursor('\t');
@@ -571,8 +876,33 @@
                 } else {
                     insertAtCursor(char);
                 }
+                 graflectInput.focus();
             }
         });
+
+        slugToggle.addEventListener('change', () => {
+            graflectInput.classList.toggle('slug-active', slugToggle.checked);
+            if (slugToggle.checked) {
+                updateSlugPreview();
+            }
+            graflectInput.focus();
+        });
+
+        graflectInput.addEventListener('input', () => {
+            updateSlugPreview();
+            syncScroll();
+        });
+        
+        graflectInput.addEventListener('scroll', syncScroll);
+
+        slugInputToggle.addEventListener('change', () => {
+            slugInputContainer.classList.toggle('hidden', !slugInputToggle.checked);
+            if (slugInputToggle.checked) {
+                slugInput.focus();
+            }
+        });
+
+        slugInput.addEventListener('input', convertSlugToGraflect);
 
     };
     </script>

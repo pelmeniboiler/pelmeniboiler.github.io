@@ -68,6 +68,17 @@ function initializeGraflectTool() {
         'k': '', 'm': '', 'n': '', 'v': '', 'z': '', 'tr': ''
     };
     
+    const slugMap = {
+        '': 'p', '': 'b', '': 't', '': 'd', '': 'k', '': 'g',
+        '': 'f', '': 'v', '': 'th', '': 'dh', '': 's', '': 'z',
+        '': 'š', '': 'ž', '': 'h', '': 'm', '': 'n', '': 'ng',
+        '': 'l', '': 'r', '': 'w', '': 'y', '': 'ī', '': 'i',
+        '': 'u', '': 'ü', '': 'e', '': 'æ', '': 'x', '': 'á',
+        '': 'ē', '': 'ä', '': 'ai', '': 'ow', '': 'ō', '': 'õ',
+        '': 'ö', '': '4', '': 'c', '': 'j', '': 'yü', '': 'wī',
+        '': 'yh', '': 'kh', '': 'rr', '': 'rh', '' : 'rä',
+    };
+
     const diagnosticParagraph = "I know that he and she will not go, but we can see what they do. So, all people have a time to find their own way. If you look for it, you may also get more than you think. This one man had a good day; his work was about to make a change. These other people came out from the house to use the long road and go down to the water. How did he know? It was the first time they had been over there. I will give him a call now.";
 
     // --- DOM ELEMENTS ---
@@ -77,6 +88,7 @@ function initializeGraflectTool() {
     const diagnosticBtn = document.getElementById('diagnostic-btn');
     const manageDictBtn = document.getElementById('manage-dict-btn');
     const activeDictNameEl = document.getElementById('active-dict-name');
+    const showSlugCheckbox = document.getElementById('show-slug-checkbox');
     
     // Modals
     const dictionaryManagerModal = document.getElementById('dictionary-manager-modal');
@@ -132,6 +144,7 @@ function initializeGraflectTool() {
     let confirmationCallback;
     let notificationTimeout;
     let currentlyEditingDictIndex = -1;
+    let lastRawOutput = ''; // UPDATED: State to hold the last result
 
     // --- FUNCTIONS ---
 
@@ -154,6 +167,47 @@ function initializeGraflectTool() {
 
     function getActiveDictionary() {
         return dictionaries[activeDictionaryIndex];
+    }
+    
+    function convertGraflectToSlug(graflectText) {
+        let slugText = '';
+        for (const char of graflectText) {
+            if (slugMap.hasOwnProperty(char)) {
+                slugText += slugMap[char];
+            } else {
+                slugText += char;
+            }
+        }
+        return slugText;
+    }
+
+    // NEW: Renders the output based on the last raw result and checkbox state
+    function renderOutput() {
+        if (!lastRawOutput) {
+            outputEl.innerHTML = '';
+            return;
+        }
+
+        // If the checkbox is checked, build and render the HTML with ruby tags
+        if (showSlugCheckbox.checked) {
+            const parts = lastRawOutput.split(/(\s+|[.,!?;:"()'-]|\d+)/g);
+            let htmlOutput = '';
+            for (const part of parts) {
+                 if (!part) continue;
+                 // If it's not a word (e.g., space, punctuation), add it directly
+                 if (part.match(/(\s+|[.,!?;:"()'-]|\d+)/)) {
+                    htmlOutput += part;
+                 } else {
+                    // Otherwise, it's a word; create a ruby element for it
+                    const slugWord = convertGraflectToSlug(part);
+                    htmlOutput += `<ruby>${part}<rt>${slugWord}</rt></ruby>`;
+                 }
+            }
+            outputEl.innerHTML = htmlOutput;
+        } else {
+            // Otherwise, just render the plain text
+            outputEl.textContent = lastRawOutput;
+        }
     }
 
     function createDefaultDictionary() {
@@ -303,41 +357,28 @@ function initializeGraflectTool() {
     async function handleTransliterateClick() {
         transliterateBtn.disabled = true;
         transliterateBtn.textContent = "Processing...";
-        outputEl.textContent = '';
+        outputEl.innerHTML = '';
+        lastRawOutput = ''; // Clear previous result
+
         const text = inputEl.value;
         const parts = text.split(/(\s+|[.,!?;:"()'-])/g);
-        let finalOutput = '';
+        let rawOutput = '';
 
         for (const part of parts) {
             if (!part) continue;
             if (part.match(/(\s+|[.,!?;:"()'-]|\d+)/)) {
-                finalOutput += part;
+                rawOutput += part;
             } else {
                 const word = part;
                 const graflectWord = await processWord(word);
-                finalOutput += graflectWord;
+                rawOutput += graflectWord;
             }
-            outputEl.textContent = finalOutput;
+            // Temporarily update with raw text for responsiveness during long prompts
+            outputEl.textContent = rawOutput;
         }
         
-        const invalidChars = new Set();
-        const allowedChars = new Set(".,!?;:\"()'- \n\t0123456789".split(''));
-        for (const char of finalOutput) {
-            const code = char.charCodeAt(0);
-            const isGraflect = code >= 0xEC70 && code <= 0xECEF;
-            const isAllowed = allowedChars.has(char);
-
-            if (!isGraflect && !isAllowed) {
-                invalidChars.add(char);
-            }
-        }
-
-        if (invalidChars.size > 0) {
-            console.error(
-                "DEBUG CHECK FAILED: Invalid characters found in final output.", 
-                { invalidChars: Array.from(invalidChars) }
-            );
-        }
+        lastRawOutput = rawOutput; // Store the final raw result
+        renderOutput(); // Render the final output correctly
 
         transliterateBtn.disabled = false;
         transliterateBtn.textContent = "Transliterate";
@@ -689,6 +730,8 @@ function initializeGraflectTool() {
     if (diagnosticBtn) diagnosticBtn.addEventListener('click', handleDiagnosticClick);
     if (manageDictBtn) manageDictBtn.addEventListener('click', openDictionaryManager);
     if (importInput) importInput.addEventListener('change', handleImportChange);
+    // UPDATED: Add event listener for the checkbox to re-render the output
+    if (showSlugCheckbox) showSlugCheckbox.addEventListener('change', renderOutput);
 
     if (newDictBtn) newDictBtn.addEventListener('click', () => newDictionaryModal.classList.remove('hidden'));
     if (closeModalManagerBtn) closeModalManagerBtn.addEventListener('click', () => dictionaryManagerModal.classList.add('hidden'));
@@ -735,5 +778,5 @@ function initializeGraflectTool() {
     loadDictionaries();
 }
 
-// UPDATED: Add the event listener to automatically initialize the tool.
+// Add the event listener to automatically initialize the tool.
 document.addEventListener('modulesLoaded', initializeGraflectTool);

@@ -5,250 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graflect Transliteration Tool</title>
-    <style>
-        /* Component-Specific Layout */
-        .graflect-tool-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-            height: 100%;
-        }
-        .tool-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 8px;
-            border: 2px solid var(--border-color, #000);
-            flex-shrink: 0;
-        }
-        .active-dict-display {
-            font-style: italic;
-        }
-        #active-dict-name {
-            font-weight: bold;
-        }
-        .textarea-container {
-            position: relative;
-            width: 100%;
-            flex-grow: 1;
-            display: flex;
-        }
-        #english-input {
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            resize: none;
-            padding: 1em;
-            padding-right: 150px; /* Space for button */
-            border: 2px solid var(--border-color, #000);
-            background-color: var(--win-bg-color, #fff);
-            color: var(--text-color, #000);
-            font-family: inherit;
-            font-size: 1.1em;
-        }
-        #diagnostic-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-        }
-        #output-container {
-            min-height: 80px;
-            border: 2px solid var(--border-color, #000);
-            padding: 1em;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            word-wrap: break-word; 
-            background-color: var(--bg-color, #fff);
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        #output {
-            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
-            font-size: 1.5em;
-        }
-
-        /* Modal Styles */
-        .ledger-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-        }
-        .ledger-modal-overlay.hidden {
-            display: none;
-        }
-        .ledger-modal-overlay .window {
-             width: 90%;
-             max-width: 600px;
-        }
-        
-        .modal-close { 
-            cursor: pointer;
-            color: var(--inv-text-color); 
-            background: transparent; 
-            border: none; 
-            font-size: 20px; 
-            font-weight: bold; 
-            padding: 0 4px; 
-        }
-        .modal-close:hover, .modal-close:active, .modal-close:focus-visible {
-            outline: none;
-            background-color: var(--inv-text-color);
-            color: var(--inv-bg-color);
-        }
-
-        #dictionary-editor-modal .content {
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        .modal-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .modal-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8em;
-            border-bottom: 2px solid var(--border-color, #000);
-        }
-        .modal-list li:last-child {
-            border-bottom: none;
-        }
-        .dict-info .name { font-weight: bold; }
-        .dict-info .author { font-style: italic; font-size: 0.9em; }
-        
-        #dictionary-editor-modal .dictionary-word, #dictionary-editor-modal .grapheme-key {
-            opacity: 0.5;
-            font-family: inherit;
-            font-size: 1em;
-        }
-        #dictionary-editor-modal .dictionary-graflect, #dictionary-editor-modal .grapheme-output {
-            opacity: 1;
-        }
-
-        .dict-edit-input {
-            background-color: var(--win-bg-color, #fff);
-            border: 2px solid var(--border-color, #000);
-            color: var(--text-color, #000);
-            padding: 0.2em;
-            flex-grow: 1;
-            margin-left: 1em;
-        }
-        .graflect-font-input {
-            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
-            font-size: 1.2em;
-        }
-        .english-font-input {
-            font-family: inherit;
-            font-size: 1em;
-        }
-
-        .dict-btn-group button, .dict-btn-group .button-label {
-             margin-left: 0.5em;
-        }
-        .modal-footer {
-            margin-top: 1.5em;
-            padding-top: 1.5em;
-            border-top: 2px solid var(--border-color, #000);
-            display: flex;
-            gap: 1em;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        /* Inline Prompt Area */
-        #prompt-area {
-            border: 2px dashed var(--border-color, #000);
-            padding: 1em;
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-        }
-        #prompt-area.hidden {
-            display: none;
-        }
-        #prompt-area .choice-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5em;
-        }
-        #prompt-area .direct-input-area {
-             border-top: 2px solid var(--border-color, #000);
-             padding-top: 1em;
-        }
-        .prompt-word-highlight {
-            border-bottom: 2px dotted var(--text-color, #000);
-            padding-bottom: 1px;
-        }
-
-        /* Notification Banner - NO ANIMATION */
-        #notification-banner {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--win-bg-color, #fff);
-            color: var(--text-color, #000);
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: 2px solid var(--border-color, #000);
-            z-index: 100;
-        }
-        #notification-banner.hidden {
-            display: none;
-        }
-
-        /* Form styling for modals */
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-        }
-        .modal-form label {
-            font-weight: bold;
-        }
-        .modal-form input {
-            padding: 0.5em;
-            border: 2px solid var(--border-color, #000);
-            background-color: var(--win-bg-color, #fff);
-            color: var(--text-color, #000);
-        }
-
-        /* Tab styles for dictionary editor */
-        .editor-tabs {
-            display: flex;
-            border-bottom: 2px solid var(--border-color, #000);
-            margin-bottom: 1em;
-        }
-        .editor-tab {
-            padding: 0.5em 1em;
-            cursor: pointer;
-            border: 2px solid var(--border-color, #000);
-            border-bottom: none;
-            background-color: var(--bg-color, #eee);
-            opacity: 0.7;
-            margin-bottom: -2px;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-        }
-        .editor-tab.active {
-            background-color: var(--win-bg-color, #fff);
-            border-bottom: 2px solid var(--win-bg-color, #fff);
-            opacity: 1;
-        }
-        .editor-content.hidden {
-            display: none;
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -282,21 +39,24 @@
                 <div class="direct-input-area">
                     <label for="direct-graflect-input" data-key="direct_input_label">Or enter direct Graflect substitution:</label>
                     <div style="display: flex; gap: 0.5em; margin-top: 0.5em;">
-                        <input type="text" id="direct-graflect-input" class="graflect-font">
+                        <input type="text" id="direct-graflect-input" class="graflect-font-input">
                         <button id="use-direct-input-btn" class="normal-btn" data-key="use_btn">Use</button>
                     </div>
                 </div>
                 <div class="remember-choice">
                     <input type="checkbox" id="remember-choice-checkbox" checked>
-                    <!-- UPDATED: Restored span to fix bug -->
                     <label for="remember-choice-checkbox" data-key="remember_choice_label">Remember this choice for "<span id="prompt-word-for-checkbox"></span>"</label>
                 </div>
             </div>
 
             <div>
                 <h2 data-key="result_heading">Result:</h2>
+                <div class="output-options" style="margin-bottom: 0.5em;">
+                    <input type="checkbox" id="show-slug-checkbox">
+                    <label for="show-slug-checkbox">Show SLUG equivalents.</label>
+                </div>
                 <div id="output-container">
-                    <span id="output" class="graflect-font"></span>
+                    <div id="output" class="graflect-font"></div>
                 </div>
             </div>
         </div>
