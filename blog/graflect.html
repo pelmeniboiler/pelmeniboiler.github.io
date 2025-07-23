@@ -13,6 +13,7 @@
     <title>▤ Graflect Chart and Tool</title>
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <link rel="stylesheet" href="/styles/article.css">
+    <link rel="stylesheet" href="/styles/blog/demos/graflect/romaji.css">
     
     <style>
         /* Basic table styling for readability */
@@ -413,7 +414,7 @@
             </header>
             <section>
                 <p data-key="graflect_example_p">Here is an example paragraph written in Graflect, I hope my voice comes through.<br></p>
-                <aside> , . . , , , , , , . <br>  .    ,    : <br>&emsp;" ,    " <br>&emsp;" "</aside>
+                <aside> , . . , , , , , , . <br>  .    ,    : <br>&emsp;" ,    " <br>&emsp;" "</aside>
             </section>
             <hr>
             <section id="slug">
@@ -532,10 +533,14 @@
     <div id="graflect-module-placeholder"></div>
     <div id="share-module-placeholder"></div>
     <div id="slug-module-placeholder"></div>
+    <div id="romaji-module-placeholder"></div>
     <div id="settings-module-placeholder"></div>
     <!-- Scripts -->
     <script src="/scripts/blog/demos/graflect.js" defer></script>
     <script src="/scripts/blog/demos/slug.js" defer></script>
+    <script src="/scripts/blog/demos/dictionarymanager.js" defer></script>
+    <script src="/scripts/blog/demos/graflect-data.js" defer></script>
+    <script src="/scripts/blog/demos/romaji.js" defer></script>
     <script src="/scripts/module-loader.js" defer></script>
 
      <script>
@@ -554,6 +559,9 @@
                 initializeSlugConverter();
             } else {
                 console.log("SLUG converter not found on this page.");
+            }
+            if (typeof initializeRomajiIME === 'function') {
+                initializeRomajiIME();
             }
         });
     </script>

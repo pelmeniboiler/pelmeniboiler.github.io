@@ -1,72 +1,115 @@
 /**
- * /scripts/slug.js
- * Contains the JavaScript logic for the Graflect-to-SLUG converter module.
- * This script should be loaded on any page that includes the SLUG converter module.
- * The main logic is wrapped in the initializeSlugConverter function, which is called
- * by an event listener once the module's HTML is loaded.
+ * /scripts/blog/demos/slug.js
+ * * Contains the JavaScript logic for a mass Graflect-to-Slug converter.
+ * This script is designed to be loaded as part of a module. It initializes
+ * itself by listening for the 'modulesLoaded' custom event.
+ * * This script depends on `graflect-data.js` being loaded first to provide the `slugMap`.
+ */
+
+/**
+ * Initializes the slug converter tool, attaching all necessary event listeners.
+ * This function is designed to be called after its corresponding HTML module is loaded.
  */
 function initializeSlugConverter() {
-    // Find the SLUG converter module on the page using its unique ID.
-    // If it's not there, do nothing.
-    const slugModule = document.getElementById('slug-converter-module');
-    if (!slugModule) {
-        return; // Exit if the converter module isn't on this page.
-    }
-
-    // The mapping from Graflect characters to SLUG characters.
-    const slugMap = {
-        '': 'p', '': 'b', '': 't', '': 'd', '': 'k', '': 'g',
-        '': 'f', '': 'v', '': 'th', '': 'dh', '': 's', '': 'z',
-        '': 'š', '': 'ž', '': 'h', '': 'm', '': 'n', '': 'ng',
-        '': 'l', '': 'r', '': 'w', '': 'y', '': 'ī', '': 'i',
-        '': 'u', '': 'ü', '': 'e', '': 'æ', '': 'x', '': 'á',
-        '': 'ē', '': 'ä', '': 'ai', '': 'ow', '': 'ō', '': 'õ',
-        '': 'ö', '': '4', '': 'c', '': 'j', '': 'yü', '': 'wī',
-        '': 'yh', '': 'kh', '': 'rr', '': 'rh', '' : 'rä',
-        // Punctuation and special characters
-        '': ' '
-    };
-
-    // Getting references to the HTML elements within the module
-    const clearBtn = slugModule.querySelector('#clear-slug-btn');
-    const graflectInput = slugModule.querySelector('#graflect-input');
-    const slugOutput = slugModule.querySelector('#slug-output');
-
-    // Check if all required elements are present before adding listeners
-    if (!graflectInput || !slugOutput || !clearBtn) {
-        console.error("SLUG Converter: Could not find all required elements (input, output, or clear button).");
+    // --- VALIDATION ---
+    // Ensure the required data from graflect-data.js is available.
+    if (typeof slugMap === 'undefined') {
+        console.error("Error: slug.js requires graflect-data.js to be loaded first.");
+        const converterBody = document.getElementById('converter-body');
+        if(converterBody) {
+            converterBody.innerHTML = '<p class="text-red-500 font-bold">Error: Required data file (graflect-data.js) is not loaded. The converter cannot function.</p>';
+        }
         return;
     }
 
-    // Function to perform the conversion
-    function convertText() {
-        const inputText = graflectInput.value;
-        let outputText = '';
-        // Iterate over each character in the input text
-        for (const char of inputText) {
-            // Check if the character exists as a key in our map
-            if (slugMap.hasOwnProperty(char)) {
-                outputText += slugMap[char];
-            } else {
-                // If not in the map (like spaces, newlines), keep it as is.
-                outputText += char;
-            }
-        }
-        slugOutput.value = outputText;
+    // --- DOM ELEMENTS ---
+    const graflectInputEl = document.getElementById('graflect-input');
+    const slugOutputEl = document.getElementById('slug-output');
+    const copyBtn = document.getElementById('copy-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const notificationBannerEl = document.getElementById('notification-banner');
+
+    let notificationTimeout;
+
+    // --- CORE FUNCTIONS ---
+
+    /**
+     * Shows a short-lived notification message.
+     * @param {string} message - The message to display.
+     */
+    function showNotification(message) {
+        if (!notificationBannerEl) return;
+        if (notificationTimeout) clearTimeout(notificationTimeout);
+        notificationBannerEl.textContent = message;
+        notificationBannerEl.classList.remove('hidden');
+        notificationTimeout = setTimeout(() => {
+            notificationBannerEl.classList.add('hidden');
+        }, 3000);
     }
 
-    // Event listener for the "Clear" button
-    clearBtn.addEventListener('click', () => {
-        graflectInput.value = '';
-        slugOutput.value = '';
-    });
+    /**
+     * Converts a string of Graflect text into its "slug" representation.
+     * @param {string} graflectText - The input text in the Graflect font.
+     * @returns {string} The converted text in a readable format.
+     */
+    function convertGraflectToSlug(graflectText) {
+        let slugText = '';
+        for (const char of graflectText) {
+            slugText += slugMap[char] || char;
+        }
+        return slugText;
+    }
 
-    // Automatically convert as the user types for a real-time experience
-    graflectInput.addEventListener('input', convertText);
+    /**
+     * Handles the live conversion as the user types.
+     */
+    function handleLiveConversion() {
+        const inputText = graflectInputEl.value;
+        const outputText = convertGraflectToSlug(inputText);
+        slugOutputEl.value = outputText;
+    }
+
+    /**
+     * Copies the content of the output textarea to the clipboard.
+     */
+    function handleCopy() {
+        if (!slugOutputEl.value) {
+            showNotification('Nothing to copy!');
+            return;
+        }
+        navigator.clipboard.writeText(slugOutputEl.value).then(() => {
+            showNotification('Copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            showNotification('Copy failed. See console for details.');
+        });
+    }
+
+    /**
+     * Clears both the input and output text areas.
+     */
+    function handleClear() {
+        graflectInputEl.value = '';
+        slugOutputEl.value = '';
+        showNotification('Cleared text areas.');
+    }
+
+    // --- EVENT LISTENERS ---
+    if (graflectInputEl) {
+        graflectInputEl.addEventListener('input', handleLiveConversion);
+    } else {
+        console.error("Input element with id 'graflect-input' not found.");
+    }
     
-    console.log("SLUG Converter module initialized successfully.");
+    if (copyBtn) {
+        copyBtn.addEventListener('click', handleCopy);
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', handleClear);
+    }
+
 }
 
-// This event listener ensures that the script only runs after the module
-// loader has finished injecting the HTML content into the page.
+// Add the event listener to automatically initialize the tool when the parent page signals it's ready.
 document.addEventListener('modulesLoaded', initializeSlugConverter);

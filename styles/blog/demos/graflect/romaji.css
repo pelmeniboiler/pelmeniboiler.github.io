@@ -1,343 +1,455 @@
- /* Basic Page Styles adapted for pelmeni2025.css */
-        body {
-            padding: 2em;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .container {
-            background-color: var(--win-bg-color);
-            padding: 2em;
-            border: 2px solid var(--border-color);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 1.5em;
-        }
-        p {
-            line-height: 1.6;
-            margin-bottom: 1em;
-        }
-        /* Make all buttons conform to .normal-btn style */
-        button {
-            border: 2px solid var(--border-color);
-            background-color: var(--win-bg-color);
-            color: var(--text-color);
-            padding: 6px 12px;
-            font-family: inherit;
-            cursor: pointer;
-        }
-        button:hover, button:active, button:focus-visible {
-            background-color: var(--text-color);
-            color: var(--win-bg-color);
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background-color: var(--win-bg-color);
-            color: var(--text-color);
-        }
+/**
+ * /styles/romaji-ime.css
+ * * Contains all the specific styles for the Romaji IME module.
+ * This file should be linked by any page that imports romaji-ime.html.
+ * UPDATED: Styles now use variables from pelmeni2025.css for theming,
+ * inherit the main font stack, and match button styles.
+ * FIXED: Re-implemented shared class with aggressive resets to guarantee alignment.
+ */
 
-        /* Force the FairfaxHD font on all elements with this class */
-        .graflect-font {
-            font-family: "FairfaxHD", "Times New Roman", Times, serif !important;
-        }
+/* --- Module Root --- */
+#romaji-ime-module {
+    /* Set a minimum width for the module as requested */
+    min-width: 768px;
+    /* FIX: Ensure the module itself is a flex container to allow children to grow */
+    min-height: 500px;
+}
 
-        /* Ruby Text Styles */
-        ruby {
-            ruby-position: over;
-        }
-        rt {
-            font-family: 'Courier New', monospace;
-            font-size: 0.6em;
-            opacity: 0.8;
-            color: var(--text-color);
-        }
+/* --- Font & Text Styles --- */
 
-        /* --- Styles for Romaji Input Tool --- */
-        .romaji-input-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-        }
-        
-        .output-container {
-            position: relative;
-        }
+.graflect-font {
+    font-family: "FairfaxHD", "Times New Roman", Times, serif !important;
+}
 
-        /* Shared styles for perfect alignment - RETAINED */
-        .shared-input-style {
-            min-height: 120px;
-            padding: 1em;
-            font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
-            font-size: 1.6em;
-            line-height: 2.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            box-sizing: border-box;
-            width: 100%;
-            margin: 0;
-            letter-spacing: normal;
-            word-spacing: normal;
-            font-kerning: none;
-        }
+ruby {
+    ruby-position: over;
+    padding: 0;
+    margin: 0;
+}
 
-        #romaji-output-display {
-            background-color: var(--win-bg-color);
-            border: 2px solid var(--border-color);
-            overflow: hidden; 
-        }
+rt {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6em;
+    opacity: 0.8;
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+}
 
-        #romaji-output-editor {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            z-index: 2;
-            resize: none;
-            overflow: auto; 
-            background-color: transparent;
-            color: transparent; 
-            caret-color: var(--text-color); 
-            border: 2px solid transparent; 
-        }
-        /* Conform to pelmeni2025.css focus style */
-        #romaji-output-editor:focus {
-             outline: 2px solid var(--border-color);
-             outline-offset: 2px;
-        }
-        
-        #ime-floater {
-            position: absolute;
-            z-index: 20;
-            background-color: var(--win-bg-color);
-            border: 2px solid var(--border-color);
-        }
-        #ime-floater.hidden {
-            display: none;
-        }
+/* --- Main IME Tool Styles --- */
 
-        #builder-display {
-            padding: 0.8em;
-            border-bottom: 2px solid var(--border-color);
-        }
-        .builder-processed {
-            opacity: 0.5;
-        }
-        /* Conform to highlight style */
-        .builder-prompt {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            border-bottom: 2px solid var(--text-color);
-            font-weight: bold;
-        }
-        .builder-graflect {
-            font-size: 1.5em;
-            margin-top: 0.2em;
-        }
+.romaji-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+    /* FIX: This property is necessary for the container to fill the available vertical space in the parent window. */
+    flex-grow: 1;
+}
 
-        .suggestions-dropdown {
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        .suggestion-item {
-            padding: 0.8em;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .suggestion-item:last-child {
-            border-bottom: none;
-        }
-        .suggestion-item.divider {
-            cursor: default;
-            background-color: var(--bg-color);
-            padding: 0.2em;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .suggestion-item .suggestion-content {
-            display: flex;
-            align-items: center;
-            gap: 1em;
-        }
-        .suggestion-item .graflect-font {
-            font-size: 1.4em;
-        }
-        .suggestion-item .slug-text {
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            opacity: 0.7;
-        }
-        /* Conform to hover/active style */
-        .suggestion-item.active, .suggestion-item:hover:not(.divider) {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-        }
-        .suggestion-item.active .slug-text, .suggestion-item:hover:not(.divider) .slug-text {
-            color: var(--bg-color);
-            opacity: 0.8;
-        }
-        
-        .editor-controls {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            display: flex;
-            gap: 8px;
-            z-index: 5;
-        }
-        .editor-controls button {
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
+.output-container {
+    position: relative;
+    display: flex;
+    /* FIX: This allows the textbox area to expand to its min-height. */
+    flex-grow: 1;
+}
 
-        /* Notification Banner */
-        #notification-banner {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 8px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none;
-        }
-        #notification-banner.visible {
-            opacity: 1;
-        }
+.output-container.is-focused {
+     outline: 2px solid var(--text-color);
+     border-radius: 4px;
+}
 
-        /* Modal Styles adapted for pelmeni2025.css */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 900;
-        }
-        .modal-overlay.hidden {
-            display: none;
-        }
-        .modal-window {
-             width: 90%;
-             max-width: 600px;
-             background-color: var(--win-bg-color);
-             border: 2px solid var(--border-color);
-             display: flex;
-             flex-direction: column;
-        }
-        /* Style modal header like a .title-bar */
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5em 1em;
-            border-bottom: 2px solid var(--border-color);
-            background-color: var(--inv-bg-color);
-            color: var(--inv-text-color);
-        }
-        .modal-title {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        /* Style modal close button like a .close-btn */
-        .modal-close-btn {
-            color: var(--inv-text-color);
-            background: transparent;
-            border: none;
-            font-size: 20px;
-            font-weight: bold;
-            padding: 0 4px;
-            cursor: pointer;
-        }
-        .modal-close-btn:hover {
-            background-color: var(--inv-text-color);
-            color: var(--inv-bg-color);
-        }
-        .modal-content {
-            padding: 1em;
-            overflow-y: auto;
-            max-height: 70vh;
-        }
-        .modal-footer {
-            padding: 1em;
-            border-top: 2px solid var(--border-color);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 1em;
-        }
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-        }
-        .modal-form label {
-            font-weight: bold;
-        }
-        .modal-form input {
-            padding: 0.5em;
-            border: 2px solid var(--border-color);
-            background-color: var(--win-bg-color);
-            color: var(--text-color);
-        }
-        .modal-form input:focus {
-            outline: 2px solid var(--border-color);
-            outline-offset: 2px;
-        }
+/*
+ * This class defines the canonical "textbox" look.
+ * It should be applied to the parent container (.output-container)
+ * AND the two layered children inside it.
+*/
+.shared-input-style {
+    /* --- CRITICAL: Font & Box Model Properties --- */
+    min-height: 500px;
+    padding: 1em;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    font-family: 'FairfaxHD', 'Times New Roman', Times, serif;
+    font-size: 1.6em;
+    line-height: 2.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    letter-spacing: normal;
+    word-spacing: normal;
+    font-kerning: none;
 
-        /* Dictionary Manager/Editor Styles */
-        .modal-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .modal-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8em;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .modal-list li:last-child { border-bottom: none; }
-        .dict-info .name { font-weight: bold; }
-        .dict-info .author { font-style: italic; font-size: 0.9em; }
-        .dict-btn-group { display: flex; gap: 0.5em; flex-wrap: wrap; }
-        
-        .editor-tabs {
-            display: flex;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 1em;
-        }
-        .editor-tab {
-            padding: 0.5em 1em;
-            cursor: pointer;
-            border: 2px solid transparent;
-            border-bottom: none;
-            opacity: 0.7;
-        }
-        .editor-tab.active {
-            border-color: var(--border-color);
-            background-color: var(--win-bg-color);
-            opacity: 1;
-        }
-        .editor-content.hidden { display: none; }
-        .dict-edit-input {
-            border: 2px solid var(--border-color);
-            padding: 0.2em;
-            flex-grow: 1;
-        }
+    /* --- CRITICAL: Browser Style Resets --- */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    resize: none;
+}
+
+/*
+ * The .output-container gets the .shared-input-style in the HTML,
+ * giving it the border, padding, and dimensions.
+*/
+
+
+/*
+ * FIX: The children also have .shared-input-style, so we override
+ * the properties that would create a "box-in-a-box" effect.
+ * They become transparent layers that perfectly match the parent's text grid.
+*/
+#romaji-output-display,
+#romaji-output-editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    
+    /* Overrides to make them transparent layers */
+    background: transparent;
+    border-color: transparent;
+}
+
+/* The display div is for visuals only */
+#romaji-output-display {
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+/* The textarea is for functionality */
+#romaji-output-editor {
+    z-index: 2;
+    color: transparent;
+    caret-color: var(--text-color);
+    overflow: auto;
+}
+
+/* * DEFINITIVE FIX: The #cursor-tracker span is used by JS to position the floater.
+ * By default, as an inline element, it sits inside a giant line-box created by the
+ * parent's `line-height: 2.8`. This caused its `offsetHeight` to be huge.
+ * By changing its display to `inline-block`, we force it to generate its own
+ * block formatting context. Its height is now based on its own `line-height`,
+ * not its parent's, providing the correct value for positioning.
+ */
+#romaji-output-display #cursor-tracker {
+    display: inline-block;
+    line-height: normal; /* Reset to a standard line height */
+}
+
+
+#romaji-output-editor:focus {
+     outline: none;
+}
+
+/* --- IME Floater & Suggestions --- */
+
+#ime-floater {
+    position: absolute;
+    z-index: 20;
+    background-color: var(--win-bg-color);
+    border: 2px solid var(--border-color);
+    vertical-align: top;
+    border-radius: 0;
+}
+
+#ime-floater.hidden {
+    display: none;
+}
+
+#builder-display {
+    padding: 0.2em 0.8em;
+    border-bottom: 2px dashed var(--border-color);
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* UPDATED: Force content to the top */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.builder-processed {
+    opacity: 0.5;
+}
+
+.builder-prompt {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border-bottom: 2px solid var(--text-color);
+    font-weight: bold;
+}
+
+.builder-graflect {
+    font-size: 1.5em;
+    margin-top: 0.2em;
+}
+
+.suggestions-dropdown {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 0.8em;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item.divider {
+    cursor: default;
+    background-color: var(--bg-color);
+    padding: 0.2em;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item .suggestion-content {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.suggestion-item .graflect-font {
+    font-size: 1.4em;
+}
+
+.suggestion-item .slug-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    opacity: 0.7;
+}
+
+.suggestion-item.active, .suggestion-item:hover:not(.divider) {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* --- Buttons & Controls --- */
+
+.editor-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+}
+
+.editor-controls button {
+    /* FIX: Use the emoji font stack from pelmeni2025.css */
+    font-family: var(--font-emoji);
+    border: 2px solid var(--border-color);
+    background: var(--win-bg-color);
+    color: var(--text-color);
+    /* FIX: Removed border-radius to make buttons square */
+    border-radius: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+.editor-controls button:hover {
+    background-color: var(--text-color);
+    color: var(--win-bg-color);
+}
+
+/* --- Shared Modal Styles --- */
+
+#notification-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--inv-bg-color);
+    color: var(--inv-text-color);
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    font-family: var(--font-body);
+}
+
+#notification-banner.visible {
+    opacity: 1;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-window {
+     width: 90%;
+     max-width: 600px;
+     /* UPDATED: Match graflect.html styles */
+     background-color: var(--win-bg-color);
+     border: 2px solid var(--border-color);
+     border-radius: 0; /* Match sharp corners */
+     display: flex;
+     flex-direction: column;
+}
+
+.modal-header {
+    /* Inherits title-bar styles */
+    font-family: var(--font-body);
+}
+
+.modal-title .symbol {
+    font-family: var(--font-emoji);
+}
+
+.modal-close-btn {
+    /* Inherits close-btn styles */
+    font-family: var(--font-body);
+}
+
+.modal-content {
+    padding: 1em;
+    overflow-y: auto;
+    max-height: 70vh;
+    font-family: var(--font-body);
+}
+
+.modal-footer {
+    padding: 1em;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1em;
+}
+
+.modal-footer button {
+    /* Inherits normal-btn styles */
+    border: 2px solid var(--border-color); 
+    background-color: var(--win-bg-color); 
+    color: var(--text-color); 
+    padding: 6px 12px; 
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 0;
+}
+
+.modal-footer button:hover, .modal-footer button:active, .modal-footer button:focus-visible {
+    background-color: var(--text-color);
+    color: var(--win-bg-color);
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.modal-form label {
+    font-weight: bold;
+}
+
+.modal-form input {
+    padding: 0.5em;
+    border: 2px solid var(--border-color);
+    background-color: var(--win-bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+}
+
+.modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-list li:last-child { border-bottom: none; }
+
+.dict-info .name { font-weight: bold; }
+.dict-info .author { font-style: italic; font-size: 0.9em; }
+.dict-btn-group { display: flex; gap: 0.5em; flex-wrap: wrap; }
+
+.editor-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 1em;
+}
+
+.editor-tab {
+    padding: 0.5em 1em;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    border-bottom: none;
+    background-color: var(--bg-color);
+    opacity: 0.7;
+    margin-bottom: -2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.editor-tab.active {
+    background-color: var(--win-bg-color);
+    border-bottom: 2px solid var(--win-bg-color);
+    opacity: 1;
+}
+
+.editor-content.hidden { display: none; }
+
+.dict-edit-input {
+    border: 2px solid var(--border-color);
+    background-color: var(--win-bg-color);
+    color: var(--text-color);
+    padding: 0.2em;
+    flex-grow: 1;
+    font-family: inherit;
+}
+
+/* --- UPDATED: Scrollbar styles for IME Floater --- */
+.suggestions-dropdown::-webkit-scrollbar {
+  width: var(--sb-size, 16px);
+  height: var(--sb-size, 16px);
+}
+.suggestions-dropdown::-webkit-scrollbar-track {
+  background: var(--win-bg-color);
+}
+.suggestions-dropdown::-webkit-scrollbar-thumb {
+  background: var(--win-bg-color);
+  border: 2px solid var(--border-color);
+}
+@supports not selector(::-webkit-scrollbar) {
+  .suggestions-dropdown {
+    scrollbar-color: var(--border-color) var(--win-bg-color);
+    scrollbar-width: thin;
+  }
+}

@@ -1,0 +1,37 @@
+<!-- 
+  /modules/blog/demos/romaji-ime.html
+  This is the HTML module for the Romaji IME tool.
+  It contains only the necessary HTML structure and should be loaded dynamically.
+-->
+<main id ="romaji-ime-module" class="window init-closed" style="display: none;" >    
+    <div class="title-bar">
+        <span class="title" data-key="win_romaji"><span class="symbol">🖮</span> type.ime</span>
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="romaji-input-container">
+        <div id="output-container" class="output-container">
+            <!-- The underlying div that shows the styled Graflect + Ruby text -->
+            <div id="romaji-output-display" class="shared-input-style"></div>
+            
+            <!-- The invisible textarea on top that captures all user input -->
+            <textarea id="romaji-output-editor" class="shared-input-style" placeholder="Start typing here..."></textarea>
+            
+            <!-- Button for copying text -->
+            <div class="editor-controls">
+                <button id="copy-btn" title="Copy Output">📋</button>
+            </div>
+            
+            <!-- The floating window that appears for word-building suggestions -->
+            <div id="ime-floater" class="hidden">
+                <div id="builder-display">
+                    <div id="builder-english"></div>
+                    <div id="builder-graflect" class="graflect-font"></div>
+                </div>
+                <div id="suggestions-dropdown" class="suggestions-dropdown"></div>
+            </div>
+        </div>
+    </div>
+    <!-- The notification banner is also part of the module's HTML structure -->
+    <div id="notification-banner"></div>
+    
+</main>
