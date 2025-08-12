@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 15 Jul 2025 17:16:45 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 12 Aug 2025 22:25:21 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/he/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>הבלוג תומך עכשיו ב-RSS</title>
@@ -64,7 +64,13 @@
             </header>
             <section>
                 <p data-key="graflect_example_p">הנה פסקה לדוגמה כתובה בגרַפְלֶקְט, אני מקווה שהקול שלי נשמע כראוי.</p>
-                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+                <aside> , . . , , , , , , . <br>  .    ,    : <br> " ,    " <br> " "</aside>
+            </section>
+            <hr>
+            <section id="slug">
+                <h2 data-key="slug_section_title">SLUG: תעתיק לטיני לגרפלֶקט</h2>
+                <p data-key="slug_section_p1">כדי להקל על ההקלדה והדיון בגרפלֶקט במערכות ללא תמיכה בגופנים המתאימים, מדריך זה מציע את <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. המטרה היא לספק מיפוי חד-חד-ערכי אמיתי מסמלי גרפלֶקט לתווים שניתן להקליד בקלות. גרסה זו משתמשת באותיות נפוצות, דיגרפים, ומספר תווים עם סימנים דיאקריטיים הזמינים ברוב המקלדות.</p>
+                <aside>wxns yü bīkxm fxmilyr with græflekt, yü wil faind it pásibl tü hīr mai æksent in mai raiting. ai wxz bōrn in nü yōrk tü izrēlī änd rxšin p4ints. mai fämxlī spīks 4xbik, jrmin, ingliš, hībrü, rxšin, änd yidiš, änd ai grü xp in kxnetikit. ai xsüm dhis ál inflüensiz how ai spīk änd rait in græflekt. græflekt iz imenslī powrfl fōr raiting dhī æksents xv pīpl hü hæv spōkn ingliš dh4 hōl laivz, bxt its álsō ēbl tü rndr dhōs xv pīpl hü lrnd ingliš æz ē sekind längwj:<br> "fōrh īnstxnz, dīs īz khow mai īzrhelī fámīlī tōk án zī fōn"<br> "mai bábüšká tálks mōrr rrxsīyn"</aside>
             </section>
             <hr>
             <section>
@@ -79,89 +85,93 @@
                         <tr>
                             <th data-key="table_header_symbol">סמל Graflect</th>
                             <th data-key="table_header_ipa">סמל IPA</th>
+                            <th>SLUG</th>
                             <th data-key="table_header_example">צליל לדוגמה</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>פ</b> במילה <b>פ</b>יל</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>ב</b> במילה <b>ב</b>ית</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>ת</b> במילה <b>ת</b>ה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>ד</b> במילה י<b>ד</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>ק</b> במילה <b>ק</b>יר</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>ג</b> במילה <b>ג</b>דול</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>פ</b> רפה, כמו במילה סו<b>ף</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>ו</b> במילה <b>ו</b>ילון</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">אנגלית: <b>th</b> במילה <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">אנגלית: <b>th</b> במילה <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>ס</b> במילה <b>ס</b>וכר</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>ז</b> במילה <b>ז</b>מן</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>ש</b> ימנית, כמו במילה <b>ש</b>מ<b>ש</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>ז'</b>, כמו במילה גָּרָא<b>ז'</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home"><b>ה</b> במילה <b>ה</b>ר</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>מ</b> במילה א<b>מ</b>א</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>נ</b> במילה <b>נ</b>ר</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">אנגלית: הצליל בסוף המילה si<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>ל</b> במילה <b>ל</b>ילה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">אנגלית: R אמריקאית, כמו במילה <b>r</b>ope</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman">אנגלית: <b>w</b> במילה <b>w</b>oman</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>י</b> במילה <b>י</b>לד</td></tr>
-                    </tbody>
-                </table>
-            </section>
-        
-            <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">תנועות</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">סמל Graflect</th>
-                            <th data-key="table_header_ipa">סמל IPA</th>
-                            <th data-key="table_header_example">צליל לדוגמה</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">חיריק מלא (צליל 'אי'), כמו במילה ש<b>י</b>ר</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">חיריק חסר (צליל 'אי' קצר), כמו במילה א<b>ִ</b>ם</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">קובוץ (צליל 'אוּ' קצר), כמו במילה ש<b>ֻ</b>ׁלחן</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">שורוק (צליל 'אוּ' ארוך), כמו במילה ס<b>ו</b>ס</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend">סגול (צליל 'אֶ'), כמו במילה ג<b>שֶׁ</b>ם</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">פתח (צליל 'אַ'), כמו במילה האנגלית <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">שווא נע (ə), כמו באות <b>אֲ</b> במילה <b>אֲ</b>דָמָה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft">קמץ קטן (צליל 'אוֹ'), כמו במילה ת<b>ָ</b>כנית</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game">צירה (צליל 'איי'), כמו במילה שֵׁ<b>ם</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> במילה נמל<b>ה</b> (ant)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye">פתח ו-י' (ַי), כמו במילה בַּ<b>יִ</b>ת</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south">אנגלית: <b>ou</b> במילה s<b>ou</b>th</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home">חולם (צליל 'אוֹ'), כמו במילה <b>כֹּ</b>ה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">חולם עמוק יותר, כמו במילה האנגלית h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> במילה n<b>ur</b>se אבל במבטא בריטי</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">אנגלית: <b>air</b> במילה <b>air</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td>p</td><td data-key="example_p_in_plan"><b>פ</b> במילה <b>פ</b>יל</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td>b</td><td data-key="example_b_in_band"><b>ב</b> במילה <b>ב</b>ית</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td>t</td><td data-key="example_t_in_tend"><b>ת</b> במילה <b>ת</b>ה</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td>d</td><td data-key="example_d_in_lend"><b>ד</b> במילה י<b>ד</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td>k</td><td data-key="example_k_in_kick"><b>ק</b> במילה <b>ק</b>יר</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td>g</td><td data-key="example_g_in_gone"><b>ג</b> במילה <b>ג</b>דול</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td>f</td><td data-key="example_f_in_fail"><b>פ</b> רפה, כמו במילה סו<b>ף</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td>v</td><td data-key="example_v_in_vine"><b>ו</b> במילה <b>ו</b>ילון</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td>th</td><td data-key="example_th_in_think">אנגלית: <b>th</b> במילה <b>th</b>ink</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td>dh</td><td data-key="example_th_in_this">אנגלית: <b>th</b> במילה <b>th</b>is</td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td>s</td><td data-key="example_s_in_south"><b>ס</b> במילה <b>ס</b>וכר</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td>z</td><td data-key="example_z_in_zone"><b>ז</b> במילה <b>ז</b>מן</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td>š</td><td data-key="example_sh_in_shut"><b>ש</b> ימנית, כמו במילה <b>ש</b>מ<b>ש</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td>ž</td><td data-key="example_s_in_occasion"><b>ז'</b>, כמו במילה גָּרָא<b>ז'</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td>h</td><td data-key="example_h_in_home"><b>ה</b> במילה <b>ה</b>ר</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td>m</td><td data-key="example_m_in_man"><b>מ</b> במילה א<b>מ</b>א</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td>n</td><td data-key="example_n_in_north"><b>נ</b> במילה <b>נ</b>ר</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td>ng</td><td data-key="example_ng_in_long">אנגלית: הצליל בסוף המילה si<b>ng</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td>l</td><td data-key="example_l_in_lend"><b>ל</b> במילה <b>ל</b>ילה</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td>r</td><td data-key="example_r_in_rope">אנגלית: R אמריקאית, כמו במילה <b>r</b>ope</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td>w</td><td data-key="example_w_in_woman">אנגלית: <b>w</b> במילה <b>w</b>oman</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td>y</td><td data-key="example_y_in_your"><b>י</b> במילה <b>י</b>לד</td></tr>
                     </tbody>
                 </table>
             </section>
 
-             <section>
-                <h2 id="other" data-key="guide_h2_other">סמלים אחרים (עיצורים מחוככים, צלילים לא-אנגליים ושילובים)</h2>
-                 <table>
+            <section>
+                <h2 id="vowels" data-key="guide_h2_vowels">תנועות</h2>
+                <table>
                     <thead>
                         <tr>
                             <th data-key="table_header_symbol">סמל Graflect</th>
                             <th data-key="table_header_ipa">סמל IPA</th>
-                            <th data-key="table_header_example_desc">צליל לדוגמה / תיאור</th>
+                            <th>SLUG</th>
+                            <th data-key="table_header_example">צליל לדוגמה</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>צ'</b> במילה <b>צ'</b>יפס</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>ג'</b> במילה <b>ג'</b>ירפה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>יוּ</b>, כמו במילה <b>יו</b>נה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>וִי</b>, כמו במילה <b>ווי</b>קיפדיה</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">צרפתית: <b>ui</b> במילה h<b>ui</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach">גרמנית: <b>ch</b> במילה Ba<b>ch</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">ספרדית: <b>r</b> בנגיעה קלה (flap), כמו במילה pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">גרמנית: <b>ר'</b> גרונית במילה <b>R</b>ammstein</td></tr>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td>ī</td><td data-key="example_ea_in_lean">חיריק מלא (צליל 'אי'), כמו במילה ש<b>י</b>ר</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td>i</td><td data-key="example_i_in_in">חיריק חסר (צליל 'אי' קצר), כמו במילה א<b>ִ</b>ם</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td>u</td><td data-key="example_oo_in_good">קובוץ (צליל 'אוּ' קצר), כמו במילה ש<b>ֻ</b>ׁלחן</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td>ü</td><td data-key="example_oo_in_school">שורוק (צליל 'אוּ' ארוך), כמו במילה ס<b>ו</b>ס</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td>e</td><td data-key="example_e_in_lend">סגול (צליל 'אֶ'), כמו במילה ג<b>שֶׁ</b>ם</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td>æ</td><td data-key="example_a_in_accent">פתח (צליל 'אַ'), כמו במילה האנגלית <b>a</b>ccent</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td>x</td><td data-key="example_u_in_tug">שווא נע (ə), כמו באות <b>אֲ</b> במילה <b>אֲ</b>דָמָה</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td>á</td><td data-key="example_o_in_soft">קמץ קטן (צליל 'אוֹ'), כמו במילה ת<b>ָ</b>כנית</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td>ē</td><td data-key="example_a_in_game">צירה (צליל 'איי'), כמו במילה שֵׁ<b>ם</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td>ä</td><td data-key="example_a_in_ant"><b>a</b> במילה נמל<b>ה</b> (ant)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td>ai</td><td data-key="example_ye_in_bye">פתח ו-י' (ַי), כמו במילה בַּ<b>יִ</b>ת</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td>ow</td><td data-key="example_ou_in_south">אנגלית: <b>ou</b> במילה s<b>ou</b>th</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td>ō</td><td data-key="example_o_in_home">חולם (צליל 'אוֹ'), כמו במילה <b>כֹּ</b>ה</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td>õ</td><td data-key="example_o_in_hole">חולם עמוק יותר, כמו במילה האנגלית h<b>o</b>le</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td>ö</td><td data-key="example_british_r"><b>ur</b> במילה n<b>ur</b>se אבל במבטא בריטי</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td>4</td><td data-key="example_air_in_air">אנגלית: <b>air</b> במילה <b>air</b></td></tr>
                     </tbody>
                 </table>
             </section>
+
+            <section>
+                <h2 id="other" data-key="guide_h2_other">סמלים אחרים (עיצורים מחוככים, צלילים לא-אנגליים ושילובים)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Graflect</th>
+                            <th>IPA</th>
+                            <th>SLUG</th>
+                            <th>Example / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td>c</td><td><b>ch</b>ase</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td>j</td><td><b>j</b>ump</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td>yu</td><td><b>you</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td>wī</td><td><b>we</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td>yh</td><td>French: h<b>ui</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td>kh</td><td>German: Ba<b>ch</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td>rr</td><td>Spanish: pe<b>r</b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td>rh</td><td>German: <b>R</b>ammstein</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
         ]]></description>
             <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>

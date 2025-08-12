@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 15 Jul 2025 17:16:45 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 12 Aug 2025 22:25:21 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ru/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Этот блог теперь поддерживает RSS</title>
@@ -64,7 +64,13 @@
             </header>
             <section>
                 <p data-key="graflect_example_p">Вот пример абзаца, написанного на Графлекте. Надеюсь, мой голос передан верно.</p>
-                <aside> , . . , , , , , , . <br> .    ,    : <br> " ,    " <br>" "</aside>
+                <aside> , . . , , , , , , . <br>  .    ,    : <br> " ,    " <br> " "</aside>
+            </section>
+            <hr>
+            <section id="slug">
+                <h2 data-key="slug_section_title">SLUG: Романизация для Graflect</h2>
+                <p data-key="slug_section_p1">Чтобы упростить набор и обсуждение Graflect в системах без поддержки соответствующих шрифтов, в этом руководстве предлагается <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. Цель состоит в том, чтобы обеспечить истинное взаимно-однозначное соответствие между символами Graflect и легко набираемыми символами. В этой версии используются обычные буквы, диграфы и несколько символов с диакритическими знаками, доступными на большинстве клавиатур.</p>
+                <aside>wxns yü bīkxm fxmilyr with græflekt, yü wil faind it pásibl tü hīr mai æksent in mai raiting. ai wxz bōrn in nü yōrk tü izrēlī änd rxšin p4ints. mai fämxlī spīks 4xbik, jrmin, ingliš, hībrü, rxšin, änd yidiš, änd ai grü xp in kxnetikit. ai xsüm dhis ál inflüensiz how ai spīk änd rait in græflekt. græflekt iz imenslī powrfl fōr raiting dhī æksents xv pīpl hü hæv spōkn ingliš dh4 hōl laivz, bxt its álsō ēbl tü rndr dhōs xv pīpl hü lrnd ingliš æz ē sekind längwj:<br> "fōrh īnstxnz, dīs īz khow mai īzrhelī fámīlī tōk án zī fōn"<br> "mai bábüšká tálks mōrr rrxsīyn"</aside>
             </section>
             <hr>
             <section>
@@ -79,89 +85,93 @@
                         <tr>
                             <th data-key="table_header_symbol">Символ Graflect</th>
                             <th data-key="table_header_ipa">Символ МФА</th>
+                            <th>SLUG</th>
                             <th data-key="table_header_example">Пример звучания</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td data-key="example_p_in_plan"><b>п</b> в слове <b>п</b>лан</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td data-key="example_b_in_band"><b>б</b> в слове <b>б</b>анк</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td data-key="example_t_in_tend"><b>т</b> в слове <b>т</b>он</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td data-key="example_d_in_lend"><b>д</b> в слове <b>д</b>ом</td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td data-key="example_k_in_kick"><b>к</b> в слове <b>к</b>от</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td data-key="example_g_in_gone"><b>г</b> в слове <b>г</b>од</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td data-key="example_f_in_fail"><b>ф</b> в слове <b>ф</b>акт</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td data-key="example_v_in_vine"><b>в</b> в слове <b>в</b>ода</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td data-key="example_th_in_think">Английский: <b>th</b> в слове <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td data-key="example_th_in_this">Английский: <b>th</b> в слове <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td data-key="example_s_in_south"><b>с</b> в слове <b>с</b>уп</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td data-key="example_z_in_zone"><b>з</b> в слове <b>з</b>она</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td data-key="example_sh_in_shut"><b>ш</b> в слове <b>ш</b>ум</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td data-key="example_s_in_occasion"><b>ж</b> в слове гара<b>ж</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td data-key="example_h_in_home">Придыхание, как в английском <b>h</b>ome</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td data-key="example_m_in_man"><b>м</b> в слове <b>м</b>ак</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td data-key="example_n_in_north"><b>н</b> в слове <b>н</b>ос</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td data-key="example_ng_in_long">Носовой <b>н</b>, как в конце английского si<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td data-key="example_l_in_lend"><b>л</b> в слове <b>л</b>ук</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td data-key="example_r_in_rope">Американский <b>r</b>, как в слове <b>r</b>ope</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td data-key="example_w_in_woman">Английский: <b>w</b> в слове <b>w</b>ater</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td data-key="example_y_in_your"><b>й</b> в слове <b>й</b>ога</td></tr>
-                    </tbody>
-                </table>
-            </section>
-        
-            <section>
-                <h2 id="vowels" data-key="guide_h2_vowels">Гласные</h2>
-                 <table>
-                    <thead>
-                        <tr>
-                            <th data-key="table_header_symbol">Символ Graflect</th>
-                            <th data-key="table_header_ipa">Символ МФА</th>
-                            <th data-key="table_header_example">Пример звучания</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td data-key="example_ea_in_lean">Долгий <b>и</b>, как в слове л<b>и</b>ст</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td data-key="example_i_in_in">Краткий <b>и</b>, как в английском k<b>i</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td data-key="example_oo_in_good">Краткий <b>у</b>, как в английском g<b>oo</b>d</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td data-key="example_oo_in_school">Долгий <b>у</b>, как в слове с<b>у</b>п</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td data-key="example_e_in_lend"><b>э</b> в слове <b>э</b>то</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td data-key="example_a_in_accent">Как <b>а</b> в английском <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td data-key="example_u_in_tug">Шва (<b>ə</b>), как первая <b>о</b> в слове к<b>о</b>ро́ва</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td data-key="example_o_in_soft"><b>о</b> в слове д<b>о</b>м</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td data-key="example_a_in_game"><b>ей</b> в слове р<b>ей</b>д</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td data-key="example_a_in_ant"><b>a</b> в слове мур<b>а</b>вей (ant)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td data-key="example_ye_in_bye"><b>ай</b> в слове м<b>ай</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td data-key="example_ou_in_south"><b>ау</b> в слове п<b>ау</b>за</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td data-key="example_o_in_home"><b>оу</b> в слове ш<b>оу</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td data-key="example_o_in_hole">Более глубокий и округленный звук 'оу', как в английском h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td data-key="example_british_r"><b>ur</b> в слове n<b>ur</b>se, но с британским акцентом</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td data-key="example_air_in_air">Как <b>э</b> в слове м<b>э</b>р</td></tr>
+                        <tr><td class="graflect-font"></td><td>/p/</td><td>p</td><td data-key="example_p_in_plan"><b>п</b> в слове <b>п</b>лан</td></tr>
+                        <tr><td class="graflect-font"></td><td>/b/</td><td>b</td><td data-key="example_b_in_band"><b>б</b> в слове <b>б</b>анк</td></tr>
+                        <tr><td class="graflect-font"></td><td>/t/</td><td>t</td><td data-key="example_t_in_tend"><b>т</b> в слове <b>т</b>он</td></tr>
+                        <tr><td class="graflect-font"></td><td>/d/</td><td>d</td><td data-key="example_d_in_lend"><b>д</b> в слове <b>д</b>ом</td></tr>
+                        <tr><td class="graflect-font"></td><td>/k/</td><td>k</td><td data-key="example_k_in_kick"><b>к</b> в слове <b>к</b>от</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td>g</td><td data-key="example_g_in_gone"><b>г</b> в слове <b>г</b>од</td></tr>
+                        <tr><td class="graflect-font"></td><td>/f/</td><td>f</td><td data-key="example_f_in_fail"><b>ф</b> в слове <b>ф</b>акт</td></tr>
+                        <tr><td class="graflect-font"></td><td>/v/</td><td>v</td><td data-key="example_v_in_vine"><b>в</b> в слове <b>в</b>ода</td></tr>
+                        <tr><td class="graflect-font"></td><td>/θ/</td><td>th</td><td data-key="example_th_in_think">Английский: <b>th</b> в слове <b>th</b>ink</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ð/</td><td>dh</td><td data-key="example_th_in_this">Английский: <b>th</b> в слове <b>th</b>is</td></tr>
+                        <tr><td class="graflect-font"></td><td>/s/</td><td>s</td><td data-key="example_s_in_south"><b>с</b> в слове <b>с</b>уп</td></tr>
+                        <tr><td class="graflect-font"></td><td>/z/</td><td>z</td><td data-key="example_z_in_zone"><b>з</b> в слове <b>з</b>она</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td>š</td><td data-key="example_sh_in_shut"><b>ш</b> в слове <b>ш</b>ум</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td>ž</td><td data-key="example_s_in_occasion"><b>ж</b> в слове гара<b>ж</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/h/</td><td>h</td><td data-key="example_h_in_home">Придыхание, как в английском <b>h</b>ome</td></tr>
+                        <tr><td class="graflect-font"></td><td>/m/</td><td>m</td><td data-key="example_m_in_man"><b>м</b> в слове <b>м</b>ак</td></tr>
+                        <tr><td class="graflect-font"></td><td>/n/</td><td>n</td><td data-key="example_n_in_north"><b>н</b> в слове <b>н</b>ос</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td>ng</td><td data-key="example_ng_in_long">Носовой <b>н</b>, как в конце английского si<b>ng</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/l/</td><td>l</td><td data-key="example_l_in_lend"><b>л</b> в слове <b>л</b>ук</td></tr>
+                        <tr><td class="graflect-font"></td><td>/r/</td><td>r</td><td data-key="example_r_in_rope">Американский <b>r</b>, как в слове <b>r</b>ope</td></tr>
+                        <tr><td class="graflect-font"></td><td>/w/</td><td>w</td><td data-key="example_w_in_woman">Английский: <b>w</b> в слове <b>w</b>ater</td></tr>
+                        <tr><td class="graflect-font"></td><td>/j/</td><td>y</td><td data-key="example_y_in_your"><b>й</b> в слове <b>й</b>ога</td></tr>
                     </tbody>
                 </table>
             </section>
 
-             <section>
-                <h2 id="other" data-key="guide_h2_other">Другие символы (аффрикаты, неанглийские звуки и сочетания)</h2>
-                 <table>
+            <section>
+                <h2 id="vowels" data-key="guide_h2_vowels">Гласные</h2>
+                <table>
                     <thead>
                         <tr>
                             <th data-key="table_header_symbol">Символ Graflect</th>
                             <th data-key="table_header_ipa">Символ МФА</th>
-                            <th data-key="table_header_example_desc">Пример звучания / Описание</th>
+                            <th>SLUG</th>
+                            <th data-key="table_header_example">Пример звучания</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td data-key="example_ch_in_chase"><b>ч</b> в слове <b>ч</b>ас</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td data-key="example_j_in_jump"><b>дж</b> в слове <b>дж</b>инсы</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td data-key="example_you_in_you"><b>ю</b> в слове <b>ю</b>ла</td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td data-key="example_we_in_we"><b>уи</b> в слове <b>Уи</b>льям</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td data-key="example_ui_in_huit">Французский: <b>ui</b> в слове h<b>ui</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td data-key="example_ch_in_bach"><b>х</b> в слове ду<b>х</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td data-key="example_r_in_rasgueado">Испанский: одноударный <b>r</b>, как в слове pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td data-key="example_re_in_kugelschreiber">Немецкий: горловой <b>р</b> в слове <b>R</b>ammstein</td></tr>
+                        <tr><td class="graflect-font"></td><td>/iː/</td><td>ī</td><td data-key="example_ea_in_lean">Долгий <b>и</b>, как в слове л<b>и</b>ст</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td>i</td><td data-key="example_i_in_in">Краткий <b>и</b>, как в английском k<b>i</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td>u</td><td data-key="example_oo_in_good">Краткий <b>у</b>, как в английском g<b>oo</b>d</td></tr>
+                        <tr><td class="graflect-font"></td><td>/u/</td><td>ü</td><td data-key="example_oo_in_school">Долгий <b>у</b>, как в слове с<b>у</b>п</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td>e</td><td data-key="example_e_in_lend"><b>э</b> в слове <b>э</b>то</td></tr>
+                        <tr><td class="graflect-font"></td><td>/æ/</td><td>æ</td><td data-key="example_a_in_accent">Как <b>а</b> в английском <b>a</b>ccent</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td>x</td><td data-key="example_u_in_tug">Шва (<b>ə</b>), как первая <b>о</b> в слове к<b>о</b>ро́ва</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td>á</td><td data-key="example_o_in_soft"><b>о</b> в слове д<b>о</b>м</td></tr>
+                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td>ē</td><td data-key="example_a_in_game"><b>ей</b> в слове р<b>ей</b>д</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td>ä</td><td data-key="example_a_in_ant"><b>a</b> в слове мур<b>а</b>вей (ant)</td></tr>
+                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td>ai</td><td data-key="example_ye_in_bye"><b>ай</b> в слове м<b>ай</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td>ow</td><td data-key="example_ou_in_south"><b>ау</b> в слове п<b>ау</b>за</td></tr>
+                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td>ō</td><td data-key="example_o_in_home"><b>оу</b> в слове ш<b>оу</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td>õ</td><td data-key="example_o_in_hole">Более глубокий и округленный звук 'оу', как в английском h<b>o</b>le</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td>ö</td><td data-key="example_british_r"><b>ur</b> в слове n<b>ur</b>se, но с британским акцентом</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td>4</td><td data-key="example_air_in_air">Как <b>э</b> в слове м<b>э</b>р</td></tr>
                     </tbody>
                 </table>
             </section>
+
+            <section>
+                <h2 id="other" data-key="guide_h2_other">Другие символы (аффрикаты, неанглийские звуки и сочетания)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Graflect</th>
+                            <th>IPA</th>
+                            <th>SLUG</th>
+                            <th>Example / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td>c</td><td><b>ch</b>ase</td></tr>
+                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td>j</td><td><b>j</b>ump</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ju/</td><td>yu</td><td><b>you</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/wi/</td><td>wī</td><td><b>we</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td>yh</td><td>French: h<b>ui</b>t</td></tr>
+                        <tr><td class="graflect-font"></td><td>/x/</td><td>kh</td><td>German: Ba<b>ch</b></td></tr>
+                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td>rr</td><td>Spanish: pe<b>r</b>o</td></tr>
+                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td>rh</td><td>German: <b>R</b>ammstein</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
         ]]></description>
             <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
