@@ -125,10 +125,10 @@
     "subscribe": "RSS-Feed abonnieren."
   },
   "gt": {
-    "win_welcome_title": "<span class=\"symbol\">ש</span>.welcome",
-    "win_projects_title": "<span class=\"symbol\">🗀</span>.fold",
-    "win_photos_title": "<span class=\"symbol\">🗀</span>.fold",
-    "win_tools_title": "<span class=\"symbol\">🧰</span>.box",
+    "win_welcome_title": "<span class=\"symbol\">ש</span> .welcome",
+    "win_projects_title": "<span class=\"symbol\">🗀</span> .fold",
+    "win_photos_title": "<span class=\"symbol\">🗀</span> .fold",
+    "win_tools_title": "<span class=\"symbol\">🧰</span> .box",
     "welcome_h1": "   !",
     "welcome_text_eink": "     E-Ink    .<br>     ,<br>     <span class=\"symbol\">⚙</span><strong>system.settings</strong>  program.launcher      .",
     "welcome_text_lcd": "E-ink  .",
@@ -146,7 +146,7 @@
     "music_play_btn": "<span class=\"symbol\">▶</span>",
     "music_h4": "   ,    ",
     "music_h5": "    .<br>  .",
-    "win_blog_title": "<span class=\"symbol\">🖹</span>.posts",
+    "win_blog_title": "<span class=\"symbol\">🖹</span> .posts",
     "subscribe": "   RSS ."
   }
 }
