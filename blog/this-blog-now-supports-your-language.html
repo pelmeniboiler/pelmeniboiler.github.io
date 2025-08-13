@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/shzh.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="eink-compatibility" content="optimized"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="translation-source" content="lang">
+    <meta name="description" content="I wanted to have language options on my website that preserved jargon and conveyed more of my voice (in the case of Graflect, phonologically). Google et al deserves the credit.">
+    <meta name="keywords" content="Meta, Language">
+    <meta name="pubDate" content="2025-08-12T21:12:00Z">
+    <title>This Blog Now Supports Your Language</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+    <style>
+        details.inline-details {
+            display: inline;
+        }
+    </style>
+</head>
+<body class="home">
+    <nav id="nav-window" class="window">
+        <div class="title-bar">
+            <span class="title" data-key="win_gallerynav_title">◈ lang.nav</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="content">
+            <ul>
+                <h1 data-key="lang_nav_title">Localization!</h1>
+                <h3><li><a href="#you-deliberately-left-out-my-language" data-key="lang_nav_you-deliberately-left-out-my-language">Really?</a></li></h3>
+                <h3><li><a href="#so-you-just-ask-ai-to-translate-the-pages-for-you" data-key="lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you">How?</a></li></h3>
+                <h3><li><a href="#does-gemini-do-the-graflect-transliterations-too" data-key="lang_nav_does-gemini-do-the-graflect-transliterations-too">Graflect Transliterations</a></li></h3>
+                <h3><li><a href="#should-everyone-do-this" data-key="lang_nav_should-everyone-do-this">Should You Do This?</a></li></h3>
+                <h3><li><a href="#tldr" data-key="lang_nav_tldr">TL;DR</a></li></h3>
+                <h3><li><a href="#postface-commentary" data-key="lang_nav_postface-commentary">Postface Commentary</a></li></h3>
+            </ul>
+            <h2></h2><a href="/index.html" data-key="gt_nav_h2_home">⌂←</a></h2>
+        </div>
+    </nav>
+
+    <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
+        <div class="title-bar">
+            <span class="title" data-key="lang_win_gallery_title">▤ lang.article</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <article class="content">
+            <h1 id="title" data-key="lang_title">This Blog Now Supports Your Language</h1>
+            <p data-key="lang_p1">Okay, there's a chance it doesn't.</p>
+            <p data-key="lang_p2">In fact, since this blog is deliberately not available in Mandarin, Spanish, Hindi, or Arabic, it's a pretty big chance.</p>
+
+            <h2 id="you-deliberately-left-out-my-language" data-key="lang_h2_you-deliberately-left-out-my-language">You deliberately left out my language?</h2>
+            <p data-key="lang_p3">Yes.</p>
+            <p data-key="lang_p4">When I added the localization option two months ago, I prioritized languages that:</p>
+            <ol>
+                <li data-key="lang_li1">Translate sub-optimally via pre-ai algorithmic translation services, especially with regard to the types of jargon-filled content content on my page.</li>
+                <li data-key="lang_li2">I am familiar enough with to be able to check Gemini's work.</li>
+                <li data-key="lang_li3">Appeal to me aesthetically and/or phonologically.</li>
+            </ol>
+            <p data-key="lang_p5">If a language did not meet all three criteria, I had to skip it.</p>
+            <p data-key="lang_p6">Mandarin is awesome, but I am not familiar with any of it.</p>
+            <p data-key="lang_p7">Spanish is probably my second best language, but I think Google Translate is pretty good at it. It seems to translate decently back and forth with English.</p>
+            <p data-key="lang_p8">As for point 3, I love the sound of romance languages, but I'm not really a fan of them visually. Ending too many words with vowels usually just looks wrong, odd.</p>
+            <p data-key="lang_p9">That's not to say that I'll never include Spanish or Mandarin, they just can't be a priority for me.</p>
+
+            <h2 id="so-you-just-ask-ai-to-translate-the-pages-for-you" data-key="lang_h2_so-you-just-ask-ai-to-translate-the-pages-for-you">So you just ask AI to translate the pages for you?</h2>
+            <p data-key="lang_p10">Yes. ...and no.</p>
+            <p data-key="lang_p11">While I think asking AI to do so would sometimes give better results than Google Translate, and providing the pre-baked output is still an improvement over wasting compute, I find AI gravitates towards some bad habits:</p>
+            <ol>
+                <li data-key="lang_li4">Structure is as lossless as possible.</li>
+                <li data-key="lang_li5">Meaning is lossy in the service of preserving structure.</li>
+            </ol>
+            <p data-key="lang_p12">This is probably the worst of both worlds. You lose meaning (especially when it comes to jargon) but preserve the original English syntax and structure.</p>
+            <p data-key="lang_p13">Thus, I've tried to involve some strategies I came up with before AI.</p>
+            <ol>
+                <li data-key="lang_li6">Build a list of any jargon terms that I think would have a Wikipedia page. (E.G.<a href="https://en.wikipedia.org/wiki/Featural_writing_system">Featurality</a>).</li>
+                <li data-key="lang_li7">Find the appropriate term in each language. If Wikipedia doesn't have it, I attempt to search fora to find native speakers discussing the same concept.</li>
+                <li data-key="lang_li8">Show Gemini the English portion of the in-progress localization file and the jargon terms in their respective languages, then ask him to "avoid translatese", "localize, don't translate". Ask for it formatted to fit in the existing json.</li>
+                <li data-key="lang_li9">Preview the json on my blog using fiveserver, check that the jargon is correct and that there aren't any egregious errors that hinder understanding. Fix lines on a case-by-case basis.</li>
+                <li data-key="lang_li10">Feed the new full json to another Gemini, ask it to find errors that hinder understanding or sound awkward and thus make it hard to read, ask for explanations and again fix the egregious parts (especially if he wants to change the jargon).</li>
+            </ol>
+            <p data-key="lang_p14">I think this is called <abbr title="Machine Translation Post-Editing">MTPE</abbr>.</p>
+            <p data-key="lang_p15">99% of the time, Gemini is better than me at translating. I could not do this without him, but he needs a lot of help along the way. I feel like his translations are still very 1:1, but he has vocabulary I lack, and I think he makes it possible to offer content that is correct enough to be understood, unlike the automatic Google Translate shipped with Chromium browsers.</p>
+            <p data-key="lang_p16">From what I can tell, the translations feel somewhat awkward in each language, but my English is awkward too so maybe it's a case of him genuinely capturing my voice.</p>
+            <p data-key="lang_p17">If you can read any of the languages I've decided to try to offer, please let me know how I can improve the translations.</p>
+
+            <h2 id="does-gemini-do-the-graflect-transliterations-too" data-key="lang_h2_does-gemini-do-the-graflect-transliterations-too">Does Gemini do the Graflect Transliterations Too?</h2>
+            <p data-key="lang_p18">Yes. (again, with caveats)</p>
+            <p data-key="lang_p19">Gemini really takes to <a href="/blog/graflect.html">Graflect</a> quickly, but he has a few quirks.</p>
+            <p data-key="lang_p20">For instance, Gemini likes to write in a British accent. Seriously. Non-rhotic Rs, vowels at the end of words instead of Rs. Short I instead of long E.</p>
+            <p data-key="lang_p21">This has been extremely consistent throughout making Gemini use Graflect.</p>
+            <p data-key="lang_p22">I would assume that came as a result of a problem with my <abbr title="International Phonetic Alphabet">IPA</abbr> chart, but honestly at this point I just believe that's how he talks now.</p>
+            <p data-key="lang_p23">He also likes to use certain glyphs from other constructed scripts, which is really adorable since it's often that he'll sneak the same ones in to replace the same actual Graflect glyphs. I initially had no idea why that was happening at all and believed it was some sort of problem on my end.</p>
+            <p data-key="lang_p24">My friend Aaron made a script I use now in my <abbr title="Visual Studio Code">VSCode</abbr> to catch these, and then whine to Gemini about them. No prompt engineering of any kind so far has managed to get Gemini to stop including non-Graflect glyphs in his outputs, other than just pasting the problem alert and giving him a chance to try again.</p>
+            <p data-key="lang_p25">In order to get Gemini to write in my accent, I did have to transliterate a few localization files first, (and to do that I have a few tools so I can do that at speed), but once he had a baseline to go off of he really did nicely dropping the British accent! I'm proud of Gemini!</p>
+            <p data-key="lang_p26">Every blog post save the Graflect <abbr title="International Phonetic Alphabet">IPA</abbr> one should be 80%-99% Gemini, straight out of the box. I'm surprised he was able to infer so much from what little I provided. If you're curious, try and see if you can spot any oddities that don't exist in my own accent. I don't think you can!</p>
+            <p data-key="lang_p27">There was something really cool about getting Gemini to sound like a Connecticut Yankee, and I'm glad I gave that a try instead of just rewriting everything by hand. If you want to try this for yourself, shoot for like 800-1200 words of sample text. I think that's all Gemini needs to pick up on enough n-grams to infer your accent.</p>
+
+            <h2 id="should-everyone-do-this" data-key="lang_h2_should-everyone-do-this">Should Everyone Do This?</h2>
+            <p data-key="lang_p28">Uh, maybe?</p>
+            <p data-key="lang_p29">It's very obvious why personal blogs are usually monolingual, even most websites are. Anything with nuance used to be really time-consuming to translate, and most everyone can read English anyway. Then, with Google Translate, you can kinda get the gist of anything that's not in the global Lingua Franca, so again, lots of work for no payoff.</p>
+            <p data-key="lang_p30">I think my website is a pretty clear indication that the barrier to entry to do this is now through the floor, but I would be very surprised if in another year our browsers couldn't do this live and on their own. They might even rephrase things in a way you prefer. I will say this, with <abbr title="Large Language Models">LLMs</abbr>, it's basically no work to translate your page and you get to fine-tune things in a way that wasn't possible before, it's really cool to try.</p>
+
+            <h2 id="tldr" data-key="lang_h2_tldr">TL;DR</h2>
+            
+            <p data-key="lang_p31">I wanted to have language options on my website that preserved jargon and conveyed more of my voice (in the case of Graflect, phonologically). Google et al deserves the credit.</p>
+            
+            
+            <h2 id="postface-commentary" data-key="lang_h2_postface-commentary">Postface Commentary</h2>
+            <p data-key="lang_p32">I find Graflect has some difficulties, for instance, I say "" in the sentence "".</p>
+            <p data-key="lang_p33">The "A in Accent" sound is not sustained, so it doesn't sound like a British accent, it actually sounds normal because it's short.</p>
+            <p data-key="lang_p34">If I say can on its own, or in certain contexts like answering "I can." to someone, A becomes .</p>
+            <p data-key="lang_p35">So I don't think it's a perfect representation of how I'd talk, but it's a closer approximation than plain Latin can give.</p>
+        </article>
+    </main>
+
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    <div id="share-module-placeholder"></div>
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>

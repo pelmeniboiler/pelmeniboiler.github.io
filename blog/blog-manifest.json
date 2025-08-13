@@ -1,5 +1,19 @@
 [
   {
+    "filename": "this-blog-now-supports-your-language.html",
+    "link": "/blog/this-blog-now-supports-your-language.html",
+    "date": "Tue, 12 Aug 2025 21:12:00 GMT",
+    "translationSource": "lang",
+    "titleKey": "lang_title",
+    "title": "This Blog Now Supports Your Language",
+    "descriptionKey": "lang_p1",
+    "description": "I wanted to have language options on my website that preserved jargon and conveyed more of my voice (in the case of Graflect, phonologically). Google et al deserves the credit.",
+    "keywords": [
+      "Meta",
+      "Language"
+    ]
+  },
+  {
     "filename": "this-blog-now-supports-rss.html",
     "link": "/blog/this-blog-now-supports-rss.html",
     "date": "Sat, 28 Jun 2025 10:00:00 GMT",

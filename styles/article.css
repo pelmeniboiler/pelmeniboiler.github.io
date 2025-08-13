@@ -161,3 +161,27 @@
         max-height: none; /* Ensure it's not limited by other rules */
     }
 }
+
+/* --- List Styling for Articles --- */
+
+/* Common properties for both list types */
+#gallery-window .content ul,
+#gallery-window .content ol {
+    margin: 1em 0;
+    padding-left: 2.5em; /* Provides space for markers */
+    font-size: 14px
+}
+
+#gallery-window .content li {
+    margin-bottom: 0.5em;
+}
+
+/* Restore bullets for unordered lists */
+#gallery-window .content ul {
+    list-style: disc;
+}
+
+/* Restore numbers for ordered lists, as requested */
+#gallery-window .content ol {
+    list-style: decimal;
+}

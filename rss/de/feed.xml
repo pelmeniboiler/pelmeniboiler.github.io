@@ -13,8 +13,82 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 12 Aug 2025 22:25:22 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2025 04:56:47 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
+        <item>
+            <title>Dieser Blog unterstützt jetzt Ihre Sprache</title>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</link>
+            <description><![CDATA[
+            <h1 id="title" data-key="lang_title">Dieser Blog unterstützt jetzt Ihre Sprache</h1>
+            <p data-key="lang_p1">Okay, es besteht die Möglichkeit, dass er das nicht tut.</p>
+            <p data-key="lang_p2">Tatsächlich, da dieser Blog absichtlich nicht auf Mandarin, Spanisch, Hindi oder Arabisch verfügbar ist, ist die Chance ziemlich groß.</p>
+
+            <h2 id="you-deliberately-left-out-my-language" data-key="lang_h2_you-deliberately-left-out-my-language">Du hast meine Sprache absichtlich weggelassen?</h2>
+            <p data-key="lang_p3">Ja.</p>
+            <p data-key="lang_p4">Als ich vor zwei Monaten die Lokalisierungsoption hinzugefügt habe, habe ich Sprachen priorisiert, die:</p>
+            <ol>
+                <li data-key="lang_li1">durch algorithmische Übersetzungsdienste aus der Vor-KI-Zeit suboptimal übersetzt werden, insbesondere im Hinblick auf die Art von jargonreichen Inhalten auf meiner Seite.</li>
+                <li data-key="lang_li2">Ich gut genug kenne, um die Arbeit von Gemini überprüfen zu können.</li>
+                <li data-key="lang_li3">Mich ästhetisch und/oder phonologisch ansprechen.</li>
+            </ol>
+            <p data-key="lang_p5">Wenn eine Sprache nicht alle drei Kriterien erfüllte, musste ich sie überspringen.</p>
+            <p data-key="lang_p6">Mandarin ist großartig, aber ich kenne mich damit überhaupt nicht aus.</p>
+            <p data-key="lang_p7">Spanisch ist wahrscheinlich meine zweitbeste Sprache, aber ich denke, Google Translate ist ziemlich gut darin. Es scheint anständig hin und her mit Englisch zu übersetzen.</p>
+            <p data-key="lang_p8">Was Punkt 3 betrifft, so liebe ich den Klang romanischer Sprachen, aber optisch bin ich kein großer Fan von ihnen. Wenn zu viele Wörter auf einen Vokal enden, sieht das meistens einfach falsch oder seltsam aus.</p>
+            <p data-key="lang_p9">Das soll nicht heißen, dass ich Spanisch oder Mandarin nie einbeziehen werde, sie können für mich nur keine Priorität haben.</p>
+
+            <h2 id="so-you-just-ask-ai-to-translate-the-pages-for-you" data-key="lang_h2_so-you-just-ask-ai-to-translate-the-pages-for-you">Du bittest also einfach eine KI, die Seiten für dich zu übersetzen?</h2>
+            <p data-key="lang_p10">Ja. ...und nein.</p>
+            <p data-key="lang_p11">Obwohl ich denke, dass eine KI manchmal bessere Ergebnisse liefern würde als Google Translate und die Bereitstellung des vorgefertigten Ergebnisses immer noch eine Verbesserung gegenüber der Verschwendung von Rechenleistung darstellt, stelle ich fest, dass KI zu einigen schlechten Angewohnheiten neigt:</p>
+            <ol>
+                <li data-key="lang_li4">Die Struktur ist so verlustfrei wie möglich.</li>
+                <li data-key="lang_li5">Die Bedeutung geht verloren, um die Struktur zu erhalten.</li>
+            </ol>
+            <p data-key="lang_p12">Man bekommt nur die Nachteile von beidem. Man verliert Bedeutung (besonders bei Jargon), behält aber die ursprüngliche englische Syntax und Struktur bei.</p>
+            <p data-key="lang_p13">Deshalb habe ich versucht, einige Strategien einzubeziehen, die ich mir vor der KI ausgedacht habe.</p>
+            <ol>
+                <li data-key="lang_li6">Eine Liste von Jargon-Begriffen erstellen, von denen ich denke, dass sie eine Wikipedia-Seite haben könnten. (Z.B. <a href="https://de.wikipedia.org/wiki/Merkmalschrift">Merkmalschrift</a>).</li>
+                <li data-key="lang_li7">Den passenden Begriff in jeder Sprache finden. Wenn Wikipedia ihn nicht hat, versuche ich, in Foren nach Muttersprachlern zu suchen, die dasselbe Konzept diskutieren.</li>
+                <li data-key="lang_li8">Gemini den englischen Teil der in Arbeit befindlichen Lokalisierungsdatei und die Jargon-Begriffe in ihren jeweiligen Sprachen zeigen und ihn dann bitten, „Übersetzerdeutsch“ zu vermeiden, „lokalisieren, nicht übersetzen“. Bitten, es so zu formatieren, dass es in das vorhandene JSON passt.</li>
+                <li data-key="lang_li9">Das JSON in meinem Blog mit dem Fiveserver-Plugin vorab ansehen, überprüfen, ob der Jargon korrekt ist und es keine groben Fehler gibt, die das Verständnis behindern. Zeilen von Fall zu Fall korrigieren.</li>
+                <li data-key="lang_li10">Das neue vollständige JSON einem anderen Gemini geben, ihn bitten, Fehler zu finden, die das Verständnis behindern oder die umständlich klingen und das Lesen erschweren, um Erklärungen bitten und die groben Teile erneut korrigieren (insbesondere wenn er den Jargon ändern möchte).</li>
+            </ol>
+            <p data-key="lang_p14">Ich glaube, das nennt man <abbr title="Maschinelle Übersetzung mit Post-Editing">MTPE</abbr>.</p>
+            <p data-key="lang_p15">In 99 % der Fälle ist Gemini besser im Übersetzen als ich. Ohne ihn könnte ich das nicht tun, aber man muss ihm dabei unter die Arme greifen. Ich habe das Gefühl, seine Übersetzungen sind immer noch sehr 1:1, aber er hat einen Wortschatz, der mir fehlt, und ich denke, er macht es möglich, Inhalte anzubieten, die korrekt genug sind, um verstanden zu werden, im Gegensatz zum automatischen Google Translate, das mit Chromium-Browsern geliefert wird.</p>
+            <p data-key="lang_p16">Soweit ich das beurteilen kann, fühlen sich die Übersetzungen in jeder Sprache etwas umständlich an, aber mein Englisch ist auch umständlich, also vielleicht ist es ein Fall, in dem er wirklich meine Stimme einfängt.</p>
+            <p data-key="lang_p17">Wenn du eine der Sprachen lesen kannst, die ich anzubieten versuche, lass mich bitte wissen, wie ich die Übersetzungen verbessern kann.</p>
+
+            <h2 id="does-gemini-do-the-graflect-transliterations-too" data-key="lang_h2_does-gemini-do-the-graflect-transliterations-too">Macht Gemini auch die Graflect-Transliterationen?</h2>
+            <p data-key="lang_p18">Ja. (wieder mit Vorbehalten)</p>
+            <p data-key="lang_p19">Gemini lernt <a href="https://pelmeniboiler.github.io/blog/graflect.html">Graflect</a> wirklich schnell, aber er hat ein paar Eigenheiten.</p>
+            <p data-key="lang_p20">Zum Beispiel schreibt Gemini gerne mit einem britischen Akzent. Ernsthaft. Nicht-rhotische R-Laute (wobei das 'r' am Silbenende nicht ausgesprochen wird), Vokale am Ende von Wörtern anstelle von Rs. Kurzes [ɪ] statt langem [iː].</p>
+            <p data-key="lang_p21">Das war extrem konsistent, während ich Gemini dazu brachte, Graflect zu verwenden.</p>
+            <p data-key="lang_p22">Ich würde annehmen, dass das von einem Problem mit meiner <abbr title="Internationales Phonetisches Alphabet">IPA</abbr>-Tabelle kam, aber ehrlich gesagt glaube ich an diesem Punkt einfach, dass er jetzt so spricht.</p>
+            <p data-key="lang_p23">Er verwendet auch gerne bestimmte Glyphen aus anderen konstruierten Schriften, was wirklich bezaubernd ist, da er oft dieselben einschmuggelt, um dieselben tatsächlichen Graflect-Glyphen zu ersetzen. Anfangs hatte ich keine Ahnung, warum das überhaupt passierte, und glaubte, es sei irgendein Problem auf meiner Seite.</p>
+            <p data-key="lang_p24">Mein Freund Aaron hat ein Skript geschrieben, das ich jetzt in meinem <abbr title="Visual Studio Code">VSCode</abbr> verwende, um diese abzufangen und mich dann bei Gemini darüber zu beschweren. Bisher hat kein Prompt-Engineering jeglicher Art Gemini dazu gebracht, aufzuhören, Nicht-Graflect-Glyphen in seine Ausgaben aufzunehmen, außer einfach die Problemmeldung einzufügen und ihm eine Chance zu geben, es erneut zu versuchen.</p>
+            <p data-key="lang_p25">Um Gemini dazu zu bringen, in meinem Akzent zu schreiben, musste ich zuerst einige Lokalisierungsdateien transkribieren (und dafür habe ich ein paar Werkzeuge, damit ich das schnell erledigen kann), aber als er eine Grundlage hatte, von der er ausgehen konnte, hat er den britischen Akzent wirklich gut abgelegt! Klasse, Gemini!</p>
+            <p data-key="lang_p26">Jeder Blogbeitrag außer dem über das Graflect-<abbr title="Internationales Phonetisches Alphabet">IPA</abbr> sollte zu 80 %-99 % von Gemini stammen, direkt aus der Box. Ich bin überrascht, dass er aus dem Wenigen, was ich ihm gegeben habe, so viel ableiten konnte. Wenn du neugierig bist, versuche doch mal, irgendwelche Seltsamkeiten zu finden, die es in meinem eigenen Akzent nicht gibt. Ich glaube nicht, dass du das schaffst!</p>
+            <p data-key="lang_p27">Es war etwas wirklich Cooles, Gemini dazu zu bringen, wie ein Yankee aus Connecticut zu klingen, und ich bin froh, dass ich das ausprobiert habe, anstatt alles von Hand neu zu schreiben. Wenn du das selbst ausprobieren möchtest, peile etwa 800-1200 Wörter als Beispieltext an. Ich denke, das ist alles, was Gemini braucht, um genügend N-Gramme aufzunehmen, um deinen Akzent abzuleiten.</p>
+
+            <h2 id="should-everyone-do-this" data-key="lang_h2_should-everyone-do-this">Sollte jeder das tun?</h2>
+            <p data-key="lang_p28">Äh, vielleicht?</p>
+            <p data-key="lang_p29">Es ist sehr offensichtlich, warum persönliche Blogs normalerweise einsprachig sind, sogar die meisten Websites sind es. Alles mit Nuancen war früher sehr zeitaufwändig zu übersetzen, und die meisten können sowieso Englisch lesen. Dann, mit Google Translate, kann man irgendwie den Kern von allem erfassen, was nicht in der globalen Lingua Franca ist, also wieder viel Arbeit für keinen Lohn.</p>
+            <p data-key="lang_p30">Ich denke, meine Website ist ein ziemlich klares Indiz dafür, dass die Eintrittshürde dafür jetzt im Keller ist, aber ich wäre sehr überrascht, wenn unsere Browser das in einem weiteren Jahr nicht live und von sich aus könnten. Sie könnten die Dinge sogar so umformulieren, wie du es bevorzugst. Ich sage dies, mit <abbr title="Große Sprachmodelle">LLMs</abbr> ist es im Grunde keine Arbeit, deine Seite zu übersetzen, und du kannst die Dinge auf eine Weise feinabstimmen, die vorher nicht möglich war, es ist wirklich cool, es auszuprobieren.</p>
+
+            <h2 id="tldr" data-key="lang_h2_tldr">TL;DR</h2>
+            
+            <p data-key="lang_p31">Ich wollte Sprachoptionen auf meiner Website haben, die den Jargon bewahren und mehr von meiner Stimme vermitteln (im Fall von Graflect, phonologisch). Google et al. gebührt die Anerkennung.</p>
+            
+            
+            <h2 id="postface-commentary" data-key="lang_h2_postface-commentary">Nachwort</h2>
+            <p data-key="lang_p32">Ich finde, Graflect hat einige Schwierigkeiten, zum Beispiel sage ich „“ im Satz „“.</p>
+            <p data-key="lang_p33">Der „A in Accent“-Laut wird nicht gehalten, also klingt es nicht britisch, sondern ganz normal, weil es kurz ist.</p>
+            <p data-key="lang_p34">Wenn ich „can“ allein sage oder in bestimmten Kontexten wie der Antwort „I can.“ auf jemanden, wird A zu .</p>
+            <p data-key="lang_p35">Also denke ich nicht, dass es eine perfekte Darstellung davon ist, wie ich sprechen würde, aber es ist eine nähere Annäherung, als es einfaches Latein geben kann.</p>
+        ]]></description>
+            <pubDate>Tue, 12 Aug 2025 21:12:00 GMT</pubDate>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</guid>
+        </item>
         <item>
             <title>Dieser Blog unterstützt jetzt RSS</title>
             <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
@@ -23,18 +97,18 @@
                 <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Radikal Simplifiziertes System</h2>
                 <p data-key="tbns_p1">Falls du meine Seite von früher kennst, ist dir vielleicht aufgefallen, dass ich meinen „Foto-Ordner“ und „Projekte-Ordner“ neu angeordnet habe. Früher hatten die unterschiedliche Designs und sahen total verschieden aus, je nachdem, wann in meinem Leben ich etwas über divs oder andere wichtige HTML-Elemente gelernt hatte.&nbsp;</p>
                 <p data-key="tbns_p2">Jetzt verwenden beide Genres das Standard-Artikel-Layout, das ich vor 2 Jahren entwickelt habe, und werden in der Blog-Übersicht sortiert. Obwohl ich finde, dass diese Vorgehensweise ein wenig von der Idee abweicht, verschiedene „Ordner“ mit organisierten Inhaltsgenres zu haben, denke ich,&nbsp;</p>
-                <p data-key="tbns_p3"><ol><li>• Letztendlich sind sie als Blog-Artikel formatiert und sollten auch als solche behandelt werden.</li><li>• Diese Methode ist weitaus skalierbarer.&nbsp;</li></ol></p>
+                <p data-key="tbns_p3"><ol><li> Letztendlich sind sie als Blog-Artikel formatiert und sollten auch als solche behandelt werden.</li><li> Diese Methode ist weitaus skalierbarer.&nbsp;</li></ol></p>
                 <p data-key="tbns_p4">Du kannst sie gerne mit den Kategorien durchsortieren. Eine Suchfunktion werde ich hinzufügen, sobald ich genug Beiträge habe, damit sich das lohnt.&nbsp;</p>
             </section>
             <section>
                 <h2 id="replacing-substack" data-key="tbns_h2_replacing-substack">Richtig Simple Substitution</h2>
                 <p data-key="tbns_p5">In letzter Zeit habe ich gesehen, wie viele <abbr title="Ja, ich benutze dieses Wort. Hätten Sie 'Leute-aus-dem-Netzwerk' bevorzugt?">Netzbürger</abbr>&nbsp;<a href="https://substack.com/">Substack</a>&nbsp;als ihr bevorzugtes Werkzeug für die Erstellung von Blogs und Newslettern annehmen. Ich mag Substack! Es ist eine gute Plattform. Ich benutze es gerne, und obwohl das hauptsächlich am verfügbaren Inhalt liegt, werde ich nicht so tun, als hätte ich die Hälfte der Blogs, die ich lese, gefunden, wenn sie Substack nicht benutzt hätten.</p>
                 <h3 id="what-i-like-about-substack" data-key="tbns_h3_what-i-like-about-substack">Was ich an Substack mag:</h3>
-                <p data-key="tbns_p6"><ul><li>• Prinzipielle Weigerung, „extremistische Inhalte zu überwachen“.</li><li>• Große Auswahl an Publikationen, es hat viele unterschiedliche Märkte erobert.</li><li>• Kostenlos nutzbar, mit einem fairen Geschäftsmodell für diejenigen, die Geld verdienen wollen.</li><li>• Sehr einfach, Kreativen Geld zu geben.</li><li>• LaTeX-Unterstützung.</li><li>• Datawrapper-Unterstützung.</li></ul></p>
+                <p data-key="tbns_p6"><ul><li> Prinzipielle Weigerung, „extremistische Inhalte zu überwachen“.</li><li> Große Auswahl an Publikationen, es hat viele unterschiedliche Märkte erobert.</li><li> Kostenlos nutzbar, mit einem fairen Geschäftsmodell für diejenigen, die Geld verdienen wollen.</li><li> Sehr einfach, Kreativen Geld zu geben.</li><li> LaTeX-Unterstützung.</li><li> Datawrapper-Unterstützung.</li></ul></p>
                 <h3 id="what-i-dislike-about-substack" data-key="tbns_h3_what-i-dislike-about-substack">Was ich an Substack hasse:</h3>
-                <p data-key="tbns_p7"><ul><li>• E-Mail-zentriertes Design.</li><li>• Mein Posteingang besteht jetzt nur noch aus E-Mails von Substack.</li><li>• Ich will die E-Mail-Adressen der Leute, die meinen Blog lesen, nicht haben.</li><li>• Ich will meine E-Mail-Adresse nicht den Leuten geben, deren Newsletter ich lese.</li><li>• Kein benutzerdefiniertes CSS.</li></ul></p>
+                <p data-key="tbns_p7"><ul><li> E-Mail-zentriertes Design.</li><li> Mein Posteingang besteht jetzt nur noch aus E-Mails von Substack.</li><li> Ich will die E-Mail-Adressen der Leute, die meinen Blog lesen, nicht haben.</li><li> Ich will meine E-Mail-Adresse nicht den Leuten geben, deren Newsletter ich lese.</li><li> Kein benutzerdefiniertes CSS.</li></ul></p>
                 <h3 id="#what-i-want" data-key="tbns_h3_what-i-want">Dinge, die Substack offensichtlich nie einbauen könnte, die ich aber will:</h3>
-                <p data-key="tbns_p7.5"><div><ul><li>• Chart.js-Unterstützung.</li><li>• Interaktive Demos.</li></ul><aside>Absolut keine Andeutungen auf kommende Dinge.</aside><br></div>Ich denke, für die meisten Leute ist Substack genau das, was sie suchen, wenn es um öffentlich gepostete, lange Texte geht. Für jeden, dessen E-Mail-Posteingang zu heilig ist, um ihn zu entweihen, oder der besonders wählerisch bei CSS ist, ist <a href="https://wordpress.com/">WordPress</a> wahrscheinlich die richtige Alternative. Ich für meinen Teil habe mich für keines von beiden entschieden. Ich finde es macht richtig Spaß, zu lernen und mich beim Erstellen meiner eigenen Website abzumühen, besonders mit einer KI, die mir Händchen hält, da ich phänomenal begriffsstutzig bin und Nachhilfe von einem Wesen mit unmenschlicher Geduld brauche.</p>
+                <p data-key="tbns_p7.5"><div><ul><li> Chart.js-Unterstützung.</li><li> Interaktive Demos.</li></ul><aside>Absolut keine Andeutungen auf kommende Dinge.</aside><br></div>Ich denke, für die meisten Leute ist Substack genau das, was sie suchen, wenn es um öffentlich gepostete, lange Texte geht. Für jeden, dessen E-Mail-Posteingang zu heilig ist, um ihn zu entweihen, oder der besonders wählerisch bei CSS ist, ist <a href="https://wordpress.com/">WordPress</a> wahrscheinlich die richtige Alternative. Ich für meinen Teil habe mich für keines von beiden entschieden. Ich finde es macht richtig Spaß, zu lernen und mich beim Erstellen meiner eigenen Website abzumühen, besonders mit einer KI, die mir Händchen hält, da ich phänomenal begriffsstutzig bin und Nachhilfe von einem Wesen mit unmenschlicher Geduld brauche.</p>
             </section>
             <section>
                 <h2 id="resolving-a-significant-snag" data-key="tbns_h2_resolving-a-significant-snag">Richtig Smarte Strategie</h2>
