@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Wed, 13 Aug 2025 04:56:47 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2025 20:42:52 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/he/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>הבלוג הזה תומך עכשיו בשפה שלך</title>
@@ -485,92 +485,92 @@
             <header>
                 <h1 id="title" data-key="sunshine_h1">מקלדת ניסיונית Sunshine</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">מקלדת ה-Sunshine היא מקלדת ארגונומית מפוצלת שעיצבתי ובניתי מאפס. זהו סידור מקשים ניסיוני המתמקד בצמצום תנועת האצבעות והגברת הנוחות, באמצעות מספר מקשים מינימלי המסודר בשכבות ונגיש דרך צירופי מקשים (קומבואים).</p>
-                <p data-key="sunshine_p2">פרויקט זה היה צלילה עמוקה לעולם עיצוב המקלדות, החל מיצירת אב-טיפוס פיזי מקרטון, דרך עיצוב מעגל מודפס (PCB) מותאם אישית, וכלה בתכנות הקושחה (firmware). מאמר זה מתעד את המסע.</p>
+                <p data-key="sunshine_p1">מקלדת ה-Sunshine היא מקלדת מפוצלת, ארגונומית ומותאמת אישית, שעיצבתי ובניתי מאפס. זוהי פריסה ניסיונית המתמקדת בצמצום תנועת האצבעות ובמקסום הנוחות באמצעות מספר מינימלי של מקשים, המסודרים בשכבות ונגישים באמצעות צירופים.</p>
+                <p data-key="sunshine_p2">הפרויקט הזה היה צלילה עמוקה לעיצוב מקלדות, החל מיצירת אב-טיפוס פיזי מקרטון, דרך עיצוב מעגל מודפס (PCB) מותאם אישית, ועד לתכנות הקושחה. מאמר זה מתעד את המסע.</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="TLDR" data-key="tldr_h2">תקציר (TL;DR)</h2>
-                <p data-key="tldr_p1">עיצבתי ובניתי מקלדת ארגונומית מפוצלת עם 36 מקשים בלבד. היא נשענת בכבדות על שכבות וצירופי מקשים (קומבואים) כדי לגשת לכל התווים, מה ששומר על האצבעות שלי על שורת הבית או קרוב אליה בכל עת. בניתי אב-טיפוס מקרטון, עיצבתי מעגל מודפס עם גרפיקה ייחודית, ותכנתתי אותו עם קושחת QMK. זה מוזר, אבל זה נוח. צפו בסרטון מבחן ההקלדה:</p>
+                <h2 id="TLDR" data-key="tldr_h2">תקציר (או: TL;DR)</h2>
+                <p data-key="tldr_p1">עיצבתי ובניתי מקלדת ארגונומית מפוצלת עם 36 מקשים בלבד. היא נשענת בכבדות על שכבות וצירופי מקשים (קומבואים) כדי לגשת לכל התווים, מה שמשאיר את האצבעות שלי על שורת הבית או קרוב אליה כל הזמן. יצרתי אב-טיפוס של הפריסה מקרטון, עיצבתי PCB מותאם אישית עם גרפיקה ייחודית, ותכנתתי אותו באמצעות קושחת QMK. זה מוזר, אבל זה נוח. צפו בסרטון מבחן ההקלדה כאן למטה:</p>
                 
                 <hr>
             </section>
             
             <section>
                 <h2 id="Intro" data-key="intro_h2">רקע ומוטיבציה</h2>
-                <p data-key="intro_p1">כמו רבים שמקלידים כל היום, גיליתי שמקלדות רגילות הן לא נוחות. אחרי שניסיתי כמה מקלדות ארגונומיות מסחריות, כמו ה-Lily58 שבתמונה, הבנתי שלמרות שהן היו שיפור, הן לא היו מושלמות עבורי. רבות מהן עדיין דרשו תנועות ומתיחות אצבעות לא נוחות.</p>
+                <p data-key="intro_p1">כמו אנשים רבים שמקלידים כל היום, גיליתי שמקלדות סטנדרטיות פשוט לא נוחות. אחרי שניסיתי כמה מקלדות ארגונומיות מסחריות, כמו ה-Lily58 שבתמונה, הבנתי שאמנם הן שיפור, הן לא היו מושלמות *עבורי*. רבות מהן עדיין דרשו תנועות ומתיחות אצבעות לא נוחות.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">רציתי משהו שנבנה במיוחד לידיים *שלי*, לא ליד הממוצעת. קיבלתי השראה מקהילת המקלדות המינימליסטיות, במיוחד אלו המשתמשות במקלדות עם מעט מאוד מקשים (פחות מ-40%). הפילוסופיה פשוטה: למה להזיז את האצבעות למקש כשאפשר להביא את המקש לאצבעות דרך שכבות?</p>
+                <p data-key="intro_p2">רציתי משהו שנבנה במיוחד לידיים *שלי*, לא ליד הממוצעת. קיבלתי השראה מקהילת המקלדות המינימליסטיות, במיוחד מאלה שמשתמשים במקלדות עם מעט מאוד מקשים (פחות מ-40%). הפילוסופיה פשוטה: למה להזיז את האצבעות למקש כשאפשר להביא את המקש לאצבעות דרך שכבות?</p>
                 <p data-key="intro_p3">זה הוביל אותי למסקנה פשוטה: כדי להשיג את המקלדת המושלמת בשבילי, אצטרך לעצב אותה בעצמי.</p>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Objectives" data-key="objectives_h2">מטרות הפרויקט</h2>
-                <p data-key="objectives_p1">לפני שהתחלתי לעצב, קבעתי רשימה ברורה של מטרות לפרויקט. הן התבססו על תיאוריה מרכזית של ארגונומיית מקלדות.</p>
+                <p data-key="objectives_p1">לפני שהתחלתי לעצב, קבעתי רשימה ברורה של מטרות לפרויקט. הן הונחו על ידי תיאוריה מרכזית של ארגונומית מקלדות.</p>
                 <h3 data-key="objectives_h3_theory">התיאוריה המאוחדת הגדולה שלי על נוחות מקלדות</h3>
-                <h4 data-key="objectives_h4_phalanges">קודם כל האצבעות: צמצום תנועה</h4>
+                <h4 data-key="objectives_h4_phalanges">קודם כל הפלנגות: למזער תנועה</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">הרעיון המרכזי הוא שאצבעות לא צריכות להימתח או לנוע למרחקים ארוכים. כל מקש צריך להיות ממוקם ישירות מתחת לתנוחת המנוחה הטבעית של האצבע. האגודל, בהיותו האצבע החזקה והגמישה ביותר, צריך להיות אחראי על הפעלת שכבות ומקשים נפוצים כמו <kbd>רווח</kbd>, <kbd>Enter</kbd> ו-<kbd>Backspace</kbd>.</p>
-                <h4 data-key="objectives_h4_combos">קומבואים ושכבות: הפחתת מספר המקשים</h4>
-                <p data-key="objectives_p3">עם מספר מוגבל של מקשים, שכבות הן חיוניות. למשל, לחיצה ארוכה על מקש אגודל יכולה להפוך את שורת הבית `ASDF` ל-`1234`. צירופי מקשים, או 'קומבואים', שבהם לוחצים על שני מקשים בו-זמנית לפעולה אחרת, יכולים להרחיב עוד יותר את הפונקציונליות בלי צורך במקשים פיזיים נוספים. למשל, לחיצה על <kbd>J</kbd> ו-<kbd>K</kbd> יחד יכולה להפיק <kbd>Escape</kbd>.</p>
-                <p data-key="objectives_p4">כל זה הוביל למטרות העיצוב הבאות:</p>
+                <p data-key="objectives_p2">הרעיון המרכזי הוא שאצבעות לא צריכות להימתח או לעבור מרחקים ארוכים. כל מקש צריך להיות ממוקם ישירות מתחת למצב המנוחה הטבעי של האצבע. האגודל, בהיותו האצבע החזקה והגמישה ביותר, צריך להיות אחראי על הפעלת שכבות ומקשי שינוי נפוצים כמו <kbd>רווח</kbd>, <kbd>Enter</kbd> ו-<kbd>Backspace</kbd>.</p>
+                <h4 data-key="objectives_h4_combos">צירופים ושכבות: להפחית את ספירת המקשים</h4>
+                <p data-key="objectives_p3">עם מספר מוגבל של מקשים, שכבות הן חיוניות. למשל, לחיצה ממושכת על מקש אגודל יכולה להפוך את שורת הבית `ASDF` ל-`1234`. צירופי מקשים, או 'קומבואים', שבהם לוחצים על שני מקשים בו-זמנית כדי להפעיל פעולה אחרת, יכולים להרחיב עוד יותר את הפונקציונליות ללא צורך במקשים פיזיים נוספים. למשל, לחיצה על <kbd>J</kbd> ו-<kbd>K</kbd> יחד יכולה להפיק <kbd>Escape</kbd>.</p>
+                <p data-key="objectives_p4">זה הוביל למטרות העיצוב הממשיות הבאות:</p>
                 <ul>
-                    <li data-key="objectives_li1">3 שורות ו-5 עמודות לכל יד, בנוסף למקבץ אגודל.</li>
-                    <li data-key="objectives_li2">דירוג עמודות אגרסיבי שיתאים לאורך הטבעי של האצבעות.</li>
-                    <li data-key="objectives_li3">מקבץ אגודל נוח ובזווית.</li>
-                    <li data-key="objectives_li4">הסתמכות רבה על שכבות וקומבואים כדי לבטל את הצורך בשורות מספרים, פונקציות, ואפילו מקשי סמלים מסוימים.</li>
-                    <li data-key="objectives_li5">קושחה הניתנת לתכנות מלא (QMK או ZMK).</li>
+                    <li data-key="objectives_li1">3 שורות ו-5 עמודות לכל יד, בתוספת צביר אגודל.</li>
+                    <li data-key="objectives_li2">דירוג עמודות אגרסיבי שיתאים לאורכי האצבעות הטבעיים.</li>
+                    <li data-key="objectives_li3">צביר אגודל נוח וזוויתי.</li>
+                    <li data-key="objectives_li4">הסתמכות כבדה על שכבות וצירופים כדי לבטל את הצורך בשורות מספרים, שורות פונקציות, או אפילו כמה מקשי סמלים.</li>
+                    <li data-key="objectives_li5">קושחה ניתנת לתכנות מלא (QMK או ZMK).</li>
                     <li data-key="objectives_li6">אסתטיקה ייחודית ואישית.</li>
-                    <li data-key="objectives_li7">חייב להיות עיצוב מפוצל ליציבה ברוחב הכתפיים.</li>
+                    <li data-key="objectives_li7">חייב להיות עיצוב מפוצל ליציבה ברוחב כתפיים.</li>
                 </ul>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Design" data-key="design_h2">תהליך העיצוב</h2>
-                <p data-key="design_p1">הקונספט הראשון שלי, שקראתי לו Type-22, שורטט בעורך סידורי מקלדת. היה לו דירוג זרת אגרסיבי מאוד ורעיון ראשוני לקשת האגודל.</p>
+                <p data-key="design_p1">הקונספט הראשון שלי, שקראתי לו Type-22, שורטט בעורך פריסות מקלדת. היה לו דירוג זרת אגרסיבי מאוד ורעיון מוקדם לקשת האגודל.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
-                <p data-key="design_p2">אבל, סידור דו-ממדי על מסך לא באמת אומר לך איך זה *מרגיש*. בשביל זה, הייתי צריכה משהו פיזי.</p>
+                <p data-key="design_p2">עם זאת, פריסה דו-ממדית על מסך לא אומרת לך איך זה *מרגיש* באמת. בשביל זה, הייתי צריכה משהו פיזי.</p>
                 
                 <section>
-                    <h3 id="CAD" data-key="cad_h3">תכנון בעזרת קרטון (תב"ק)</h3>
-                    <p data-key="cad_p1">במקום להדפיס מיד מארז בתלת-ממד או להזמין מעגל מודפס, פניתי לחומר זול ומהיר יותר ליצירת אב-טיפוס: קרטון. הדפסתי את הסידור שלי בקנה מידה של 1:1 והדבקתי אותו על חתיכת קרטון.</p>
+                    <h3 id="CAD" data-key="cad_h3">תב"ק (תכנון בעזרת קרטון)</h3>
+                    <p data-key="cad_p1">במקום להדפיס מיד מארז בתלת-ממד או להזמין מעגל מודפס, פניתי לחומר זול ומהיר יותר ליצירת אב-טיפוס: קרטון. הדפסתי את הפריסה שלי בקנה מידה של 1:1 והדבקתי אותה על חתיכת קרטון.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
                     <p data-key="cad_p2">לאחר מכן, גזרתי בעמל רב חורים למתגים. זה איפשר לי להכניס מתגים מכניים ומקשים אמיתיים כדי לבדוק את המרווחים והדירוג.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">אב-הטיפוס הפשוט הזה היה יקר מפז. יכולתי להרגיש מיד אילו עמודות לא היו במקום, או אם מקש אגודל היה קשה להשגה. הכנתי כמה כאלה, ושיפרתי את העיצוב בכל פעם.</p>
+                    <p data-key="cad_p3">אב-הטיפוס הנאמן הזה היה יקר מפז. יכולתי להרגיש מיד אילו עמודות לא היו במקום, או אם מקש אגודל היה קשה להשגה. הכנתי כמה כאלה, תוך כדי שאני משפרת את העיצוב בכל פעם.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">כבונוס, ההקלדה על קרטון נשמעת באופן מפתיע די נחמד.</p>
+                    <p data-key="cad_p4">כבונוס צדדי, ההקלדה על קרטון נשמעת באופן מפתיע די נחמד.</p>
                 </section>
 
                 <section>
-                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">גיבוש הסידור הסופי</h3>
-                    <p data-key="final_p1">אחד השינויים הראשונים היה במקבץ האגודל. בעיצוב הראשוני שלי, מקש האגודל הפנימי היה פנימי מדי, מה שדרש מתיחה לא נוחה.</p>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">גיבוש הפריסה הסופית</h3>
+                    <p data-key="final_p1">אחד השינויים הראשונים היה בצביר האגודל. בעיצוב הראשוני שלי, מקש האגודל הפנימי היה פנימי מדי, מה שדרש מתיחה לא נוחה.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">אב-הטיפוס מקרטון אישר זאת. התאמתי את הקשת כך שתהיה צמודה יותר וטבעית יותר להגעה.</p>
+                    <p data-key="final_p2">אב-הטיפוס מקרטון אישר זאת. התאמתי את הקשת כך שתהיה הדוקה יותר וטבעית יותר להגעה.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
                     <p data-key="final_p3">איטרציה נוספת כללה התאמה של עמודת הזרת. התברר שהיא הייתה נמוכה מדי, אז הרמתי אותה מעט.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
-                    <p data-key="final_p4">אחרי עוד כמה שינויים, הגעתי לסידור שהרגיש נוח וטבעי. זה הפך לעיצוב הסופי שעליו התבסס המעגל המודפס.</p>
+                    <p data-key="final_p4">אחרי עוד כמה שיפורים קטנים, הגעתי לפריסה שהרגישה נוחה וטבעית. זה הפך לעיצוב הסופי שעליו התבסס המעגל המודפס.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
                     <p data-key="final_p5">גרסת הקרטון הסופית הזאת הייתה המדריך הנאמן שלי להמשך הפרויקט.</p>
                 </section>
 
                 <section>
                     <h3 id="PCB" data-key="pcb_h3">עיצוב המעגל המודפס (PCB)</h3>
-                    <p data-key="pcb_p1">עם הסידור הפיזי הסופי, הגיע הזמן לעצב את המוח האלקטרוני של המקלדת: המעגל המודפס. השתמשתי ב-KiCad לתהליך. לאמנות על המעגל בחרתי במוטו 'הכל בידיים שלך'.</p>
+                    <p data-key="pcb_p1">כשהפריסה הפיזית הושלמה, הגיע הזמן לעצב את המוח האלקטרוני של המקלדת: המעגל המודפס (PCB). השתמשתי ב-KiCad לתהליך. לאמנות על המעגל בחרתי במוטו 'הכל בידיים שלך'.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
-                    <p data-key="pcb_p2">הסכמה החשמלית של מקלדת די פשוטה. כל מתג הוא חלק ממטריצה, ומחובר לדיודה כדי למנוע 'ghosting' (רישום לחיצות מקשים שגויות).</p>
+                    <p data-key="pcb_p2">הסכמה למקלדת היא די פשוטה. כל מתג הוא חלק ממטריצה, המחובר לדיודה כדי למנוע 'ghosting' (רישום לחיצות מקשים שגויות).</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
                     <p data-key="pcb_p3">בחרתי להשתמש ב-Raspberry Pi Pico כמיקרו-בקר כי הוא זול, חזק, ונתמך היטב על ידי קושחת QMK.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p4">שני חצאי המקלדת מחוברים באמצעות כבל TRRS, שמעביר חשמל ואת אותות המטריצה.</p>
+                    <p data-key="pcb_p4">שני חצאי המקלדת מחוברים באמצעות כבל TRRS, שמעביר חשמל ואת אות מטריצת הנתונים.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
-                    <p data-key="pcb_p5">הוספתי תמיכה בשקעי hot-swap של Kailh, המאפשרים להחליף מתגים בקלות ללא הלחמה.</p>
+                    <p data-key="pcb_p5">הוספתי תמיכה בשקעי hot-swap של Kailh, המאפשרים לי להחליף מתגים בקלות ללא הלחמה.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
-                    <p data-key="pcb_p6">אחרי ששרטטתי את כל המסלולים, שזה היה כמו לפתור פאזל, הוספתי את הגרפיקה ויצרתי את קבצי הגרבר לייצור.</p>
+                    <p data-key="pcb_p6">אחרי ששרטטתי את כל המסלולים, שזה היה כמו לפתור פאזל, הוספתי את אמנות הדפסת המשי ויצרתי את קבצי הגרבר לייצור.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
                     <p data-key="pcb_p7">שלחתי את הקבצים ליצרן, וכמה שבועות לאחר מכן, הלוחות המוגמרים הגיעו!</p>
                     <p data-key="pcb_p8">לראות את העיצוב הופך מקובץ דיגיטלי לחפץ פיזי היה מתגמל להפליא.</p>
@@ -593,8 +593,8 @@
                 <p data-key="discoveries_p1">הפרויקט הזה היה חווית למידה ענקית. הנה כמה מהתובנות המרכזיות:</p>
                 <ul>
                     <li data-key="discoveries_li1">יצירת אב-טיפוס מקרטון היא שלב חיוני, זול ויעיל לעיצובים ארגונומיים.</li>
-                    <li data-key="discoveries_li2">הזווית והמיקום של מקבץ האגודל הם המרכיבים הקריטיים ביותר לנוחות.</li>
-                    <li data-key="discoveries_li3">יש עקומת למידה משמעותית לשימוש בשכבות ובקומבואים, אבל זה הופך לטבע שני אחרי כמה שבועות.</li>
+                    <li data-key="discoveries_li2">הזווית והמיקום של צביר האגודל הם המרכיבים הקריטיים ביותר לנוחות.</li>
+                    <li data-key="discoveries_li3">יש עקומת למידה משמעותית לשימוש בשכבות וצירופים, אבל זה הופך לטבע שני אחרי כמה שבועות.</li>
                     <li data-key="discoveries_li4">עיצוב מעגל מודפס פחות מאיים ממה שזה נראה, הודות לתוכנות קוד פתוח מודרניות כמו KiCad.</li>
                     <li data-key="discoveries_li5">אין פתרון 'מידה אחת מתאימה לכולם' למקלדות. התאמה אישית היא המפתח.</li>
                 </ul>
@@ -605,7 +605,7 @@
 
             <section>
                 <h2 id="Plans" data-key="plans_h2">תוכניות לעתיד</h2>
-                <h3 data-key="plans_h3_layout">שיפורי סידור (Sunshine V2)</h3>
+                <h3 data-key="plans_h3_layout">שיפורי פריסה (Sunshine V2)</h3>
                 <p data-key="plans_p1">בגרסה שנייה, אתנסה בהוספת 'אוהל' (הטיית החצאים כלפי מעלה באמצע) ואולי אנסה קיעור אגרסיבי יותר של המקשים, בדומה למקלדת Dactyl או Kinesis Advantage.</p>
                 <h3 data-key="plans_h3_features">תכונות חומרה חדשות</h3>
                 <p data-key="plans_p2">אני מעוניינת להוסיף מסך OLED קטן שיציג את השכבה הנוכחית, או אולי כדור עקיבה קטן או משטח עקיבה מתחת לאגודל כדי לבטל את הצורך בעכבר.</p>
@@ -616,7 +616,7 @@
 
             <section>
                 <h2 id="Bye" data-key="bye_h2">הסוף (בינתיים)</h2>
-                <p data-key="bye_p1">תודה שקראתם על מסע המקלדת שלי! בניית ה-Sunshine הייתה אחד הפרויקטים המאתגרים והמתגמלים ביותר שעשיתי. זה לא רק כלי, אלא השקפת עולם על האופן שבו אנו מתקשרים עם המחשבים שלנו. אם יש לכם שאלות, אתם מוזמנים לפנות אליי.</p>
+                <p data-key="bye_p1">תודה שקראתם על מסע המקלדת שלי! בניית ה-Sunshine הייתה אחד הפרויקטים המאתגרים והמתגמלים ביותר שלקחתי על עצמי. זה לא רק כלי, אלא השתקפות של פילוסופיה על האופן שבו אנו מתקשרים עם המחשבים שלנו. אם יש לכם שאלות, אתם מוזמנים לפנות אליי.</p>
             </section>
         ]]></description>
             <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>

@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Wed, 13 Aug 2025 04:56:47 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2025 20:42:52 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>このブログが、あなたの言語をサポートするようになりました</title>
@@ -479,57 +479,57 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
         </item>
         <item>
-            <title>実験的キーボード「サンシャイン」</title>
+            <title>実験キーボード「サンシャイン」</title>
             <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="sunshine_h1">実験的キーボード「サンシャイン」</h1>
+                <h1 id="title" data-key="sunshine_h1">実験キーボード「サンシャイン」</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">「サンシャインキーボード」は、私がゼロから設計・製作した、人間工学に基づいたカスタム分割式キーボードです。これは、キーの数を最小限に抑え、それらをレイヤー構造とキーの組み合わせ（コンボ）で操作することで、指の移動距離を減らし快適性を最大限に高めることを目指した実験的な配列です。</p>
-                <p data-key="sunshine_p2">このプロジェクトは、段ボールによる物理的な試作品作りから、カスタム基板（PCB）の設計、ファームウェアのプログラミングに至るまで、キーボード設計の世界への深い探求となりました。この記事では、その道のりを記録しています。</p>
+                <p data-key="sunshine_p1">サンシャインキーボードは、私がゼロから設計・製作した、人間工学に基づくカスタム分割式キーボードです。キーの数を最小限に抑え、それらをレイヤーとコンボ（キーの組み合わせ）で操作することで、指の移動を最小化し、快適性を最大化することを目指した実験的な配列になっています。</p>
+                <p data-key="sunshine_p2">このプロジェクトは、段ボールでの物理的なプロトタイピングから、カスタムPCB（プリント基板）の設計、ファームウェアのプログラミングに至るまで、キーボード設計への深い探求でした。この記事では、その道のりを記録しています。</p>
                 <hr>
             </header>
             
             <section>
                 <h2 id="TLDR" data-key="tldr_h2">要約 (TL;DR)</h2>
-                <p data-key="tldr_p1">私はわずか36キーのカスタム分割型エルゴキーボードを設計・製作しました。すべての文字入力はレイヤーとキーの同時押し（コンボ）に大きく依存しており、これにより指は常にホームポジションかそのすぐ近くに留まります。段ボールで配列の試作品を作り、ユニークなアートワークを施したカスタム基板を設計し、QMKファームウェアでプログラムしました。変わっていますが、快適です。以下のタイピングテスト動画をご覧ください：</p>
+                <p data-key="tldr_p1">36キーだけのカスタム分割型エルゴキーボードを設計・製作しました。レイヤーとキーの組み合わせ（コンボ）を多用して全ての文字にアクセスすることで、指が常にホームポジションかその近くに留まるようにしています。段ボールでレイアウトの試作品を作り、ユニークなアートワークを施したカスタム基板を設計し、QMKファームウェアでプログラムしました。変わっていますが、快適です。下のタイピングテスト動画をご覧ください：</p>
                 
                 <hr>
             </section>
             
             <section>
                 <h2 id="Intro" data-key="intro_h2">背景と動機</h2>
-                <p data-key="intro_p1">一日中タイピングする多くの人々と同様に、私も標準的なキーボードは不快だと感じていました。ここに写っているLily58のような市販のエルゴキーボードをいくつか試しましたが、改善はされたものの、私にとって完璧ではありませんでした。多くは依然として不快な指の動きやストレッチを必要としました。</p>
+                <p data-key="intro_p1">一日中タイピングする多くの人と同じように、私も標準的なキーボードは快適ではないと感じていました。ここに写真があるLily58のような、市販のエルゴキーボードをいくつか試したのですが、改善はされたものの、私にとって完璧ではありませんでした。多くは依然として不快な指の動きやストレッチを必要としたのです。</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">私は平均的な手ではなく、*私の*手のために作られたものが欲しかったのです。私はミニマリストキーボードのコミュニティ、特にキーが極端に少ない（40%未満）キーボードを使う人々に触発されました。その哲学は単純です。「レイヤーを使えばキーを指元に持ってこれるのに、なぜわざわざ指をキーまで動かすのか？」</p>
-                <p data-key="intro_p3">これは私を単純な結論に導きました。自分にとって完璧なキーボードを手に入れるには、自分で設計するしかない、と。</p>
+                <p data-key="intro_p2">私が欲しかったのは、平均的な手のためではなく、*私の*手のために作られたものでした。ミニマリストキーボードのコミュニティ、特にキーが極端に少ない（40%未満の）キーボードを使う人たちに刺激を受けました。その哲学は単純です。レイヤーを使ってキーを指元に持ってこれるのに、なぜわざわざ指をキーまで動かす必要があるのでしょうか？</p>
+                <p data-key="intro_p3">これにより、私は単純な結論に至りました。自分にとって完璧なキーボードを手に入れるには、自分で設計するしかない、と。</p>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Objectives" data-key="objectives_h2">プロジェクトの目的</h2>
-                <p data-key="objectives_p1">設計を始める前に、プロジェクトの明確な目標リストを設定しました。これらはキーボードの人間工学に関する中心的な理論に基づいています。</p>
+                <p data-key="objectives_p1">設計を始める前に、プロジェクトの明確な目標リストを設定しました。これらは、キーボードの人間工学に関する私なりの中心的な理論に導かれたものです。</p>
                 <h3 data-key="objectives_h3_theory">私のキーボード快適性に関する大統一理論</h3>
-                <h4 data-key="objectives_h4_phalanges">指が第一：動きの最小化</h4>
+                <h4 data-key="objectives_h4_phalanges">指が第一：動きを最小化する</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
                 <p data-key="objectives_p2">中心的な考え方は、指を伸ばしたり長距離を移動させたりすべきではない、ということです。各キーは指の自然なホームポジションの真下に配置されるべきです。最も強くて柔軟な指である親指は、レイヤーの有効化や<kbd>スペース</kbd>、<kbd>Enter</kbd>、<kbd>Backspace</kbd>といった多用する修飾キーを担当すべきです。</p>
-                <h4 data-key="objectives_h4_combos">コンボとレイヤー：キー数の削減</h4>
-                <p data-key="objectives_p3">キーの数が限られているため、レイヤーは不可欠です。例えば、親指キーを押し続けると、ホームポジションの`ASDF`が`1234`に変わる、といった具合です。キーの組み合わせ、つまり「コンボ」（2つのキーを同時に押して別のアクションを発動する）を使えば、物理キーを増やさずに機能をさらに拡張できます。例えば、<kbd>J</kbd>と<kbd>K</kbd>を同時に押すと<kbd>Escape</kbd>が入力されるようにできます。</p>
+                <h4 data-key="objectives_h4_combos">コンボとレイヤー：キーの数を減らす</h4>
+                <p data-key="objectives_p3">キーの数が限られているため、レイヤーは不可欠です。例えば、親指キーを押し続けると、ホームロウの`ASDF`が`1234`に変わる、といった具合です。キーの組み合わせ、つまり「コンボ」（2つのキーを同時に押して別のアクションを起動する）を使えば、物理キーを増やさずに機能をさらに拡張できます。例えば、<kbd>J</kbd>と<kbd>K</kbd>を同時に押すと<kbd>Escape</kbd>が入力されるようにできます。</p>
                 <p data-key="objectives_p4">これにより、以下の具体的な設計目標が導き出されました：</p>
                 <ul>
                     <li data-key="objectives_li1">片手につき3行5列、加えて親指クラスター。</li>
-                    <li data-key="objectives_li2">自然な指の長さに合わせた、大胆なカラムスタッガー（列のずらし）。</li>
+                    <li data-key="objectives_li2">自然な指の長さに合わせた、大胆なカラムスタッガー（列のずれ）。</li>
                     <li data-key="objectives_li3">快適な角度のついた親指クラスター。</li>
                     <li data-key="objectives_li4">数字行、ファンクション行、さらには一部の記号キーさえも不要にするための、レイヤーとコンボへの強い依存。</li>
                     <li data-key="objectives_li5">完全にプログラム可能なファームウェア（QMKまたはZMK）。</li>
-                    <li data-key="objectives_li6">ユニークで個人的なデザイン性。</li>
+                    <li data-key="objectives_li6">ユニークで個人的な美しさ。</li>
                     <li data-key="objectives_li7">肩幅に合わせた姿勢のための分割設計であること。</li>
                 </ul>
                 <hr>
             </section>
             
             <section>
-                <h2 id="Design" data-key="design_h2">設計プロセス</h2>
+                <h2 id="Design" data-key="design_h2">設計のプロセス</h2>
                 <p data-key="design_p1">私が「Type-22」と名付けた最初のコンセプトは、キーボードレイアウトエディタで作成されました。非常に大胆な小指のずらしと、親指の弧に関する初期のアイデアがありました。</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
                 <p data-key="design_p2">しかし、画面上の2Dレイアウトでは、それが実際に*どう感じるか*はわかりません。そのためには、物理的なものが必要でした。</p>
@@ -540,16 +540,16 @@
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
                     <p data-key="cad_p2">次に、丹念にスイッチ用の穴を切り抜きました。これにより、本物のメカニカルスイッチとキーキャップをはめ込み、間隔やずれを試すことができました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">この手軽な試作品は非常に貴重でした。どの列がずれているか、親指キーが押しにくいかをすぐに感じ取ることができました。私はこの段ボール試作品をいくつか作り、その都度デザインを微調整しました。</p>
+                    <p data-key="cad_p3">この手軽な試作品は非常に貴重でした。どの列がずれているか、親指キーが押しにくいかをすぐに感じ取ることができました。この段ボール試作品をいくつか作り、その都度デザインを微調整しました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">おまけに、段ボールでタイピングすると驚くほど良い音がします。</p>
+                    <p data-key="cad_p4">おまけに、段ボールでタイピングすると驚くほど良い音がするんです。</p>
                 </section>
 
                 <section>
                     <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">レイアウトの最終決定</h3>
                     <p data-key="final_p1">最初の変更点の一つは親指クラスターでした。初期のデザインでは、内側の親指キーが奥に入りすぎており、不快な指の伸ばしが必要でした。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">段ボールの試作品がこれを確認させてくれました。私は弧をよりコンパクトで自然に届くように調整しました。</p>
+                    <p data-key="final_p2">段ボールの試作品がこれを確認させてくれました。弧をよりきつく、自然に届くように調整しました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
                     <p data-key="final_p3">別の試作では、小指の列を調整しました。低すぎることが判明したため、少し持ち上げました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
@@ -560,7 +560,7 @@
 
                 <section>
                     <h3 id="PCB" data-key="pcb_h3">基板（PCB）の設計</h3>
-                    <p data-key="pcb_p1">物理的なレイアウトが固まったので、キーボードの電子頭脳であるプリント基板（PCB）を設計する時が来ました。このプロセスにはKiCadを使用しました。基板アートには、「すべてはあなたの手の中に」というモットーを選びました。</p>
+                    <p data-key="pcb_p1">物理的なレイアウトが固まったので、キーボードの電子頭脳であるプリント基板（PCB）を設計する時が来ました。このプロセスにはKiCadを使用しました。基板アートには、「ALL IS IN YOUR HANDS」（すべてはあなたの手の中に）というモットーを選びました。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
                     <p data-key="pcb_p2">キーボードの回路図はかなり単純です。各スイッチはマトリックスの一部であり、「ゴースティング」（誤ったキー入力の登録）を防ぐためにダイオードで接続されています。</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
@@ -594,9 +594,9 @@
                 <ul>
                     <li data-key="discoveries_li1">人間工学に基づいた設計において、段ボールでの試作は不可欠かつ安価で効果的なステップである。</li>
                     <li data-key="discoveries_li2">親指クラスターの角度と位置が、快適性にとって最も重要な要素である。</li>
-                    <li data-key="discoveries_li3">レイヤーとコンボの習得にはかなりの時間がかかるが、数週間で第二の天性となる。</li>
-                    <li data-key="discoveries_li4">KiCadのような現代のオープンソースソフトウェアのおかげで、基板設計は思っているほど怖くない。</li>
-                    <li data-key="discoveries_li5">キーボードに「フリーサイズ」の解決策はない。パーソナライズが鍵である。</li>
+                    <li data-key="discoveries_li3">レイヤーとコンボの習得にはかなりの学習が必要ですが、数週間で第二の天性となります。</li>
+                    <li data-key="discoveries_li4">KiCadのような現代のオープンソースソフトウェアのおかげで、基板設計は思っているほど怖くありません。</li>
+                    <li data-key="discoveries_li5">キーボードに「フリーサイズ」の解決策はありません。パーソナライズが鍵です。</li>
                 </ul>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
                 <p data-key="discoveries_p2">また、シリコンを充填したケースが優れた静音効果をもたらすことも発見しましたが、最終的なケースをホットグルーを積層して作ってみたらどうなるか、試してみたいという誘惑に今も駆られています。</p>
@@ -606,7 +606,7 @@
             <section>
                 <h2 id="Plans" data-key="plans_h2">今後の計画</h2>
                 <h3 data-key="plans_h3_layout">配列の改訂（Sunshine V2）</h3>
-                <p data-key="plans_p1">第2版では、少し「テンティング」（左右のパーツを中央で上向きに傾けること）を追加したり、DactylやKinesis Advantageキーボードのように、キーウェル（指を置く窪み）にもっと大胆な曲面を試したりしてみたいです。</p>
+                <p data-key="plans_p1">バージョン2では、少し「テンティング」（左右のパーツを中央で上向きに傾けること）を追加したり、DactylやKinesis Advantageキーボードのように、キーウェル（指を置く窪み）にもっと大胆な曲面を試したりしてみたいです。</p>
                 <h3 data-key="plans_h3_features">新しいハードウェア機能</h3>
                 <p data-key="plans_p2">現在のレイヤーを表示するための小型OLEDスクリーンや、マウスを不要にするために親指の下に小さなトラックボールかトラックパッドを追加することに興味があります。</p>
                 <h3 data-key="plans_h3_production">製造と共有</h3>

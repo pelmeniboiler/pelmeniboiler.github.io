@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Wed, 13 Aug 2025 04:56:47 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2025 20:42:52 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Dieser Blog unterstützt jetzt Ihre Sprache</title>
@@ -479,46 +479,46 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
         </item>
         <item>
-            <title>Experimentelle Tastatur Sunshine</title>
+            <title>Experimentelle Sunshine-Tastatur</title>
             <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="sunshine_h1">Experimentelle Tastatur Sunshine</h1>
+                <h1 id="title" data-key="sunshine_h1">Experimentelle Sunshine-Tastatur</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">Die Sunshine-Tastatur ist eine maßgefertigte, ergonomische, geteilte Tastatur, die ich von Grund auf entworfen und gebaut habe. Es ist ein experimentelles Layout, das darauf abzielt, Fingerwege zu minimieren und den Komfort zu maximieren, indem eine minimale Anzahl von Tasten verwendet wird, die in Ebenen angeordnet sind und über Kombinationen (Combos) aufgerufen werden.</p>
-                <p data-key="sunshine_p2">Dieses Projekt war ein tiefer Einblick in das Tastaturdesign, vom physischen Prototyping mit Pappe über den Entwurf einer eigenen Leiterplatte bis hin zur Programmierung der Firmware. Dieser Artikel dokumentiert diese Reise.</p>
+                <p data-key="sunshine_p1">Die Sunshine-Tastatur ist eine maßgefertigte, ergonomische, geteilte Tastatur, die ich von Grund auf entworfen und gebaut habe. Es ist ein experimentelles Layout, das darauf abzielt, die Fingerwege zu minimieren und den Komfort zu maximieren, indem eine minimale Anzahl von Tasten in Ebenen angeordnet und über Kombinationen (Combos) aufgerufen wird.</p>
+                <p data-key="sunshine_p2">Dieses Projekt war ein tiefer Tauchgang ins Tastaturdesign, vom physischen Prototyping mit Pappe über den Entwurf einer eigenen Leiterplatte (PCB) bis hin zur Programmierung der Firmware. Dieser Artikel dokumentiert diese Reise.</p>
                 <hr>
             </header>
             
             <section>
                 <h2 id="TLDR" data-key="tldr_h2">Zusammenfassung (TL;DR)</h2>
-                <p data-key="tldr_p1">Ich habe eine maßgefertigte, geteilte, ergonomische Tastatur mit nur 36 Tasten entworfen und gebaut. Sie verlässt sich stark auf Ebenen und Tastenkombinationen (Combos), um alle Zeichen zu erreichen, wodurch meine Finger jederzeit auf oder nahe der Grundreihe bleiben. Ich habe das Layout mit Pappe als Prototyp erstellt, eine eigene Leiterplatte mit einzigartigem Design entworfen und sie mit der QMK-Firmware programmiert. Sie ist seltsam, aber bequem. Schauen Sie sich das Tipp-Test-Video unten an:</p>
+                <p data-key="tldr_p1">Ich habe eine maßgefertigte, geteilte, ergonomische Tastatur mit nur 36 Tasten entworfen und gebaut. Sie nutzt intensiv Ebenen und Tastenkombinationen (Combos), um alle Zeichen zu erreichen, wodurch meine Finger jederzeit auf oder nahe der Grundreihe bleiben. Ich habe das Layout mit Pappe als Prototyp erstellt, eine eigene Leiterplatte mit einzigartigem Design entworfen und sie mit der QMK-Firmware programmiert. Sie ist seltsam, aber bequem. Schau dir das Tipp-Test-Video unten an:</p>
                 
                 <hr>
             </section>
             
             <section>
                 <h2 id="Intro" data-key="intro_h2">Hintergrund &amp; Motivation</h2>
-                <p data-key="intro_p1">Wie viele Menschen, die den ganzen Tag tippen, empfinde ich Standardtastaturen als unbequem. Nachdem ich mehrere handelsübliche ergonomische Tastaturen ausprobiert hatte, wie die hier abgebildete Lily58, stellte ich fest, dass sie zwar eine Verbesserung waren, aber für mich nicht perfekt. Viele erforderten immer noch unbequeme Fingerbewegungen und -streckungen.</p>
+                <p data-key="intro_p1">Wie viele Leute, die den ganzen Tag tippen, empfinde ich Standardtastaturen als unbequem. Nachdem ich mehrere handelsübliche ergonomische Tastaturen ausprobiert hatte, wie die hier abgebildete Lily58, stellte ich fest, dass sie zwar eine Verbesserung waren, aber für mich nicht perfekt. Viele erforderten immer noch unbequeme Fingerbewegungen und -streckungen.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
                 <p data-key="intro_p2">Ich wollte etwas, das für *meine* Hände gebaut war, nicht für die Durchschnittshand. Inspiriert wurde ich von der Community der minimalistischen Tastaturen, insbesondere von denen, die Tastaturen mit sehr wenigen Tasten (unter 40%) verwenden. Die Philosophie ist einfach: Warum die Finger zu einer Taste bewegen, wenn man die Taste durch Ebenen zu den Fingern bringen kann?</p>
-                <p data-key="intro_p3">Dies führte mich zu einer einfachen Schlussfolgerung: Um die perfekte Tastatur für mich zu bekommen, musste ich sie selbst entwerfen.</p>
+                <p data-key="intro_p3">Das führte mich zu einer einfachen Schlussfolgerung: Um die perfekte Tastatur für mich zu bekommen, musste ich sie selbst entwerfen.</p>
                 <hr>
             </section>
             
             <section>
                 <h2 id="Objectives" data-key="objectives_h2">Projektziele</h2>
-                <p data-key="objectives_p1">Bevor ich mit dem Entwerfen begann, legte ich eine klare Liste von Zielen für das Projekt fest. Diese orientierten sich an einer zentralen Theorie der Tastaturergonomie.</p>
+                <p data-key="objectives_p1">Bevor ich mit dem Design anfing, legte ich eine klare Liste von Zielen für das Projekt fest. Diese orientierten sich an einer zentralen Theorie der Tastaturergonomie.</p>
                 <h3 data-key="objectives_h3_theory">Meine große vereinheitlichte Theorie des Tastaturkomforts</h3>
                 <h4 data-key="objectives_h4_phalanges">Fingerglieder zuerst: Bewegung minimieren</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">Die Kernidee ist, dass die Finger sich nicht strecken oder weite Wege zurücklegen sollten. Jede Taste sollte sich direkt unter der natürlichen Ruheposition eines Fingers befinden. Der Daumen, als stärkster und flexibelster Finger, sollte für die Aktivierung von Ebenen und häufigen Modifikatortasten wie <kbd>Leertaste</kbd>, <kbd>Enter</kbd> und <kbd>Backspace</kbd> zuständig sein.</p>
+                <p data-key="objectives_p2">Die Kernidee ist, dass Finger sich nicht strecken oder weite Wege zurücklegen sollten. Jede Taste sollte sich direkt unter der natürlichen Ruheposition eines Fingers befinden. Der Daumen, als stärkster und flexibelster Finger, sollte für die Aktivierung von Ebenen und häufigen Modifikatortasten wie <kbd>Leertaste</kbd>, <kbd>Enter</kbd> und <kbd>Backspace</kbd> zuständig sein.</p>
                 <h4 data-key="objectives_h4_combos">Combos und Ebenen: Tastenanzahl reduzieren</h4>
-                <p data-key="objectives_p3">Bei einer begrenzten Anzahl von Tasten sind Ebenen unerlässlich. Zum Beispiel könnte das Halten einer Daumentaste die Grundreihe `ASDF` in `1234` verwandeln. Tastenkombinationen oder „Combos“, bei denen man zwei Tasten gleichzeitig drückt, um eine andere Aktion auszulösen, können die Funktionalität weiter erweitern, ohne mehr physische Tasten zu benötigen. Zum Beispiel könnte das gemeinsame Drücken von <kbd>J</kbd> und <kbd>K</kbd> die Taste <kbd>Escape</kbd> ausgeben.</p>
+                <p data-key="objectives_p3">Bei einer begrenzten Anzahl von Tasten sind Ebenen unerlässlich. Zum Beispiel könnte das Halten einer Daumentaste die Grundreihe `ASDF` in `1234` verwandeln. Tastenkombinationen oder „Combos“, bei denen man zwei Tasten gleichzeitig drückt, um eine andere Aktion auszulösen, können die Funktionalität weiter erweitern, ohne mehr physische Tasten zu benötigen. Zum Beispiel könnte das gemeinsame Drücken von <kbd>J</kbd> und <kbd>K</kbd> <kbd>Escape</kbd> ausgeben.</p>
                 <p data-key="objectives_p4">Dies führte zu den folgenden konkreten Designzielen:</p>
                 <ul>
                     <li data-key="objectives_li1">3 Reihen und 5 Spalten pro Hand, plus ein Daumen-Cluster.</li>
-                    <li data-key="objectives_li2">Aggressiver Spaltenversatz, der den natürlichen Fingerlängen entspricht.</li>
+                    <li data-key="objectives_li2">Aggressiver Spaltenversatz (Column Stagger), der den natürlichen Fingerlängen entspricht.</li>
                     <li data-key="objectives_li3">Ein bequemer, abgewinkelter Daumen-Cluster.</li>
                     <li data-key="objectives_li4">Starke Nutzung von Ebenen und Combos, um die Notwendigkeit von Zahlenreihen, Funktionsreihen oder sogar einigen Symboltasten zu eliminieren.</li>
                     <li data-key="objectives_li5">Vollständig programmierbare Firmware (QMK oder ZMK).</li>
@@ -538,9 +538,9 @@
                     <h3 id="CAD" data-key="cad_h3">CAD (Cardboard Aided Design / Papp-gestütztes Design)</h3>
                     <p data-key="cad_p1">Anstatt sofort ein Gehäuse zu 3D-drucken oder eine Leiterplatte zu bestellen, griff ich zu einem günstigeren und schnelleren Prototyping-Material: Pappe. Ich druckte mein Layout im Maßstab 1:1 aus und klebte es auf ein Stück Pappe.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
-                    <p data-key="cad_p2">Dann schnitt ich sorgfältig die Löcher für die Schalter aus. Dies ermöglichte es mir, echte mechanische Schalter und Tastenkappen einzusetzen, um den Abstand und den Versatz zu testen.</p>
+                    <p data-key="cad_p2">Dann schnitt ich mühsam die Löcher für die Schalter aus. Dies ermöglichte es mir, echte mechanische Schalter und Tastenkappen einzusetzen, um den Abstand und den Versatz zu testen.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">Dieser einfache Prototyp war von unschätzbarem Wert. Ich konnte sofort spüren, welche Spalten falsch platziert waren oder ob eine Daumentaste schwer zu erreichen war. Ich habe mehrere dieser Papp-Prototypen hergestellt und das Design jedes Mal optimiert.</p>
+                    <p data-key="cad_p3">Dieser Low-Fidelity-Prototyp war von unschätzbarem Wert. Ich konnte sofort spüren, welche Spalten falsch platziert waren oder ob eine Daumentaste schwer zu erreichen war. Ich habe mehrere dieser Papp-Prototypen hergestellt und das Design jedes Mal optimiert.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
                     <p data-key="cad_p4">Als netter Nebeneffekt klingt das Tippen auf Pappe überraschend gut.</p>
                 </section>
@@ -594,7 +594,7 @@
                 <ul>
                     <li data-key="discoveries_li1">Prototyping mit Pappe ist ein wesentlicher, günstiger und effektiver Schritt für ergonomische Designs.</li>
                     <li data-key="discoveries_li2">Der Winkel und die Position des Daumen-Clusters sind die entscheidendsten Elemente für den Komfort.</li>
-                    <li data-key="discoveries_li3">Die Verwendung von Ebenen und Combos hat eine erhebliche Lernkurve, wird aber nach ein paar Wochen zur zweiten Natur.</li>
+                    <li data-key="discoveries_li3">Die Nutzung von Ebenen und Combos hat eine erhebliche Lernkurve, wird aber nach ein paar Wochen zur zweiten Natur.</li>
                     <li data-key="discoveries_li4">Das Design einer Leiterplatte ist weniger einschüchternd, als es scheint, dank moderner Open-Source-Software wie KiCad.</li>
                     <li data-key="discoveries_li5">Es gibt keine „Einheitsgröße“-Lösung für Tastaturen. Personalisierung ist der Schlüssel.</li>
                 </ul>
@@ -608,7 +608,7 @@
                 <h3 data-key="plans_h3_layout">Layout-Überarbeitungen (Sunshine V2)</h3>
                 <p data-key="plans_p1">Für eine zweite Version würde ich mit etwas „Tenting“ (dem Anwinkeln der Hälften in der Mitte nach oben) experimentieren und vielleicht eine aggressivere Krümmung für die Tastenmulden ausprobieren, ähnlich einer Dactyl- oder Kinesis-Advantage-Tastatur.</p>
                 <h3 data-key="plans_h3_features">Neue Hardware-Funktionen</h3>
-                <p data-key="plans_p2">Ich bin daran interessiert, einen kleinen OLED-Bildschirm hinzuzufügen, um die aktuelle Ebene anzuzeigen, oder vielleicht einen kleinen Trackball oder ein Trackpad unter dem Daumen, um die Notwendigkeit einer Maus zu beseitigen.</p>
+                <p data-key="plans_p2">Ich bin daran interessiert, einen kleinen OLED-Bildschirm hinzuzufügen, um die aktuelle Ebene anzuzeigen, oder vielleicht einen kleinen Trackball oder ein Trackpad unter dem Daumen, um die Maus überflüssig zu machen.</p>
                 <h3 data-key="plans_h3_production">Produktion &amp; Veröffentlichung</h3>
                 <p data-key="plans_p3">Ich plane, alle Designdateien (KiCad, Gehäusemodelle) bald auf GitHub zu veröffentlichen. Ich habe keine Pläne für einen Group Buy, aber ich hoffe, die Dateien werden für andere nützlich sein, die ihre eigene perfekte Tastatur bauen möchten.</p>
                 <hr>
