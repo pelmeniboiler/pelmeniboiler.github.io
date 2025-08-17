@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Wed, 13 Aug 2025 20:42:52 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 17 Aug 2025 19:56:23 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/de/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Dieser Blog unterstützt jetzt Ihre Sprache</title>
@@ -479,107 +479,107 @@
             <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
         </item>
         <item>
-            <title>Experimentelle Sunshine-Tastatur</title>
+            <title>Sunshine Experimentelle Tastatur</title>
             <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
             <description><![CDATA[
             <header>
-                <h1 id="title" data-key="sunshine_h1">Experimentelle Sunshine-Tastatur</h1>
+                <h1 id="title" data-key="sunshine_h1">Sunshine Experimentelle Tastatur</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">Die Sunshine-Tastatur ist eine maßgefertigte, ergonomische, geteilte Tastatur, die ich von Grund auf entworfen und gebaut habe. Es ist ein experimentelles Layout, das darauf abzielt, die Fingerwege zu minimieren und den Komfort zu maximieren, indem eine minimale Anzahl von Tasten in Ebenen angeordnet und über Kombinationen (Combos) aufgerufen wird.</p>
-                <p data-key="sunshine_p2">Dieses Projekt war ein tiefer Tauchgang ins Tastaturdesign, vom physischen Prototyping mit Pappe über den Entwurf einer eigenen Leiterplatte (PCB) bis hin zur Programmierung der Firmware. Dieser Artikel dokumentiert diese Reise.</p>
+                <p data-key="sunshine_p1">Eine einzigartige und ergonomische geteilte Tastatur mit versetzten Spalten, die entwickelt wurde, um die gesamte Hand durch Handballen- und Handgelenkstützentasten bequem zu nutzen. Außerdem bis zu vier Solenoide, weil ich laute Geräusche mag (nicht abgebildet).</p>
+                <p data-key="sunshine_p2">Fühlt euch frei, dieses Inhaltsverzeichnis zu nutzen, um die Abschnitte zu überfliegen, die euch interessieren!</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="TLDR" data-key="tldr_h2">Zusammenfassung (TL;DR)</h2>
-                <p data-key="tldr_p1">Ich habe eine maßgefertigte, geteilte, ergonomische Tastatur mit nur 36 Tasten entworfen und gebaut. Sie nutzt intensiv Ebenen und Tastenkombinationen (Combos), um alle Zeichen zu erreichen, wodurch meine Finger jederzeit auf oder nahe der Grundreihe bleiben. Ich habe das Layout mit Pappe als Prototyp erstellt, eine eigene Leiterplatte mit einzigartigem Design entworfen und sie mit der QMK-Firmware programmiert. Sie ist seltsam, aber bequem. Schau dir das Tipp-Test-Video unten an:</p>
+                <h2 id="TLDR" data-key="tldr_h2">Zusammenfassung, ein schicker Begriff für T.L.D.R.</h2>
+                <p data-key="tldr_p1">Mit den hemdsärmeligsten Strategien und dem Weg des geringsten Widerstands habe ich die beste Tastatur aller Zeiten entwickelt. Ja, genau, die beste. Bis ich die zweite Version mache, meine ich. Es folgt eine übermäßig detaillierte Erklärung von allem, was ich getan habe und warum ich es getan habe. Keine Sorge, es gibt Bilder.</p>
                 
                 <hr>
             </section>
             
             <section>
-                <h2 id="Intro" data-key="intro_h2">Hintergrund &amp; Motivation</h2>
-                <p data-key="intro_p1">Wie viele Leute, die den ganzen Tag tippen, empfinde ich Standardtastaturen als unbequem. Nachdem ich mehrere handelsübliche ergonomische Tastaturen ausprobiert hatte, wie die hier abgebildete Lily58, stellte ich fest, dass sie zwar eine Verbesserung waren, aber für mich nicht perfekt. Viele erforderten immer noch unbequeme Fingerbewegungen und -streckungen.</p>
+                <h2 id="Intro" data-key="intro_h2">Hintergrund</h2>
+                <p data-key="intro_p1">Ich habe mich schon immer für Tastaturen interessiert. Als ich sechs war, habe ich die nicht funktionierende Smith Corona SD 300 meiner Mutter akribisch zerlegt, bis eine Reparatur oder ein Zusammenbau unmöglich war. Entschuldigung, Mama, ich wollte nur wissen, wie sie funktioniert... Als ich älter wurde, lernte ich schließlich, wie wir alle, über mechanische Tastaturen aus dem Internet. Unweigerlich stieß ich auf die Hobbyszene und kaufte ein paar Bausätze zum Zusammenbauen.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">Ich wollte etwas, das für *meine* Hände gebaut war, nicht für die Durchschnittshand. Inspiriert wurde ich von der Community der minimalistischen Tastaturen, insbesondere von denen, die Tastaturen mit sehr wenigen Tasten (unter 40%) verwenden. Die Philosophie ist einfach: Warum die Finger zu einer Taste bewegen, wenn man die Taste durch Ebenen zu den Fingern bringen kann?</p>
-                <p data-key="intro_p3">Das führte mich zu einer einfachen Schlussfolgerung: Um die perfekte Tastatur für mich zu bekommen, musste ich sie selbst entwerfen.</p>
+                <p data-key="intro_p2">Die Lily58 wurde meine allererste geteilte Tastatur, und ich liebte sie. Nachdem ich etwas über Schaltkreise gelernt hatte, um herauszufinden, wie ich das Hinzufügen eines Drehgebers verpfuscht hatte, wechselte ich schließlich zu Keeb.ios Iris für die doppelte Anzahl von Drehgebern. Trotz meiner sofortigen Liebe zu ergonomischen Tastaturen hatte ich ein paar Probleme mit denen, die ich benutzte. Obwohl ich große Hände habe, sind meine Finger proportional eher kurz. Die oberste der vier Reihen auf den meisten geteilten Tastaturen fühlte sich für mich wie eine große Platzverschwendung an; und meine kleinen Finger konnten die zweitoberste Reihe nicht erreichen, ohne meine ganze Hand zu bewegen, geschweige denn die zweitoberste Reihe in den äußersten Spalten.</p>
+                <p data-key="intro_p3">Das bedeutete, dass es auf der Lily zweiundzwanzig unbrauchbare Tasten gab und zwanzig auf der Iris, aber nur, weil ihr von vornherein zwei dieser unbrauchbaren Tasten fehlten. Außerdem vermisste ich, obwohl ich die Drehknöpfe auf der Iris liebte, vier Daumentasten wie auf der Lily. —Außer, dass die vierte Daumentaste auf der Lily etwas unbequem zu erreichen war.— Es musste eine andere Art der Anordnung geben. Obwohl ich Tastaturen wie die Ergodox mit mehreren Reihen von Daumentasten sah, gefiel mir die Idee nicht. Es schien unelegant und genauso schwer zu erreichen. Die Kyria schien einen besseren Weg zu haben. Außerdem brauchte ich eine Art Handgelenkstütze, um meine Handgelenke aufgrund der Höhe der Tastaturen gerade zu halten. Ich hatte gesehen, wie einige Leute dies mit seltsamen, matschigen Memory-Foam-Dingern lösten und andere, indem sie von Cherry MX zu Kailh Choc wechselten und kein Gehäuse für die Leiterplatte hatten. Ich hatte jedoch eine andere Idee, die es mir ermöglichen würde, meine Hände genau so weit anzuheben, wie ich es für die Tastenschalter brauchte, ohne den 4 mm Hubweg der MX-Schalter zu verlieren. Als ich Tastaturen benutzte, Strategien anderer beobachtete und Berichte über Design-Begründungen las, begann ich darüber nachzudenken, wie eine ideale Tastatur für mich aussehen könnte.</p>
                 <hr>
             </section>
             
             <section>
-                <h2 id="Objectives" data-key="objectives_h2">Projektziele</h2>
-                <p data-key="objectives_p1">Bevor ich mit dem Design anfing, legte ich eine klare Liste von Zielen für das Projekt fest. Diese orientierten sich an einer zentralen Theorie der Tastaturergonomie.</p>
-                <h3 data-key="objectives_h3_theory">Meine große vereinheitlichte Theorie des Tastaturkomforts</h3>
-                <h4 data-key="objectives_h4_phalanges">Fingerglieder zuerst: Bewegung minimieren</h4>
+                <h2 id="Objectives" data-key="objectives_h2">Ziele und Überlegungen</h2>
+                <p data-key="objectives_p1">Als meine Tastaturerfahrungen sich vertieften und erweiterten und ich lernte, was mir gefiel und was nicht, begann ich, einige Vorstellungen davon zu entwickeln, was ich bei der Gestaltung meiner Tastatur berücksichtigen wollte.</p>
+                <h3 data-key="objectives_h3_theory">Meine „Theorien“ zum Design.</h3>
+                <h4 data-key="objectives_h4_phalanges">Die Fingerglieder sind nicht der einzige nützliche Teil der Hand.</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">Die Kernidee ist, dass Finger sich nicht strecken oder weite Wege zurücklegen sollten. Jede Taste sollte sich direkt unter der natürlichen Ruheposition eines Fingers befinden. Der Daumen, als stärkster und flexibelster Finger, sollte für die Aktivierung von Ebenen und häufigen Modifikatortasten wie <kbd>Leertaste</kbd>, <kbd>Enter</kbd> und <kbd>Backspace</kbd> zuständig sein.</p>
-                <h4 data-key="objectives_h4_combos">Combos und Ebenen: Tastenanzahl reduzieren</h4>
-                <p data-key="objectives_p3">Bei einer begrenzten Anzahl von Tasten sind Ebenen unerlässlich. Zum Beispiel könnte das Halten einer Daumentaste die Grundreihe `ASDF` in `1234` verwandeln. Tastenkombinationen oder „Combos“, bei denen man zwei Tasten gleichzeitig drückt, um eine andere Aktion auszulösen, können die Funktionalität weiter erweitern, ohne mehr physische Tasten zu benötigen. Zum Beispiel könnte das gemeinsame Drücken von <kbd>J</kbd> und <kbd>K</kbd> <kbd>Escape</kbd> ausgeben.</p>
-                <p data-key="objectives_p4">Dies führte zu den folgenden konkreten Designzielen:</p>
+                <p data-key="objectives_p2">In der Anatomie bilden die Muskeln am Ende der Mittelfußknochen einen Orientierungspunkt, der als „Fußballen“ bekannt ist. Es gibt einen ähnlichen Orientierungspunkt an den Händen am Ende der Mittelhandknochen, den ich als Handballen bezeichnen werde, weil ich nichts über Anatomie weiß und keine Ahnung habe, ob es einen richtigen Namen dafür gibt. Wenn ihr wisst, wie es heißt, sagt es mir bitte. Ebenso werde ich den Orientierungspunkt am unteren Ende der Handfläche, der die Handwurzelknochen enthält, als Ferse bezeichnen. Glücklicherweise scheint dies zumindest eine akzeptierte Terminologie zu sein. Ich bin der Überzeugung, dass diese beiden Orientierungspunkte bei Tastaturen zu wenig genutzt werden, insbesondere wenn die Position der Ferse selbst sehr wichtig ist, um ein gerades Handgelenk zu erreichen und Schmerzen zu vermeiden. Mit dem entsprechenden Layout können diese verwendet werden, um <i>mindestens</i> vier weitere Tasten zu erhalten.</p>
+                <h4 data-key="objectives_h4_combos">Tastaturen müssen den einfachen Zugriff auf Kombinationen unterstützen.</h4>
+                <p data-key="objectives_p3">Das bedeutet, so zu gestalten, dass ich Kombinationen mit den kleinen Fingern vermeiden und Kombinationen ohne Bewegung der Hände ermöglichen kann. Der beste Weg, dies zu erklären, ist, die Kontinuität der Geschichte zu unterbrechen und es am fertigen Produkt zu erklären. Die Tastenkombinationen auf der Sunshine sind auf eine ganz bestimmte Weise angeordnet. Das liegt daran, dass man manchmal, sagen wir, <kbd>STRG</kbd> + <kbd>ALT</kbd> + <kbd>Z</kbd> drücken muss. Bei anderen Layouts würdet ihr vielleicht euren kleinen Finger für <kbd>STRG</kbd>, euren Ringfinger für <kbd>Z</kbd> und euren Daumen für <kbd>ALT</kbd> verwenden. Auf der Sunshine legt ihr einfach euren Daumen zwischen <kbd>STRG</kbd> und <kbd>ALT</kbd> und drückt beide gleichzeitig. Eure Hand muss sich nicht bewegen und euer kleiner Finger kann <kbd>Z</kbd> treffen. Für die sehr häufigen Tastenkombinationen mit <kbd>STRG</kbd> + <kbd>SHIFT</kbd> sorgt die Fersentaste.</p>
+                <p data-key="objectives_p4">So hatte ich eine lange Liste von Funktionen gebildet, die ich wollte, eine Kombination aus Lieblingskonzepten und Anpassungen für mich selbst. Dies waren nun meine Ziele für mein Design:</p>
                 <ul>
-                    <li data-key="objectives_li1">3 Reihen und 5 Spalten pro Hand, plus ein Daumen-Cluster.</li>
-                    <li data-key="objectives_li2">Aggressiver Spaltenversatz (Column Stagger), der den natürlichen Fingerlängen entspricht.</li>
-                    <li data-key="objectives_li3">Ein bequemer, abgewinkelter Daumen-Cluster.</li>
-                    <li data-key="objectives_li4">Starke Nutzung von Ebenen und Combos, um die Notwendigkeit von Zahlenreihen, Funktionsreihen oder sogar einigen Symboltasten zu eliminieren.</li>
-                    <li data-key="objectives_li5">Vollständig programmierbare Firmware (QMK oder ZMK).</li>
-                    <li data-key="objectives_li6">Eine einzigartige und persönliche Ästhetik.</li>
-                    <li data-key="objectives_li7">Muss ein geteiltes Design für eine schulterbreite Haltung sein.</li>
+                    <li data-key="objectives_li1">Mehr Daumentasten. Diese sind perfekt für Tasten, die oft allein oder in Kombination mit anderen wie <kbd>SPACE</kbd>, <kbd>CTRL</kbd>, <kbd>ALT</kbd> oder <kbd>GUI</kbd> verwendet werden.</li>
+                    <li data-key="objectives_li2">Handgelenkstütze, die auch als Eingabe dient.</li>
+                    <li data-key="objectives_li3">Eine Taste, die den äußeren „Ballen“ der Hand am vierten und fünften Mittelhandknochen nutzt.</li>
+                    <li data-key="objectives_li4">Geteilt, natürlich.</li>
+                    <li data-key="objectives_li5">Spaltenweiser Versatz, der meinen Händen entgegenkommt, insbesondere ein hoher Versatz bei den kleinen Fingern.</li>
+                    <li data-key="objectives_li6">Ein einzigartiges Aussehen, das sich von den unzähligen ähnlichen Projekten abhebt.</li>
+                    <li data-key="objectives_li7">Geringes Federgewicht, damit ich Stenografie ausprobieren kann. (Dies würde interessante Tücken mit sich bringen.)</li>
                 </ul>
                 <hr>
             </section>
             
             <section>
-                <h2 id="Design" data-key="design_h2">Der Designprozess</h2>
-                <p data-key="design_p1">Mein erstes Konzept, das ich Type-22 nannte, wurde in einem Tastaturlayout-Editor entworfen. Es hatte einen sehr aggressiven Versatz für den kleinen Finger und eine frühe Idee für den Daumenbogen.</p>
+                <h2 id="Design" data-key="design_h2">Die perfekte Tastatur erschaffen, auf die einfache Art</h2>
+                <p data-key="design_p1">Das Design begann richtig um den 11. März 2022, nachdem ich aus einer langen Reise nach Irland in die Vereinigten Staaten zurückgekehrt war. Obwohl ich während meiner Reise und davor mit dem Keyboard Layout Editor experimentiert hatte, hatte ich endlich ein Design gefunden (das stark von der oben erwähnten SplitKB Kyria inspiriert war), das mir gefiel. Es verzichtete auf einige der weniger zugänglich aussehenden Tasten der Kyria und erhöhte den Versatz an den äußersten Spalten. Ich fügte Tasten für die Teile der Hand hinzu, die sie meiner Meinung nach verdienten, und das war's.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
-                <p data-key="design_p2">Ein 2D-Layout auf einem Bildschirm verrät einem jedoch nicht, wie es sich tatsächlich *anfühlt*. Dafür musste ich etwas Physisches in die Hand nehmen.</p>
+                <p data-key="design_p2">Ich denke, diese sieht am besten aus, ist aber am wenigsten brauchbar. Meine Handflächen sind zu lang. Beachtet die 1,25-U-Tasten in den äußersten Spalten der kleinen Finger. Es soll alles schön aussehen lassen.</p>
                 
                 <section>
-                    <h3 id="CAD" data-key="cad_h3">CAD (Cardboard Aided Design / Papp-gestütztes Design)</h3>
-                    <p data-key="cad_p1">Anstatt sofort ein Gehäuse zu 3D-drucken oder eine Leiterplatte zu bestellen, griff ich zu einem günstigeren und schnelleren Prototyping-Material: Pappe. Ich druckte mein Layout im Maßstab 1:1 aus und klebte es auf ein Stück Pappe.</p>
+                    <h3 id="CAD" data-key="cad_h3">Cardboard Aided Design</h3>
+                    <p data-key="cad_p1">Um meine Entwürfe schnell zu prototypisieren, beschloss ich, das Layout in Pappe umzusetzen. Ich benutzte den Plattengenerator von Keeb.io, um ein SVG zu generieren, das ich als Papiervorlage drucken konnte.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
-                    <p data-key="cad_p2">Dann schnitt ich mühsam die Löcher für die Schalter aus. Dies ermöglichte es mir, echte mechanische Schalter und Tastenkappen einzusetzen, um den Abstand und den Versatz zu testen.</p>
+                    <p data-key="cad_p2">Ich nahm dann die Vorlage, klebte sie auf die Pappe und schnitt von jeder der vier Ecken nach innen, wobei ich die Unterseite des Schnitts mit einer Rolle Packband stützte. Dies ist keineswegs gut genug für einen dauerhaften handverdrahteten Aufbau, aber es funktioniert ausreichend, um das Layout zu testen.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">Dieser Low-Fidelity-Prototyp war von unschätzbarem Wert. Ich konnte sofort spüren, welche Spalten falsch platziert waren oder ob eine Daumentaste schwer zu erreichen war. Ich habe mehrere dieser Papp-Prototypen hergestellt und das Design jedes Mal optimiert.</p>
+                    <p data-key="cad_p3">Sobald zweiundzwanzig kleine Quadrate ausgeschnitten waren, konnte ich die Tasten platzieren. Hier wurde mir klar, dass die <kbd>BALL</kbd>-Taste keine so seltsame Größe haben konnte und ich mich mit einer 2,75u-Taste zufrieden geben musste. Das war das Beste, denn so passte die vierte Daumentaste.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">Als netter Nebeneffekt klingt das Tippen auf Pappe überraschend gut.</p>
+                    <p data-key="cad_p4">Aber ja, all die Arbeit nur, um herauszufinden, dass es nicht wirklich so bequem war. Ich hätte einfach meine Hand messen können... Kein großer Verlust, es war ja nur Pappe und ein paar Minuten.</p>
                 </section>
 
                 <section>
-                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">Finalisierung des Layouts</h3>
-                    <p data-key="final_p1">Eine der ersten Änderungen betraf den Daumen-Cluster. Mein ursprüngliches Design hatte die innere Daumentaste zu weit innen, was eine unbequeme Streckung erforderte.</p>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">Das Design fertigstellen, oder warum ich Hunderte von 13,97-mm-Quadraten aus Pappe habe.</h3>
+                    <p data-key="final_p1">Lange Rede, kurzer Sinn, ich habe viele verschiedene Iterationen auf Pappe durchgemacht. Am wichtigsten ist, dass ich versuchte, die <kbd>HEEL</kbd>-Leiste in wirklich kleinen Anpassungen zu verschieben und dann jedes Mal neue Platinen auszuschneiden. Ich druckte sie aus, schnitt sie aus und brachte sie jedes Mal zu meiner Mutter, um zu testen, ob es bequem war. Das summierte sich zeitlich. Dieses hier abgebildete Design zeigt den ursprünglichen Versuch einer Methode zum gleichzeitigen Drücken von <kbd>STRG</kbd> und <kbd>ALT</kbd>.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">Der Papp-Prototyp bestätigte dies. Ich passte den Bogen an, um ihn enger und natürlicher erreichbar zu machen.</p>
+                    <p data-key="final_p2">Zum Glück fand ich heraus, dass ich die Leiste einfach abschneiden und dorthin verschieben konnte, wo es bequem war, und dann mit meinem Messschieber messen konnte, wo sie landete.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p3">Eine weitere Iteration umfasste die Anpassung der Spalte für den kleinen Finger. Es stellte sich heraus, dass sie zu niedrig war, also hob ich sie leicht an.</p>
+                    <p data-key="final_p3">Schließlich war ich mit dem Design und der Positionierung des Daumenclusters und der <kbd>HEEL</kbd>-Leiste zufrieden.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
-                    <p data-key="final_p4">Nach ein paar weiteren Anpassungen kam ich zu einem Layout, das sich bequem und natürlich anfühlte. Dies wurde das endgültige Design, auf dem die Leiterplatte basieren sollte.</p>
+                    <p data-key="final_p4">Ich exportierte dann eine DXF-Datei aus dem Plattengenerator von keeb.io und importierte sie in Fusion, um sie dann auf meiner Fräse auszuschneiden. Aus Pappe.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p5">Diese endgültige Pappversion war mein treuer Wegweiser für den Rest des Projekts.</p>
+                    <p data-key="final_p5">Ich versuchte, eine Zwiebelschale zu lassen, da ich keine Opferplatte darunter hatte und beim ersten Loch versehentlich ins Bett gefräst habe. Was bedeutete, mehr Quadrate von Hand auszuschneiden. Ich war damit zufrieden und schnitt dann zwei Platten aus Polycarbonat aus, dann kam das Design der Leiterplatte.</p>
                 </section>
 
                 <section>
-                    <h3 id="PCB" data-key="pcb_h3">Design der Leiterplatte (PCB)</h3>
-                    <p data-key="pcb_p1">Nachdem das physische Layout fertig war, war es an der Zeit, das elektronische Gehirn der Tastatur zu entwerfen: die Leiterplatte (PCB). Ich habe dafür KiCad verwendet. Für die Leiterplattenkunst wählte ich das Motto „ALLES LIEGT IN DEINEN HÄNDEN“.</p>
+                    <h3 id="PCB" data-key="pcb_h3">Abenteuer im Leiterplattendesign.</h3>
+                    <p data-key="pcb_p1">Vor der Sunshine hatte ich nur eine einzige Leiterplatte entworfen. Obwohl ich einen Streifen mit ein paar RP2040s hatte, wollte ich die Möglichkeit haben, QMK zu verwenden, weil ich damit Erfahrung hatte und es zu der Zeit keine Unterstützung für den 2040 gab. Stattdessen verwendete ich einen Elite-C, weil ich den ATMega32u4 wollte, und die sind derzeit entweder wahnsinnig teuer oder überall ausverkauft. Nachdem ich ein sehr überzeugendes Video von Mitxela über gekrümmte Leiterbahnen gesehen hatte, beschloss ich, die 45-Grad-Standardeinstellungen in KiCad aufzugeben. Die Leiterplatten sind, im Gegensatz zu den meisten gut durchdachten geteilten Tastaturen, nicht reversibel, weil ich ein bestimmtes Aussehen auf der Vorder- und Rückseite wollte. Hier sind einige sorgfältig ausgewählte Fotos, die meine Leiterplatten wirklich gut und leicht unscharf aussehen lassen. In voller Farbe, was mein Thema für diese Seite ruiniert.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
-                    <p data-key="pcb_p2">Der Schaltplan für eine Tastatur ist ziemlich einfach. Jeder Schalter ist Teil einer Matrix, verbunden mit einer Diode, um „Ghosting“ (fälschlicherweise registrierte Tastenanschläge) zu verhindern.</p>
+                    <p data-key="pcb_p2">Eigentlich eher unter euren Händen.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p3">Ich entschied mich für einen Raspberry Pi Pico als Mikrocontroller, weil er günstig, leistungsstark und gut von der QMK-Firmware unterstützt wird.</p>
+                    <p data-key="pcb_p3">Der Ort, an dem all die großen Komponenten hinkommen, der Elite-C, die Solenoidschaltung, TRRS-Buchsen und der Reset-Knopf.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p4">Die beiden Hälften der Tastatur sind über ein TRRS-Kabel verbunden, das Strom und das Datenmatrixsignal überträgt.</p>
+                    <p data-key="pcb_p4">PROFI-TIPP: Dieser Siebdruckaufkleber entschuldigt mein Design für alle Mängel.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
-                    <p data-key="pcb_p5">Ich habe Unterstützung für Kailh-Hot-Swap-Sockel hinzugefügt, die es mir ermöglichen, Schalter einfach ohne Löten zu wechseln.</p>
+                    <p data-key="pcb_p5">Rückseite links.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
-                    <p data-key="pcb_p6">Nachdem ich alle Leiterbahnen verlegt hatte, was wie das Lösen eines Puzzles war, fügte ich den Siebdruck hinzu und erstellte die Gerber-Dateien für die Herstellung.</p>
+                    <p data-key="pcb_p6">Mir gefällt wirklich gut, wie die Tastenmatrix geworden ist.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p7">Ich schickte die Dateien an einen Hersteller und einige Wochen später kamen die fertigen Platinen an!</p>
-                    <p data-key="pcb_p8">Zu sehen, wie das Design von einer digitalen Datei zu einem physischen Objekt wurde, war unglaublich bereichernd.</p>
+                    <p data-key="pcb_p7">Ein freundliches Gesicht, um mir beim Löten Gesellschaft zu leisten.</p>
+                    <p data-key="pcb_p8">Ich werde die PCB-Dateien selbst nicht veröffentlichen, nicht vor der zweiten Version. Ich bin sehr stolz, aber gleichzeitig unsicher. Ich hoffe, die Fotos gefallen euch.</p>
                     <hr>
                 </section>
 
                 <section>
-                    <h3 id="Keymap" data-key="keymap_h3">Meine persönliche Tastenbelegung</h3>
-                    <p data-key="keymap_p1">Eine Tastatur ist nichts ohne eine gute Tastenbelegung. Ich habe meine in QMK programmiert. Sie verfügt über vier primäre Ebenen: eine Basisebene für Buchstaben, eine Zahlenebene, eine Symbolebene und eine Funktionsebene für Systemsteuerungen und F-Tasten. Der Zugriff auf die Ebenen erfolgt über die Daumentasten. Ich nutze auch ausgiebig Combos für häufig verwendete Tasten wie Escape und Tab.</p>
+                    <h3 id="Keymap" data-key="keymap_h3">Meine Tastenbelegung und andere persönliche Anpassungen</h3>
+                    <p data-key="keymap_p1">Die Details zum Zusammenbau überspringe ich, die sind langweilig, es war einfach. (Abgesehen vom mühsamen Schmieren von Schaltern und Federn...) Nachdem sie zusammengebaut war und auf meinem Schreibtisch stand, war die Sunshine alles, was ich mir erhofft hatte. Ich richtete VIAL ein und flashte die Elite-Cs mit meiner Tastenbelegung. Meine Tastenbelegung ist ziemlich einfach, es ist wirklich einfacher, sie zu zeigen, als darüber zu reden. Colemak-DH und einige Ebenen, nichts Verrücktes. Die wichtigsten Anmerkungen sind, dass ich mich wohl dabei fühlte, Tastencodes für Normie-Tastaturen wie <kbd>=+</kbd> beizubehalten, anstatt sie zu trennen, weil es so einfach war, <kbd>SHIFT</kbd> zu jeder Kombination hinzuzufügen. Die wichtigste persönliche Anpassung, über die ich sprechen möchte, ist das Federgewicht. Meine alphanumerischen Tasten haben alle 25 Gramm, was sehr leicht ist. 2U-Tasten müssen schwerer sein, aber ich schiebe das Auslöten auf und behelfe mich. Deshalb verwendet meine Leertaste eine 1U-Taste. Die <kbd>HEEL</kbd>-Leisten verwenden jedoch fantastisch schwere 650-Gramm-Federn. Das macht sie außerordentlich bequem als Handgelenkstützen, aber gleichzeitig ist es möglich, sie bei Bedarf herunterzudrücken. YMMV, nicht alle Handgelenke wiegen gleich. Wenn ich keine schweren Federn verwenden würde, würde ich die Dinge in der Firmware umkehren, sodass SHIFT aktiviert wird, wenn die Leisten nicht mehr gedrückt sind. Oh, und ich benutze nie die zweite Alt-Taste. Wenn ihr Ideen habt, was ich stattdessen dorthin legen sollte, meldet euch bitte bei mir.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
@@ -589,34 +589,34 @@
             </section>
 
             <section>
-                <h2 id="Discoveries" data-key="discoveries_h2">Erkenntnisse &amp; Ergebnisse</h2>
-                <p data-key="discoveries_p1">Dieses Projekt war eine riesige Lernerfahrung. Hier sind einige der wichtigsten Erkenntnisse:</p>
+                <h2 id="Discoveries" data-key="discoveries_h2">Die Dinge, die ich unterwegs herausgefunden habe</h2>
+                <p data-key="discoveries_p1">Genauso wie ich durch das Erleben und Erforschen früherer Tastaturen neue Vorlieben und Abneigungen entdeckt habe, hat mich die Verwendung der Sunshine auch dazu gebracht, neue Dinge zu lernen. Dazu gehören:</p>
                 <ul>
-                    <li data-key="discoveries_li1">Prototyping mit Pappe ist ein wesentlicher, günstiger und effektiver Schritt für ergonomische Designs.</li>
-                    <li data-key="discoveries_li2">Der Winkel und die Position des Daumen-Clusters sind die entscheidendsten Elemente für den Komfort.</li>
-                    <li data-key="discoveries_li3">Die Nutzung von Ebenen und Combos hat eine erhebliche Lernkurve, wird aber nach ein paar Wochen zur zweiten Natur.</li>
-                    <li data-key="discoveries_li4">Das Design einer Leiterplatte ist weniger einschüchternd, als es scheint, dank moderner Open-Source-Software wie KiCad.</li>
-                    <li data-key="discoveries_li5">Es gibt keine „Einheitsgröße“-Lösung für Tastaturen. Personalisierung ist der Schlüssel.</li>
+                    <li data-key="discoveries_li1">Das Wechseln zwischen Zeigegeräten und der rechten Seite der Tastatur kann Kombinationen erschweren.</li>
+                    <li data-key="discoveries_li2">Meine kleinen Finger haben IMMER NOCH Schwierigkeiten, die höchste Reihe und die äußersten Spalten zu erreichen. (Obwohl nicht GANZ so schwer.)</li>
+                    <li data-key="discoveries_li3">Ich vermisse den Komfort von Drehgebern.</li>
+                    <li data-key="discoveries_li4">Bin durch reinen Zufall auf diese Tastatur gestoßen. Sie hat eine Thenar-Eminenz-Taste, könnte eine wirklich coole Eingabe sein, die man der nächsten Sunshine hinzufügen könnte. Würde eine große Überarbeitung des Gesamtdesigns erfordern, aber es wäre machbar.</li>
+                    <li data-key="discoveries_li5">Die <kbd>BALL</kbd>-Taste muss höher sein, um den vierten und fünften Mittelhandknochen zu erreichen.</li>
                 </ul>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
-                <p data-key="discoveries_p2">Ich habe auch entdeckt, dass ein mit Silikon gefülltes Gehäuse eine ausgezeichnete Schalldämmung bietet, aber ich bin immer noch sehr versucht, das endgültige Gehäuse einfach aus Schichten von Heißkleber zu bauen, nur um zu sehen, was passiert.</p>
+                <p data-key="discoveries_p2">Mein Versuch während des Papp-Prototypings, das Höhenproblem zu beheben. Tadellose Eleganz, natürlich.</p>
                 <hr>
             </section>
 
             <section>
-                <h2 id="Plans" data-key="plans_h2">Zukunftspläne</h2>
-                <h3 data-key="plans_h3_layout">Layout-Überarbeitungen (Sunshine V2)</h3>
-                <p data-key="plans_p1">Für eine zweite Version würde ich mit etwas „Tenting“ (dem Anwinkeln der Hälften in der Mitte nach oben) experimentieren und vielleicht eine aggressivere Krümmung für die Tastenmulden ausprobieren, ähnlich einer Dactyl- oder Kinesis-Advantage-Tastatur.</p>
-                <h3 data-key="plans_h3_features">Neue Hardware-Funktionen</h3>
-                <p data-key="plans_p2">Ich bin daran interessiert, einen kleinen OLED-Bildschirm hinzuzufügen, um die aktuelle Ebene anzuzeigen, oder vielleicht einen kleinen Trackball oder ein Trackpad unter dem Daumen, um die Maus überflüssig zu machen.</p>
-                <h3 data-key="plans_h3_production">Produktion &amp; Veröffentlichung</h3>
-                <p data-key="plans_p3">Ich plane, alle Designdateien (KiCad, Gehäusemodelle) bald auf GitHub zu veröffentlichen. Ich habe keine Pläne für einen Group Buy, aber ich hoffe, die Dateien werden für andere nützlich sein, die ihre eigene perfekte Tastatur bauen möchten.</p>
+                <h2 id="Plans" data-key="plans_h2">Meine Pläne für die nächste Version.</h2>
+                <h3 data-key="plans_h3_layout">Angepasstes und optimiertes Layout</h3>
+                <p data-key="plans_p1">Ich denke, ich werde die Versätze noch einmal anpassen und viel drastischer vorgehen müssen. Vielleicht untersuche ich auch die Spreizung. Obwohl dies eine ganze zweite Runde des Papp-Prototypings erfordern könnte, habe ich eine andere Methode, die ich gerne ausprobieren möchte. Davon werdet ihr beim nächsten Mal hören. Obwohl mir das Kyria-ähnliche Layout gut dient, denke ich, dass ich mehr Versatz möchte.</p>
+                <h3 data-key="plans_h3_features">Feature-Creep</h3>
+                <p data-key="plans_p2">Ich möchte der nächsten Version Drehgeber hinzufügen, mindestens einen. Sie machen das Anhalten und Abspielen von Medien extrem praktisch und die Lautstärkeregelung ist auch super willkommen. Es gibt jedoch noch mehr Komfort zu haben. Zum einen liebe ich Guilty Gear, und manchmal spiele ich tatsächlich Strive, anstatt die Alben anzuhören, während ich andere Dinge tue. Ich denke, ein kleiner 8-Wege-Schalter könnte wirklich nett sein, wenn er gut passen würde. Ich bezweifle, dass er meinen Fightstick ersetzen würde, aber es wäre trotzdem wirklich süß. Abgesehen davon brauche ich eine Art Zeigegerät, für das ein 8-Wege-Schalter nicht geeignet ist. Eine Anordnung im Oddball-Stil wäre wirklich schön.</p>
+                <h3 data-key="plans_h3_production">Produktionsreifes, professionell aussehendes Design</h3>
+                <p data-key="plans_p3">Ich möchte in der Lage sein, Pläne für die zweite Version zu veröffentlichen, die mit einer Dichtung in einem Gehäuse montiert ist (vielleicht sogar verkaufen 🤫), ich denke, eine neue Version würde davon profitieren, wenn die <kbd>HEEL</kbd>-Leisten eine separate Leiterplatte hätten, da auf der aktuellen Leiterplatte massiv Fläche verschwendet wird. Außerdem möchte ich den RP2040 on-board verwenden, anstatt etwas wie den Elite-C. Das hat offensichtliche Vorteile, die Kosten sind einer davon, aber ich möchte es tun, weil es einfach eleganter ist. Ich möchte auch einen besseren Weg für den Umgang mit den Mosfets und Kondensatoren für die Solenoidschaltung finden. Sie nehmen eine <i>Menge</i> Platz ein. Schließlich möchte ich niedliche ganzflächige Grafiken und besser verlegte Leiterbahnen haben. Ich hatte viele coole Ideen, die auf meiner Efeutute basierten, die ich nie umgesetzt habe, und ich würde ihnen gerne eine weitere Chance geben.</p>
                 <hr>
             </section>
 
             <section>
-                <h2 id="Bye" data-key="bye_h2">Das Ende (vorerst)</h2>
-                <p data-key="bye_p1">Danke, dass du meine Tastatur-Reise mitverfolgt hast! Der Bau der Sunshine-Tastatur war eines der herausforderndsten und lohnendsten Projekte, die ich je in Angriff genommen habe. Sie ist nicht nur ein Werkzeug, sondern spiegelt eine Philosophie darüber wider, wie wir mit unseren Computern interagieren. Wenn du Fragen hast, melde dich einfach.</p>
+                <h2 id="Bye" data-key="bye_h2">Bis zum nächsten Mal!</h2>
+                <p data-key="bye_p1">Ich hoffe, es hat euch gefallen, von der Tastatur zu hören, die ich gebaut habe. Entschuldigung, wenn mein Schreibstil etwas steif oder unbeholfen ist. Ich habe seit letztem Jahr kein Buch mehr gelesen. Wenn ihr mich erreichen wollt, bin ich auf Github unter pelmeniboiler, auf Discord unter pelmeniboiler#8372, auf Reddit unter /u/pelmeniboiler und auf Twitter unter @pelmeniboiler.</p>
             </section>
         ]]></description>
             <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>

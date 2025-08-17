@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Wed, 13 Aug 2025 20:42:51 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 17 Aug 2025 19:56:22 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/en/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>This Blog Now Supports Your Language</title>
@@ -485,101 +485,101 @@
             <header>
                 <h1 id="title" data-key="sunshine_h1">Sunshine Experimental Keyboard</h1>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/sunshine.png" alt="All is in your hands." class="article-image">
-                <p data-key="sunshine_p1">The Sunshine Keyboard is a custom, ergonomic, split keyboard I designed and built from scratch. It is an experimental layout focused on minimizing finger travel and maximizing comfort by using a minimal number of keys arranged in layers and accessed through combos.</p>
-                <p data-key="sunshine_p2">This project was a deep dive into keyboard design, from physical prototyping with cardboard to designing a custom PCB and programming the firmware. This article documents that journey.</p>
+                <p data-key="sunshine_p1">A unique and ergonomic column stagger split keyboard developed to comfortably utilize the entire hand by way of palm and wrist-rest keys. Also, up to four solenoids because I like loud noises (not pictured).</p>
+                <p data-key="sunshine_p2">Feel free to use this table of contents to skim the sections you're interested in!</p>
                 <hr>
             </header>
             
             <section>
-                <h2 id="TLDR" data-key="tldr_h2">Abstract (TL;DR)</h2>
-                <p data-key="tldr_p1">I designed and built a custom split ergonomic keyboard with only 36 keys. It relies heavily on layers and key combinations (combos) to access all characters, which keeps my fingers on or near the home row at all times. I prototyped the layout with cardboard, designed a custom PCB with unique artwork, and programmed it using QMK firmware. It's weird, but it's comfortable. Check out the typing test video below:</p>
+                <h2 id="TLDR" data-key="tldr_h2">Abstract, a fancy term for T.L.D.R.</h2>
+                <p data-key="tldr_p1">Using the most scuffed, path-of-least-resistance strategies, I developed the best keyboard ever. That's right, the best. Until I make the second version, I mean. Following is an overly-detailed explanation of everything I did and why I did it. Don't worry, there's pictures.</p>
                 
                 <hr>
             </section>
             
             <section>
-                <h2 id="Intro" data-key="intro_h2">Background &amp; Motivation</h2>
-                <p data-key="intro_p1">Like many people who type all day, I've found standard keyboards to be uncomfortable. After trying several commercially available ergonomic keyboards, like the Lily58 pictured here, I found that while they were an improvement, they weren't perfect for me. Many still required uncomfortable finger movements and stretches.</p>
+                <h2 id="Intro" data-key="intro_h2">Background</h2>
+                <p data-key="intro_p1">I have always been interested in keyboards. When I was six, I meticulously dismantled my mother's non-functioning Smith Corona SD 300 beyond any possible repair or reassembly. Sorry, Mom, I just wanted to know how it worked... As I grew up, I eventually learned about mechanical keyboards from the internet as we all do. Inevitably, I came across the hobby scene for it and bought a few kits to put together.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/lily.png" alt="Okay maybe not UNUSABLE, but they're not convenient" class="article-image">
-                <p data-key="intro_p2">I wanted something that was built for *my* hands, not the average hand. I was inspired by the minimalist keyboard community, particularly those using keyboards with very few keys (sub-40%). The philosophy is simple: why move your fingers to a key when you can bring the key to your fingers through layers?</p>
-                <p data-key="intro_p3">This led me to a simple conclusion: to get the perfect keyboard for me, I'd have to design it myself.</p>
+                <p data-key="intro_p2">The Lily58 became my first ever split keyboard, and I loved it. After learning about circuits to discover how I had botched adding a rotary encoder I eventually moved on to Keeb.io's Iris for double the amount of rotary encoders. Despite my immediate love for ergonomic keyboards, I had a few problems with the ones I was using. While I have big hands, my fingers are proportionally rather short. The uppermost of the four rows on most split boards felt like a big waste of space to me; and my pinkies could not reach the second uppermost row without moving my whole hand for them, let alone the second uppermost row in the outermost columns.</p>
+                <p data-key="intro_p3">This meant there were twenty-two unusable keys on the Lily, and twenty on the Iris, but only because it was missing two of those unusable keys in the first place. Additionally, while I loved the knobs on the Iris, I missed having four thumb keys like on the Lily. —Except that fourth thumb key on the Lily was somewhat uncomfortable to reach.— There needed to be a different way to lay them out. Although I saw keyboards like the Ergodox had multiple rows of thumb keys, I didn't like the idea. It seemed inelegant and just as hard to reach. The Kyria seemed to have a better way of handling it. What's more, I needed some sort of wrist-rest to keep my wrists straight due to the height of the keyboards. I had seen some people solve this with weird squishy memory foam things, and others by switching from Cherry MX to Kailh Choc and having no case for the pcb. I had a different idea, however, that would allow me to offset my hands exactly as much as I needed for key switches, without losing the 4mm travel distance afforded by MX switches. As I used keyboards, observed strategies employed by others, and read writeups about design rationales, I would begin to think about what an ideal keyboard might look like for me.</p>
                 <hr>
             </section>
             
             <section>
-                <h2 id="Objectives" data-key="objectives_h2">Project Objectives</h2>
-                <p data-key="objectives_p1">Before I started designing, I set out a clear list of goals for the project. These were guided by a central theory of keyboard ergonomics.</p>
-                <h3 data-key="objectives_h3_theory">My Grand Unified Theory of Keyboard Comfort</h3>
-                <h4 data-key="objectives_h4_phalanges">Phalanges First: Minimize Movement</h4>
+                <h2 id="Objectives" data-key="objectives_h2">Objectives and Considerations</h2>
+                <p data-key="objectives_p1">As my keyboard experiences deepened and widened and I came to learn what I liked and disliked, I started to adopt a few notions of what I wanted to consider in designing my keyboard.</p>
+                <h3 data-key="objectives_h3_theory">My "theories" on design.</h3>
+                <h4 data-key="objectives_h4_phalanges">Phalanges aren't the only useful part of the hand.</h4>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/hand%20anatomy.png" alt="HIGHLY scientific diagram of the hand" class="article-image">
-                <p data-key="objectives_p2">The core idea is that fingers should not stretch or travel long distances. Each key should be located directly under a finger's natural resting position. The thumb, being the strongest and most flexible digit, should be responsible for activating layers and common modifiers like <kbd>Space</kbd>, <kbd>Enter</kbd>, and <kbd>Backspace</kbd>.</p>
-                <h4 data-key="objectives_h4_combos">Combos and Layers: Reduce Key Count</h4>
-                <p data-key="objectives_p3">With a limited number of keys, layers are essential. For example, holding down a thumb key might turn the home row `ASDF` into `1234`. Key combinations, or 'combos,' where you press two keys at once to trigger a different action, can further expand functionality without needing more physical keys. For example, pressing <kbd>J</kbd> and <kbd>K</kbd> together could output <kbd>Escape</kbd>.</p>
-                <p data-key="objectives_p4">This led to the following concrete design goals:</p>
+                <p data-key="objectives_p2">In anatomy, the muscles at the end of the metatarsals form a landmark known as the 'ball' of the foot. There is a similar landmark on the hands at the end of the metacarpals that I will refer to as the ball of the hand because I don't know anything about anatomy and have no idea if there is a proper name for it. If you know what it's called, please tell me. Equally, I will refer to the landmark at the bottom of the palm containing the carpals as the heel. Thankfully this at least seems to be accepted terminology. It is my belief that these two landmarks are underutilized when it comes to keyboards, especially when the position of the heel itself is highly important to achieving a straight wrist to avoid pain. With the appropriate layout, these can be used to grant <i>at least</i> four more keys.</p>
+                <h4 data-key="objectives_h4_combos">Keyboards need to assist easy access to combinations.</h4>
+                <p data-key="objectives_p3">This means designing to enable myself to avoid combinations involving the pinkies and allow for combos without moving my hands. The best way I can explain this is to break continuity in the story and explain it using the finished product. The shortcut keys on the Sunshine are laid out in a very specific way. That is because sometime you need to press say, <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Z</kbd>. On other layouts, you might use your pinky for <kbd>CTRL</kbd> your ring finger for <kbd>Z</kbd> and your thumb for <kbd>ALT</kbd>. On the Sunshine, you just put your thumb between <kbd>CTRL</kbd> and <kbd>ALT</kbd> and push both at once. Your hand doesn't have to move and your pinky can hit <kbd>Z</kbd>. For the very common shortcuts that include <kbd>CTRL</kbd> + <kbd>SHIFT</kbd>, the heel key takes care of that.</p>
+                <p data-key="objectives_p4">Thus, I had formed a laundry list of features I wanted, combining pet concepts and accomodations for myself. These were now my objectives for my design:</p>
                 <ul>
-                    <li data-key="objectives_li1">3 rows and 5 columns per hand, plus a thumb cluster.</li>
-                    <li data-key="objectives_li2">Aggressive column stagger to match natural finger lengths.</li>
-                    <li data-key="objectives_li3">A comfortable, angled thumb cluster.</li>
-                    <li data-key="objectives_li4">Heavy reliance on layers and combos to eliminate the need for number rows, function rows, or even some symbol keys.</li>
-                    <li data-key="objectives_li5">Fully programmable firmware (QMK or ZMK).</li>
-                    <li data-key="objectives_li6">A unique and personal aesthetic.</li>
-                    <li data-key="objectives_li7">Must be a split design for shoulder-width posture.</li>
+                    <li data-key="objectives_li1">More thumb keys. These are perfect for keys used often on their own or in combination with others like <kbd>SPACE</kbd> <kbd>CTRL</kbd> <kbd>ALT</kbd> or <kbd>GUI</kbd>.</li>
+                    <li data-key="objectives_li2">Wrist-rest that also serves as an input.</li>
+                    <li data-key="objectives_li3">Key that takes advantage of the outer "ball" of the hand at the fourth and fifth metacarpals.</li>
+                    <li data-key="objectives_li4">Split, duh.</li>
+                    <li data-key="objectives_li5">Columnar stagger that accommodates my hands, high stagger on the pinkies in particular.</li>
+                    <li data-key="objectives_li6">A unique look that stands out from the myriad similar projects.</li>
+                    <li data-key="objectives_li7">Low spring weight so I can try stenotyping. (This would have interesting pitfalls.)</li>
                 </ul>
                 <hr>
             </section>
             
             <section>
-                <h2 id="Design" data-key="design_h2">The Design Process</h2>
-                <p data-key="design_p1">My first concept, which I called the Type-22, was drawn up in a keyboard layout editor. It had a very aggressive pinky stagger and an early idea for the thumb arc.</p>
+                <h2 id="Design" data-key="design_h2">Creating the perfect keyboard, the easy way</h2>
+                <p data-key="design_p1">Design began properly some time around March 11, 2022 after I returned to the United States from a long trip to Ireland. Though I had been experimenting with Keyboard Layout Editor throughout my trip and prior, I had finally come up with a design (which borrowed heavily from the aforementioned SplitKB Kyria) I liked. It did away with some of the less accessible looking keys from the Kyria, and increased the stagger on the outermost columns. I added keys for the parts of the hand I thought deserved them, and that was that.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
-                <p data-key="design_p2">However, a 2D layout on a screen doesn't tell you how it actually *feels*. For that, I needed to get physical.</p>
+                <p data-key="design_p2">I think this one is the best looking, but least usable. My palms are too long. Note the 1.25U keys in the outermost pinky columns. It's supposed to keep things looking nice</p>
                 
                 <section>
-                    <h3 id="CAD" data-key="cad_h3">CAD (Cardboard Aided Design)</h3>
-                    <p data-key="cad_p1">Instead of immediately 3D printing a case or ordering a PCB, I turned to a cheaper and faster prototyping material: cardboard. I printed my layout at a 1:1 scale and glued it to a piece of cardboard.</p>
+                    <h3 id="CAD" data-key="cad_h3">Cardboard Aided Design</h3>
+                    <p data-key="cad_p1">In order to rapidly prototype my designs I decided to put the layout into cardboard. I used Keeb.io's plate generator to generate a svg I could print as a paper template.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
-                    <p data-key="cad_p2">I then painstakingly cut out switch holes. This allowed me to pop in real mechanical switches and keycaps to test the spacing and stagger.</p>
+                    <p data-key="cad_p2">I would then take the template and tape it down to the cardboard and cut from each of the four corners inwards, supporting around the underside of the cut using a wheel of packing tape. By no means is this good enough for a permanent hand-wire build, but it works enough to test the layout.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
-                    <p data-key="cad_p3">This low-fidelity prototype was invaluable. I could immediately feel which columns were off, or if a thumb key was hard to reach. I made several of these cardboard prototypes, tweaking the design each time.</p>
+                    <p data-key="cad_p3">Once twenty two small squares were cut out, I could place the keys down. Here is where I realized the <kbd>BALL</kbd> key could not be such a strange size, and I would have to settle for a 2.75u key. This was for the best, as that let me fit the fourth thumb key.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
-                    <p data-key="cad_p4">As a side benefit, typing on cardboard actually sounds surprisingly nice.</p>
+                    <p data-key="cad_p4">But yeah, all that work just to find out it wasn't really that comfortable. I could have just measured my hand... No big loss, though, it was just cardboard and a few minutes.</p>
                 </section>
 
                 <section>
-                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">Finalizing the Layout</h3>
-                    <p data-key="final_p1">One of the first changes was to the thumb cluster. My initial design had the inner thumb key too far in, requiring an uncomfortable stretch.</p>
+                    <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">Finalizing the Design, or why I have hundreds of 13.97mm squares of cardboard.</h3>
+                    <p data-key="final_p1">Long story short, I went through a lot of different iterations on cardboard. Most important to note is that I was attempting to try to move the <kbd>HEEL</kbd> bar around in really small adjustments and then cut out new boards every time. I would print them out, cut them out, and bring them to my mom to test if it was comfy every time. This started to add up in how much time it took. This design pictured here shows the original attempt at a method for pressing <kbd>CTRL</kbd> and <kbd>ALT</kbd> at the same time.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
-                    <p data-key="final_p2">The cardboard prototype confirmed this. I adjusted the arc to be tighter and more natural to reach.</p>
+                    <p data-key="final_p2">I figured out, thankfully, I could just cut off the bar and move it to where it was comfy and then measure with my calipers where it ended up.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p3">Another iteration involved adjusting the pinky column. It turned out to be too low, so I raised it slightly.</p>
+                    <p data-key="final_p3">Eventually, I was happy with the design and the positioning of the thumb cluster and the <kbd>HEEL</kbd> bar.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
-                    <p data-key="final_p4">After a few more tweaks, I arrived at a layout that felt comfortable and natural. This became the final design that I would base the PCB on.</p>
+                    <p data-key="final_p4">I would go on to export a dxf from keeb.io's plate generator and import it into fusion, then cut it out on my mill. In cardboard.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
-                    <p data-key="final_p5">This final cardboard version was my trusty guide for the rest of the project.</p>
+                    <p data-key="final_p5">I attempted to leave an onionskin, since I didn't have a wasteboard underneath and on the first hole I accidentially milled into the bed. Which meant cutting out more squares by hand. I was happy with that, and went on to cut two plates out of polycarbonate, then came designing the pcb.</p>
                 </section>
 
                 <section>
-                    <h3 id="PCB" data-key="pcb_h3">Designing the PCB</h3>
-                    <p data-key="pcb_p1">With the physical layout finalized, it was time to design the electronic brain of the keyboard: the Printed Circuit Board (PCB). I used KiCad for this process. For the PCB art, I chose the motto 'ALL IS IN YOUR HANDS'.</p>
+                    <h3 id="PCB" data-key="pcb_h3">Adventures in PCB design.</h3>
+                    <p data-key="pcb_p1">Prior to the Sunshine, I had designed only one PCB ever before. While I had a strip of a few RP2040s, I wanted the ability to use QMK because I had experience with it and at the time there wasn't support for the 2040. I instead used an Elite-C because I wanted the ATMega32u4, and those are currently either stupidly expensive or out of stock everywhere. After watching a very convincing video by Mitxela on curved traces I resolved to abandon the 45 degree defaults in KiCad. The PCBs, unlike most well-designed split keyboards, are not reversible because I wanted a certain look on the front and rear. Here are some carefully curated photos that make my pcbs look really good and slightly out of focus. In full color, ruining my theme for this page.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
-                    <p data-key="pcb_p2">The schematic is fairly simple for a keyboard. Each switch is part of a matrix, connected with a diode to prevent 'ghosting' (incorrect key presses being registered).</p>
+                    <p data-key="pcb_p2">Really more like under your hands.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p3">I chose to use a Raspberry Pi Pico as the microcontroller because it's cheap, powerful, and well-supported by QMK firmware.</p>
+                    <p data-key="pcb_p3">The place where all the big components go, the Elite-C, the solenoid circuit, TRRS jacks, and reset button.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p4">The two halves of the keyboard are connected using a TRRS cable, which carries power and the data matrix signal.</p>
+                    <p data-key="pcb_p4">PRO-TIP: This silkscreen decal excuses my design from all shortcomings.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
-                    <p data-key="pcb_p5">I added support for Kailh hot-swap sockets, which allow me to change switches easily without soldering.</p>
+                    <p data-key="pcb_p5">Back left side.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
-                    <p data-key="pcb_p6">After routing all the traces, which was like solving a puzzle, I added the silkscreen art and generated the Gerber files for manufacturing.</p>
+                    <p data-key="pcb_p6">I really like how the key matrix came out.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
-                    <p data-key="pcb_p7">I sent the files off to a manufacturer and, a few weeks later, the finished boards arrived!</p>
-                    <p data-key="pcb_p8">Seeing the design go from a digital file to a physical object was incredibly rewarding.</p>
+                    <p data-key="pcb_p7">A friendly face to keep me company while soldering.</p>
+                    <p data-key="pcb_p8">I won't be posting the PCB files themselves, not until the second version. I'm very proud but simultaneously self-conscious. I hope you like the photos.</p>
                     <hr>
                 </section>
 
                 <section>
-                    <h3 id="Keymap" data-key="keymap_h3">My Personal Keymap</h3>
-                    <p data-key="keymap_p1">A keyboard is nothing without a good keymap. I programmed mine in QMK. It features four primary layers: a base layer for letters, a layer for numbers, a layer for symbols, and a function layer for system controls and F-keys. The layers are accessed by the thumb keys. I also make extensive use of combos for common keys like Escape and Tab.</p>
+                    <h3 id="Keymap" data-key="keymap_h3">My Keymap, and other personal adjustments</h3>
+                    <p data-key="keymap_p1">I'll skip the details about assembly, they're boring, it was easy. (Apart from arduously lubing switches and springs...) After it was assembled and sitting on my desk the Sunshine was everything I could have hoped. I set up VIAL and flashed the Elite-Cs with my keymap. My keymap is pretty simple, it's really easier to show it than to talk about it. Colemak-DH and some layers, nothing crazy. Most important notes are that I felt comfortable leaving keycodes intended for normie keyboards like <kbd>=+</kbd> instead of separating them because of how easy it was to add <kbd>SHIFT</kbd> to any combination. The main personal adjustment I want to talk about is spring weight. My alphanumerics are all 25 gram, which is very light. 2U keys need to be heavier but I'm putting off desoldering them and making due. That's why my spacebar is using a 1U key. The <kbd>HEEL</kbd> bars, however are using awesomely heavy 650 gram springs. This makes them exceedingly comfortable as wrist-rests, but simultaneously possible to press down when needed. YMMV, not all wrists weigh the same. If I wasn't using heavy springs I would invert things in firmware so SHIFT would activate when the bars are no longer depressed. Oh and I never use that second alt key. If you have ideas on what I should put instead, hmu pls.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
@@ -589,34 +589,34 @@
             </section>
 
             <section>
-                <h2 id="Discoveries" data-key="discoveries_h2">Discoveries &amp; Results</h2>
-                <p data-key="discoveries_p1">This project was a huge learning experience. Here are some of the key takeaways:</p>
+                <h2 id="Discoveries" data-key="discoveries_h2">The things I found out along the way</h2>
+                <p data-key="discoveries_p1">Just as I discovered new likes and dislikes through experiencing and researching previous keyboards, using the Sunshine has lead me to learn new things too. These include:</p>
                 <ul>
-                    <li data-key="discoveries_li1">Prototyping with cardboard is an essential, cheap, and effective step for ergonomic designs.</li>
-                    <li data-key="discoveries_li2">The angle and position of the thumb cluster are the most critical elements for comfort.</li>
-                    <li data-key="discoveries_li3">There is a significant learning curve to using layers and combos, but it becomes second nature after a couple of weeks.</li>
-                    <li data-key="discoveries_li4">Designing a PCB is less intimidating than it seems, thanks to modern open-source software like KiCad.</li>
-                    <li data-key="discoveries_li5">There is no 'one-size-fits-all' solution for keyboards. Personalization is key.</li>
+                    <li data-key="discoveries_li1">Going between pointing tools and the right side of the keyboard can make combinations harder.</li>
+                    <li data-key="discoveries_li2">My pinkies STILL have a hard time reaching the highest row and the outermost columns. (Though not AS hard.)</li>
+                    <li data-key="discoveries_li3">I miss the convenience of rotary encoders.</li>
+                    <li data-key="discoveries_li4">Came across this keyboard by total chance. It has a thenar eminence key, could be a really cool input to add to the next Sunshine. Would require a big rework of the overall design but it could be done.</li>
+                    <li data-key="discoveries_li5">The <kbd>BALL</kbd> key needs to be taller to reach the fourth and fifth metacarpals.</li>
                 </ul>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
-                <p data-key="discoveries_p2">I also discovered that a case filled with silicone provides excellent sound dampening, but I am still very tempted to just build the final case by layering hot glue, just to see what happens.</p>
+                <p data-key="discoveries_p2">My attempt during cardboard prototyping to rectify the height issue. Impeccable elegance, of course.</p>
                 <hr>
             </section>
 
             <section>
-                <h2 id="Plans" data-key="plans_h2">Future Plans</h2>
-                <h3 data-key="plans_h3_layout">Layout Revisions (Sunshine V2)</h3>
-                <p data-key="plans_p1">For a second version, I would experiment with adding a bit of tenting (angling the halves upwards in the middle) and maybe try a more aggressive curvature for the keywell, similar to a Dactyl or Kinesis Advantage keyboard.</p>
-                <h3 data-key="plans_h3_features">New Hardware Features</h3>
-                <p data-key="plans_p2">I'm interested in adding a small OLED screen to display the current layer, or perhaps a small trackball or trackpad under the thumb to eliminate the need for a mouse.</p>
-                <h3 data-key="plans_h3_production">Production &amp; Sharing</h3>
-                <p data-key="plans_p3">I plan to release all the design files (KiCad, case models) on GitHub soon. I don't have plans for a group buy, but I hope the files will be useful for others looking to build their own perfect keyboard.</p>
+                <h2 id="Plans" data-key="plans_h2">My plans for the next version.</h2>
+                <h3 data-key="plans_h3_layout">Adjusted and optimized layout</h3>
+                <p data-key="plans_p1">I think I will need to adjust the staggers again and go far more drastic. I may also investigate splay. While this might require a whole second round of cardboard prototyping, I have another method I'm eager to try. You'll hear about that next time. While the Kyria-esque layout serves me well, I think I want more stagger.</p>
+                <h3 data-key="plans_h3_features">Feature creep</h3>
+                <p data-key="plans_p2">I want to add rotary encoders to the next build, at least one. They make pausing and playing media ultra convenient and volume adjust is super welcome too. However, there's more convenience to be had. For one, I love Guilty Gear, and sometimes I actually play Strive instead of listening to the albums while doing other things. I think a small 8-directional switch could be really nice to add if it could fit nicely. I doubt it would replace my fight stick, but it would still be really sweet. That aside, I need a pointing device of some sort, which an 8-directional switch is not suited for. An Oddball-esque arrangement would be really nice.</p>
+                <h3 data-key="plans_h3_production">Production-ready, professional looking design</h3>
+                <p data-key="plans_p3">I want to be able to release plans for the second version gasket mounted in a case (maybe even sell it 🤫), I think a new version would benefit from the <kbd>HEEL</kbd> bars having a separate PCB, as there is massive wasted area on the PCB as it stands. What's more, I want to use the RP2040 on-board instead of using something like the Elite-C. There are obvious benefits to this, cost being one of them, but I want to do it because it's just more elegant. I also want to find a better way for handling the mosfets and capacitors for the solenoid circuit. They take up a <i>lot</i> of space. Lastly, I want to have cute full-board artwork and better routed traces. I had a lot of cool ideas based on my pothos plant I never implemented and I'd like to give those another go.</p>
                 <hr>
             </section>
 
             <section>
-                <h2 id="Bye" data-key="bye_h2">The End (For Now)</h2>
-                <p data-key="bye_p1">Thanks for reading about my keyboard journey! Building the Sunshine keyboard has been one of the most challenging and rewarding projects I've ever undertaken. It's not just a tool, but a reflection of a philosophy about how we interact with our computers. If you have any questions, feel free to reach out.</p>
+                <h2 id="Bye" data-key="bye_h2">Until next time!</h2>
+                <p data-key="bye_p1">I hope you enjoyed hearing about the keyboard I made. Sorry if my writing is a bit stiff or awkward. I haven't read a book since last year. If you want to reach out to me, I'm on github at pelmeniboiler, discord at pelmeniboiler#8372, reddit at /u/pelmeniboiler and twitter at @pelmeniboiler.</p>
             </section>
         ]]></description>
             <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
