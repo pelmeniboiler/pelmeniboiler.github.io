@@ -5,21 +5,25 @@
  */
 
 #gallery-window .content {
-    overflow-y: auto; /* Allow vertical scrolling */
+    overflow-y: auto;
+    /* Allow vertical scrolling */
     height: 100%;
-    padding: 1rem; /* Reduced padding for a more subtle look */
+    padding: 1rem;
+    /* Reduced padding for a more subtle look */
 }
 
 /* Indent paragraphs within the article for better readability */
 #gallery-window .content p {
-    text-indent: 1em; /* Reduced indent for a more subtle effect */
+    text-indent: 1em;
+    /* Reduced indent for a more subtle effect */
 }
 
 /* Allow asides to break out of the container's padding for a full-width effect */
 #gallery-window .content aside {
     margin-left: -1rem;
     margin-right: -1rem;
-    padding: 0.5rem 1rem; /* Add padding back to the aside's content */
+    padding: 0.5rem 1rem;
+    /* Add padding back to the aside's content */
 }
 
 .article-image {
@@ -32,9 +36,11 @@
 
 /* --- DESKTOP STYLES (769px and wider) --- */
 @media (min-width: 769px) {
+
     /* Main content window takes up the remaining space */
     #gallery-window .content {
-        padding: 1.5rem; /* Reduced padding for desktop view */
+        padding: 1.5rem;
+        /* Reduced padding for desktop view */
         max-height: none;
         top: 0;
         left: 260px;
@@ -58,20 +64,25 @@
         left: 0px;
         width: 250px;
         height: auto;
-        max-height: calc(100vh - 40px); /* Constrain height to viewport with margins */
-        z-index: 3;
-        display: flex; /* Ensure flex properties apply */
+        max-height: calc(100vh - 40px);
+        /* Constrain height to viewport with margins */
+        z-index: var(--z-window-base);
+        display: flex;
+        /* Ensure flex properties apply */
         flex-direction: column;
     }
 
     #nav-window .content {
-        max-height: none; /* Allows content to fill the parent's height */
-        overflow-y: auto; /* Enables scrolling within the nav content */
+        max-height: none;
+        /* Allows content to fill the parent's height */
+        overflow-y: auto;
+        /* Enables scrolling within the nav content */
     }
 }
 
 /* --- MOBILE STYLES (768px and narrower) --- */
 @media (max-width: 768px) {
+
     /* Allow the main body to scroll on mobile */
     body {
         overflow-y: auto;
@@ -99,7 +110,7 @@
         width: 50px;
         height: 50px;
         border-radius: 0;
-        z-index: 999 !important;
+        z-index: var(--z-start-menu) !important;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -122,7 +133,7 @@
         font-size: 28px;
         color: var(--inv-text-color);
     }
-    
+
     /* Hide the symbol when expanded */
     .window#nav-window.expanded::before {
         display: none;
@@ -141,24 +152,30 @@
         background-color: var(--win-bg-color);
         border: 2px solid var(--border-color);
         color: var(--text-color);
-        box-sizing: border-box; /* Ensures padding/border are included in the element's total size */
+        box-sizing: border-box;
+        /* Ensures padding/border are included in the element's total size */
     }
 
     /* Show original window parts when expanded */
     .window#nav-window.expanded .title-bar {
         display: flex;
         cursor: default;
-        width: 100%; /* **FIX:** Make title bar full width */
-        height: auto; /* **FIX:** Allow height to adjust to content, overriding fixed height */
+        width: 100%;
+        /* **FIX:** Make title bar full width */
+        height: auto;
+        /* **FIX:** Allow height to adjust to content, overriding fixed height */
     }
-    
+
     /* This makes the content area scrollable within the expanded overlay */
     .window#nav-window.expanded .content {
         display: block;
-        flex-grow: 1; /* Allow content to fill the remaining space */
-        overflow-y: auto; /* **THIS ENABLES SCROLLING** */
+        flex-grow: 1;
+        /* Allow content to fill the remaining space */
+        overflow-y: auto;
+        /* **THIS ENABLES SCROLLING** */
         padding: 1rem;
-        max-height: none; /* Ensure it's not limited by other rules */
+        max-height: none;
+        /* Ensure it's not limited by other rules */
     }
 }
 
@@ -168,7 +185,8 @@
 #gallery-window .content ul,
 #gallery-window .content ol {
     margin: 1em 0;
-    padding-left: 2.5em; /* Provides space for markers */
+    padding-left: 2.5em;
+    /* Provides space for markers */
     font-size: 14px
 }
 

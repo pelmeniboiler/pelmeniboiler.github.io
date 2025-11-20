@@ -8,12 +8,15 @@ function setupStartMenu() {
     if (!startMenu) {
         return;
     }
-    
+
     const startButton = startMenu.querySelector('.start-button');
     const windows = document.querySelectorAll('.window');
     const windowList = startMenu.querySelector('.window-list');
     let closedWindows = [];
-    let highestZIndex = 10;
+
+    // **UPDATED:** Initialize highestZIndex from the CSS variable to ensure consistency.
+    // We use a default of 10 just in case the variable isn't found.
+    let highestZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--z-window-active')) || 10;
 
     const isMobile = () => window.innerWidth <= 768;
 
@@ -42,7 +45,7 @@ function setupStartMenu() {
                     startMenu.classList.remove('open');
                 }
             };
-            
+
             listItem.addEventListener('click', openHandler);
             listItem.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -151,7 +154,7 @@ function setupStartMenu() {
 
             if (!isMobile() && titleBar) {
                 let offsetX = 0, offsetY = 0;
-                
+
                 titleBar.onmousedown = (e) => {
                     e.preventDefault();
                     highestZIndex++;
@@ -175,7 +178,7 @@ function setupStartMenu() {
             }
         });
     }
-    
+
     function setupMobileMenu() {
         if (isMobile()) {
             startButton.addEventListener('click', () => {
@@ -208,7 +211,7 @@ function setupStartMenu() {
                 let currentRect = win.getBoundingClientRect();
                 let newRect = { left: currentRect.left, top: currentRect.top, width: currentRect.width, height: currentRect.height };
                 let hasCollision;
-                
+
                 do {
                     hasCollision = false;
                     for (const placedRect of placedRects) {
@@ -216,31 +219,45 @@ function setupStartMenu() {
                         if (doRectsOverlap(potentialRect, placedRect)) {
                             hasCollision = true;
                             newRect.top = placedRect.bottom + margin;
-                            break; 
+                            break;
                         }
                     }
                 } while (hasCollision);
 
-                win.style.left = `${newRect.left}px`;
-                win.style.top = `${newRect.top}px`;
-                win.style.visibility = 'visible';
+                const viewportHeight = window.innerHeight;
+                const viewportWidth = window.innerWidth;
 
-                placedRects.push({ left: newRect.left, top: newRect.top, right: newRect.left + newRect.width, bottom: newRect.top + newRect.height });
+                if (newRect.top + 50 > viewportHeight || newRect.left + 50 > viewportWidth) {
+                    win.style.display = 'none';
+                    win.style.visibility = 'visible';
+                    closedWindows.push(win);
+                } else {
+                    win.style.left = `${newRect.left}px`;
+                    win.style.top = `${newRect.top}px`;
+                    win.style.visibility = 'visible';
+
+                    placedRects.push({
+                        left: newRect.left,
+                        top: newRect.top,
+                        right: newRect.left + newRect.width,
+                        bottom: newRect.top + newRect.height
+                    });
+                }
             });
         }
 
         setupWindowInteractions(translations, lang);
         setupMobileMenu();
-        setupMobileNav(); // Handles the nav pendant
+        setupMobileNav();
         updateWindowList(translations, lang);
     }
-    
+
     // --- Event Listener ---
     document.addEventListener('translationsReady', (event) => {
         const { translations, lang } = event.detail;
         initialize(translations, lang);
 
-        let wasMobile = isMobile(); 
+        let wasMobile = isMobile();
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);

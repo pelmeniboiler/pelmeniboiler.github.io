@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
+
 <head>
     <link id="dynamic-favicon" rel="icon" href="/logo/shzh.svg">
-    <meta name="eink-compatibility" content="compatible"> 
+    <meta name="eink-compatibility" content="compatible">
     <script src="/scripts/theme-loader.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="epark">
-    <meta name="description" content="A photo gallery from the Elizabeth Park Rose Garden in Hartford, CT. Macro shots of roses, other flowers, and bees.">
+    <meta name="description"
+        content="A photo gallery from the Elizabeth Park Rose Garden in Hartford, CT. Macro shots of roses, other flowers, and bees.">
     <meta name="keywords" content="Photos">
     <meta name="author" content="Wendy Zhulkovsky">
     <meta name="pubDate" content="2024-02-03T10:00:00Z">
     <title>⌻ pictures from Elizabeth Park, Hartford, Connecticut</title>
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <link rel="stylesheet" href="/styles/article.css">
-    
+
     <style>
         .music-content {
             padding: 10px;
             text-align: center;
         }
+
         .music-content h3 {
             font-size: 24px;
             margin: 0 0 10px;
         }
+
         .music-content h4 {
             font-size: 20px;
             margin: 0 0 10px;
         }
+
         body {
             max-width: 100%;
             overflow-x: hidden;
         }
     </style>
 </head>
+
 <body class="eink-mode light-mode">
 
     <nav id="nav-window" class="window">
@@ -89,40 +95,51 @@
             </ul>
             <h2><a href="/index.html" data-key="nav_h2_home">⌂←</a></h2>
         </div>
-    </nav> 
+    </nav>
 
-    <div class="window init-closed" style="top: 58%; left: 69%; z-index: 4;">
+    <div class="window init-closed" style="top: 58%; left: 69%; z-index: var(--z-window-base);">
         <div class="title-bar">
             <span class="title" data-key="win_music_title">𝄆 music.ogg</span>
             <button class="close-btn">&times;</button>
         </div>
         <div class="music-content">
             <h3 data-key="ep_music_h3_song">♩phrase_for_a_rose_garden.ogg♪♩</h3>
-            <button class = "normal-btn" onclick="playAudio()" data-key="ep_music_button_garden">activate garden music</button>
+            <button class="normal-btn" onclick="playAudio()" data-key="ep_music_button_garden">activate garden
+                music</button>
             <audio id="audio" src="/sounds/viola.ogg"></audio>
             <h4 data-key="ep_music_h4_composer">composed by wendy zhulkovsky</h4>
         </div>
     </div>
 
-    <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
+    <main id="gallery-window" class="window"
+        style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
         <div class="title-bar">
             <span class="title" data-key="pic_pic_win_gallery_title">▤ pictures.gallery</span>
             <button class="close-btn">&times;</button>
         </div>
         <article class="content">
             <header>
-                <h1 id="title" data-key="ep_h1">Elizabeth Park Rose Garden, Hartford, Connecticut<br>| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
-                <p data-key="ep_p1">When I got back to Connecticut I went to a cool garden with my friend Julia. I used same camera-lens combo I started using in<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html"> Utah</a>. I think was a good choice for the flowers and bugs, but next time I do stuff like this I'll borrow my dad's <a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> with a more landscape-oriented lens to get more of the garden layout because it's really cool. There were a lot of waterfowl as well, I wish I had managed to get sharper pictures of them.<br>I think I should look into using flickr to host these and embed them here instead of compressing them so much. There's so much detail lost...</p>
+                <h1 id="title" data-key="ep_h1">Elizabeth Park Rose Garden, Hartford, Connecticut<br>| Nikon D3, 105mm
+                    f/2.8 FX AF MICRO-NIKKOR</h1>
+                <p data-key="ep_p1">When I got back to Connecticut I went to a cool garden with my friend Julia. I used
+                    same camera-lens combo I started using in<a
+                        href="https://pelmeniboiler.github.io/dixie_and_vegas.html"> Utah</a>. I think was a good choice
+                    for the flowers and bugs, but next time I do stuff like this I'll borrow my dad's <a
+                        href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> with a more landscape-oriented lens
+                    to get more of the garden layout because it's really cool. There were a lot of waterfowl as well, I
+                    wish I had managed to get sharper pictures of them.<br>I think I should look into using flickr to
+                    host these and embed them here instead of compressing them so much. There's so much detail lost...
+                </p>
                 <hr>
             </header>
-            
+
             <section>
                 <h2 id="Purple" data-key="ep_h2_purple">&ensp;Purple</h2>
                 <h3 id="On Bush1" data-key="ep_h3_onbush1">&emsp;❏ On a Bush</h3>
                 <img src="/photos/ep/Roses/rose.png" class="article-image">
                 <p data-key="ep_p_purple">Such a cute color, so soft looking!</p>
             </section>
-        
+
             <section>
                 <h2 id="Pink" data-key="ep_h2_pink">&ensp;Pink</h2>
                 <h3 id="On Bush2" data-key="ep_h3_onbush2">&emsp;❏ On a Bush</h3>
@@ -132,33 +149,34 @@
                 <h3 id="Fallen" data-key="ep_h3_fallen">&emsp;❏ From the Ground</h3>
                 <img src="/photos/ep/Roses/015elizabeth_park.png" class="article-image">
                 <p data-key="ep_p_pink2">This poor rose fell to the ground... Thanks for holding it for me, Julia!</p>
-                
+
                 <h3 id="Close up" data-key="ep_h3_closeup">&emsp;❏ Close up</h3>
                 <img src="/photos/ep/Roses/004elizabeth_park.png" class="article-image">
                 <p data-key="ep_p_pink3">Woah look at the texture on the petals... so pretty...</p>
             </section>
-            
+
             <section>
                 <h2 id="Red" data-key="ep_h2_red">&ensp;Red</h2>
                 <p data-key="ep_p_red_intro">Certified all-time classic rose color, not gonna lie.</p>
-                
+
                 <h3 id="Poke" data-key="ep_h3_poke">&emsp;❏ Julia poking a rose</h3>
                 <img src="/photos/ep/Roses/poke.png" class="article-image">
                 <p data-key="ep_p_poke">Thanks, Julia!</p>
-                
+
                 <h3 id="Standing" data-key="ep_h3_standing">&emsp;❏ Standing</h3>
                 <img src="/photos/ep/Roses/rbush.png" class="article-image">
                 <p data-key="ep_p_standing">I love the archetypal swirl-in-the-middle like drawn roses have.</p>
-                
+
                 <h3 id="Hanging1" data-key="ep_h3_hanging1">&emsp;❏ Hanging</h3>
                 <img src="/photos/ep/Roses/red.png" class="article-image">
-                <p data-key="ep_p_hanging1">So red right out of the camera... Maybe too red... Maybe I should've dialed it back.</p>
+                <p data-key="ep_p_hanging1">So red right out of the camera... Maybe too red... Maybe I should've dialed
+                    it back.</p>
             </section>
 
             <section>
                 <h2 id="Yellow" data-key="ep_h2_yellow">&ensp;Yellow</h2>
                 <p data-key="ep_p_yellow_intro">Yellow roses, did you even know there was such a thing?</p>
-            
+
                 <h3 id="On Bush3" data-key="ep_h3_onbush3">&emsp;❏ On a bush</h3>
                 <img src="/photos/ep/Roses/ybush.png" class="article-image">
                 <p data-key="ep_p_yellow1">I love this color of yellow.</p>
@@ -170,11 +188,13 @@
 
             <section>
                 <h2 id="White" data-key="ep_h2_white">&ensp;White</h2>
-                <p data-key="ep_p_white_intro">We were so lucky as to get to see some unfinished roses they hadn't gotten around to painting yet! What a treat.</p>
-            
+                <p data-key="ep_p_white_intro">We were so lucky as to get to see some unfinished roses they hadn't
+                    gotten around to painting yet! What a treat.</p>
+
                 <h3 id="Square" data-key="ep_h3_square">&emsp;❏ Square Petal Rose</h3>
                 <img src="/photos/ep/Roses/square.png" class="article-image">
-                <p data-key="ep_p_white1">I like the square petals and stamen/pistil stuff in the middle. Pretty flower.</p>
+                <p data-key="ep_p_white1">I like the square petals and stamen/pistil stuff in the middle. Pretty flower.
+                </p>
 
                 <h3 id="Hanging2" data-key="ep_h3_hanging2">&emsp;❏ On a branch</h3>
                 <img src="/photos/ep/Roses/whanging.png" class="article-image">
@@ -187,15 +207,18 @@
 
             <section>
                 <h2 id="Patches" data-key="ep_h2_other">&ensp;Other Flowers</h2>
-                <p data-key="ep_p_other_intro">There were some non-roses at the garden! Herbs too, I wanted to snack on those real badly...</p>
-            
+                <p data-key="ep_p_other_intro">There were some non-roses at the garden! Herbs too, I wanted to snack on
+                    those real badly...</p>
+
                 <h3 id="Canna" data-key="ep_h3_canna">&emsp;❏ Canna</h3>
                 <img src="/photos/ep/Non Rose/flowers.png" class="article-image">
-                <p data-key="ep_p_canna">I love the purpley stem parts peeking out from the red.  The large and dark leaves at the base. What a cool flower.</p>
+                <p data-key="ep_p_canna">I love the purpley stem parts peeking out from the red. The large and dark
+                    leaves at the base. What a cool flower.</p>
 
                 <h3 id="Cock's Comb" data-key="ep_h3_cockscomb">&emsp;❏ Cock's Comb</h3>
                 <img src="/photos/ep/Non Rose/flowers3.png" class="article-image">
-                <p data-key="ep_p_cockscomb">There were a lot of different colored Cock's Combs around, but these violet ones were so vibrant.</p>
+                <p data-key="ep_p_cockscomb">There were a lot of different colored Cock's Combs around, but these violet
+                    ones were so vibrant.</p>
 
                 <h3 id="Zinnia" data-key="ep_h3_zinnia">&emsp;❏ Zinnias</h3>
                 <img src="/photos/ep/Non Rose/patch2.png " class="article-image">
@@ -213,26 +236,27 @@
             <section>
                 <h2 id="Bee" data-key="ep_h2_bee">&ensp;Bee</h2>
                 <p></p>
-            
+
                 <h3 id="Woah Bee" data-key="ep_h3_woahbee">&emsp;❏ Woah Bee</h3>
                 <img src="/photos/ep/Beecollage/bee.png" class="article-image">
-                <p data-key="ep_p_bee1">So happy with the detail in the fur and wings. Love seeing the cute little arms and legs. If you look close in some of these you can see the bee's secondary eyes!</p>
+                <p data-key="ep_p_bee1">So happy with the detail in the fur and wings. Love seeing the cute little arms
+                    and legs. If you look close in some of these you can see the bee's secondary eyes!</p>
 
                 <h3 id="Cute Bee" data-key="ep_h3_cutebee">&emsp;❏ Cute Bee</h3>
                 <img src="/photos/ep/Beecollage/bee2.png" class="article-image">
 
                 <h3 id="Look at it go!" data-key="ep_h3_lookatitgo">&emsp;❏ Look at it go!</h3>
                 <img src="/photos/ep/Beecollage/bee3.png" class="article-image">
-              
+
                 <h3 id="So fuzzy..." data-key="ep_h3_sofuzzy">&emsp;❏ So fuzzy...</h3>
                 <img src="/photos/ep/Beecollage/bee4.png" class="article-image">
-             
+
                 <h3 id="AAAAAH!" data-key="ep_h3_aaaah">&emsp;❏ AAAAAH!</h3>
                 <img src="/photos/ep/Beecollage/aaah.png" class="article-image">
             </section>
         </article>
     </main>
-    
+
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
     <div id="share-module-placeholder"></div>
@@ -240,9 +264,10 @@
     <script>
         // Make the audio play function available globally
         function playAudio() {
-          var audio = document.getElementById("audio");
-          audio.play();
+            var audio = document.getElementById("audio");
+            audio.play();
         }
     </script>
 </body>
+
 </html>

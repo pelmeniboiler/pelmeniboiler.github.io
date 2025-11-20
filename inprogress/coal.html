@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link id="dynamic-favicon" rel="icon" href="/logo/shzh.svg">
     <script src="/scripts/theme-loader.js"></script>
     <meta charset="UTF-8">
-    <meta name="eink-compatibility" content="optimized"> 
+    <meta name="eink-compatibility" content="optimized">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" data-key="coal_desc">
     <meta name="keywords" content="">
@@ -13,40 +14,46 @@
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <link rel="stylesheet" href="/styles/article.css">
 </head>
+
 <body class="eink-mode light-mode">
     <nav id="nav-window" class="window">
-        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ coal.nav</span><button class="close-btn">&times;</button></div>
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ coal.nav</span><button
+                class="close-btn">&times;</button></div>
         <div class="content">
-        <ul>
-            <li><a href="#this-is-my-first-heading" data-key="coal_nav_this-is-my-first-heading"></a></li>
-            <li><a href="#a-subsection" data-key="coal_nav_a-subsection"></a></li>
-            <li><a href="#here-is-another-major-section" data-key="coal_nav_here-is-another-major-section"></a></li>
-        </ul>
-        <a href="/index.html">⌂← Home</a></div>
+            <ul>
+                <li><a href="#this-is-my-first-heading" data-key="coal_nav_this-is-my-first-heading"></a></li>
+                <li><a href="#a-subsection" data-key="coal_nav_a-subsection"></a></li>
+                <li><a href="#here-is-another-major-section" data-key="coal_nav_here-is-another-major-section"></a></li>
+            </ul>
+            <a href="/index.html">⌂← Home</a>
+        </div>
     </nav>
     <div id="chirper-demo-placeholder"></div>
-<main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: 2;">
-        <div class="title-bar"><span class="title" data-key="win_gallery_title">▤ coal.article</span><button class="close-btn">&times;</button></div>
-        <article class="content"><h1 id="title" data-key="coal_title"></h1>
-        
-        <h2 id="this-is-my-first-heading" data-key="coal_h2_this-is-my-first-heading"></h2>
-        <p data-key="coal_p1"></p>
-        <h3 id="a-subsection" data-key="coal_h3_a-subsection"></h3>
-        <p data-key="coal_p2"></p>
-        <ul data-key="coal_ul1"></ul>
-        <h2 id="here-is-another-major-section" data-key="coal_h2_here-is-another-major-section"></h2>
-        <p data-key="coal_p3"></p>
+    <main id="gallery-window" class="window"
+        style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
+        <div class="title-bar"><span class="title" data-key="win_gallery_title">▤ coal.article</span><button
+                class="close-btn">&times;</button></div>
+        <article class="content">
+            <h1 id="title" data-key="coal_title"></h1>
+
+            <h2 id="this-is-my-first-heading" data-key="coal_h2_this-is-my-first-heading"></h2>
+            <p data-key="coal_p1"></p>
+            <h3 id="a-subsection" data-key="coal_h3_a-subsection"></h3>
+            <p data-key="coal_p2"></p>
+            <ul data-key="coal_ul1"></ul>
+            <h2 id="here-is-another-major-section" data-key="coal_h2_here-is-another-major-section"></h2>
+            <p data-key="coal_p3"></p>
 
         </article>
-</main>
-    
+    </main>
+
     <div id="start-menu-module-placeholder"></div>
     <script src="/scripts/module-loader.js" defer></script>
     <!-- Add this where you want the generator to appear -->
     <div id="filtertakeout-module-placeholder"></div>
     <div id="settings-module-placeholder"></div>
 
-    
+
     <script>
         // This script is self-contained and does not rely on external libraries.
         function setupChirperModals() {
@@ -57,7 +64,7 @@
             const reputationBadges = chirperContainer.querySelectorAll('.reputation-badge');
             reputationBadges.forEach(button => {
                 button.addEventListener('click', (event) => {
-                    event.stopPropagation(); 
+                    event.stopPropagation();
                     const modalId = button.getAttribute('data-modal-target');
                     const modal = document.getElementById(modalId);
                     if (modal) {
@@ -71,8 +78,8 @@
                 button.addEventListener('click', (event) => {
                     event.stopPropagation();
                     const modal = button.closest('.ledger-modal-overlay');
-                    if(modal) {
-                       modal.classList.add('hidden');
+                    if (modal) {
+                        modal.classList.add('hidden');
                     }
                 });
             });
@@ -86,7 +93,7 @@
                 });
             });
         }
-        
+
         // This is the ONLY trigger. It waits for the signal from your module-loader.js
         // that all modules have been injected into the page.
         document.addEventListener('modulesLoaded', setupChirperModals);
@@ -101,4 +108,5 @@
     </script>
     <script src="/scripts/blog/demos/filtertakeout.js" defer></script>
 </body>
+
 </html>
