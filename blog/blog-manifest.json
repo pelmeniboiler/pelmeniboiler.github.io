@@ -2,6 +2,15 @@
   {
     "filename": "this-blog-now-supports-your-language.html",
     "link": "/blog/this-blog-now-supports-your-language.html",
+    "slug": "this-blog-now-supports-your-language",
+    "languages": [
+      "en",
+      "he",
+      "ru",
+      "de",
+      "ja",
+      "gt"
+    ],
     "date": "Tue, 12 Aug 2025 21:12:00 GMT",
     "translationSource": "lang",
     "titleKey": "lang_title",
@@ -16,6 +25,15 @@
   {
     "filename": "this-blog-now-supports-rss.html",
     "link": "/blog/this-blog-now-supports-rss.html",
+    "slug": "this-blog-now-supports-rss",
+    "languages": [
+      "en",
+      "ja",
+      "de",
+      "he",
+      "ru",
+      "gt"
+    ],
     "date": "Sat, 28 Jun 2025 10:00:00 GMT",
     "translationSource": "tbns",
     "titleKey": "tbns_title",
@@ -29,6 +47,15 @@
   {
     "filename": "graflect.html",
     "link": "/blog/graflect.html",
+    "slug": "graflect",
+    "languages": [
+      "gt",
+      "en",
+      "he",
+      "ru",
+      "de",
+      "ja"
+    ],
     "date": "Fri, 13 Jun 2025 10:00:00 GMT",
     "translationSource": "graflect_ipa",
     "titleKey": "guide_h1",
@@ -42,6 +69,15 @@
   {
     "filename": "elizabeth_park.html",
     "link": "/blog/elizabeth_park.html",
+    "slug": "elizabeth_park",
+    "languages": [
+      "en",
+      "he",
+      "ru",
+      "de",
+      "ja",
+      "gt"
+    ],
     "date": "Sat, 03 Feb 2024 10:00:00 GMT",
     "translationSource": "epark",
     "titleKey": "ep_h1",
@@ -55,6 +91,15 @@
   {
     "filename": "dixie_and_vegas.html",
     "link": "/blog/dixie_and_vegas.html",
+    "slug": "dixie_and_vegas",
+    "languages": [
+      "en",
+      "he",
+      "ru",
+      "de",
+      "ja",
+      "gt"
+    ],
     "date": "Sun, 21 Jan 2024 10:00:00 GMT",
     "translationSource": "dixie",
     "titleKey": "dv_h1",
@@ -68,6 +113,15 @@
   {
     "filename": "sunshine.html",
     "link": "/blog/sunshine.html",
+    "slug": "sunshine",
+    "languages": [
+      "en",
+      "he",
+      "ru",
+      "de",
+      "ja",
+      "gt"
+    ],
     "date": "Fri, 26 Aug 2022 10:00:00 GMT",
     "translationSource": "sunshine",
     "titleKey": "sunshine_h1",

@@ -12,6 +12,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * The language currently in effect on the hub (it stays a single page and
+     * switches language in place). Used to point post links at the matching
+     * pre-built /blog/<slug>/<lang>/ page.
+     */
+    const currentLang = () =>
+        (window.translationsData && window.translationsData.lang) ||
+        localStorage.getItem('pelmeniboiler-lang') ||
+        document.documentElement.lang ||
+        'en';
+
+    /**
+     * Root-relative URL of a post's pre-built page in the given language, falling
+     * back to English (then any available language) when that post hasn't been
+     * translated into the requested one. Falls back to the legacy flat URL only
+     * if the manifest lacks slug/language data.
+     */
+    const postUrl = (post, lang) => {
+        if (!post.slug || !Array.isArray(post.languages) || post.languages.length === 0) {
+            return post.link;
+        }
+        const target = post.languages.includes(lang)
+            ? lang
+            : (post.languages.includes('en') ? 'en' : post.languages[0]);
+        return `/blog/${post.slug}/${target}/`;
+    };
+
+    /** Re-point already-rendered post links when the hub language changes. */
+    const updateRenderedLinks = (lang) => {
+        postsListContainer.querySelectorAll('a[data-slug]').forEach((a) => {
+            const languages = a.dataset.langs ? a.dataset.langs.split(',') : [];
+            const target = languages.includes(lang)
+                ? lang
+                : (languages.includes('en') ? 'en' : languages[0] || '');
+            if (target) a.href = `/blog/${a.dataset.slug}/${target}/`;
+        });
+    };
+    document.addEventListener('translationsReady', (e) => updateRenderedLinks(e.detail.lang));
+
+    /**
      * Re-applies translations to a specific container.
      * Needed after filtering to translate newly added elements.
      * @param {object} translations - The loaded translation data.
@@ -57,7 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Title and Date elements (unchanged) ---
             const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
-            linkElement.href = post.link;
+            const href = postUrl(post, currentLang());
+            linkElement.href = href;
+            if (post.slug) linkElement.dataset.slug = post.slug;
+            if (Array.isArray(post.languages)) linkElement.dataset.langs = post.languages.join(',');
             linkElement.setAttribute('data-key', post.titleKey);
             linkElement.textContent = post.title; // Set default text
             titleElement.appendChild(linkElement);
@@ -81,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Create a *separate* paragraph for the "read more" link.
             //    This element has no data-key and will not be touched by the translation script.
             const readMoreElement = document.createElement('p');
-            readMoreElement.innerHTML = `<i><a href="${post.link}">read more &rarr;</a></i>`;
+            const langsAttr = Array.isArray(post.languages) ? post.languages.join(',') : '';
+            readMoreElement.innerHTML = `<i><a href="${href}" data-slug="${post.slug || ''}" data-langs="${langsAttr}">read more &rarr;</a></i>`;
 
             // Append all elements to the article
             postArticle.appendChild(titleElement);
