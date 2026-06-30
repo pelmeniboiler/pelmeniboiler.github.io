@@ -1,0 +1,69 @@
+name: Build and deploy site
+
+# Builds the site (manifest, RSS feeds, per-language article pages, sitemap)
+# and deploys it to GitHub Pages. This replaces the old manual "run the VS Code
+# command" build — every push to main now rebuilds and redeploys automatically,
+# so generated output can never go stale again.
+#
+# NOTE: For this to take over serving the site, set Settings → Pages → "Build and
+# deployment" → Source to "GitHub Actions" (one-time). Until then the site is
+# still served directly from the branch.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel an in-progress one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Graflect localization
+        run: npm run lint:gt
+
+      - name: Build site (manifest, feeds, per-language pages, sitemap)
+        run: npm run build
+
+      - name: Drop build-only dependencies from the artifact
+        run: rm -rf node_modules
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

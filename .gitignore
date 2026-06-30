@@ -4,3 +4,7 @@ Pelmeni Raster.fon
 
 # Node build tooling
 node_modules/
+
+# Generated build output (built fresh in CI; preview locally with `npm run build`)
+/sitemap.xml
+blog/*/
