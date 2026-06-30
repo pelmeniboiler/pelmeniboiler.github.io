@@ -287,6 +287,14 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
                 if (ph) ph.outerHTML = bakeFragment(moduleHtml, lang, lookup);
             }
 
+            // Any placeholder still left after baking the chrome is a demo module
+            // that module-loader.js will inject (and translate) at runtime. Mark
+            // such pages so the runtime knows it must load translations; fully
+            // baked pages (no demos) can skip the localization fetch entirely.
+            if (doc.querySelector('[id$="-placeholder"]')) {
+                doc.head.insertAdjacentHTML('beforeend', '\n    <meta name="runtime-modules" content="true">\n');
+            }
+
             const outDir = path.join(blogDir, slug, lang);
             await fs.mkdir(outDir, { recursive: true });
             await fs.writeFile(path.join(outDir, 'index.html'), dom.serialize());

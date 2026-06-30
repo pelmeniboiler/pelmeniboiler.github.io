@@ -144,9 +144,22 @@ function setupSettings() {
     }
 
     /**
-     * **REMOVED:** The updateWelcomeText function is no longer needed.
-     * CSS now handles showing/hiding the correct welcome text.
+     * Enable/disable (and dim) the colour theme presets. Colour themes are only
+     * valid in LCD mode, so they're disabled while e-ink mode is active. Called
+     * both when the mode is toggled and on initial load (otherwise a page that
+     * loads already in e-ink mode would show the colour presets selectable until
+     * the toggle was flipped once).
+     * @param {boolean} isEink - Whether e-ink mode is currently active.
      */
+    function updateColorThemeAvailability(isEink) {
+        const themeSettingGroup = getElement('theme-setting-group');
+        if (!themeSettingGroup) return;
+        themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
+            label.style.opacity = isEink ? '0.5' : '1';
+            const radio = label.querySelector('input');
+            if (radio) radio.disabled = isEink;
+        });
+    }
 
     /**
      * Applies the display mode (e-ink or lcd) to the page.
@@ -164,15 +177,8 @@ function setupSettings() {
 
         if (einkToggle) einkToggle.checked = isEink;
 
-        // Disable color theme options when in e-ink mode
-        const themeSettingGroup = getElement('theme-setting-group');
-        if (themeSettingGroup) {
-            themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
-                label.style.opacity = isEink ? '0.5' : '1';
-                const radio = label.querySelector('input');
-                if (radio) radio.disabled = isEink;
-            });
-        }
+        // Disable color theme options when in e-ink mode.
+        updateColorThemeAvailability(isEink);
 
         const currentTheme = localStorage.getItem(THEME_KEY) || 'light';
         const isCurrentThemeColor = colorThemes.hasOwnProperty(currentTheme) || !['light', 'dark'].includes(currentTheme);
@@ -381,7 +387,9 @@ function setupSettings() {
         // Sync UI controls to match the state already set by theme-loader.js.
         const isEink = docEl.classList.contains('eink-mode');
         if (einkToggle) einkToggle.checked = isEink;
-        
+        // Sync the colour-theme availability to the loaded mode (not just on toggle).
+        updateColorThemeAvailability(isEink);
+
         const currentThemeClass = [...docEl.classList].find(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode'].includes(c));
         if (currentThemeClass) {
             const themeValue = currentThemeClass.replace('-mode', '');
@@ -395,15 +403,28 @@ function setupSettings() {
         }
         
         // Load and apply the initial language.
-        // On a built (pre-rendered) page the language is fixed by the URL, so we
-        // force `builtLang` rather than reading localStorage/URL. We still run a
-        // full translation pass: the article body just gets re-set to the same
-        // baked text (same language => no clobber), but the runtime-injected
-        // chrome (settings / start-menu / share modules, which are fetched after
-        // load and are NOT baked) needs translating too — skipping it left the
-        // settings panel showing its untranslated placeholder markup.
-        const initialLang = builtLang || getInitialLanguage();
-        await loadAndSetLanguage(initialLang);
+        if (builtLang && !document.querySelector('meta[name="runtime-modules"]')) {
+            // Fully pre-rendered page: both the article body AND the chrome
+            // (settings / start-menu / share) are baked in `builtLang`, and there
+            // are no runtime-injected demo modules needing translation. So we skip
+            // the localization fetch entirely and just sync the UI state and
+            // notify dependent scripts (e.g. share.js highlight restoration).
+            docEl.lang = builtLang;
+            docEl.dir = builtLang === 'he' ? 'rtl' : 'ltr';
+            if (langDropdownValue && langDropdownMenu) {
+                const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${builtLang}"]`);
+                if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
+            }
+            window.translationsData = { translations: {}, lang: builtLang };
+            document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations: {}, lang: builtLang } }));
+        } else {
+            // Hub, or a built page that still has runtime demo modules to
+            // translate: run the full pass. On a built page we force `builtLang`
+            // (the URL fixes the language); re-applying it to the already-baked
+            // body/chrome is idempotent, while the injected demos get translated.
+            const initialLang = builtLang || getInitialLanguage();
+            await loadAndSetLanguage(initialLang);
+        }
 
         // Update the favicon on initial page load
         await updateFavicon();
