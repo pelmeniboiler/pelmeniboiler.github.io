@@ -80,6 +80,14 @@ function setupSettings() {
             const textColor = cs.getPropertyValue('--text-color').trim() || '#000000';
             const bgColor = (cs.getPropertyValue('--win-bg-color').trim() ||
                              cs.getPropertyValue('--bg-color').trim() || '#ffffff');
+            const borderColor = cs.getPropertyValue('--border-color').trim() || textColor;
+
+            // Default: bg tile with the logo in the text colour. For these themes,
+            // invert the relationship — border colour tile, logo in the bg colour.
+            const FAVICON_SWAP_THEMES = ['techelet', 'zelyonny', 'akai'];
+            const swap = FAVICON_SWAP_THEMES.some((t) => document.documentElement.classList.contains(`${t}-mode`));
+            const tileColor = swap ? borderColor : bgColor;
+            const logoColor = swap ? bgColor : textColor;
 
             // Fetch and parse the SVG logo.
             const response = await fetch('/logo/shzh.svg');
@@ -96,7 +104,7 @@ function setupSettings() {
             svgElement.querySelectorAll('style').forEach((s) => s.remove());
             svgElement.querySelectorAll('path').forEach((path) => {
                 path.removeAttribute('class');
-                path.setAttribute('fill', textColor);
+                path.setAttribute('fill', logoColor);
             });
 
             const svgUri = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svgElement))}`;
@@ -116,7 +124,7 @@ function setupSettings() {
             const canvas = document.createElement('canvas');
             canvas.width = canvas.height = size;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = bgColor;
+            ctx.fillStyle = tileColor;
             ctx.fillRect(0, 0, size, size);
             const pad = Math.round(size * 0.08);
             ctx.drawImage(img, pad, pad, size - 2 * pad, size - 2 * pad);
@@ -294,7 +302,18 @@ function setupSettings() {
             });
         });
     }
-    
+
+    // Easter egg: triple-click the Funky preset to toggle a "liquid glass" look.
+    // (A click event's `detail` is the consecutive-click count, so 3 == triple.)
+    const funkyLabel = document.querySelector('input[name="theme"][value="funky"]')?.closest('.radio-label');
+    if (funkyLabel) {
+        funkyLabel.addEventListener('click', (e) => {
+            if (e.detail !== 3) return;
+            const on = document.documentElement.classList.toggle('liquid-glass');
+            try { localStorage.setItem('pelmeniboiler-liquid-glass', on ? '1' : '0'); } catch (_) { /* ignore */ }
+        });
+    }
+
     /**
      * Deeply merges translation data from multiple sources.
      * @param {object} target - The object to merge into.
