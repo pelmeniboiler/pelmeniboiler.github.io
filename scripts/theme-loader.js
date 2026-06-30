@@ -38,6 +38,11 @@
         // Apply correct classes to the <html> element immediately.
         docEl.classList.add(correctThemeClass, correctModeClass);
 
+        // Restore the "liquid glass" easter-egg look if it was toggled on.
+        if (localStorage.getItem('pelmeniboiler-liquid-glass') === '1') {
+            docEl.classList.add('liquid-glass');
+        }
+
         /**
          * This function finds the <body> tag, removes any outdated theme or mode classes
          * that might be hardcoded in the HTML, and applies the correct ones from localStorage.

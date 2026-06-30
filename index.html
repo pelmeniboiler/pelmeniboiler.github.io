@@ -32,10 +32,10 @@
     <div class="window" style="top: 2%; left: 2%; z-index: 4;">
         <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h1 data-key="welcome_h1">pelmeniboiler</h1>
-            <!-- **MODIFIED:** Replaced the single #welcome-text p with two separate paragraphs for each mode -->
-            <p class="welcome-text-eink" data-key="welcome_text_eink"></p>
-            <p class="welcome-text-lcd" data-key="welcome_text_lcd"></p>
+            <h1 data-key="welcome_h1">Welcome to my page!</h1>
+            <!-- English baked in for SEO / no-JS; data-key still drives runtime translation -->
+            <p class="welcome-text-eink" data-key="welcome_text_eink">This website is currently using E-Ink friendly and standard English localization settings.<br>If you would prefer to see images in color, or to read in another supported localization option,<br> you can do so by opening <span class="symbol">⚙</span> <strong>system.settings</strong> which starts closed in the program.launcher at the bottom of the screen.<br><br>The site is fully readable without JavaScript, but some articles include interactive demos that need it — enabling JavaScript lets those run.</p>
+            <p class="welcome-text-lcd" data-key="welcome_text_lcd">E-ink mode has been disabled, enjoy images in full color!<br><br>The site is fully readable without JavaScript, but some articles include interactive demos that need it — enabling JavaScript lets those run.</p>
         </div>
     </div>
 
@@ -80,8 +80,8 @@
         <div id="music-play-btn" class="music-content">
             <h3>♩ Telstar ♪♩</h3>
             <button class="normal-btn" onclick="playAudio()" data-key="music_play_btn">▶</button>
-            <h4 data-key="music_h4">Composed by...</h4>
-            <h5 data-key="music_h5">Piano arrangement...</h5>
+            <h4 data-key="music_h4">Composed by Joe Meek, Performed by The Tornados.</h4>
+            <h5 data-key="music_h5">Piano arrangement by André Wils,<br>adapted by me for a calmer rendition.</h5>
         </div>
     </div>
     <div class="window" style="top: 45.5%; left: 30.3%; z-index: 1;">
@@ -91,17 +91,10 @@
     <div class="window" style="top: 64%; left: 9%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_about_title">ℹ user.about</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2 data-key="about_h2">❯ Wendy...</h2>
-            <p data-key="about_p">I'm an electrical engineering student...</p>
+            <h2 data-key="about_h2">❯ Wendy Shoshana Zhulkovsky ❮</h2>
+            <p data-key="about_p">I'm an electrical engineering student passionate about the intersections of human-machine interfaces, language, art, and optics.</p>
         </div>
     </div>
-    <div class="window" style="top: 55%; left: 47%; z-index: 1;">
-        <div class="title-bar"><span class="title" data-key="win_certs_title">Ⓒ cool.certificates</span><button class="close-btn">&times;</button></div>
-        <div class="content">
-            <h4><a href="https://certificates.cs50.io/bb86e9a2-df06-4ec6-840e-d7d79a4f23d2.pdf?size=letter" data-key="certs_link">Harvard CS50...</a></h4>
-        </div>
-    </div>
-
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
 

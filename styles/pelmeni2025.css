@@ -635,3 +635,34 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     background-color: var(--inv-text-color);
     color: var(--inv-bg-color);
 }
+
+/* --- LIQUID GLASS (easter egg: triple-click the Funky preset) --- */
+:root.liquid-glass .window {
+    background-color: color-mix(in srgb, var(--win-bg-color) 55%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--border-color) 55%, transparent);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 color-mix(in srgb, #ffffff 40%, transparent);
+    overflow: hidden;
+}
+:root.liquid-glass .title-bar {
+    background-color: color-mix(in srgb, var(--inv-bg-color) 50%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom-color: color-mix(in srgb, var(--border-color) 40%, transparent);
+}
+:root.liquid-glass .start-menu,
+:root.liquid-glass .custom-dropdown-menu,
+:root.liquid-glass .rss-dropdown-content,
+:root.liquid-glass .settings-window .settings-nav {
+    background-color: color-mix(in srgb, var(--win-bg-color) 60%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+}
+/* Soften inner dividers so the glass reads as one continuous surface. */
+:root.liquid-glass .settings-nav,
+:root.liquid-glass .settings-page h3 {
+    border-color: color-mix(in srgb, var(--border-color) 40%, transparent);
+}
