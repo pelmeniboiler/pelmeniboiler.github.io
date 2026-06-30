@@ -1,215 +1,103 @@
-# Pelmeniboiler Site Architecture Plan
+# Pelmeniboiler Site Architecture — Status
 
-> Direction note, not a spec. Captures *what* we're changing and *why*, and which
-> systems each change touches. Written 2026-06.
+> Living status doc. The original plan was "stop rebuilding every page in the
+> browser; move that work to a build step." Most of it is now done. Updated 2026-06.
 
-## The core idea
+## The core idea (delivered)
 
-Today the site ships **empty HTML skeletons** and rebuilds every page **in the
-browser** at runtime: fetch HTML modules, fetch every localization JSON, merge,
-then walk the DOM stamping text into `data-key` elements. That machinery is the
-reason crawlers/LLMs see blank pages, the reason first paint flashes, and the
-reason the homepage downloads every blog post's translations on every visit.
+The site used to ship **empty HTML skeletons** and rebuild every page **in the
+browser**: fetch modules, fetch every localization JSON, merge, and stamp text
+into `data-key` elements. Crawlers/LLMs saw blank pages, first paint flashed, and
+the homepage downloaded every post's translations on every visit.
 
-The whole pipeline is **server-side templating done client-side, slowly.** The
-fix is to move that exact logic to **build time**. The `data-key` → JSON → merge
-→ stamp logic doesn't disappear — it runs once on a build machine and emits
-finished HTML. Same source of truth (the localization JSONs), different place
-of execution.
+That `data-key` → JSON → merge → stamp logic now runs **once at build time** and
+emits finished HTML. Same source of truth (the localization JSONs), different
+place of execution.
 
 **Guiding principles**
-
-1. Content that should be indexed must exist as real text in the shipped HTML.
-2. The browser should never reconstruct a page it could have been handed finished.
-3. Localization JSONs stay the single source of truth; they're consumed at build.
+1. Indexable content exists as real text in the shipped HTML.
+2. The browser never reconstructs a page it could be handed finished.
+3. Localization JSONs stay the single source of truth, consumed at build.
 4. Don't ship a language a visitor isn't reading.
-5. Keep the site's identity intact: the windowed desktop UI, themes, fonts,
-   e-ink mode, and the manifest-driven blog all stay.
+5. Keep the site's identity: windowed desktop UI, themes, fonts, e-ink mode,
+   manifest-driven blog.
 
 ---
 
-## Per-system changes
+## Done
 
-### Articles → per-language static pages
-- **Now:** one `/blog/<slug>.html` skeleton, hydrated by JS into the chosen language.
-- **Target:** build emits one finished page **per language**, e.g.
-  `/blog/<slug>/<lang>/` (served as `.../<lang>/index.html` by GitHub Pages),
-  with the language's text baked in.
-- Each page carries `<html lang>`/`dir` correctly (incl. `dir=rtl` for `he`),
-  its own `<title>`/`<meta description>`, and `<link rel="alternate" hreflang>`
-  pointing at every sibling language so search engines serve the right one.
-- **Graflect (`gt`) caveat:** not a valid BCP-47 tag, so `hreflang="gt"` is
-  ignored by Google (harmless, just no language targeting for that variant).
-- **Crawler/LLM payoff:** full real content per language, no JS required.
+### Build tooling (was a VS Code extension → now a Node CLI)
+- `npm run build` → `blog/blog-manifest.json`, `rss/<lang>/feed.xml`,
+  per-language article pages, and `sitemap.xml`.
+- `npm run lint:gt` → Graflect glyph validation (non-zero exit gates CI).
+- Faithful port of the old `pelmeniboiler-rss` extension; `jsdom` retained.
+- **GitHub Actions** (`.github/workflows/deploy.yml`) runs lint + build and
+  deploys to Pages on every push to `main`. (Pages Source must be "GitHub
+  Actions".) No more manual, stale builds.
 
-### Hub / index → single page, English baked in, lazy switch
-- Stays one page. The windowed desktop, draggable panels, start menu, blog list
-  all stay structurally identical.
-- The English text is **baked into the HTML statically** (welcome blurb, about
-  line, and the blog list titles/descriptions stamped from the manifest at build).
-- **No multilingual indexing / no polyglot DOM.** We do *not* ship all six
-  languages hidden with CSS. We ship English; other languages are fetched
-  **lazily only when the user switches** in settings.
-- No per-language hub URLs — the hub's SEO job is "be findable as pelmeniboiler
-  and link to the articles," which one English page does fine.
+### Per-language article pages
+- `/blog/<slug>/<lang>/index.html`, one per language a post is translated into.
+- Text baked in; correct `<html lang>` + `dir` (rtl for he); localized `<title>`
+  / `<meta description>`; `rel=canonical` + `hreflang` (x-default → en; `gt`
+  omitted as it has no valid BCP-47 tag).
+- The universal **chrome** (settings / start-menu / share modules) is baked in
+  too, in the page's language. **Demos are left as runtime placeholders**
+  (interactive apps, no crawl value) and still injected by `module-loader.js`.
 
-### Language switching → navigate + prefetch (no in-place hydration)
-- Switching language **navigates to the sibling page** rather than rewriting the
-  current DOM in place.
-- Make it feel instant with `<link rel="prefetch">` on the alternate-language URL
-  (on hover/idle). Theme + e-ink mode persist via `localStorage` and are applied
-  synchronously by `theme-loader.js`, so there's no flash across the navigation.
-- Rationale: in-place switching is the one feature that forces us to keep the
-  whole runtime translation engine alive. Switching is the rarest action on the
-  site (people pick a language ~once); optimizing it with hydration would mean
-  keeping the engine that slows first paint and blocks crawlers. Side-by-side
-  comparison of translations = open two tabs.
+### Runtime behaviour
+- Language switch on an article **navigates** to the sibling `/blog/<slug>/<lang>/`
+  page (hub keeps in-place switching; build pages carry `built-lang` / `page-base`
+  / `page-langs` markers to drive this).
+- Built pages don't re-hydrate (no clobber). Fully-baked pages (no demos) skip the
+  localization fetch entirely; pages with demos still fetch to translate them.
+- Hub blog list links point at the per-language pages for the active language.
 
-### URL scheme — DECISION NEEDED (see Open Questions)
-- `share.js` currently emits **`?l=<lang>` query params** (e.g.
-  `?l=ja#highlight=...`), and `getInitialLanguage()` reads `?l=`. The new plan
-  introduces **path-based** per-language pages (`/blog/<slug>/<lang>/`).
-- These must be reconciled: either share links point at the new static paths, or
-  we keep `?l=` as a redirect/alias. The deep-link highlight feature
-  (`#highlight=key,start,end`) depends on `data-key` attributes still being
-  present in the built HTML — **keep emitting `data-key` on built elements** so
-  highlight links survive.
+### Generated output is build-only
+- Per-language pages, `sitemap.xml`, **RSS feeds, and `blog-manifest.json`** are
+  gitignored and built fresh in CI. No generated files churn in git.
 
-### Localization JSON → build input, plus lazy per-language runtime
-- Files stay exactly as they are; they become the **build's input**.
-- Runtime no longer eagerly loads all of them. The hub fetches a single
-  language's strings only on an explicit switch.
+### Polish / fixes
+- RSS feeds point at the per-language pages.
+- `robots.txt`: dropped the obsolete "JS required, download the JSON" note; added
+  the sitemap.
+- Favicon: `logo/favicon.svg` is an OS-adaptive static mark (white under
+  `prefers-color-scheme: dark`) for the no-JS case; `updateFavicon()` rasterizes
+  the theme-coloured logo to a PNG via canvas and swaps the `<link>` node so the
+  tab actually repaints. Fixed the long-standing bug where the logo's internal
+  `<style>.s0{fill:#000}</style>` overrode the fill and left it stuck black.
+- Fixed the e-ink theme lock (colour presets are now disabled on initial load,
+  not only after toggling the checkbox).
 
-### blog-manifest.json → still built, consumed at build for the hub
-- Still generated by the build tool. The hub's blog list is **stamped from it at
-  build time** (real English titles/descriptions in HTML) instead of being
-  rendered by `blog-loader.js` after a runtime fetch.
-
-### RSS → upgrade item links to per-language pages
-- Per-language feed folders (`/rss/<lang>/feed.xml`) already exist — good.
-- **Today every feed's items link to the same `/blog/<slug>.html`** regardless of
-  language, so a Japanese subscriber clicks through to a JS-dependent page. Once
-  per-language pages exist, point each `<lang>` feed's item links/guids at the
-  matching static page — a real upgrade for subscribers.
-- Note: item `guid isPermaLink="true"` is the article URL, so changing canonical
-  URLs changes guids (re-publishes items). Acceptable given low posting cadence.
-
-### Theming → consolidate onto `:root` (see next section)
-
-### Build tooling → platform-agnostic Node CLI (see next section)
+### Verification
+- A headless-browser smoke test (Playwright) covers the language flow, no-clobber,
+  fetch-skip, chrome localization, favicon pixels, and the e-ink theme lock —
+  currently 15 assertions. (Lives in scratch; could move into the repo as
+  `test/` if we want it in CI.)
 
 ---
 
-## Theming: is it hacky?
+## Not done / deliberately deferred
 
-**The foundation is clean and idiomatic — not hacky.** CSS custom properties on
-`:root`, overridden by named theme classes (`.dark-mode`, `.funky-mode`, …), is
-the textbook way to theme. The synchronous `theme-loader.js` in `<head>` for FOUC
-prevention is also the correct pattern. The e-ink-mode-as-a-class approach (vs the
-never-implemented `@media (update: slow)`) is the right call and gives users
-manual control, which is *better* than auto-detection.
-
-**The hacky part is the application layer, and it has one root cause:** the CSS is
-inconsistent about *which element* carries the mode. Some selectors target the
-`<html>`/`:root` element (`:root.dark-mode`, `:root.funky-mode`) and others target
-`<body>` (`body.eink-mode img`, `body.lcd-mode`, `.lcd-mode .welcome-text-lcd`).
-Because of that split, three avoidable workarounds exist:
-
-1. **Dual class application.** Both `theme-loader.js` and `settings.js` apply the
-   same `-mode` classes to **both** `<html>` and `<body>` and carefully keep them
-   in sync. Redundant.
-2. **A `MutationObserver`** in `theme-loader.js` exists *solely* to wait for
-   `<body>` and copy classes onto it.
-3. **Hardcoded `class="eink-mode light-mode"` on `<body>`** in every HTML file,
-   which the loader's `fixBodyClasses()` then strips and re-adds — the HTML
-   asserts a default the JS immediately has to undo.
-
-**Cleanup:** pick one element (the `:root`/`<html>`, since the loader can set it
-before `<body>` exists) and rewrite the `body.X` selectors to `:root.X` (or a
-descendant `.X ...`). Then:
-- delete the `MutationObserver`,
-- delete the dual-classing in `settings.js`,
-- stop hardcoding mode classes on `<body>` (the build controls output anyway).
-
-This is low-risk and the build step makes it trivial since we control every
-emitted `class` attribute.
-
-**Minor notes:**
-- `filter: ... contrast(250)` on e-ink images is a magic number (unitless 250 =
-  25000%); intended as "crush to near pure B/W." Works, but document or tune it.
-- `body.lcd-mode img { filter: none; }` is redundant (that's the default).
-- Favicon recoloring re-fetches `shzh.svg` on every theme change; the SVG is tiny
-  and could be inlined to avoid the fetch. Minor.
+- **Hub is still runtime-hydrated.** Baking its English content was deferred on
+  purpose (it stays a single page with in-place language switching).
+- **Accessibility / no-JS layout.** Article content + chrome are already baked, so
+  no-JS readers get real text. Outstanding: make the windowed desktop a
+  progressive enhancement — fall back to a clean linear "stacked divs" document
+  when JS is off (the mobile CSS already stacks windows; gate the floating/
+  absolute layout on a `.js` flag), and offer the language switcher as plain
+  links. Feasible; not yet done.
+- **MTPE translation tooling.** The current localization workflow is manual,
+  glossary-driven, multi-pass MTPE with an LLM. Candidate build-tool support:
+  a jargon **glossary file**, an incremental "translate only English keys that
+  changed" pass, structure/placeholder/glyph validation (reusing `validate-gt`,
+  with auto-retry on glyph errors), and a deterministic IPA→Graflect transliterator
+  so glyph choice stops depending on the model. Sketch only; not built.
 
 ---
 
-## Build tooling: replace the VS Code extension?
-
-**Yes — convert it to a platform-agnostic Node CLI. The effort is low because the
-core is already plain Node.**
-
-The `pelmeniboiler-rss` extension does two useful things:
-- **`buildFeeds`** — scans `/blog` + `/localization`, writes `blog-manifest.json`,
-  and generates `/rss/<lang>/feed.xml` for each language (clones the doc, swaps
-  `data-key` innerHTML, cleans HTML to absolute URLs / strips script+iframe+style).
-- **`validateGtLocalization`** — flags words that mix Graflect PUA codepoints
-  (`U+EC70`–`U+ECEF`) with non-Graflect characters.
-
-Crucially, the actual logic already uses only `fs`, `path`, `jsdom`, and `URL`.
-The **only** VS Code-specific parts are the thin shell: command registration,
-`workspace.workspaceFolders` for the root dir, the progress notification, and the
-diagnostics/output channels. Everything else is portable as-is.
-
-**Why move off VS Code:**
-- It can't run in CI. The build is a **manual human action** (open VS Code, run a
-  command-palette command), so the manifest and feeds go stale whenever someone
-  forgets. We now need a build that runs **headlessly** on every content change.
-- It requires VS Code + a privately-packaged `.vsix` to be installed — not
-  reproducible, not scriptable, not shareable.
-
-**Target shape:**
-- A plain Node script / small CLI: `npm run build` →
-  - generate per-language article pages (the new work),
-  - regenerate `blog-manifest.json`,
-  - stamp the hub's static English content,
-  - regenerate the RSS feeds (reusing the existing clean/translate functions
-    nearly verbatim).
-- Keep the Graflect validator as `npm run lint:gt` (or a pre-build check that
-  fails the build). `vscode.Diagnostic` → console output + non-zero exit code.
-- Wire it to **GitHub Actions** on push so the site rebuilds and deploys
-  automatically — no more manual builds.
-
-**Where it should live — DECISION NEEDED.** As a plain build script it's simplest
-co-located in the website repo (one repo, one `npm run build`, GH Actions builds
-and deploys). The separate repo only made sense while it was a VS Code extension.
-Co-locating is the recommendation, but it's your call.
-
----
-
-## What explicitly stays the same
-- The windowed-desktop visual identity, draggable panels, start menu, settings UI.
-- All themes + the random "funky" generator, the font stack, e-ink mode.
-- Localization JSONs as the source of truth.
-- The manifest-driven blog model and per-language RSS feed folders.
-- `data-key` attributes on built elements (needed for the highlight-share feature
-  and for the lazy hub language switch).
-
-## Suggested sequencing
-1. **Build tool first:** port the extension to a Node CLI (manifest + RSS), verify
-   byte-identical output to today, then add GH Actions.
-2. **Bake English into articles:** generate static English pages from the existing
-   JSON; confirm crawlable content. (Site still works with current JS on top.)
-3. **Per-language article pages + hreflang:** expand the generator to all languages.
-4. **Hub:** bake English in, switch to lazy per-language fetch, drop eager JSON load.
-5. **Switch UX:** navigate + prefetch; reconcile `?l=` vs path URLs in `share.js`.
-6. **Theming cleanup:** consolidate mode classes onto `:root`, delete the
-   MutationObserver / dual-classing / hardcoded body classes.
-
-## Open questions
-- **URL scheme:** path-based `/blog/<slug>/<lang>/` vs keeping `?l=`? How do we
-  preserve existing `/blog/<slug>.html` links + RSS guids (redirect alias?).
-- **Build tool location:** co-locate in the website repo, or keep separate?
-- **Graflect hreflang:** accept no language targeting for `gt`, or map it to a
-  real tag / `x-default`?
-- **Static generator:** hand-rolled Node script (data model is simple enough) vs a
-  minimal SSG like Eleventy?
+## Pointers
+- Build tool: `build/build.mjs`, `build/validate-gt.mjs`
+- Runtime: `scripts/` (`settings.js`, `blog-loader.js`, `module-loader.js`,
+  `theme-loader.js`, `start-menu.js`, `share.js`)
+- Chrome modules: `modules/`  ·  Localization: `localization/*.json`
+- Deploy: `.github/workflows/deploy.yml`

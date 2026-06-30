@@ -8,3 +8,7 @@ node_modules/
 # Generated build output (built fresh in CI; preview locally with `npm run build`)
 /sitemap.xml
 blog/*/
+
+# Generated feeds + manifest (built fresh in CI)
+/rss/
+/blog/blog-manifest.json
