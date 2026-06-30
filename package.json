@@ -1,0 +1,14 @@
+{
+  "name": "pelmeniboiler-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Build tooling for the Pelmeniboiler static site (manifest, RSS feeds, Graflect validation).",
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.mjs",
+    "lint:gt": "node build/validate-gt.mjs"
+  },
+  "dependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

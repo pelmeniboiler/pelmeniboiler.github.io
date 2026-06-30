@@ -5,7 +5,7 @@
     <link>https://pelmeniboiler.github.io/</link>
     <description>Классные вещи, которые мне нравятся.</description>
     <language>ru</language>
-    <copyright>2021-2025 Wendy Zhulkovsky PIT License, Several Rights Reserved.</copyright>
+    <copyright>2021-2026 Wendy Zhulkovsky PIT License, Several Rights Reserved.</copyright>
     <ttl>60</ttl>
     <image>
         <url>https://pelmeniboiler.github.io/logo/shzh.svg</url>
@@ -13,7 +13,7 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Sun, 17 Aug 2025 19:56:23 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2026 02:10:33 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ru/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>Этот блог теперь поддерживает ваш язык</title>
@@ -54,7 +54,7 @@
                 <li data-key="lang_li10">Подать новый полный json другому Gemini, попросить его найти ошибки, которые мешают пониманию или звучат неловко и, следовательно, затрудняют чтение, попросить объяснений и снова исправить вопиющие части (особенно если он хочет изменить жаргон).</li>
             </ol>
             <p data-key="lang_p14">Кажется, это называется <abbr title="Постредактирование машинного перевода">MTPE</abbr>.</p>
-            <p data-key="lang_p15">В 99% случаев Gemini переводит лучше меня. Я не смогла бы сделать это без него, но ему нужна большая помощь в процессе. Мне кажется, что его переводы все еще очень 1:1, но у него есть словарный запас, которого у меня нет, и я думаю, он позволяет предлагать контент, который достаточно корректен, чтобы его можно было понять, в отличие от автоматического Google Translate, поставляемого с браузерами на основе Chromium.</p>
+            <p data-key="lang_p15">В 99% случаев Gemini переводит лучше меня. Я не смогла бы сделать это без него, но ему нужна большая помощь в процессе. Мне кажется, что его переводы все еще слишком буквальны, но у него есть словарный запас, которого у меня нет, и я думаю, он позволяет предлагать контент, который достаточно корректен, чтобы его можно было понять, в отличие от автоматического Google Translate, поставляемого с браузерами на основе Chromium.</p>
             <p data-key="lang_p16">Насколько я могу судить, переводы кажутся несколько неловкими на каждом языке, но мой английский тоже неловок, так что, возможно, он просто действительно уловил мой стиль.</p>
             <p data-key="lang_p17">Если вы можете читать на любом из языков, которые я решила попытаться предложить, пожалуйста, дайте мне знать, как я могу улучшить переводы.</p>
 
@@ -76,10 +76,10 @@
             <p data-key="lang_p30">Я думаю, мой веб-сайт является довольно ясным указанием на то, что порог вхождения в это дело стал смехотворно низким, но я буду очень удивлена, если через год наши браузеры не смогут делать это в реальном времени и самостоятельно. Они могут даже перефразировать вещи так, как вы предпочитаете. Скажу так, с <abbr title="Большие языковые модели">LLM</abbr> перевод вашей страницы практически не требует усилий, и вы можете тонко настраивать вещи так, как это было невозможно раньше, это действительно круто попробовать.</p>
 
             <h2 id="tldr" data-key="lang_h2_tldr">Короче</h2>
-            
+
             <p data-key="lang_p31">Я хотела иметь на своем веб-сайте языковые опции, которые сохраняли бы жаргон и передавали больше моего голоса (в случае с Graflect, фонологически). Заслуга принадлежит Google и другим.</p>
-            
-            
+
+
             <h2 id="postface-commentary" data-key="lang_h2_postface-commentary">Послесловие</h2>
             <p data-key="lang_p32">Я нахожу, что с Graflect есть некоторые трудности, например, я говорю «» в предложении «».</p>
             <p data-key="lang_p33">Звук «A в Accent» не протяжный, поэтому он не звучит как британский акцент, на самом деле он звучит нормально, потому что он короткий.</p>
@@ -92,7 +92,8 @@
         <item>
             <title>Этот блог теперь поддерживает RSS</title>
             <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
-            <description><![CDATA[<h1 id="title" data-key="tbns_title">Этот блог теперь поддерживает RSS</h1>
+            <description><![CDATA[
+            <h1 id="title" data-key="tbns_title">Этот блог теперь поддерживает RSS</h1>
             <section>
                 <h2 id="reorganizing-some-stuff" data-key="tbns_h2_reorganizing-some-stuff">Радикальная Сортировка Старого</h2>
                 <p data-key="tbns_p1">Если ты был знаком с моим сайтом раньше, то мог заметить, что я переделала свои «папку с фото» и «папку с проектами». Раньше у них были разные темы, и выглядели они совершенно по-разному — в зависимости от того, на каком этапе жизни я узнала о div'ах и других важных элементах HTML.&nbsp;</p>
@@ -138,13 +139,24 @@
             </header>
             <section>
                 <p data-key="graflect_example_p">Вот пример абзаца, написанного на Графлекте. Надеюсь, мой голос передан верно.</p>
-                <aside> , . . , , , , , , . <br>  .    ,    : <br> " ,    " <br> " "</aside>
+                <aside> , .
+                    . , , , ,
+                    , , . <br> 
+                    .   
+                    ,    : <br> "
+                    ,    " <br> " "</aside>
             </section>
             <hr>
             <section id="slug">
                 <h2 data-key="slug_section_title">SLUG: Романизация для Graflect</h2>
                 <p data-key="slug_section_p1">Чтобы упростить набор и обсуждение Graflect в системах без поддержки соответствующих шрифтов, в этом руководстве предлагается <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. Цель состоит в том, чтобы обеспечить истинное взаимно-однозначное соответствие между символами Graflect и легко набираемыми символами. В этой версии используются обычные буквы, диграфы и несколько символов с диакритическими знаками, доступными на большинстве клавиатур.</p>
-                <aside>wxns yü bīkxm fxmilyr with græflekt, yü wil faind it pásibl tü hīr mai æksent in mai raiting. ai wxz bōrn in nü yōrk tü izrēlī änd rxšin p4ints. mai fämxlī spīks 4xbik, jrmin, ingliš, hībrü, rxšin, änd yidiš, änd ai grü xp in kxnetikit. ai xsüm dhis ál inflüensiz how ai spīk änd rait in græflekt. græflekt iz imenslī powrfl fōr raiting dhī æksents xv pīpl hü hæv spōkn ingliš dh4 hōl laivz, bxt its álsō ēbl tü rndr dhōs xv pīpl hü lrnd ingliš æz ē sekind längwj:<br> "fōrh īnstxnz, dīs īz khow mai īzrhelī fámīlī tōk án zī fōn"<br> "mai bábüšká tálks mōrr rrxsīyn"</aside>
+                <aside>wxns yü bīkxm fxmilyr with græflekt, yü wil faind it pásibl tü
+                    hīr mai æksent in mai raiting. ai wxz bōrn in nü yōrk tü izrēlī änd rxšin p4ints. mai fämxlī spīks
+                    4xbik, jrmin, ingliš, hībrü, rxšin, änd yidiš, änd ai grü xp in kxnetikit. ai xsüm dhis ál
+                    inflüensiz how ai spīk änd rait in græflekt. græflekt iz imenslī powrfl fōr raiting dhī æksents xv
+                    pīpl hü hæv spōkn ingliš dh4 hōl laivz, bxt its álsō ēbl tü rndr dhōs xv pīpl hü lrnd ingliš æz ē
+                    sekind längwj:<br> "fōrh īnstxnz, dīs īz khow mai īzrhelī fámīlī tōk án zī fōn"<br> "mai
+                    bábüšká tálks mōrr rrxsīyn"</aside>
             </section>
             <hr>
             <section>
@@ -164,28 +176,138 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/p/</td><td>p</td><td data-key="example_p_in_plan"><b>п</b> в слове <b>п</b>лан</td></tr>
-                        <tr><td class="graflect-font"></td><td>/b/</td><td>b</td><td data-key="example_b_in_band"><b>б</b> в слове <b>б</b>анк</td></tr>
-                        <tr><td class="graflect-font"></td><td>/t/</td><td>t</td><td data-key="example_t_in_tend"><b>т</b> в слове <b>т</b>он</td></tr>
-                        <tr><td class="graflect-font"></td><td>/d/</td><td>d</td><td data-key="example_d_in_lend"><b>д</b> в слове <b>д</b>ом</td></tr>
-                        <tr><td class="graflect-font"></td><td>/k/</td><td>k</td><td data-key="example_k_in_kick"><b>к</b> в слове <b>к</b>от</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɡ/</td><td>g</td><td data-key="example_g_in_gone"><b>г</b> в слове <b>г</b>од</td></tr>
-                        <tr><td class="graflect-font"></td><td>/f/</td><td>f</td><td data-key="example_f_in_fail"><b>ф</b> в слове <b>ф</b>акт</td></tr>
-                        <tr><td class="graflect-font"></td><td>/v/</td><td>v</td><td data-key="example_v_in_vine"><b>в</b> в слове <b>в</b>ода</td></tr>
-                        <tr><td class="graflect-font"></td><td>/θ/</td><td>th</td><td data-key="example_th_in_think">Английский: <b>th</b> в слове <b>th</b>ink</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ð/</td><td>dh</td><td data-key="example_th_in_this">Английский: <b>th</b> в слове <b>th</b>is</td></tr>
-                        <tr><td class="graflect-font"></td><td>/s/</td><td>s</td><td data-key="example_s_in_south"><b>с</b> в слове <b>с</b>уп</td></tr>
-                        <tr><td class="graflect-font"></td><td>/z/</td><td>z</td><td data-key="example_z_in_zone"><b>з</b> в слове <b>з</b>она</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʃ/</td><td>š</td><td data-key="example_sh_in_shut"><b>ш</b> в слове <b>ш</b>ум</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʒ/</td><td>ž</td><td data-key="example_s_in_occasion"><b>ж</b> в слове гара<b>ж</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/h/</td><td>h</td><td data-key="example_h_in_home">Придыхание, как в английском <b>h</b>ome</td></tr>
-                        <tr><td class="graflect-font"></td><td>/m/</td><td>m</td><td data-key="example_m_in_man"><b>м</b> в слове <b>м</b>ак</td></tr>
-                        <tr><td class="graflect-font"></td><td>/n/</td><td>n</td><td data-key="example_n_in_north"><b>н</b> в слове <b>н</b>ос</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ŋ/</td><td>ng</td><td data-key="example_ng_in_long">Носовой <b>н</b>, как в конце английского si<b>ng</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/l/</td><td>l</td><td data-key="example_l_in_lend"><b>л</b> в слове <b>л</b>ук</td></tr>
-                        <tr><td class="graflect-font"></td><td>/r/</td><td>r</td><td data-key="example_r_in_rope">Американский <b>r</b>, как в слове <b>r</b>ope</td></tr>
-                        <tr><td class="graflect-font"></td><td>/w/</td><td>w</td><td data-key="example_w_in_woman">Английский: <b>w</b> в слове <b>w</b>ater</td></tr>
-                        <tr><td class="graflect-font"></td><td>/j/</td><td>y</td><td data-key="example_y_in_your"><b>й</b> в слове <b>й</b>ога</td></tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/p/</td>
+                            <td>p</td>
+                            <td data-key="example_p_in_plan"><b>п</b> в слове <b>п</b>лан</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/b/</td>
+                            <td>b</td>
+                            <td data-key="example_b_in_band"><b>б</b> в слове <b>б</b>анк</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/t/</td>
+                            <td>t</td>
+                            <td data-key="example_t_in_tend"><b>т</b> в слове <b>т</b>он</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/d/</td>
+                            <td>d</td>
+                            <td data-key="example_d_in_lend"><b>д</b> в слове <b>д</b>ом</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/k/</td>
+                            <td>k</td>
+                            <td data-key="example_k_in_kick"><b>к</b> в слове <b>к</b>от</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɡ/</td>
+                            <td>g</td>
+                            <td data-key="example_g_in_gone"><b>г</b> в слове <b>г</b>од</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/f/</td>
+                            <td>f</td>
+                            <td data-key="example_f_in_fail"><b>ф</b> в слове <b>ф</b>акт</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/v/</td>
+                            <td>v</td>
+                            <td data-key="example_v_in_vine"><b>в</b> в слове <b>в</b>ода</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/θ/</td>
+                            <td>th</td>
+                            <td data-key="example_th_in_think">Английский: <b>th</b> в слове <b>th</b>ink</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ð/</td>
+                            <td>dh</td>
+                            <td data-key="example_th_in_this">Английский: <b>th</b> в слове <b>th</b>is</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/s/</td>
+                            <td>s</td>
+                            <td data-key="example_s_in_south"><b>с</b> в слове <b>с</b>уп</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/z/</td>
+                            <td>z</td>
+                            <td data-key="example_z_in_zone"><b>з</b> в слове <b>з</b>она</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ʃ/</td>
+                            <td>š</td>
+                            <td data-key="example_sh_in_shut"><b>ш</b> в слове <b>ш</b>ум</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ʒ/</td>
+                            <td>ž</td>
+                            <td data-key="example_s_in_occasion"><b>ж</b> в слове гара<b>ж</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/h/</td>
+                            <td>h</td>
+                            <td data-key="example_h_in_home">Придыхание, как в английском <b>h</b>ome</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/m/</td>
+                            <td>m</td>
+                            <td data-key="example_m_in_man"><b>м</b> в слове <b>м</b>ак</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/n/</td>
+                            <td>n</td>
+                            <td data-key="example_n_in_north"><b>н</b> в слове <b>н</b>ос</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ŋ/</td>
+                            <td>ng</td>
+                            <td data-key="example_ng_in_long">Носовой <b>н</b>, как в конце английского si<b>ng</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/l/</td>
+                            <td>l</td>
+                            <td data-key="example_l_in_lend"><b>л</b> в слове <b>л</b>ук</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/r/</td>
+                            <td>r</td>
+                            <td data-key="example_r_in_rope">Американский <b>r</b>, как в слове <b>r</b>ope</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/w/</td>
+                            <td>w</td>
+                            <td data-key="example_w_in_woman">Английский: <b>w</b> в слове <b>w</b>ater</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/j/</td>
+                            <td>y</td>
+                            <td data-key="example_y_in_your"><b>й</b> в слове <b>й</b>ога</td>
+                        </tr>
                     </tbody>
                 </table>
             </section>
@@ -202,22 +324,102 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/iː/</td><td>ī</td><td data-key="example_ea_in_lean">Долгий <b>и</b>, как в слове л<b>и</b>ст</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɪ/</td><td>i</td><td data-key="example_i_in_in">Краткий <b>и</b>, как в английском k<b>i</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʊ/</td><td>u</td><td data-key="example_oo_in_good">Краткий <b>у</b>, как в английском g<b>oo</b>d</td></tr>
-                        <tr><td class="graflect-font"></td><td>/u/</td><td>ü</td><td data-key="example_oo_in_school">Долгий <b>у</b>, как в слове с<b>у</b>п</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛ/</td><td>e</td><td data-key="example_e_in_lend"><b>э</b> в слове <b>э</b>то</td></tr>
-                        <tr><td class="graflect-font"></td><td>/æ/</td><td>æ</td><td data-key="example_a_in_accent">Как <b>а</b> в английском <b>a</b>ccent</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʌ/ or /ə/</td><td>x</td><td data-key="example_u_in_tug">Шва (<b>ə</b>), как первая <b>о</b> в слове к<b>о</b>ро́ва</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɑ/</td><td>á</td><td data-key="example_o_in_soft"><b>о</b> в слове д<b>о</b>м</td></tr>
-                        <tr><td class="graflect-font"></td><td>/eɪ/</td><td>ē</td><td data-key="example_a_in_game"><b>ей</b> в слове р<b>ей</b>д</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛə/</td><td>ä</td><td data-key="example_a_in_ant"><b>a</b> в слове мур<b>а</b>вей (ant)</td></tr>
-                        <tr><td class="graflect-font"></td><td>/aɪ/</td><td>ai</td><td data-key="example_ye_in_bye"><b>ай</b> в слове м<b>ай</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/aʊ/</td><td>ow</td><td data-key="example_ou_in_south"><b>ау</b> в слове п<b>ау</b>за</td></tr>
-                        <tr><td class="graflect-font"></td><td>/oʊ/</td><td>ō</td><td data-key="example_o_in_home"><b>оу</b> в слове ш<b>оу</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɔ/</td><td>õ</td><td data-key="example_o_in_hole">Более глубокий и округленный звук 'оу', как в английском h<b>o</b>le</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɜː/</td><td>ö</td><td data-key="example_british_r"><b>ur</b> в слове n<b>ur</b>se, но с британским акцентом</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɛər/</td><td>4</td><td data-key="example_air_in_air">Как <b>э</b> в слове м<b>э</b>р</td></tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/iː/</td>
+                            <td>ī</td>
+                            <td data-key="example_ea_in_lean">Долгий <b>и</b>, как в слове л<b>и</b>ст</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɪ/</td>
+                            <td>i</td>
+                            <td data-key="example_i_in_in">Краткий <b>и</b>, как в английском k<b>i</b>t</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ʊ/</td>
+                            <td>u</td>
+                            <td data-key="example_oo_in_good">Краткий <b>у</b>, как в английском g<b>oo</b>d</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/u/</td>
+                            <td>ü</td>
+                            <td data-key="example_oo_in_school">Долгий <b>у</b>, как в слове с<b>у</b>п</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɛ/</td>
+                            <td>e</td>
+                            <td data-key="example_e_in_lend"><b>э</b> в слове <b>э</b>то</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/æ/</td>
+                            <td>æ</td>
+                            <td data-key="example_a_in_accent">Как <b>а</b> в английском <b>a</b>ccent</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ʌ/ or /ə/</td>
+                            <td>x</td>
+                            <td data-key="example_u_in_tug">Шва (<b>ə</b>), как первая <b>о</b> в слове к<b>о</b>ро́ва</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɑ/</td>
+                            <td>á</td>
+                            <td data-key="example_o_in_soft"><b>о</b> в слове д<b>о</b>м</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/eɪ/</td>
+                            <td>ē</td>
+                            <td data-key="example_a_in_game"><b>ей</b> в слове р<b>ей</b>д</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɛə/</td>
+                            <td>ä</td>
+                            <td data-key="example_a_in_ant"><b>a</b> в слове мур<b>а</b>вей (ant)</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/aɪ/</td>
+                            <td>ai</td>
+                            <td data-key="example_ye_in_bye"><b>ай</b> в слове м<b>ай</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/aʊ/</td>
+                            <td>ow</td>
+                            <td data-key="example_ou_in_south"><b>ау</b> в слове п<b>ау</b>за</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/oʊ/</td>
+                            <td>ō</td>
+                            <td data-key="example_o_in_home"><b>оу</b> в слове ш<b>оу</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɔ/</td>
+                            <td>õ</td>
+                            <td data-key="example_o_in_hole">Более глубокий и округленный звук 'оу', как в английском h<b>o</b>le</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɜː/</td>
+                            <td>ö</td>
+                            <td data-key="example_british_r"><b>ur</b> в слове n<b>ur</b>se, но с британским акцентом</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɛər/</td>
+                            <td>4</td>
+                            <td data-key="example_air_in_air">Как <b>э</b> в слове м<b>э</b>р</td>
+                        </tr>
                     </tbody>
                 </table>
             </section>
@@ -234,14 +436,54 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td class="graflect-font"></td><td>/tʃ/</td><td>c</td><td><b>ch</b>ase</td></tr>
-                        <tr><td class="graflect-font"></td><td>/dʒ/</td><td>j</td><td><b>j</b>ump</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ju/</td><td>yu</td><td><b>you</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/wi/</td><td>wī</td><td><b>we</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɥi/</td><td>yh</td><td>French: h<b>ui</b>t</td></tr>
-                        <tr><td class="graflect-font"></td><td>/x/</td><td>kh</td><td>German: Ba<b>ch</b></td></tr>
-                        <tr><td class="graflect-font"></td><td>/ɾ/</td><td>rr</td><td>Spanish: pe<b>r</b>o</td></tr>
-                        <tr><td class="graflect-font"></td><td>/ʁ/</td><td>rh</td><td>German: <b>R</b>ammstein</td></tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/tʃ/</td>
+                            <td>c</td>
+                            <td><b>ch</b>ase</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/dʒ/</td>
+                            <td>j</td>
+                            <td><b>j</b>ump</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ju/</td>
+                            <td>yu</td>
+                            <td><b>you</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/wi/</td>
+                            <td>wī</td>
+                            <td><b>we</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɥi/</td>
+                            <td>yh</td>
+                            <td>French: h<b>ui</b>t</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/x/</td>
+                            <td>kh</td>
+                            <td>German: Ba<b>ch</b></td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ɾ/</td>
+                            <td>rr</td>
+                            <td>Spanish: pe<b>r</b>o</td>
+                        </tr>
+                        <tr>
+                            <td class="graflect-font"></td>
+                            <td>/ʁ/</td>
+                            <td>rh</td>
+                            <td>German: <b>R</b>ammstein</td>
+                        </tr>
                     </tbody>
                 </table>
             </section>
@@ -259,14 +501,14 @@
                 <p data-key="ep_p1">Вернувшись в Коннектикут, я пошла в классный сад со своей подругой Юлией. Я использовала ту же комбинацию камеры и объектива, что и в <a href="https://pelmeniboiler.github.io/dixie_and_vegas.html">Юте</a>. Думаю, это был хороший выбор для цветов и насекомых, но в следующий раз, когда буду делать что-то подобное, я одолжу у папы <a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> с более пейзажным объективом, чтобы лучше запечатлеть планировку сада, потому что она действительно классная. Там также было много водоплавающих птиц, жаль, что мне не удалось сделать их более четкие снимки.<br>Думаю, мне стоит рассмотреть возможность использования Flickr для хостинга этих фотографий и встраивания их сюда, вместо того чтобы так сильно их сжимать. Теряется столько деталей...</p>
                 <hr>
             </header>
-            
+
             <section>
                 <h2 id="Purple" data-key="ep_h2_purple"> Фиолетовые</h2>
                 <h3 id="On Bush1" data-key="ep_h3_onbush1"> ❏ На кусте</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/rose.png" class="article-image">
                 <p data-key="ep_p_purple">Такой милый цвет, такой нежный на вид!</p>
             </section>
-        
+
             <section>
                 <h2 id="Pink" data-key="ep_h2_pink"> Розовые</h2>
                 <h3 id="On Bush2" data-key="ep_h3_onbush2"> ❏ На кусте</h3>
@@ -276,24 +518,24 @@
                 <h3 id="Fallen" data-key="ep_h3_fallen"> ❏ С земли</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/015elizabeth_park.png" class="article-image">
                 <p data-key="ep_p_pink2">Эта бедная роза упала на землю... Спасибо, что подержала ее для меня, Юлия!</p>
-                
+
                 <h3 id="Close up" data-key="ep_h3_closeup"> ❏ Крупным планом</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/004elizabeth_park.png" class="article-image">
                 <p data-key="ep_p_pink3">Ого, посмотрите на текстуру лепестков... так красиво...</p>
             </section>
-            
+
             <section>
                 <h2 id="Red" data-key="ep_h2_red"> Красные</h2>
                 <p data-key="ep_p_red_intro">Классический цвет для розы, честное слово.</p>
-                
+
                 <h3 id="Poke" data-key="ep_h3_poke"> ❏ Юлия тычет в розу</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/poke.png" class="article-image">
                 <p data-key="ep_p_poke">Спасибо, Юлия!</p>
-                
+
                 <h3 id="Standing" data-key="ep_h3_standing"> ❏ Стоящая</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/rbush.png" class="article-image">
                 <p data-key="ep_p_standing">Мне нравится этот классический завиток в центре, как у роз на картинках.</p>
-                
+
                 <h3 id="Hanging1" data-key="ep_h3_hanging1"> ❏ Свисающая</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/red.png" class="article-image">
                 <p data-key="ep_p_hanging1">Такая красная прямо с камеры... Может быть, слишком красная... Может, стоило убавить.</p>
@@ -302,7 +544,7 @@
             <section>
                 <h2 id="Yellow" data-key="ep_h2_yellow"> Желтые</h2>
                 <p data-key="ep_p_yellow_intro">Желтые розы, вы вообще знали, что такие бывают?</p>
-            
+
                 <h3 id="On Bush3" data-key="ep_h3_onbush3"> ❏ На кусте</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/ybush.png" class="article-image">
                 <p data-key="ep_p_yellow1">Я люблю этот оттенок желтого.</p>
@@ -315,7 +557,7 @@
             <section>
                 <h2 id="White" data-key="ep_h2_white"> Белые</h2>
                 <p data-key="ep_p_white_intro">Нам так повезло увидеть несколько «незаконченных» роз, которые еще не успели «покрасить»! Какое удовольствие.</p>
-            
+
                 <h3 id="Square" data-key="ep_h3_square"> ❏ Роза с квадратными лепестками</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Roses/square.png" class="article-image">
                 <p data-key="ep_p_white1">Мне нравятся квадратные лепестки и тычинки/пестики в середине. Красивый цветок.</p>
@@ -332,7 +574,7 @@
             <section>
                 <h2 id="Patches" data-key="ep_h2_other"> Другие цветы</h2>
                 <p data-key="ep_p_other_intro">В саду были и не-розы! И травы тоже, мне так хотелось их пожевать...</p>
-            
+
                 <h3 id="Canna" data-key="ep_h3_canna"> ❏ Канна</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Non%20Rose/flowers.png" class="article-image">
                 <p data-key="ep_p_canna">Мне нравятся фиолетовые части стебля, выглядывающие из-под красного. Большие и темные листья у основания. Какой классный цветок.</p>
@@ -357,7 +599,7 @@
             <section>
                 <h2 id="Bee" data-key="ep_h2_bee"> Пчела</h2>
                 <p></p>
-            
+
                 <h3 id="Woah Bee" data-key="ep_h3_woahbee"> ❏ Ого, пчела</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee.png" class="article-image">
                 <p data-key="ep_p_bee1">Так рада детализации шерстки и крыльев. Люблю смотреть на милые маленькие лапки. Если присмотреться, на некоторых из них можно увидеть вторичные глаза пчелы!</p>
@@ -367,10 +609,10 @@
 
                 <h3 id="Look at it go!" data-key="ep_h3_lookatitgo"> ❏ Смотрите, как летит!</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee3.png" class="article-image">
-              
+
                 <h3 id="So fuzzy..." data-key="ep_h3_sofuzzy"> ❏ Такая пушистая...</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/bee4.png" class="article-image">
-             
+
                 <h3 id="AAAAAH!" data-key="ep_h3_aaaah"> ❏ ААААА!</h3>
                 <img src="https://pelmeniboiler.github.io/photos/ep/Beecollage/aaah.png" class="article-image">
             </section>
@@ -387,11 +629,11 @@
                 <p data-key="dv_p1">Именно в «Дикси» Юты я возобновил свое увлечение фотографией. У меня не так много фотографий Вашингтона и Сент-Джорджа, как могло бы быть, будь у меня камера при первом приезде. Это невероятно самобытная местность, которая, кажется, создана для пейзажей и городских видов. В то время я жил со своим другом Аароном и сильно обгорал на солнце.</p>
                 <hr>
             </header>
-            
+
             <section>
                 <h2 id="July" data-key="dv_h2_july"> Июль</h2>
                 <p data-key="dv_p2">В том месяце я приобрел свой <a href="https://www.kenrockwell.com/nikon/d3.htm">Nikon D3</a> и макрообъектив <a href="https://www.kenrockwell.com/nikon/105af.htm">105mm f/2.8 FX AF MICRO-NIKKOR.</a> Автофокус у этого объектива очень медленный по сравнению с новыми, и он очень «мягкий» на открытой диафрагме. Но он очень дешевый и хорошо подходит для портретов. Большинство моих ранних работ с этим объективом слишком «мягкие», потому что я только привыкал к нему, а на экране камеры все казалось нормальным.</p>
-                
+
                 <h3 id="Plushies" data-key="dv_h3_plushies"> ❏ Плюшевые игрушки</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/basil_gondola_misha.png" class="article-image">
                 <p data-key="dv_p3">Мой плюшевый Бэзил (из игры Omori (2020)) устроился на коленях у моего плюшевого мишки Миши. По бокам две Гондолы: одна, сделанная моей подругой Юлией слева, и другая, купленная в KommandoStore и принадлежащая моему другу Аарону, справа. Омори (из игры Omori (2020)) виден между ног правой Гондолы.</p>
@@ -399,25 +641,25 @@
                 <h3 id="Gondola" data-key="dv_h3_gondola"> ❏ Гондола</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/gondola_tv.png" class="article-image">
                 <p data-key="dv_p4">Гондола в одиночестве.</p>
-                
+
                 <h3 id="Cherries and Pie" data-key="dv_h3_cherries"> ❏ Вишни и пирог</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/cherries.png" class="article-image">
                 <p data-key="dv_p5">Продавщица пирогов из мормонской секты ФЛДС, ходившая по домам, продала нам с Аароном этот чизкейк в форме пирога. Мы ели его с вишней на заднем крыльце. Он был сливочным и сладким, довольно легким и полит карамелью. Отлично сочетался с вишней.</p>
             </section>
-            
+
             <section>
                 <h2 id="Oppie Trip" data-key="dv_h2_oppie"> Поездка на «Оппенгеймера»</h2>
                 <p data-key="dv_p6">Я ходил на «Оппенгеймера» со своими друзьями Аароном, Джошем и Беаром. Крутой фильм. Я сделал это фото, когда мы возвращались к Тесле Джоша после фильма.</p>
-                
+
                 <h3 id="Wheel" data-key="dv_h3_wheel"> ❏ Большое колесо</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/wheel.png" class="article-image">
                 <p data-key="dv_p7">Я слышал, что в кабинках этого колеса есть телевизоры и что оно отстой. Но отсюда, снизу, выглядит довольно круто.</p>
             </section>
-            
+
             <section>
                 <h2 id="Honey Salt" data-key="dv_h2_honey"> Вылазка в Honey Salt</h2>
                 <p data-key="dv_p8">Я ошибся с датой, планируя наш с Аароном отъезд из Сент-Джорджа в Вегас, чтобы забрать нашего друга Дэвида из аэропорта Мак-Карран. Не та неделя! Мы пошли в Honey Salt, неплохой ресторан, и встретили там классных людей. Крутая девушка-готка на парковке и шикарная пара из Юты, если я правильно помню, сидевшая рядом с нами в ресторане.</p>
-            
+
                 <h3 id="Goth" data-key="dv_h3_goth"> ❏ Девушка-гот</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/goth.png" class="article-image">
                 <p data-key="dv_p9">Жаль, я не взял твой инстаграм или что-то в этом роде! Спасибо, что попозировала для меня, случайная девушка-готка из Вегаса!</p>
@@ -426,7 +668,7 @@
             <section>
                 <h2 id="David" data-key="dv_h2_david"> Забрать Дэвида</h2>
                 <p data-key="dv_p10">Мы снова отправились в Вегас чуть позже, чтобы забрать Дэвида.</p>
-            
+
                 <h3 id="Burger" data-key="dv_h3_burger"> ❏ Грязный бургер</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/burger.png" class="article-image">
                 <p data-key="dv_p11">На вкус было хорошо, но есть было невозможно! Дурацкий бургер разваливался. Булочка была вкусной, но слишком прочной по сравнению с начинкой.</p>
@@ -447,7 +689,7 @@
             <section>
                 <h2 id="Last" data-key="dv_h2_last"> Последняя поездка в Вегас</h2>
                 <p data-key="dv_p15">Мы с Аароном поехали в Вегас в последний раз на выходные. У нас обоих поднялась ужасно высокая температура, я едва мог ходить и бодрствовать. Мне снились кошмары. Темная сфера, в которой я однажды в детстве мечтал быть запертым, лежала в моих руках, слабая и маленькая, ее удушающая мощь иссякла. Она мягко и настойчиво побуждала меня к действиям, нежно напоминая об удивительной точности одного инструмента, которым я однажды пользовался. Мне было так жаль мою драгоценную сферу. Я люблю свою сферу. Я рад, что в Вегасе построили одну.</p>
-            
+
                 <h3 id="Sign" data-key="dv_h3_sign"> ❏ Северный знак Вегаса</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/sign.png" class="article-image">
                 <p data-key="dv_p16">Возможно, это самое резкое фото, которое я сделал на Американском Юго-Западе...</p>
@@ -468,7 +710,7 @@
             <section>
                 <h2 id="Leaving" data-key="dv_h2_leaving"> Дорога домой</h2>
                 <p data-key="dv_p20">Пока-пока, Сент-Джордж!</p>
-            
+
                 <h3 id="Plane" data-key="dv_h3_plane"> ❏ Турбина в горах Пайн-Вэлли</h3>
                 <img src="https://pelmeniboiler.github.io/photos/dixie_and_vegas/plane.png" class="article-image">
                 <p data-key="dv_p21">Последнее фото в Сент-Джордже.</p>
@@ -489,14 +731,14 @@
                 <p data-key="sunshine_p2">Не стесняйтесь использовать это оглавление, чтобы быстро просмотреть интересующие вас разделы!</p>
                 <hr>
             </header>
-            
+
             <section>
                 <h2 id="TLDR" data-key="tldr_h2">Аннотация, модное слово для T.L.D.R.</h2>
                 <p data-key="tldr_p1">Используя самые кустарные стратегии и идя по пути наименьшего сопротивления, я разработала лучшую клавиатуру на свете. Да, именно так, лучшую. Ну, пока не сделаю вторую версию. Далее следует чрезмерно подробное объяснение всего, что я сделала и почему. Не волнуйтесь, картинки будут.</p>
                 
                 <hr>
             </section>
-            
+
             <section>
                 <h2 id="Intro" data-key="intro_h2">Предыстория</h2>
                 <p data-key="intro_p1">Меня всегда интересовали клавиатуры. Когда мне было шесть, я дотошно разобрала неработающую печатную машинку моей мамы Smith Corona SD 300 до состояния, не подлежащего ремонту или сборке. Прости, мам, я просто хотела знать, как она работает... Повзрослев, я, как и все мы, узнала о механических клавиатурах из интернета. Неизбежно я наткнулась на хобби-сообщество и купила несколько наборов для сборки.</p>
@@ -505,7 +747,7 @@
                 <p data-key="intro_p3">Это означало, что на Lily было двадцать две бесполезные клавиши, а на Iris — двадцать, но только потому, что на ней изначально отсутствовали две из этих бесполезных клавиш. Кроме того, хотя мне нравились крутилки на Iris, мне не хватало четырех клавиш под большой палец, как на Lily. — За исключением того, что до четвертой клавиши под большой палец на Lily было несколько неудобно дотягиваться. — Нужно было придумать другой способ их расположения. Хотя я видела клавиатуры вроде Ergodox с несколькими рядами клавиш под большой палец, мне эта идея не нравилась. Она казалась неэлегантной и такой же труднодоступной. У Kyria, казалось, был лучший способ решения этой проблемы. Более того, мне нужна была какая-то подставка под запястья, чтобы держать их прямо из-за высоты клавиатур. Я видела, как некоторые решали эту проблему с помощью странных мягких штук из пены с эффектом памяти, а другие — переходя с Cherry MX на Kailh Choc и не используя корпус для печатной платы. Однако у меня была другая идея, которая позволила бы мне поднимать руки ровно настолько, насколько мне нужно для клавишных переключателей, не теряя при этом 4-миллиметровый ход, обеспечиваемый переключателями MX. По мере того как я пользовалась клавиатурами, наблюдала за стратегиями других и читала описания дизайнерских решений, я начала задумываться о том, как могла бы выглядеть идеальная для меня клавиатура.</p>
                 <hr>
             </section>
-            
+
             <section>
                 <h2 id="Objectives" data-key="objectives_h2">Цели и соображения</h2>
                 <p data-key="objectives_p1">По мере того как мой опыт с клавиатурами углублялся и расширялся, и я узнавала, что мне нравится, а что нет, я начала формировать несколько представлений о том, что я хочу учесть при проектировании своей клавиатуры.</p>
@@ -527,51 +769,51 @@
                 </ul>
                 <hr>
             </section>
-            
+
             <section>
                 <h2 id="Design" data-key="design_h2">Создание идеальной клавиатуры, легким путем</h2>
                 <p data-key="design_p1">Проектирование началось примерно 11 марта 2022 года, после того как я вернулась в Соединенные Штаты из долгой поездки в Ирландию. Хотя я экспериментировала с Keyboard Layout Editor на протяжении всей поездки и до нее, я наконец-то придумала дизайн, который мне понравился (и который сильно заимствовал у вышеупомянутой SplitKB Kyria). Он избавлялся от некоторых менее доступных на вид клавиш из Kyria и увеличивал смещение на самых дальних столбцах. Я добавила клавиши для тех частей руки, которые, по моему мнению, их заслуживали, и на этом все.</p>
                 <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22.png" alt="First design." class="article-image">
                 <p data-key="design_p2">Я думаю, что этот вариант выглядит лучше всего, но он наименее удобен. Мои ладони слишком длинные. Обратите внимание на клавиши 1.25U в самых дальних столбцах мизинцев. Это должно было сделать вид приятнее.</p>
-                
+
                 <section>
                     <h3 id="CAD" data-key="cad_h3">Проектирование с помощью картона</h3>
                     <p data-key="cad_p1">Чтобы быстро создавать прототипы моих дизайнов, я решила воплотить раскладку в картоне. Я использовала генератор пластин Keeb.io, чтобы создать SVG, который я могла распечатать в качестве бумажного шаблона.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design.png" alt="Synthesis of Computer Aided and Cardboard Aided Design, CACAD" class="article-image gs">
                     <p data-key="cad_p2">Затем я брала шаблон, приклеивала его к картону и вырезала от каждого из четырех углов внутрь, поддерживая вырез снизу с помощью рулона упаковочной ленты. Этого ни в коем случае не достаточно для постоянной ручной сборки, но для тестирования раскладки вполне подходит.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20assisted%20design%20mas.png" alt="Cutting this sucked there were tons of tiny squares" class="article-image gs">
                     <p data-key="cad_p3">Как только двадцать два маленьких квадратика были вырезаны, я могла разместить клавиши. Именно здесь я поняла, что клавиша <kbd>BALL</kbd> не может быть такого странного размера, и мне придется остановиться на клавише 2.75u. Это было к лучшему, потому что это позволило мне разместить четвертую клавишу под большой палец.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%203.png" alt="Cardboard sounds pretty good when you type on it, just saying." class="article-image gs">
                     <p data-key="cad_p4">Но да, вся эта работа только для того, чтобы выяснить, что это было не так уж и удобно. Я могла бы просто измерить свою руку... Но ничего страшного, это был всего лишь картон и несколько минут.</p>
                 </section>
 
                 <section>
                     <h3 id="FinalFinalFinalV26FinalRealFinal-2" data-key="final_h3">Завершение дизайна, или почему у меня сотни картонных квадратов размером 13,97 мм.</h3>
                     <p data-key="final_p1">Короче говоря, я перепробовала много разных итераций на картоне. Самое важное, что я пыталась перемещать планку <kbd>HEEL</kbd> с очень маленькими шагами, а затем каждый раз вырезала новые платы. Я распечатывала их, вырезала и каждый раз приносила маме, чтобы проверить, удобно ли. Это начало отнимать много времени. На этом изображении показана первоначальная попытка реализовать метод одновременного нажатия <kbd>CTRL</kbd> и <kbd>ALT</kbd>.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/type-22%20(3).png" alt="Moved the bar further" class="article-image">
                     <p data-key="final_p2">К счастью, я догадалась, что могу просто отрезать планку, переместить ее в удобное место, а затем измерить штангенциркулем, где она оказалась.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%20%204.png" alt="" class="article-image gs">
                     <p data-key="final_p3">В конце концов, я была довольна дизайном, расположением кластера для большого пальца и планки <kbd>HEEL</kbd>.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">   
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/very%20last.png" alt="" class="article-image">
                     <p data-key="final_p4">Затем я экспортировала dxf из генератора пластин keeb.io и импортировала его в fusion, а затем вырезала на своем фрезерном станке. Из картона.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%205.png" alt="" class="article-image gs">
                     <p data-key="final_p5">Я попыталась оставить тонкий слой, так как у меня не было подложки, и на первом же отверстии я случайно профрезеровала станину. Это означало вырезать больше квадратов вручную. Меня это устроило, и я вырезала две пластины из поликарбоната, а затем приступила к проектированию печатной платы.</p>
                 </section>
 
                 <section>
                     <h3 id="PCB" data-key="pcb_h3">Приключения в проектировании печатных плат.</h3>
                     <p data-key="pcb_p1">До Sunshine я спроектировала всего одну печатную плату. Хотя у меня была полоска из нескольких RP2040, я хотела иметь возможность использовать QMK, потому что у меня был опыт работы с ним, а в то время поддержки 2040 не было. Вместо этого я использовала Elite-C, потому что мне нужен был ATMega32u4, а они сейчас либо безумно дорогие, либо их нигде нет в наличии. Посмотрев очень убедительное видео от Mitxela о криволинейных дорожках, я решила отказаться от стандартных 45-градусных углов в KiCad. Печатные платы, в отличие от большинства хорошо спроектированных раздельных клавиатур, не являются двусторонними, потому что я хотела определенного вида спереди и сзади. Вот несколько тщательно отобранных фотографий, на которых мои печатные платы выглядят действительно хорошо и немного не в фокусе. В полном цвете, что разрушает мою тему для этой страницы.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb0.png" alt="ALL IS IN YOUR HANDS. Get it? Literally in your hands..." class="article-image">
                     <p data-key="pcb_p2">На самом деле, скорее под вашими руками.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb4.png" alt="" class="article-image">
                     <p data-key="pcb_p3">Место, где размещаются все большие компоненты: Elite-C, схема соленоида, разъемы TRRS и кнопка сброса.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb2.png" alt="" class="article-image">
                     <p data-key="pcb_p4">СОВЕТ ПРОФИ: Эта шелкографическая наклейка извиняет все недостатки моего дизайна.</p>
                     <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb3.png" alt="" class="article-image">
                     <p data-key="pcb_p5">Задняя левая сторона.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">  
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb5.png" alt="" class="article-image">
                     <p data-key="pcb_p6">Мне очень нравится, как получилась матрица клавиш.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/pcb6.png" alt="" class="article-image">
                     <p data-key="pcb_p7">Дружелюбное лицо, чтобы составить мне компанию во время пайки.</p>
                     <p data-key="pcb_p8">Я не буду публиковать сами файлы печатной платы, по крайней мере, до второй версии. Я очень горжусь, но в то же время стесняюсь. Надеюсь, вам понравятся фотографии.</p>
                     <hr>
@@ -580,10 +822,10 @@
                 <section>
                     <h3 id="Keymap" data-key="keymap_h3">Моя раскладка и другие личные настройки</h3>
                     <p data-key="keymap_p1">Я пропущу детали сборки, они скучные, все было легко. (Кроме утомительной смазки переключателей и пружин...) После сборки и установки на мой стол Sunshine была всем, на что я могла надеяться. Я настроила VIAL и прошила Elite-C своей раскладкой. Моя раскладка довольно проста, ее действительно легче показать, чем рассказать о ней. Colemak-DH и несколько слоев, ничего сумасшедшего. Самое важное, что я чувствовала себя комфортно, оставляя коды клавиш, предназначенные для клавиатур для нормисов, вроде <kbd>=+</kbd>, вместо того, чтобы разделять их, из-за того, как легко было добавить <kbd>SHIFT</kbd> к любой комбинации. Основная личная настройка, о которой я хочу поговорить, — это жесткость пружин. Мои буквенно-цифровые клавиши имеют жесткость 25 грамм, что очень легко. Клавиши 2U должны быть тяжелее, но я откладываю их перепайку и обхожусь тем, что есть. Вот почему мой пробел использует клавишу 1U. Однако планки <kbd>HEEL</kbd> используют потрясающе тяжелые пружины в 650 грамм. Это делает их чрезвычайно удобными в качестве подставок под запястья, но в то же время позволяет нажимать на них при необходимости. Ваши результаты могут отличаться, не все запястья весят одинаково. Если бы я не использовала тяжелые пружины, я бы инвертировала это в прошивке, чтобы SHIFT активировался, когда планки больше не нажаты. О, и я никогда не использую эту вторую клавишу alt. Если у вас есть идеи, что мне стоит поставить вместо нее, дайте знать, пожалуйста.</p>
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image"> 
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image"> 
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image"> 
-                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap4.png" alt="Function Layer" class="article-image"> 
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap1.png" alt="Base Layer" class="article-image">
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap2.png" alt="Symbol Layer" class="article-image">
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap3.png" alt="Number Layer" class="article-image">
+                    <img src="https://pelmeniboiler.github.io/photos/sunshine/keymap4.png" alt="Function Layer" class="article-image">
                     <hr>
                 </section>
             </section>
@@ -598,7 +840,7 @@
                     <li data-key="discoveries_li4">Наткнулась на эту клавиатуру совершенно случайно. У нее есть клавиша под тенар, это может быть очень крутым дополнением к следующей Sunshine. Потребуется серьезная переработка общего дизайна, но это выполнимо.</li>
                     <li data-key="discoveries_li5">Клавиша <kbd>BALL</kbd> должна быть выше, чтобы доставать до четвертой и пятой пястных костей.</li>
                 </ul>
-                <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs"> 
+                <img src="https://pelmeniboiler.github.io/photos/sunshine/cardboard%206.png" alt="Kind of tempted to do this with hot glue..." class="article-image gs">
                 <p data-key="discoveries_p2">Моя попытка во время прототипирования из картона исправить проблему с высотой. Безупречная элегантность, конечно.</p>
                 <hr>
             </section>
