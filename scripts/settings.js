@@ -395,22 +395,15 @@ function setupSettings() {
         }
         
         // Load and apply the initial language.
-        if (builtLang) {
-            // Page is pre-rendered in `builtLang` — text is already baked into the
-            // DOM. Reflect the language in the UI and notify dependent scripts
-            // (e.g. share.js highlight restoration) WITHOUT fetching or rewriting.
-            docEl.lang = builtLang;
-            docEl.dir = builtLang === 'he' ? 'rtl' : 'ltr';
-            if (langDropdownValue && langDropdownMenu) {
-                const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${builtLang}"]`);
-                if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
-            }
-            window.translationsData = { translations: {}, lang: builtLang };
-            document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations: {}, lang: builtLang } }));
-        } else {
-            const initialLang = getInitialLanguage();
-            await loadAndSetLanguage(initialLang);
-        }
+        // On a built (pre-rendered) page the language is fixed by the URL, so we
+        // force `builtLang` rather than reading localStorage/URL. We still run a
+        // full translation pass: the article body just gets re-set to the same
+        // baked text (same language => no clobber), but the runtime-injected
+        // chrome (settings / start-menu / share modules, which are fetched after
+        // load and are NOT baked) needs translating too — skipping it left the
+        // settings panel showing its untranslated placeholder markup.
+        const initialLang = builtLang || getInitialLanguage();
+        await loadAndSetLanguage(initialLang);
 
         // Update the favicon on initial page load
         await updateFavicon();
