@@ -50,6 +50,22 @@ function setupSettings() {
 
     // --- UPDATED FAVICON LOGIC ---
     /**
+     * Replace the favicon <link> with a fresh node carrying `href`. Browsers
+     * don't reliably repaint the tab icon when an existing link's href is just
+     * mutated, so we swap the element each time (keeping its id).
+     * @param {string} href - The new icon href (data URI or path).
+     */
+    function setFaviconHref(href) {
+        const old = document.getElementById('dynamic-favicon');
+        const link = document.createElement('link');
+        link.id = 'dynamic-favicon';
+        link.rel = 'icon';
+        link.href = href;
+        if (old) old.replaceWith(link);
+        else document.head.appendChild(link);
+    }
+
+    /**
      * Updates the site's favicon based on the current theme's text color.
      * This version parses the SVG and directly manipulates its path elements
      * for a more robust result than regex replacement.
@@ -82,22 +98,31 @@ function setupSettings() {
                 path.setAttribute('fill', textColor);
             });
 
-            // Serialize the modified SVG document back into a string
-            const serializer = new XMLSerializer();
-            const modifiedSvgText = serializer.serializeToString(svgElement);
+            // Serialize the modified SVG (URL-encoded, not btoa(): the SVG title
+            // has non-Latin1 chars (שЖ) which make btoa() throw).
+            const modifiedSvgText = new XMLSerializer().serializeToString(svgElement);
+            const svgUri = `data:image/svg+xml,${encodeURIComponent(modifiedSvgText)}`;
 
-            // Create a data URI. Use URL-encoding rather than btoa(): the SVG
-            // title contains non-Latin1 characters (שЖ), which make btoa() throw —
-            // that's why the favicon used to silently fall back to the plain mark.
-            const faviconUri = `data:image/svg+xml,${encodeURIComponent(modifiedSvgText)}`;
-
-            // Set the new data URI as the href for the favicon link
-            faviconLink.href = faviconUri;
+            // Rasterize the coloured SVG onto a canvas and export a PNG. PNG
+            // favicons render in every browser (SVG data-URI favicons are flaky,
+            // e.g. Safari), and swapping the <link> node — rather than mutating
+            // href — is what actually makes the browser repaint the tab icon.
+            const size = 64;
+            const img = new Image();
+            await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = () => reject(new Error('Could not rasterize SVG.'));
+                img.src = svgUri;
+            });
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = size;
+            canvas.getContext('2d').drawImage(img, 0, 0, size, size);
+            setFaviconHref(canvas.toDataURL('image/png'));
 
         } catch (error) {
             console.error('Failed to update favicon:', error);
             // If anything goes wrong, fall back to the OS-adaptive static favicon.
-            faviconLink.href = '/logo/favicon.svg';
+            setFaviconHref('/logo/favicon.svg');
         }
     }
     // --- END UPDATED FAVICON LOGIC ---
