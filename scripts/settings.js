@@ -75,38 +75,37 @@ function setupSettings() {
         if (!faviconLink) return; // Exit if the favicon link isn't in the HTML
 
         try {
-            // Get the computed value of the --text-color CSS variable from the root element
-            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
-            
-            // Fetch the raw text content of the SVG logo file
+            // Read the active theme's colours.
+            const cs = getComputedStyle(document.documentElement);
+            const textColor = cs.getPropertyValue('--text-color').trim() || '#000000';
+            const bgColor = (cs.getPropertyValue('--win-bg-color').trim() ||
+                             cs.getPropertyValue('--bg-color').trim() || '#ffffff');
+
+            // Fetch and parse the SVG logo.
             const response = await fetch('/logo/shzh.svg');
             if (!response.ok) throw new Error('Could not fetch SVG logo.');
-            const svgText = await response.text();
-
-            // Use the DOMParser to turn the SVG text into a manipulable document
-            const parser = new DOMParser();
-            const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
-            
-            // Get the root <svg> element
+            const svgDoc = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
             const svgElement = svgDoc.querySelector('svg');
             if (!svgElement) throw new Error('No SVG element found in the fetched file.');
 
-            // Find all <path> elements within the SVG and set their fill attribute.
-            // This will override any existing fill color or add it if it's missing.
-            const paths = svgElement.querySelectorAll('path');
-            paths.forEach(path => {
+            // IMPORTANT: the logo ships with an internal <style>.s0{fill:#000}</style>
+            // and class="s0" paths. A stylesheet rule beats the fill *attribute* in
+            // the SVG cascade, so setting fill alone left the mark stuck black (and
+            // therefore invisible in dark mode). Strip the style + class so the
+            // theme colour actually applies.
+            svgElement.querySelectorAll('style').forEach((s) => s.remove());
+            svgElement.querySelectorAll('path').forEach((path) => {
+                path.removeAttribute('class');
                 path.setAttribute('fill', textColor);
             });
 
-            // Serialize the modified SVG (URL-encoded, not btoa(): the SVG title
-            // has non-Latin1 chars (שЖ) which make btoa() throw).
-            const modifiedSvgText = new XMLSerializer().serializeToString(svgElement);
-            const svgUri = `data:image/svg+xml,${encodeURIComponent(modifiedSvgText)}`;
+            const svgUri = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svgElement))}`;
 
-            // Rasterize the coloured SVG onto a canvas and export a PNG. PNG
-            // favicons render in every browser (SVG data-URI favicons are flaky,
-            // e.g. Safari), and swapping the <link> node — rather than mutating
-            // href — is what actually makes the browser repaint the tab icon.
+            // Rasterize onto a canvas and export a PNG. PNG favicons render in every
+            // browser (SVG data-URI favicons are flaky, e.g. Safari). We paint the
+            // theme background first (so colour themes like Funky get a matching
+            // tile and the mark is always visible regardless of the tab-bar colour),
+            // then draw the text-coloured logo with a little padding.
             const size = 64;
             const img = new Image();
             await new Promise((resolve, reject) => {
@@ -116,7 +115,11 @@ function setupSettings() {
             });
             const canvas = document.createElement('canvas');
             canvas.width = canvas.height = size;
-            canvas.getContext('2d').drawImage(img, 0, 0, size, size);
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, size, size);
+            const pad = Math.round(size * 0.08);
+            ctx.drawImage(img, pad, pad, size - 2 * pad, size - 2 * pad);
             setFaviconHref(canvas.toDataURL('image/png'));
 
         } catch (error) {
