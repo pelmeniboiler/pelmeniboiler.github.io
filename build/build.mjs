@@ -171,6 +171,23 @@ function stripHtml(value) {
 }
 
 /**
+ * Bake translated text into an HTML fragment (a chrome module) for one language
+ * and return the resulting HTML string, ready to replace a placeholder element.
+ */
+function bakeFragment(fragmentHtml, lang, lookup) {
+    const doc = new JSDOM(`<!DOCTYPE html><body>${fragmentHtml}</body>`).window.document;
+    doc.querySelectorAll('[data-key]').forEach((el) => {
+        const val = lookup(lang, el.getAttribute('data-key'));
+        if (val != null) el.innerHTML = val;
+    });
+    doc.querySelectorAll('[data-title-key]').forEach((el) => {
+        const val = lookup(lang, el.getAttribute('data-title-key'));
+        if (val != null) el.setAttribute('title', stripHtml(val));
+    });
+    return doc.body.innerHTML;
+}
+
+/**
  * For each post, emit one fully-rendered static HTML file per language it has
  * been translated into, at /blog/<slug>/<lang>/index.html. Text is baked in, so
  * crawlers and no-JS clients get real content. Returns the list of built page
@@ -179,6 +196,18 @@ function stripHtml(value) {
 async function generateLanguagePages(processedPosts, localizationData, blogDir) {
     const globalData = localizationData.global || {};
     const builtUrls = [];
+
+    // Universal chrome modules (identical on every page) get inlined at build
+    // time with text baked in the page's language, so the runtime no longer has
+    // to fetch + translate them. Keyed by the placeholder id they replace.
+    // Demo modules are intentionally NOT baked: they're interactive apps with no
+    // crawlable value, so module-loader.js still injects them at runtime.
+    const modulesDir = path.join(blogDir, '..', 'modules');
+    const chromeModules = {
+        'settings-module-placeholder': await fs.readFile(path.join(modulesDir, 'settings-module.html'), 'utf-8'),
+        'start-menu-module-placeholder': await fs.readFile(path.join(modulesDir, 'start-menu-module.html'), 'utf-8'),
+        'share-module-placeholder': await fs.readFile(path.join(modulesDir, 'share-module.html'), 'utf-8'),
+    };
 
     for (const post of processedPosts) {
         if (!post.translationSource) continue;
@@ -249,6 +278,14 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
             headBits.push(`<meta name="page-base" content="/blog/${slug}/">`);
             headBits.push(`<meta name="page-langs" content="${langs.join(',')}">`);
             doc.head.insertAdjacentHTML('beforeend', '\n    ' + headBits.join('\n    ') + '\n');
+
+            // Inline the universal chrome modules with text baked in this
+            // language, replacing their placeholder divs. Demo placeholders are
+            // left untouched for module-loader.js to inject at runtime.
+            for (const [placeholderId, moduleHtml] of Object.entries(chromeModules)) {
+                const ph = doc.getElementById(placeholderId);
+                if (ph) ph.outerHTML = bakeFragment(moduleHtml, lang, lookup);
+            }
 
             const outDir = path.join(blogDir, slug, lang);
             await fs.mkdir(outDir, { recursive: true });
