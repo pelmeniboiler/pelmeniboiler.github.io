@@ -86,16 +86,18 @@ function setupSettings() {
             const serializer = new XMLSerializer();
             const modifiedSvgText = serializer.serializeToString(svgElement);
 
-            // Encode the modified SVG into a Base64 string and create a data URI
-            const faviconUri = `data:image/svg+xml;base64,${btoa(modifiedSvgText)}`;
-            
+            // Create a data URI. Use URL-encoding rather than btoa(): the SVG
+            // title contains non-Latin1 characters (שЖ), which make btoa() throw —
+            // that's why the favicon used to silently fall back to the plain mark.
+            const faviconUri = `data:image/svg+xml,${encodeURIComponent(modifiedSvgText)}`;
+
             // Set the new data URI as the href for the favicon link
             faviconLink.href = faviconUri;
 
         } catch (error) {
             console.error('Failed to update favicon:', error);
-            // If anything goes wrong, fall back to the default static SVG
-            faviconLink.href = '/logo/shzh.svg';
+            // If anything goes wrong, fall back to the OS-adaptive static favicon.
+            faviconLink.href = '/logo/favicon.svg';
         }
     }
     // --- END UPDATED FAVICON LOGIC ---
