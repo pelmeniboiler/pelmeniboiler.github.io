@@ -198,6 +198,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // When the blog list is baked into the HTML at build time, don't fetch or
+    // rebuild it — just wire the (already-rendered) filter buttons to show/hide
+    // the (already-rendered) cards by their data-keywords. No manifest fetch.
+    const setupBakedFiltering = () => {
+        filterContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            filterContainer.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            const kw = btn.dataset.keyword;
+            postsListContainer.querySelectorAll('.blog-post').forEach((card) => {
+                const kws = (card.dataset.keywords || '').split(',').filter(Boolean);
+                card.style.display = (kw === 'All' || kws.includes(kw)) ? '' : 'none';
+            });
+        });
+    };
+
     const loadBlogPosts = async () => {
         try {
             postsListContainer.innerHTML = '<p data-key="blog_loading">Loading posts...</p>';
@@ -224,8 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Run the main loader function.
-    loadBlogPosts();
-
-    // REMOVED: The event listener for 'translationsReady' is no longer needed with this approach.
+    // If the blog list was baked in at build time, enhance it in place (no fetch);
+    // otherwise fall back to fetching the manifest and rendering client-side.
+    if (postsListContainer.querySelector('.blog-post')) {
+        setupBakedFiltering();
+        setupRssDropdown();
+        document.addEventListener('translationsReady', (e) => updateRenderedLinks(e.detail.lang));
+    } else {
+        loadBlogPosts();
+    }
 });

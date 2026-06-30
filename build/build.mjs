@@ -31,7 +31,10 @@ async function main() {
     const processedPosts = await processAllPosts(blogPostPaths);
 
     console.log('Generating blog manifest...');
-    await generateBlogManifest(processedPosts, localizationData, BLOG_DIR);
+    const manifestItems = await generateBlogManifest(processedPosts, localizationData, BLOG_DIR);
+
+    console.log('Baking blog list into the hub...');
+    await bakeBlogList(manifestItems, localizationData, ROOT_DIR);
 
     console.log('Generating per-language article pages...');
     const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR);
@@ -142,6 +145,52 @@ async function generateBlogManifest(processedPosts, localizationData, blogDir) {
     manifestItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     const manifestPath = path.join(blogDir, 'blog-manifest.json');
     await fs.writeFile(manifestPath, JSON.stringify(manifestItems, null, 2));
+    return manifestItems;
+}
+
+const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻' };
+
+/**
+ * Render the blog filter buttons + post cards as static HTML and inject them into
+ * the hub between the FILTERS/POSTS markers. The list only changes when a post is
+ * published, so there's no reason to assemble it in every visitor's browser; the
+ * cards are crawlable and don't pop in. blog-loader.js then only wires up the
+ * (client-side) filtering. Cards keep data-key (runtime translation), data-slug /
+ * data-langs (language-aware links), and data-keywords (filtering).
+ */
+async function bakeBlogList(manifestItems, localizationData, rootDir) {
+    const hubPath = path.join(rootDir, 'index.html');
+    let html;
+    try { html = await fs.readFile(hubPath, 'utf-8'); } catch { return; }
+
+    const enVal = (source, key, fallback) =>
+        localizationData[source]?.en?.[key] ?? localizationData.global?.en?.[key] ?? fallback;
+
+    const keywords = [...new Set(manifestItems.flatMap((p) => p.keywords || []))];
+    const filterBtn = (kw, icon, active) =>
+        `<button class="filter-btn${active ? ' active' : ''}" data-keyword="${kw}"><span class="symbol">${icon}</span> ${kw}</button>`;
+    const filtersHtml = [filterBtn('All', '✧', true),
+        ...keywords.map((kw) => filterBtn(kw, KEYWORD_ICONS[kw] || '◆', false))].join('');
+
+    const postsHtml = manifestItems.map((p) => {
+        const langs = (p.languages || []).join(',');
+        const href = `/blog/${p.slug}/en/`;
+        const title = enVal(p.translationSource, p.titleKey, p.title);      // localization HTML
+        const desc = enVal(p.translationSource, p.descriptionKey, p.description);
+        const date = new Date(p.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const kws = (p.keywords || []).join(',');
+        return `<article class="blog-post" data-keywords="${kws}">
+  <h3><a href="${href}" data-key="${p.titleKey}" data-slug="${p.slug}" data-langs="${langs}">${title}</a></h3>
+  <p class="post-date">${date}</p>
+  <p data-key="${p.descriptionKey}">${desc}</p>
+  <p><i><a href="${href}" data-slug="${p.slug}" data-langs="${langs}">read more &rarr;</a></i></p>
+</article>`;
+    }).join('\n');
+
+    html = html.replace(/(<!--FILTERS:START-->)[\s\S]*?(<!--FILTERS:END-->)/, (_m, a, b) => a + filtersHtml + b);
+    html = html.replace(/(<!--POSTS:START-->)[\s\S]*?(<!--POSTS:END-->)/, (_m, a, b) => `${a}\n${postsHtml}\n${b}`);
+    await fs.writeFile(hubPath, html);
+    console.log(`  → baked ${manifestItems.length} blog cards + ${keywords.length + 1} filters into the hub.`);
 }
 
 // --- Per-language static page generation (new) ---
