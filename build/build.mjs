@@ -31,7 +31,7 @@ async function main() {
     const processedPosts = await processAllPosts(blogPostPaths);
 
     console.log('Generating blog manifest...');
-    await generateBlogManifest(processedPosts, BLOG_DIR);
+    await generateBlogManifest(processedPosts, localizationData, BLOG_DIR);
 
     console.log('Generating per-language article pages...');
     const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR);
@@ -102,13 +102,17 @@ async function processAllPosts(postPaths) {
     return Promise.all(postPromises);
 }
 
-async function generateBlogManifest(processedPosts, blogDir) {
+async function generateBlogManifest(processedPosts, localizationData, blogDir) {
     const manifestItems = [];
 
     for (const post of processedPosts) {
         if (!post.translationSource) continue;
 
         const { titleKey, descriptionKey } = resolveContentKeys(post);
+        const slug = post.filename.replace(/\.html$/, '');
+        // The languages this post was actually translated into = the languages
+        // for which a /blog/<slug>/<lang>/ page exists.
+        const languages = Object.keys(localizationData[post.translationSource] || {});
 
         const englishTitle = post.doc.querySelector('title')?.textContent || 'Untitled';
         const englishDescription =
@@ -123,6 +127,8 @@ async function generateBlogManifest(processedPosts, blogDir) {
         manifestItems.push({
             filename: post.filename,
             link: `/blog/${post.filename}`,
+            slug,
+            languages,
             date: post.pubDate,
             translationSource: post.translationSource,
             titleKey,
@@ -241,6 +247,7 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
             // path the in-page language switcher should navigate within.
             headBits.push(`<meta name="built-lang" content="${lang}">`);
             headBits.push(`<meta name="page-base" content="/blog/${slug}/">`);
+            headBits.push(`<meta name="page-langs" content="${langs.join(',')}">`);
             doc.head.insertAdjacentHTML('beforeend', '\n    ' + headBits.join('\n    ') + '\n');
 
             const outDir = path.join(blogDir, slug, lang);

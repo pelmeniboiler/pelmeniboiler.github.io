@@ -10,7 +10,18 @@ function setupSettings() {
     // --- DOM ELEMENT REFERENCES ---
     const body = document.body;
     const docEl = document.documentElement; // Reference to <html> element
-    
+
+    // Pre-rendered ("built") per-language pages declare their baked-in language,
+    // the base path shared by their sibling-language versions, and which
+    // languages exist for that post. On these pages the text is already in the
+    // DOM, so we must NOT re-fetch and re-translate (that would clobber it), and
+    // the language switcher navigates between sibling pages instead of swapping
+    // text in place. The hub has none of these metas and keeps its old behavior.
+    const builtLang = document.querySelector('meta[name="built-lang"]')?.content || null;
+    const pageBase = document.querySelector('meta[name="page-base"]')?.content || null;
+    const pageLangs = (document.querySelector('meta[name="page-langs"]')?.content || '')
+        .split(',').map((s) => s.trim()).filter(Boolean);
+
     // Language dropdown elements
     const langDropdown = getElement('language-select-custom');
     const langDropdownToggle = langDropdown?.querySelector('.custom-dropdown-toggle');
@@ -384,8 +395,22 @@ function setupSettings() {
         }
         
         // Load and apply the initial language.
-        const initialLang = getInitialLanguage();
-        await loadAndSetLanguage(initialLang);
+        if (builtLang) {
+            // Page is pre-rendered in `builtLang` — text is already baked into the
+            // DOM. Reflect the language in the UI and notify dependent scripts
+            // (e.g. share.js highlight restoration) WITHOUT fetching or rewriting.
+            docEl.lang = builtLang;
+            docEl.dir = builtLang === 'he' ? 'rtl' : 'ltr';
+            if (langDropdownValue && langDropdownMenu) {
+                const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${builtLang}"]`);
+                if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
+            }
+            window.translationsData = { translations: {}, lang: builtLang };
+            document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations: {}, lang: builtLang } }));
+        } else {
+            const initialLang = getInitialLanguage();
+            await loadAndSetLanguage(initialLang);
+        }
 
         // Update the favicon on initial page load
         await updateFavicon();
@@ -401,8 +426,20 @@ function setupSettings() {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const lang = item.dataset.value;
-                loadAndSetLanguage(lang);
                 langDropdownMenu.classList.remove('show');
+                if (pageBase) {
+                    // Built per-language page: navigate to the sibling-language
+                    // page. If this post isn't translated into `lang`, fall back
+                    // to English (or do nothing if even that doesn't exist).
+                    if (pageLangs.length && !pageLangs.includes(lang)) {
+                        if (pageLangs.includes('en')) window.location.href = `${pageBase}en/`;
+                    } else {
+                        window.location.href = `${pageBase}${lang}/`;
+                    }
+                } else {
+                    // Hub: swap text in place (lazy translation).
+                    loadAndSetLanguage(lang);
+                }
             });
         });
         window.addEventListener('click', () => {
