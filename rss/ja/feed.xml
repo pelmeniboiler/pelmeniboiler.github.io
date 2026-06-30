@@ -13,11 +13,11 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 30 Jun 2026 02:10:34 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2026 05:19:57 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/ja/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>このブログが、あなたの言語をサポートするようになりました</title>
-            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</link>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language/ja/</link>
             <description><![CDATA[
             <h1 id="title" data-key="lang_title">このブログが、あなたの言語をサポートするようになりました</h1>
             <p data-key="lang_p1">まあ、そうじゃない可能性もありますけどね。</p>
@@ -87,11 +87,11 @@
             <p data-key="lang_p35">ですから、これが私の話し方を完璧に表現しているとは思いませんが、普通のラテン文字が与えることができるものよりは、より近い近似値です。</p>
         ]]></description>
             <pubDate>Tue, 12 Aug 2025 21:12:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language/ja/</guid>
         </item>
         <item>
             <title>このブログはRSSに対応しました</title>
-            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss/ja/</link>
             <description><![CDATA[
             <h1 id="title" data-key="tbns_title">このブログはRSSに対応しました</h1>
             <section>
@@ -127,11 +127,11 @@
             </section>
         ]]></description>
             <pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss/ja/</guid>
         </item>
         <item>
             <title>Graflect入門と文字変換ツール</title>
-            <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
+            <link>https://pelmeniboiler.github.io/blog/graflect/ja/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">Graflect入門と文字変換ツール</h1>
@@ -490,11 +490,11 @@
 
         ]]></description>
             <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect/ja/</guid>
         </item>
         <item>
             <title>エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</title>
-            <link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
+            <link>https://pelmeniboiler.github.io/blog/elizabeth_park/ja/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="ep_h1">エリザベス・パーク・ローズガーデン、ハートフォード、コネチカット州<br>| Nikon D3、105mm f/2.8 FX AF MICRO-NIKKOR</h1>
@@ -618,11 +618,11 @@
             </section>
         ]]></description>
             <pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park/ja/</guid>
         </item>
         <item>
             <title>ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</title>
-            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
+            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas/ja/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="dv_h1">ディキシーとベガス | Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</h1>
@@ -718,11 +718,11 @@
 
         ]]></description>
             <pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas/ja/</guid>
         </item>
         <item>
             <title>実験キーボード「Sunshine」</title>
-            <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
+            <link>https://pelmeniboiler.github.io/blog/sunshine/ja/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="sunshine_h1">実験キーボード「Sunshine」</h1>
@@ -862,7 +862,7 @@
             </section>
         ]]></description>
             <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine/ja/</guid>
         </item>
 </channel>
 </rss>

@@ -13,11 +13,11 @@
         <link>https://pelmeniboiler.github.io/</link>
     </image>
     <generator>Pelmeniboiler RSS Builder</generator>
-    <lastBuildDate>Tue, 30 Jun 2026 02:10:33 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2026 05:19:57 GMT</lastBuildDate>
     <atom:link href="https://pelmeniboiler.github.io/rss/he/feed.xml" rel="self" type="application/rss+xml" />
         <item>
             <title>הבלוג הזה תומך עכשיו בשפה שלך</title>
-            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</link>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language/he/</link>
             <description><![CDATA[
             <h1 id="title" data-key="lang_title">הבלוג הזה תומך עכשיו בשפה שלך</h1>
             <p data-key="lang_p1">אוקיי, יש סיכוי שהוא לא.</p>
@@ -87,11 +87,11 @@
             <p data-key="lang_p35">אז אני לא חושבת שזה ייצוג מושלם של איך שהייתי מדברת, אבל זה קירוב טוב יותר ממה שהכתב הלטיני הפשוט יכול לתת.</p>
         ]]></description>
             <pubDate>Tue, 12 Aug 2025 21:12:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-your-language/he/</guid>
         </item>
         <item>
             <title>הבלוג תומך עכשיו ב-RSS</title>
-            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</link>
+            <link>https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss/he/</link>
             <description><![CDATA[
             <h1 id="title" data-key="tbns_title">הבלוג תומך עכשיו ב-RSS</h1>
             <section>
@@ -127,11 +127,11 @@
             </section>
         ]]></description>
             <pubDate>Sat, 28 Jun 2025 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/this-blog-now-supports-rss/he/</guid>
         </item>
         <item>
             <title>מבוא ל-Graflect וכלי לתעתיק</title>
-            <link>https://pelmeniboiler.github.io/blog/graflect.html</link>
+            <link>https://pelmeniboiler.github.io/blog/graflect/he/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="guide_h1">מבוא ל-Graflect וכלי לתעתיק</h1>
@@ -490,11 +490,11 @@
 
         ]]></description>
             <pubDate>Fri, 13 Jun 2025 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/graflect/he/</guid>
         </item>
         <item>
             <title>גן הוורדים בפארק אליזבת, הרטפורד, קונטיקט| ניקון D3, 105ממ f/2.8 FX AF MICRO-NIKKOR</title>
-            <link>https://pelmeniboiler.github.io/blog/elizabeth_park.html</link>
+            <link>https://pelmeniboiler.github.io/blog/elizabeth_park/he/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="ep_h1">גן הוורדים בפארק אליזבת, הרטפורד, קונטיקט<br>| ניקון D3, 105ממ f/2.8 FX AF MICRO-NIKKOR</h1>
@@ -618,11 +618,11 @@
             </section>
         ]]></description>
             <pubDate>Sat, 03 Feb 2024 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/elizabeth_park/he/</guid>
         </item>
         <item>
             <title>דיקסי ווגאס | ניקון D3, עדשת 105ממ f/2.8 FX AF MICRO-NIKKOR</title>
-            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</link>
+            <link>https://pelmeniboiler.github.io/blog/dixie_and_vegas/he/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="dv_h1">דיקסי ווגאס | ניקון D3, עדשת 105ממ f/2.8 FX AF MICRO-NIKKOR</h1>
@@ -718,11 +718,11 @@
 
         ]]></description>
             <pubDate>Sun, 21 Jan 2024 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/dixie_and_vegas/he/</guid>
         </item>
         <item>
             <title>מקלדת ניסיונית Sunshine</title>
-            <link>https://pelmeniboiler.github.io/blog/sunshine.html</link>
+            <link>https://pelmeniboiler.github.io/blog/sunshine/he/</link>
             <description><![CDATA[
             <header>
                 <h1 id="title" data-key="sunshine_h1">מקלדת ניסיונית Sunshine</h1>
@@ -862,7 +862,7 @@
             </section>
         ]]></description>
             <pubDate>Fri, 26 Aug 2022 10:00:00 GMT</pubDate>
-            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine.html</guid>
+            <guid isPermaLink="true">https://pelmeniboiler.github.io/blog/sunshine/he/</guid>
         </item>
 </channel>
 </rss>

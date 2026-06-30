@@ -387,7 +387,9 @@ async function generateFeedForLanguage(langCode, localizationData, processedPost
             docCopy.querySelector('title')?.textContent ||
             'Untitled';
         const description = cleanHtmlForRss(docCopy, channel.link);
-        const link = `${channel.link}blog/${post.filename}`;
+        // Point each language's feed at that language's pre-built page.
+        const slug = post.filename.replace(/\.html$/, '');
+        const link = `${channel.link}blog/${slug}/${langCode}/`;
         translatedItems.push({ title, link, description, pubDate: post.pubDate, guid: link });
     }
 

@@ -2,9 +2,6 @@
 User-agent: *
 Allow: /
 
-# Note for AI analysis:
-# This website heavily relies on JavaScript for content rendering.
-# For full content analysis, JavaScript execution may be required.
-# Additionally, localization data is stored in JSON files under /localization/.
-# Consider downloading the files. in /localization/*.json for complete textual content.
-# Thank you for your hard work!
+# Article text is pre-rendered into the HTML — one page per language at
+# /blog/<slug>/<lang>/ — so no JavaScript is required to read the content.
+Sitemap: https://pelmeniboiler.github.io/sitemap.xml
