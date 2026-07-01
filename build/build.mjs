@@ -11,6 +11,7 @@
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
 
 const ROOT_DIR = process.cwd();
@@ -29,15 +30,17 @@ async function main() {
     ]);
 
     const processedPosts = await processAllPosts(blogPostPaths);
+    const assetVersion = await computeAssetVersion(ROOT_DIR);
 
     console.log('Generating blog manifest...');
     const manifestItems = await generateBlogManifest(processedPosts, localizationData, BLOG_DIR);
 
     console.log('Baking blog list into the hub...');
     await bakeBlogList(manifestItems, localizationData, ROOT_DIR);
+    await versionHubAssets(ROOT_DIR, assetVersion);
 
     console.log('Generating per-language article pages...');
-    const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR);
+    const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion);
 
     console.log('Generating sitemap...');
     await generateSitemap(pageUrls, processedPosts, ROOT_DIR);
@@ -98,6 +101,8 @@ async function processAllPosts(postPaths) {
             filename: path.basename(postPath),
             pubDate,
             translationSource: translationSourceEl?.getAttribute('content') || null,
+            author: doc.querySelector('meta[name="author"]')?.getAttribute('content') || 'Wendy Zhulkovsky',
+            image: doc.querySelector('article.content img')?.getAttribute('src') || null,
             doc,
             html: htmlContent,
         };
@@ -200,6 +205,51 @@ async function bakeBlogList(manifestItems, localizationData, rootDir) {
 // from the in-page switcher, but omit it from hreflang (Google would ignore it).
 const INVALID_HREFLANG = new Set(['gt']);
 const RTL_LANGS = new Set(['he', 'ar', 'fa', 'ur']);
+// OpenGraph wants ll_CC locales. gt has no real locale, so it's omitted.
+const OG_LOCALE = { en: 'en_US', ja: 'ja_JP', he: 'he_IL', de: 'de_DE', ru: 'ru_RU' };
+const DEFAULT_OG_IMAGE = `${SITE_URL}logo/shzh.svg`;
+
+const jsonLdEscape = (s) => String(s).replace(/</g, '\\u003c'); // safe inside <script>
+const attrEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * Append a content-version query (?v=hash) to every /styles/*.css and /scripts/*.js
+ * reference so a deploy that changes an asset is picked up immediately instead of
+ * being served stale from cache. Idempotent: an existing ?v= is replaced.
+ */
+function versionAssets(html, version) {
+    return html.replace(
+        /((?:href|src)=")(\/?(?:styles|scripts)\/[^"?]+\.(?:css|js))(?:\?v=[a-f0-9]+)?(")/g,
+        (_m, pre, ref, post) => `${pre}${ref}?v=${version}${post}`,
+    );
+}
+
+/** Short content hash of all CSS + JS, used as the asset cache-busting version. */
+async function computeAssetVersion(rootDir) {
+    const dirs = ['styles', 'scripts'];
+    const parts = [];
+    for (const d of dirs) {
+        const base = path.join(rootDir, d);
+        const walk = async (dir) => {
+            for (const ent of await fs.readdir(dir, { withFileTypes: true })) {
+                const full = path.join(dir, ent.name);
+                if (ent.isDirectory()) await walk(full);
+                else if (/\.(css|js)$/.test(ent.name)) parts.push(await fs.readFile(full));
+            }
+        };
+        try { await walk(base); } catch { /* dir may not exist */ }
+    }
+    return crypto.createHash('sha256').update(Buffer.concat(parts)).digest('hex').slice(0, 8);
+}
+
+/** Apply the asset version to the hub's own CSS/JS references, in place. */
+async function versionHubAssets(rootDir, version) {
+    const hubPath = path.join(rootDir, 'index.html');
+    try {
+        const html = await fs.readFile(hubPath, 'utf-8');
+        await fs.writeFile(hubPath, versionAssets(html, version));
+    } catch { /* no hub */ }
+}
 
 /**
  * Resolve which data-key holds the post's title and description.
@@ -242,7 +292,7 @@ function bakeFragment(fragmentHtml, lang, lookup) {
  * crawlers and no-JS clients get real content. Returns the list of built page
  * URLs (root-relative) for the sitemap.
  */
-async function generateLanguagePages(processedPosts, localizationData, blogDir) {
+async function generateLanguagePages(processedPosts, localizationData, blogDir, assetVersion) {
     const globalData = localizationData.global || {};
     const builtUrls = [];
 
@@ -313,6 +363,9 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
 
             // Head metadata: canonical, hreflang alternates, build markers.
             const selfUrl = `${SITE_URL}blog/${slug}/${lang}/`;
+            const ogTitle = titleText || post.doc.querySelector('title')?.textContent || slug;
+            const ogDesc = descText || '';
+            const ogImage = post.image ? new URL(encodeURI(post.image), SITE_URL).href : DEFAULT_OG_IMAGE;
             const headBits = [];
             headBits.push(`<link rel="canonical" href="${selfUrl}">`);
             for (const l of hreflangLangs) {
@@ -321,6 +374,34 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
             if (hreflangLangs.includes('en')) {
                 headBits.push(`<link rel="alternate" hreflang="x-default" href="${SITE_URL}blog/${slug}/en/">`);
             }
+
+            // OpenGraph + Twitter cards (so shared links render a preview).
+            headBits.push(`<meta property="og:type" content="article">`);
+            headBits.push(`<meta property="og:site_name" content="Pelmeniboiler">`);
+            headBits.push(`<meta property="og:title" content="${attrEscape(ogTitle)}">`);
+            if (ogDesc) headBits.push(`<meta property="og:description" content="${attrEscape(ogDesc)}">`);
+            headBits.push(`<meta property="og:url" content="${selfUrl}">`);
+            headBits.push(`<meta property="og:image" content="${attrEscape(ogImage)}">`);
+            if (OG_LOCALE[lang]) headBits.push(`<meta property="og:locale" content="${OG_LOCALE[lang]}">`);
+            for (const l of langs) if (l !== lang && OG_LOCALE[l]) {
+                headBits.push(`<meta property="og:locale:alternate" content="${OG_LOCALE[l]}">`);
+            }
+            headBits.push(`<meta name="twitter:card" content="summary_large_image">`);
+            headBits.push(`<meta name="twitter:title" content="${attrEscape(ogTitle)}">`);
+            if (ogDesc) headBits.push(`<meta name="twitter:description" content="${attrEscape(ogDesc)}">`);
+            headBits.push(`<meta name="twitter:image" content="${attrEscape(ogImage)}">`);
+
+            // JSON-LD BlogPosting (machine-readable article record).
+            const jsonLd = {
+                '@context': 'https://schema.org', '@type': 'BlogPosting',
+                headline: ogTitle, description: ogDesc || undefined,
+                inLanguage: lang, datePublished: new Date(post.pubDate).toISOString(),
+                author: { '@type': 'Person', name: post.author },
+                image: ogImage, url: selfUrl, mainEntityOfPage: selfUrl,
+                publisher: { '@type': 'Person', name: 'Wendy Zhulkovsky' },
+            };
+            headBits.push(`<script type="application/ld+json">${jsonLdEscape(JSON.stringify(jsonLd))}</script>`);
+
             // Markers for the runtime: which language is baked in, and the base
             // path the in-page language switcher should navigate within.
             headBits.push(`<meta name="built-lang" content="${lang}">`);
@@ -346,8 +427,8 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
 
             const outDir = path.join(blogDir, slug, lang);
             await fs.mkdir(outDir, { recursive: true });
-            await fs.writeFile(path.join(outDir, 'index.html'), dom.serialize());
-            builtUrls.push({ loc: selfUrl, pubDate: post.pubDate });
+            await fs.writeFile(path.join(outDir, 'index.html'), versionAssets(dom.serialize(), assetVersion));
+            builtUrls.push({ loc: selfUrl, pubDate: post.pubDate, slug, lang, hreflangLangs });
         }
     }
 
@@ -357,17 +438,35 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir) 
 
 /**
  * Emit a sitemap.xml covering the homepage and every built per-language page.
+ * Each URL declares its sibling-language versions with xhtml:link alternates so
+ * search engines understand the whole language cluster (like page hreflang, but
+ * in the sitemap). gt is excluded from alternates (no valid hreflang tag).
  */
 async function generateSitemap(pageUrls, processedPosts, rootDir) {
+    // Sibling map: slug -> { lang -> loc } for valid-hreflang languages.
+    const siblings = {};
+    for (const u of pageUrls) {
+        if (INVALID_HREFLANG.has(u.lang)) continue;
+        (siblings[u.slug] = siblings[u.slug] || {})[u.lang] = u.loc;
+    }
+
+    const alternatesFor = (slug) => {
+        const group = siblings[slug] || {};
+        const links = Object.entries(group)
+            .map(([l, loc]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${loc}"/>`);
+        if (group.en) links.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${group.en}"/>`);
+        return links.length ? '\n' + links.join('\n') + '\n  ' : '';
+    };
+
     const urls = [
         `  <url><loc>${SITE_URL}</loc></url>`,
-        ...pageUrls.map(({ loc, pubDate }) => {
+        ...pageUrls.map(({ loc, pubDate, slug }) => {
             const lastmod = new Date(pubDate).toISOString().slice(0, 10);
-            return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod></url>`;
+            return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod>${alternatesFor(slug)}</url>`;
         }),
     ];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}
 </urlset>
 `;
