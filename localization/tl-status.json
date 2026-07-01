@@ -1,0 +1,3908 @@
+{
+  "coal": {
+    "ch_modal_chloe_note1_ctx": {
+      "he": "16ebd9ceb2b1",
+      "ru": "16ebd9ceb2b1",
+      "de": "16ebd9ceb2b1",
+      "ja": "16ebd9ceb2b1"
+    },
+    "ch_modal_chloe_note1_post": {
+      "he": "32aca80db808",
+      "ru": "32aca80db808",
+      "de": "32aca80db808",
+      "ja": "32aca80db808"
+    },
+    "ch_modal_chloe_note2_ctx": {
+      "he": "e31f90dd2f12",
+      "ru": "e31f90dd2f12",
+      "de": "e31f90dd2f12",
+      "ja": "e31f90dd2f12"
+    },
+    "ch_modal_chloe_note2_post": {
+      "he": "7503c9725f06",
+      "ru": "7503c9725f06",
+      "de": "7503c9725f06",
+      "ja": "7503c9725f06"
+    },
+    "ch_modal_chloe_note3_ctx": {
+      "he": "2b08b63c092b",
+      "ru": "2b08b63c092b",
+      "de": "2b08b63c092b",
+      "ja": "2b08b63c092b"
+    },
+    "ch_modal_chloe_note3_post": {
+      "he": "a3f2432e537e",
+      "ru": "a3f2432e537e",
+      "de": "a3f2432e537e",
+      "ja": "a3f2432e537e"
+    },
+    "ch_modal_chloe_p1": {
+      "he": "32d4c6a7d704",
+      "ru": "32d4c6a7d704",
+      "de": "32d4c6a7d704",
+      "ja": "32d4c6a7d704"
+    },
+    "ch_modal_chloe_title": {
+      "he": "bdecb8709ec7",
+      "ru": "bdecb8709ec7",
+      "de": "bdecb8709ec7",
+      "ja": "bdecb8709ec7"
+    },
+    "ch_modal_veritas_note10_ctx": {
+      "he": "3dd04663b2a4",
+      "ru": "3dd04663b2a4",
+      "de": "3dd04663b2a4",
+      "ja": "3dd04663b2a4"
+    },
+    "ch_modal_veritas_note10_post": {
+      "he": "03f35197a7c0",
+      "ru": "03f35197a7c0",
+      "de": "03f35197a7c0",
+      "ja": "03f35197a7c0"
+    },
+    "ch_modal_veritas_note11_ctx": {
+      "he": "4adba2247823",
+      "ru": "4adba2247823",
+      "de": "4adba2247823",
+      "ja": "4adba2247823"
+    },
+    "ch_modal_veritas_note11_post": {
+      "he": "4742dfa15a10",
+      "ru": "4742dfa15a10",
+      "de": "4742dfa15a10",
+      "ja": "4742dfa15a10"
+    },
+    "ch_modal_veritas_note12_ctx": {
+      "he": "d8b6947c2260",
+      "ru": "d8b6947c2260",
+      "de": "d8b6947c2260",
+      "ja": "d8b6947c2260"
+    },
+    "ch_modal_veritas_note12_post": {
+      "he": "6f4f50698c40",
+      "ru": "6f4f50698c40",
+      "de": "6f4f50698c40",
+      "ja": "6f4f50698c40"
+    },
+    "ch_modal_veritas_note1_ctx": {
+      "he": "cf11624ac875",
+      "ru": "cf11624ac875",
+      "de": "cf11624ac875",
+      "ja": "cf11624ac875"
+    },
+    "ch_modal_veritas_note1_post": {
+      "he": "45fd3464fa3c",
+      "ru": "45fd3464fa3c",
+      "de": "45fd3464fa3c",
+      "ja": "45fd3464fa3c"
+    },
+    "ch_modal_veritas_note2_ctx": {
+      "he": "38b09c5b75aa",
+      "ru": "38b09c5b75aa",
+      "de": "38b09c5b75aa",
+      "ja": "38b09c5b75aa"
+    },
+    "ch_modal_veritas_note2_post": {
+      "he": "a232a0d0fafe",
+      "ru": "a232a0d0fafe",
+      "de": "a232a0d0fafe",
+      "ja": "a232a0d0fafe"
+    },
+    "ch_modal_veritas_note3_ctx": {
+      "he": "b38105870f0c",
+      "ru": "b38105870f0c",
+      "de": "b38105870f0c",
+      "ja": "b38105870f0c"
+    },
+    "ch_modal_veritas_note3_post": {
+      "he": "a6c3622beaa1",
+      "ru": "a6c3622beaa1",
+      "de": "a6c3622beaa1",
+      "ja": "a6c3622beaa1"
+    },
+    "ch_modal_veritas_note4_ctx": {
+      "he": "7bafa55f6156",
+      "ru": "7bafa55f6156",
+      "de": "7bafa55f6156",
+      "ja": "7bafa55f6156"
+    },
+    "ch_modal_veritas_note4_post": {
+      "he": "156c0b8d3857",
+      "ru": "156c0b8d3857",
+      "de": "156c0b8d3857",
+      "ja": "156c0b8d3857"
+    },
+    "ch_modal_veritas_note5_ctx": {
+      "he": "8374c6bf16cf",
+      "ru": "8374c6bf16cf",
+      "de": "8374c6bf16cf",
+      "ja": "8374c6bf16cf"
+    },
+    "ch_modal_veritas_note5_post": {
+      "he": "c2618db30d0e",
+      "ru": "c2618db30d0e",
+      "de": "c2618db30d0e",
+      "ja": "c2618db30d0e"
+    },
+    "ch_modal_veritas_note6_ctx": {
+      "he": "ab075414ec8b",
+      "ru": "ab075414ec8b",
+      "de": "ab075414ec8b",
+      "ja": "ab075414ec8b"
+    },
+    "ch_modal_veritas_note6_post": {
+      "he": "b0e5bd5feb94",
+      "ru": "b0e5bd5feb94",
+      "de": "b0e5bd5feb94",
+      "ja": "b0e5bd5feb94"
+    },
+    "ch_modal_veritas_note7_ctx": {
+      "he": "a235f2b08393",
+      "ru": "a235f2b08393",
+      "de": "a235f2b08393",
+      "ja": "a235f2b08393"
+    },
+    "ch_modal_veritas_note7_post": {
+      "he": "d3289b52a4a5",
+      "ru": "d3289b52a4a5",
+      "de": "d3289b52a4a5",
+      "ja": "d3289b52a4a5"
+    },
+    "ch_modal_veritas_note8_ctx": {
+      "he": "ebd77306557d",
+      "ru": "ebd77306557d",
+      "de": "ebd77306557d",
+      "ja": "ebd77306557d"
+    },
+    "ch_modal_veritas_note8_post": {
+      "he": "aae673db705f",
+      "ru": "aae673db705f",
+      "de": "aae673db705f",
+      "ja": "aae673db705f"
+    },
+    "ch_modal_veritas_note9_ctx": {
+      "he": "16535a3e2015",
+      "ru": "16535a3e2015",
+      "de": "16535a3e2015",
+      "ja": "16535a3e2015"
+    },
+    "ch_modal_veritas_note9_post": {
+      "he": "67e2c5dcf9cd",
+      "ru": "67e2c5dcf9cd",
+      "de": "67e2c5dcf9cd",
+      "ja": "67e2c5dcf9cd"
+    },
+    "ch_modal_veritas_p1": {
+      "he": "8da256b63cda",
+      "ru": "8da256b63cda",
+      "de": "8da256b63cda",
+      "ja": "8da256b63cda"
+    },
+    "ch_modal_veritas_title": {
+      "he": "83c56b212a7a",
+      "ru": "83c56b212a7a",
+      "de": "83c56b212a7a",
+      "ja": "83c56b212a7a"
+    },
+    "ch_post1_body": {
+      "he": "461a5a7e2192",
+      "ru": "461a5a7e2192",
+      "de": "461a5a7e2192",
+      "ja": "461a5a7e2192"
+    },
+    "ch_post1_handle": {
+      "he": "9ab9c6d0df68",
+      "ru": "9ab9c6d0df68",
+      "de": "9ab9c6d0df68",
+      "ja": "9ab9c6d0df68"
+    },
+    "ch_post1_user": {
+      "he": "01332c876518",
+      "ru": "01332c876518",
+      "de": "01332c876518",
+      "ja": "01332c876518"
+    },
+    "ch_post2_badge": {
+      "he": "51056698e252",
+      "ru": "51056698e252",
+      "de": "51056698e252",
+      "ja": "51056698e252"
+    },
+    "ch_post2_body": {
+      "he": "89d9626d5ef1",
+      "ru": "89d9626d5ef1",
+      "de": "89d9626d5ef1",
+      "ja": "89d9626d5ef1"
+    },
+    "ch_post2_handle": {
+      "he": "d38abf6ea786",
+      "ru": "d38abf6ea786",
+      "de": "d38abf6ea786",
+      "ja": "d38abf6ea786"
+    },
+    "ch_post2_note_h": {
+      "he": "a88303f26795",
+      "ru": "a88303f26795",
+      "de": "a88303f26795",
+      "ja": "a88303f26795"
+    },
+    "ch_post2_note_p": {
+      "he": "4ab0e16bf3a1",
+      "ru": "4ab0e16bf3a1",
+      "de": "4ab0e16bf3a1",
+      "ja": "4ab0e16bf3a1"
+    },
+    "ch_post2_user": {
+      "he": "8a8d662d5cea",
+      "ru": "8a8d662d5cea",
+      "de": "8a8d662d5cea",
+      "ja": "8a8d662d5cea"
+    },
+    "ch_post3_badge": {
+      "he": "382c3ed351dc",
+      "ru": "382c3ed351dc",
+      "de": "382c3ed351dc",
+      "ja": "382c3ed351dc"
+    },
+    "ch_post3_body": {
+      "he": "77b6aa540ecc",
+      "ru": "77b6aa540ecc",
+      "de": "77b6aa540ecc",
+      "ja": "77b6aa540ecc"
+    },
+    "ch_post3_handle": {
+      "he": "4162295d48e1",
+      "ru": "4162295d48e1",
+      "de": "4162295d48e1",
+      "ja": "4162295d48e1"
+    },
+    "ch_post3_reply1_body": {
+      "he": "88f0e6375893",
+      "ru": "88f0e6375893",
+      "de": "88f0e6375893",
+      "ja": "88f0e6375893"
+    },
+    "ch_post3_reply1_handle": {
+      "he": "e0d464a525d0",
+      "ru": "e0d464a525d0",
+      "de": "e0d464a525d0",
+      "ja": "e0d464a525d0"
+    },
+    "ch_post3_reply1_user": {
+      "he": "64f48fc2c61a",
+      "ru": "64f48fc2c61a",
+      "de": "64f48fc2c61a",
+      "ja": "64f48fc2c61a"
+    },
+    "ch_post3_user": {
+      "he": "b8d0845e79e3",
+      "ru": "b8d0845e79e3",
+      "de": "b8d0845e79e3",
+      "ja": "b8d0845e79e3"
+    },
+    "ch_post4_body": {
+      "he": "d03d9949660a",
+      "ru": "d03d9949660a",
+      "de": "d03d9949660a",
+      "ja": "d03d9949660a"
+    },
+    "ch_post4_handle": {
+      "he": "0ae246e652b2",
+      "ru": "0ae246e652b2",
+      "de": "0ae246e652b2",
+      "ja": "0ae246e652b2"
+    },
+    "ch_post4_user": {
+      "he": "1e7a38672a79",
+      "ru": "1e7a38672a79",
+      "de": "1e7a38672a79",
+      "ja": "1e7a38672a79"
+    },
+    "ch_post5_body": {
+      "he": "6cb9c9db6ef4",
+      "ru": "6cb9c9db6ef4",
+      "de": "6cb9c9db6ef4",
+      "ja": "6cb9c9db6ef4"
+    },
+    "ch_post5_handle": {
+      "he": "4fccbed53096",
+      "ru": "4fccbed53096",
+      "de": "4fccbed53096",
+      "ja": "4fccbed53096"
+    },
+    "ch_post5_reply1_body": {
+      "he": "623931784f22",
+      "ru": "623931784f22",
+      "de": "623931784f22",
+      "ja": "623931784f22"
+    },
+    "ch_post5_reply1_handle": {
+      "he": "4fccbed53096",
+      "ru": "4fccbed53096",
+      "de": "4fccbed53096",
+      "ja": "4fccbed53096"
+    },
+    "ch_post5_reply1_user": {
+      "he": "8298b9e5980a",
+      "ru": "8298b9e5980a",
+      "de": "8298b9e5980a",
+      "ja": "8298b9e5980a"
+    },
+    "ch_post5_user": {
+      "he": "8298b9e5980a",
+      "ru": "8298b9e5980a",
+      "de": "8298b9e5980a",
+      "ja": "8298b9e5980a"
+    },
+    "ch_post6_body": {
+      "he": "410707efc354",
+      "ru": "410707efc354",
+      "de": "410707efc354",
+      "ja": "410707efc354"
+    },
+    "ch_post6_handle": {
+      "he": "1c9724af6d03",
+      "ru": "1c9724af6d03",
+      "de": "1c9724af6d03",
+      "ja": "1c9724af6d03"
+    },
+    "ch_post6_user": {
+      "he": "a5777a1f6147",
+      "ru": "a5777a1f6147",
+      "de": "a5777a1f6147",
+      "ja": "a5777a1f6147"
+    },
+    "ch_post6_warn": {
+      "he": "70f7fd8b9387",
+      "ru": "70f7fd8b9387",
+      "de": "70f7fd8b9387",
+      "ja": "70f7fd8b9387"
+    },
+    "ch_post7_badge": {
+      "he": "382c3ed351dc",
+      "ru": "382c3ed351dc",
+      "de": "382c3ed351dc",
+      "ja": "382c3ed351dc"
+    },
+    "ch_post7_body": {
+      "he": "c344fc1ac28e",
+      "ru": "c344fc1ac28e",
+      "de": "c344fc1ac28e",
+      "ja": "c344fc1ac28e"
+    },
+    "ch_post7_handle": {
+      "he": "4162295d48e1",
+      "ru": "4162295d48e1",
+      "de": "4162295d48e1",
+      "ja": "4162295d48e1"
+    },
+    "ch_post7_note_h": {
+      "he": "a88303f26795",
+      "ru": "a88303f26795",
+      "de": "a88303f26795",
+      "ja": "a88303f26795"
+    },
+    "ch_post7_note_p": {
+      "he": "edeb3d0f5834",
+      "ru": "edeb3d0f5834",
+      "de": "edeb3d0f5834",
+      "ja": "edeb3d0f5834"
+    },
+    "ch_post7_user": {
+      "he": "b8d0845e79e3",
+      "ru": "b8d0845e79e3",
+      "de": "b8d0845e79e3",
+      "ja": "b8d0845e79e3"
+    },
+    "ch_post8_body": {
+      "he": "bec8b2485c91",
+      "ru": "bec8b2485c91",
+      "de": "bec8b2485c91",
+      "ja": "bec8b2485c91"
+    },
+    "ch_post8_handle": {
+      "he": "999bdc8b58b4",
+      "ru": "999bdc8b58b4",
+      "de": "999bdc8b58b4",
+      "ja": "999bdc8b58b4"
+    },
+    "ch_post8_reply1_body": {
+      "he": "d0f2977faff0",
+      "ru": "d0f2977faff0",
+      "de": "d0f2977faff0",
+      "ja": "d0f2977faff0"
+    },
+    "ch_post8_reply1_handle": {
+      "he": "9ab9c6d0df68",
+      "ru": "9ab9c6d0df68",
+      "de": "9ab9c6d0df68",
+      "ja": "9ab9c6d0df68"
+    },
+    "ch_post8_reply1_user": {
+      "he": "01332c876518",
+      "ru": "01332c876518",
+      "de": "01332c876518",
+      "ja": "01332c876518"
+    },
+    "ch_post8_user": {
+      "he": "e60b59d7e0c9",
+      "ru": "e60b59d7e0c9",
+      "de": "e60b59d7e0c9",
+      "ja": "e60b59d7e0c9"
+    },
+    "ch_win_timeline_title": {
+      "he": "393490052b05",
+      "ru": "393490052b05",
+      "de": "393490052b05",
+      "ja": "393490052b05"
+    }
+  },
+  "dixie": {
+    "dixie_title": {
+      "he": "317ff4d93121",
+      "ru": "317ff4d93121",
+      "de": "317ff4d93121",
+      "ja": "317ff4d93121",
+      "gt": "317ff4d93121"
+    },
+    "dv_h1": {
+      "he": "c70ef86edf55",
+      "ru": "c70ef86edf55",
+      "de": "c70ef86edf55",
+      "ja": "c70ef86edf55",
+      "gt": "c70ef86edf55"
+    },
+    "dv_h2_david": {
+      "he": "6c9f53eb558f",
+      "ru": "6c9f53eb558f",
+      "de": "6c9f53eb558f",
+      "ja": "6c9f53eb558f",
+      "gt": "6c9f53eb558f"
+    },
+    "dv_h2_honey": {
+      "he": "02fdfdccdd5e",
+      "ru": "02fdfdccdd5e",
+      "de": "02fdfdccdd5e",
+      "ja": "02fdfdccdd5e",
+      "gt": "02fdfdccdd5e"
+    },
+    "dv_h2_july": {
+      "he": "1c5662136c54",
+      "ru": "1c5662136c54",
+      "de": "1c5662136c54",
+      "ja": "1c5662136c54",
+      "gt": "1c5662136c54"
+    },
+    "dv_h2_last": {
+      "he": "df671b2ea579",
+      "ru": "df671b2ea579",
+      "de": "df671b2ea579",
+      "ja": "df671b2ea579",
+      "gt": "df671b2ea579"
+    },
+    "dv_h2_leaving": {
+      "he": "99629aba789f",
+      "ru": "99629aba789f",
+      "de": "99629aba789f",
+      "ja": "99629aba789f",
+      "gt": "99629aba789f"
+    },
+    "dv_h2_oppie": {
+      "he": "87ccd2887624",
+      "ru": "87ccd2887624",
+      "de": "87ccd2887624",
+      "ja": "87ccd2887624",
+      "gt": "87ccd2887624"
+    },
+    "dv_h3_breakfast": {
+      "he": "8bc5d065f55c",
+      "ru": "8bc5d065f55c",
+      "de": "8bc5d065f55c",
+      "ja": "8bc5d065f55c",
+      "gt": "8bc5d065f55c"
+    },
+    "dv_h3_burger": {
+      "he": "af9f844b7fe3",
+      "ru": "af9f844b7fe3",
+      "de": "af9f844b7fe3",
+      "ja": "af9f844b7fe3",
+      "gt": "af9f844b7fe3"
+    },
+    "dv_h3_cherries": {
+      "he": "94fdaf003119",
+      "ru": "94fdaf003119",
+      "de": "94fdaf003119",
+      "ja": "94fdaf003119",
+      "gt": "94fdaf003119"
+    },
+    "dv_h3_gokart": {
+      "he": "e8e075591d65",
+      "ru": "e8e075591d65",
+      "de": "e8e075591d65",
+      "ja": "e8e075591d65",
+      "gt": "e8e075591d65"
+    },
+    "dv_h3_gondola": {
+      "he": "16c296355149",
+      "ru": "16c296355149",
+      "de": "16c296355149",
+      "ja": "16c296355149",
+      "gt": "16c296355149"
+    },
+    "dv_h3_goth": {
+      "he": "3628af8e1eec",
+      "ru": "3628af8e1eec",
+      "de": "3628af8e1eec",
+      "ja": "3628af8e1eec",
+      "gt": "3628af8e1eec"
+    },
+    "dv_h3_north": {
+      "he": "b01b00fd455e",
+      "ru": "b01b00fd455e",
+      "de": "b01b00fd455e",
+      "ja": "b01b00fd455e",
+      "gt": "b01b00fd455e"
+    },
+    "dv_h3_plane": {
+      "he": "76ec345bf121",
+      "ru": "76ec345bf121",
+      "de": "76ec345bf121",
+      "ja": "76ec345bf121",
+      "gt": "76ec345bf121"
+    },
+    "dv_h3_plushies": {
+      "he": "2b5505022100",
+      "ru": "2b5505022100",
+      "de": "2b5505022100",
+      "ja": "2b5505022100",
+      "gt": "2b5505022100"
+    },
+    "dv_h3_scooter": {
+      "he": "9c185f3739bd",
+      "ru": "9c185f3739bd",
+      "de": "9c185f3739bd",
+      "ja": "9c185f3739bd",
+      "gt": "9c185f3739bd"
+    },
+    "dv_h3_sign": {
+      "he": "aefff8b92b5e",
+      "ru": "aefff8b92b5e",
+      "de": "aefff8b92b5e",
+      "ja": "aefff8b92b5e",
+      "gt": "aefff8b92b5e"
+    },
+    "dv_h3_vegas": {
+      "he": "59fc36db5e49",
+      "ru": "59fc36db5e49",
+      "de": "59fc36db5e49",
+      "ja": "59fc36db5e49",
+      "gt": "59fc36db5e49"
+    },
+    "dv_h3_victor": {
+      "he": "3df643f4d3e4",
+      "ru": "3df643f4d3e4",
+      "de": "3df643f4d3e4",
+      "ja": "3df643f4d3e4",
+      "gt": "3df643f4d3e4"
+    },
+    "dv_h3_wheel": {
+      "he": "9e292fc9fe11",
+      "ru": "9e292fc9fe11",
+      "de": "9e292fc9fe11",
+      "ja": "9e292fc9fe11",
+      "gt": "9e292fc9fe11"
+    },
+    "dv_p1": {
+      "he": "4d669228a99e",
+      "ru": "4d669228a99e",
+      "de": "4d669228a99e",
+      "ja": "4d669228a99e",
+      "gt": "4d669228a99e"
+    },
+    "dv_p10": {
+      "he": "afc7ecc783fa",
+      "ru": "afc7ecc783fa",
+      "de": "afc7ecc783fa",
+      "ja": "afc7ecc783fa",
+      "gt": "afc7ecc783fa"
+    },
+    "dv_p11": {
+      "he": "f3eb24407ff2",
+      "ru": "f3eb24407ff2",
+      "de": "f3eb24407ff2",
+      "ja": "f3eb24407ff2",
+      "gt": "f3eb24407ff2"
+    },
+    "dv_p12": {
+      "he": "2e8f3aaa9820",
+      "ru": "2e8f3aaa9820",
+      "de": "2e8f3aaa9820",
+      "ja": "2e8f3aaa9820",
+      "gt": "2e8f3aaa9820"
+    },
+    "dv_p13": {
+      "he": "482da18356d8",
+      "ru": "482da18356d8",
+      "de": "482da18356d8",
+      "ja": "482da18356d8",
+      "gt": "482da18356d8"
+    },
+    "dv_p14": {
+      "he": "dad00bd6f045",
+      "ru": "dad00bd6f045",
+      "de": "dad00bd6f045",
+      "ja": "dad00bd6f045",
+      "gt": "dad00bd6f045"
+    },
+    "dv_p15": {
+      "he": "9f8c50634e34",
+      "ru": "9f8c50634e34",
+      "de": "9f8c50634e34",
+      "ja": "9f8c50634e34",
+      "gt": "9f8c50634e34"
+    },
+    "dv_p16": {
+      "he": "093d9e00f091",
+      "ru": "093d9e00f091",
+      "de": "093d9e00f091",
+      "ja": "093d9e00f091",
+      "gt": "093d9e00f091"
+    },
+    "dv_p17": {
+      "he": "bf9f6177197b",
+      "ru": "bf9f6177197b",
+      "de": "bf9f6177197b",
+      "ja": "bf9f6177197b",
+      "gt": "bf9f6177197b"
+    },
+    "dv_p18": {
+      "he": "4a493bfe0f63",
+      "ru": "4a493bfe0f63",
+      "de": "4a493bfe0f63",
+      "ja": "4a493bfe0f63",
+      "gt": "4a493bfe0f63"
+    },
+    "dv_p19": {
+      "he": "8483703d6283",
+      "ru": "8483703d6283",
+      "de": "8483703d6283",
+      "ja": "8483703d6283",
+      "gt": "8483703d6283"
+    },
+    "dv_p2": {
+      "he": "a686bdb76225",
+      "ru": "a686bdb76225",
+      "de": "a686bdb76225",
+      "ja": "a686bdb76225",
+      "gt": "a686bdb76225"
+    },
+    "dv_p20": {
+      "he": "a755f84ac93d",
+      "ru": "a755f84ac93d",
+      "de": "a755f84ac93d",
+      "ja": "a755f84ac93d",
+      "gt": "a755f84ac93d"
+    },
+    "dv_p21": {
+      "he": "410870a73916",
+      "ru": "410870a73916",
+      "de": "410870a73916",
+      "ja": "410870a73916",
+      "gt": "410870a73916"
+    },
+    "dv_p3": {
+      "he": "d823340f2789",
+      "ru": "d823340f2789",
+      "de": "d823340f2789",
+      "ja": "d823340f2789",
+      "gt": "d823340f2789"
+    },
+    "dv_p4": {
+      "he": "75a5c9861a09",
+      "ru": "75a5c9861a09",
+      "de": "75a5c9861a09",
+      "ja": "75a5c9861a09",
+      "gt": "75a5c9861a09"
+    },
+    "dv_p5": {
+      "he": "a357f21c6c37",
+      "ru": "a357f21c6c37",
+      "de": "a357f21c6c37",
+      "ja": "a357f21c6c37",
+      "gt": "a357f21c6c37"
+    },
+    "dv_p6": {
+      "he": "00f1888ef687",
+      "ru": "00f1888ef687",
+      "de": "00f1888ef687",
+      "ja": "00f1888ef687",
+      "gt": "00f1888ef687"
+    },
+    "dv_p7": {
+      "he": "08f492bf1bd7",
+      "ru": "08f492bf1bd7",
+      "de": "08f492bf1bd7",
+      "ja": "08f492bf1bd7",
+      "gt": "08f492bf1bd7"
+    },
+    "dv_p8": {
+      "he": "d47929c0c5ef",
+      "ru": "d47929c0c5ef",
+      "de": "d47929c0c5ef",
+      "ja": "d47929c0c5ef",
+      "gt": "d47929c0c5ef"
+    },
+    "dv_p9": {
+      "he": "9f000d28e304",
+      "ru": "9f000d28e304",
+      "de": "9f000d28e304",
+      "ja": "9f000d28e304",
+      "gt": "9f000d28e304"
+    },
+    "music_button_cowboy": {
+      "he": "ee1d8410a370",
+      "ru": "ee1d8410a370",
+      "de": "ee1d8410a370",
+      "ja": "ee1d8410a370",
+      "gt": "ee1d8410a370"
+    },
+    "music_h3_song": {
+      "he": "4048b0339f8b",
+      "ru": "4048b0339f8b",
+      "de": "4048b0339f8b",
+      "ja": "4048b0339f8b",
+      "gt": "4048b0339f8b"
+    },
+    "music_h4_composer": {
+      "he": "31eab2bf4ee6",
+      "ru": "31eab2bf4ee6",
+      "de": "31eab2bf4ee6",
+      "ja": "31eab2bf4ee6",
+      "gt": "31eab2bf4ee6"
+    },
+    "music_h5_arranger": {
+      "he": "9d3405d25816",
+      "ru": "9d3405d25816",
+      "de": "9d3405d25816",
+      "ja": "9d3405d25816",
+      "gt": "9d3405d25816"
+    },
+    "nav_h2_dixievegas": {
+      "he": "317ff4d93121",
+      "ru": "317ff4d93121",
+      "de": "317ff4d93121",
+      "ja": "317ff4d93121",
+      "gt": "317ff4d93121"
+    },
+    "nav_h2_home": {
+      "he": "b13f7095d7d3",
+      "ru": "b13f7095d7d3",
+      "de": "b13f7095d7d3",
+      "ja": "b13f7095d7d3",
+      "gt": "b13f7095d7d3"
+    },
+    "nav_h3_david": {
+      "he": "e274965f31a3",
+      "ru": "e274965f31a3",
+      "de": "e274965f31a3",
+      "ja": "e274965f31a3",
+      "gt": "e274965f31a3"
+    },
+    "nav_h3_honeysalt": {
+      "he": "02fdfdccdd5e",
+      "ru": "02fdfdccdd5e",
+      "de": "02fdfdccdd5e",
+      "ja": "02fdfdccdd5e",
+      "gt": "02fdfdccdd5e"
+    },
+    "nav_h3_july": {
+      "he": "1c5662136c54",
+      "ru": "1c5662136c54",
+      "de": "1c5662136c54",
+      "ja": "1c5662136c54",
+      "gt": "1c5662136c54"
+    },
+    "nav_h3_lasttrip": {
+      "he": "df671b2ea579",
+      "ru": "df671b2ea579",
+      "de": "df671b2ea579",
+      "ja": "df671b2ea579",
+      "gt": "df671b2ea579"
+    },
+    "nav_h3_leaving": {
+      "he": "6e984e84ced1",
+      "ru": "6e984e84ced1",
+      "de": "6e984e84ced1",
+      "ja": "6e984e84ced1",
+      "gt": "6e984e84ced1"
+    },
+    "nav_h3_oppie": {
+      "he": "87ccd2887624",
+      "ru": "87ccd2887624",
+      "de": "87ccd2887624",
+      "ja": "87ccd2887624",
+      "gt": "87ccd2887624"
+    },
+    "nav_li_breakfast": {
+      "he": "9d602e4cc0e7",
+      "ru": "9d602e4cc0e7",
+      "de": "9d602e4cc0e7",
+      "ja": "9d602e4cc0e7",
+      "gt": "9d602e4cc0e7"
+    },
+    "nav_li_burger": {
+      "he": "f0750f371dc8",
+      "ru": "f0750f371dc8",
+      "de": "f0750f371dc8",
+      "ja": "f0750f371dc8",
+      "gt": "f0750f371dc8"
+    },
+    "nav_li_cherriespie": {
+      "he": "6446d0e99085",
+      "ru": "6446d0e99085",
+      "de": "6446d0e99085",
+      "ja": "6446d0e99085",
+      "gt": "6446d0e99085"
+    },
+    "nav_li_darkside": {
+      "he": "059da9dc565b",
+      "ru": "059da9dc565b",
+      "de": "059da9dc565b",
+      "ja": "059da9dc565b",
+      "gt": "059da9dc565b"
+    },
+    "nav_li_gokart": {
+      "he": "f10cd638d7dd",
+      "ru": "f10cd638d7dd",
+      "de": "f10cd638d7dd",
+      "ja": "f10cd638d7dd",
+      "gt": "f10cd638d7dd"
+    },
+    "nav_li_gondola": {
+      "he": "a85205ec4a68",
+      "ru": "a85205ec4a68",
+      "de": "a85205ec4a68",
+      "ja": "a85205ec4a68",
+      "gt": "a85205ec4a68"
+    },
+    "nav_li_goth": {
+      "he": "4a4c00123e56",
+      "ru": "4a4c00123e56",
+      "de": "4a4c00123e56",
+      "ja": "4a4c00123e56",
+      "gt": "4a4c00123e56"
+    },
+    "nav_li_northstrip": {
+      "he": "b88824a49179",
+      "ru": "b88824a49179",
+      "de": "b88824a49179",
+      "ja": "b88824a49179",
+      "gt": "b88824a49179"
+    },
+    "nav_li_plushies": {
+      "he": "b71e7bff72e1",
+      "ru": "b71e7bff72e1",
+      "de": "b71e7bff72e1",
+      "ja": "b71e7bff72e1",
+      "gt": "b71e7bff72e1"
+    },
+    "nav_li_scooter": {
+      "he": "6b8034f2ccbd",
+      "ru": "6b8034f2ccbd",
+      "de": "6b8034f2ccbd",
+      "ja": "6b8034f2ccbd",
+      "gt": "6b8034f2ccbd"
+    },
+    "nav_li_sign": {
+      "he": "697737298649",
+      "ru": "697737298649",
+      "de": "697737298649",
+      "ja": "697737298649",
+      "gt": "697737298649"
+    },
+    "nav_li_turbine": {
+      "he": "96bc808e40ad",
+      "ru": "96bc808e40ad",
+      "de": "96bc808e40ad",
+      "ja": "96bc808e40ad",
+      "gt": "96bc808e40ad"
+    },
+    "nav_li_victor": {
+      "he": "983b9beaec20",
+      "ru": "983b9beaec20",
+      "de": "983b9beaec20",
+      "ja": "983b9beaec20",
+      "gt": "983b9beaec20"
+    },
+    "nav_li_wheel": {
+      "he": "8044314b0b73",
+      "ru": "8044314b0b73",
+      "de": "8044314b0b73",
+      "ja": "8044314b0b73",
+      "gt": "8044314b0b73"
+    },
+    "pic_win_gallery_title": {
+      "he": "42be2782b438",
+      "ru": "42be2782b438",
+      "de": "42be2782b438",
+      "ja": "42be2782b438",
+      "gt": "42be2782b438"
+    },
+    "win_gallerynav_title": {
+      "he": "00d962a16979",
+      "ru": "00d962a16979",
+      "de": "00d962a16979",
+      "ja": "00d962a16979",
+      "gt": "00d962a16979"
+    },
+    "win_music_title": {
+      "he": "9b134ed4b86b",
+      "ru": "9b134ed4b86b",
+      "de": "9b134ed4b86b",
+      "ja": "9b134ed4b86b",
+      "gt": "9b134ed4b86b"
+    }
+  },
+  "epark": {
+    "ep_h1": {
+      "he": "a4e5df7d11d0",
+      "ru": "a4e5df7d11d0",
+      "de": "a4e5df7d11d0",
+      "ja": "a4e5df7d11d0",
+      "gt": "a4e5df7d11d0"
+    },
+    "ep_h2_bee": {
+      "he": "43c6be86ab85",
+      "ru": "43c6be86ab85",
+      "de": "43c6be86ab85",
+      "ja": "43c6be86ab85",
+      "gt": "43c6be86ab85"
+    },
+    "ep_h2_other": {
+      "he": "aca2972d6b25",
+      "ru": "aca2972d6b25",
+      "de": "aca2972d6b25",
+      "ja": "aca2972d6b25",
+      "gt": "aca2972d6b25"
+    },
+    "ep_h2_pink": {
+      "he": "98238913ec94",
+      "ru": "98238913ec94",
+      "de": "98238913ec94",
+      "ja": "98238913ec94",
+      "gt": "98238913ec94"
+    },
+    "ep_h2_purple": {
+      "he": "40e29c71a2ec",
+      "ru": "40e29c71a2ec",
+      "de": "40e29c71a2ec",
+      "ja": "40e29c71a2ec",
+      "gt": "40e29c71a2ec"
+    },
+    "ep_h2_red": {
+      "he": "165e5adeb1aa",
+      "ru": "165e5adeb1aa",
+      "de": "165e5adeb1aa",
+      "ja": "165e5adeb1aa",
+      "gt": "165e5adeb1aa"
+    },
+    "ep_h2_white": {
+      "he": "818578dfd20d",
+      "ru": "818578dfd20d",
+      "de": "818578dfd20d",
+      "ja": "818578dfd20d",
+      "gt": "818578dfd20d"
+    },
+    "ep_h2_yellow": {
+      "he": "89691ea3c4d3",
+      "ru": "89691ea3c4d3",
+      "de": "89691ea3c4d3",
+      "ja": "89691ea3c4d3",
+      "gt": "89691ea3c4d3"
+    },
+    "ep_h3_aaaah": {
+      "he": "ff9c430ad173",
+      "ru": "ff9c430ad173",
+      "de": "ff9c430ad173",
+      "ja": "ff9c430ad173",
+      "gt": "ff9c430ad173"
+    },
+    "ep_h3_alone": {
+      "he": "3b0a85c7937e",
+      "ru": "3b0a85c7937e",
+      "de": "3b0a85c7937e",
+      "ja": "3b0a85c7937e",
+      "gt": "3b0a85c7937e"
+    },
+    "ep_h3_canna": {
+      "he": "7f3738a947fc",
+      "ru": "7f3738a947fc",
+      "de": "7f3738a947fc",
+      "ja": "7f3738a947fc",
+      "gt": "7f3738a947fc"
+    },
+    "ep_h3_closeup": {
+      "he": "56a556620621",
+      "ru": "56a556620621",
+      "de": "56a556620621",
+      "ja": "56a556620621",
+      "gt": "56a556620621"
+    },
+    "ep_h3_cockscomb": {
+      "he": "1db182d6bef9",
+      "ru": "1db182d6bef9",
+      "de": "1db182d6bef9",
+      "ja": "1db182d6bef9",
+      "gt": "1db182d6bef9"
+    },
+    "ep_h3_cutebee": {
+      "he": "499498c78a3f",
+      "ru": "499498c78a3f",
+      "de": "499498c78a3f",
+      "ja": "499498c78a3f",
+      "gt": "499498c78a3f"
+    },
+    "ep_h3_fallen": {
+      "he": "c4deb3cb5303",
+      "ru": "c4deb3cb5303",
+      "de": "c4deb3cb5303",
+      "ja": "c4deb3cb5303",
+      "gt": "c4deb3cb5303"
+    },
+    "ep_h3_freckley": {
+      "he": "0faec15a0c91",
+      "ru": "0faec15a0c91",
+      "de": "0faec15a0c91",
+      "ja": "0faec15a0c91",
+      "gt": "0faec15a0c91"
+    },
+    "ep_h3_hanging1": {
+      "he": "f1ce491c7c69",
+      "ru": "f1ce491c7c69",
+      "de": "f1ce491c7c69",
+      "ja": "f1ce491c7c69",
+      "gt": "f1ce491c7c69"
+    },
+    "ep_h3_hanging2": {
+      "he": "ec26d5a284b4",
+      "ru": "ec26d5a284b4",
+      "de": "ec26d5a284b4",
+      "ja": "ec26d5a284b4",
+      "gt": "ec26d5a284b4"
+    },
+    "ep_h3_lookatitgo": {
+      "he": "8b35198f74c0",
+      "ru": "8b35198f74c0",
+      "de": "8b35198f74c0",
+      "ja": "8b35198f74c0",
+      "gt": "8b35198f74c0"
+    },
+    "ep_h3_marigold": {
+      "he": "87a583eed372",
+      "ru": "87a583eed372",
+      "de": "87a583eed372",
+      "ja": "87a583eed372",
+      "gt": "87a583eed372"
+    },
+    "ep_h3_onbush1": {
+      "he": "476accf637d8",
+      "ru": "476accf637d8",
+      "de": "476accf637d8",
+      "ja": "476accf637d8",
+      "gt": "476accf637d8"
+    },
+    "ep_h3_onbush2": {
+      "he": "476accf637d8",
+      "ru": "476accf637d8",
+      "de": "476accf637d8",
+      "ja": "476accf637d8",
+      "gt": "476accf637d8"
+    },
+    "ep_h3_onbush3": {
+      "he": "3412a17e9215",
+      "ru": "3412a17e9215",
+      "de": "3412a17e9215",
+      "ja": "3412a17e9215",
+      "gt": "3412a17e9215"
+    },
+    "ep_h3_poke": {
+      "he": "09ff057c091d",
+      "ru": "09ff057c091d",
+      "de": "09ff057c091d",
+      "ja": "09ff057c091d",
+      "gt": "09ff057c091d"
+    },
+    "ep_h3_rosehip": {
+      "he": "ee9de4e1dbc8",
+      "ru": "ee9de4e1dbc8",
+      "de": "ee9de4e1dbc8",
+      "ja": "ee9de4e1dbc8",
+      "gt": "ee9de4e1dbc8"
+    },
+    "ep_h3_sofuzzy": {
+      "he": "19699fdac1c5",
+      "ru": "19699fdac1c5",
+      "de": "19699fdac1c5",
+      "ja": "19699fdac1c5",
+      "gt": "19699fdac1c5"
+    },
+    "ep_h3_square": {
+      "he": "becc74512b07",
+      "ru": "becc74512b07",
+      "de": "becc74512b07",
+      "ja": "becc74512b07",
+      "gt": "becc74512b07"
+    },
+    "ep_h3_standing": {
+      "he": "4685c6bbd5eb",
+      "ru": "4685c6bbd5eb",
+      "de": "4685c6bbd5eb",
+      "ja": "4685c6bbd5eb",
+      "gt": "4685c6bbd5eb"
+    },
+    "ep_h3_woahbee": {
+      "he": "aaaae9c23da3",
+      "ru": "aaaae9c23da3",
+      "de": "aaaae9c23da3",
+      "ja": "aaaae9c23da3",
+      "gt": "aaaae9c23da3"
+    },
+    "ep_h3_zinnia": {
+      "he": "35f2d883dc6b",
+      "ru": "35f2d883dc6b",
+      "de": "35f2d883dc6b",
+      "ja": "35f2d883dc6b",
+      "gt": "35f2d883dc6b"
+    },
+    "ep_music_button_garden": {
+      "he": "771dfbe480db",
+      "ru": "771dfbe480db",
+      "de": "771dfbe480db",
+      "ja": "771dfbe480db",
+      "gt": "771dfbe480db"
+    },
+    "ep_music_h3_song": {
+      "he": "4d852d3937f2",
+      "ru": "4d852d3937f2",
+      "de": "4d852d3937f2",
+      "ja": "4d852d3937f2",
+      "gt": "4d852d3937f2"
+    },
+    "ep_music_h4_composer": {
+      "he": "d0a5b229763a",
+      "ru": "d0a5b229763a",
+      "de": "d0a5b229763a",
+      "ja": "d0a5b229763a",
+      "gt": "d0a5b229763a"
+    },
+    "ep_p1": {
+      "he": "2f0767439c68",
+      "ru": "2f0767439c68",
+      "de": "2f0767439c68",
+      "ja": "2f0767439c68",
+      "gt": "2f0767439c68"
+    },
+    "ep_p_bee1": {
+      "he": "442cbfa13534",
+      "ru": "442cbfa13534",
+      "de": "442cbfa13534",
+      "ja": "442cbfa13534",
+      "gt": "442cbfa13534"
+    },
+    "ep_p_canna": {
+      "he": "8550aa1a3c8e",
+      "ru": "8550aa1a3c8e",
+      "de": "8550aa1a3c8e",
+      "ja": "8550aa1a3c8e",
+      "gt": "8550aa1a3c8e"
+    },
+    "ep_p_cockscomb": {
+      "he": "8d5f9c2711e2",
+      "ru": "8d5f9c2711e2",
+      "de": "8d5f9c2711e2",
+      "ja": "8d5f9c2711e2",
+      "gt": "8d5f9c2711e2"
+    },
+    "ep_p_hanging1": {
+      "he": "c18fccced142",
+      "ru": "c18fccced142",
+      "de": "c18fccced142",
+      "ja": "c18fccced142",
+      "gt": "c18fccced142"
+    },
+    "ep_p_marigold": {
+      "he": "4ce610a02f8c",
+      "ru": "4ce610a02f8c",
+      "de": "4ce610a02f8c",
+      "ja": "4ce610a02f8c",
+      "gt": "4ce610a02f8c"
+    },
+    "ep_p_other_intro": {
+      "he": "d0c1f2e41a35",
+      "ru": "d0c1f2e41a35",
+      "de": "d0c1f2e41a35",
+      "ja": "d0c1f2e41a35",
+      "gt": "d0c1f2e41a35"
+    },
+    "ep_p_pink1": {
+      "he": "896fdb963f8d",
+      "ru": "896fdb963f8d",
+      "de": "896fdb963f8d",
+      "ja": "896fdb963f8d",
+      "gt": "896fdb963f8d"
+    },
+    "ep_p_pink2": {
+      "he": "9db06de89bd2",
+      "ru": "9db06de89bd2",
+      "de": "9db06de89bd2",
+      "ja": "9db06de89bd2",
+      "gt": "9db06de89bd2"
+    },
+    "ep_p_pink3": {
+      "he": "bfd8bd49f7f9",
+      "ru": "bfd8bd49f7f9",
+      "de": "bfd8bd49f7f9",
+      "ja": "bfd8bd49f7f9",
+      "gt": "bfd8bd49f7f9"
+    },
+    "ep_p_poke": {
+      "he": "59c2f1bd78ef",
+      "ru": "59c2f1bd78ef",
+      "de": "59c2f1bd78ef",
+      "ja": "59c2f1bd78ef",
+      "gt": "59c2f1bd78ef"
+    },
+    "ep_p_purple": {
+      "he": "2ad99a802bd6",
+      "ru": "2ad99a802bd6",
+      "de": "2ad99a802bd6",
+      "ja": "2ad99a802bd6",
+      "gt": "2ad99a802bd6"
+    },
+    "ep_p_red_intro": {
+      "he": "a9884ab397f8",
+      "ru": "a9884ab397f8",
+      "de": "a9884ab397f8",
+      "ja": "a9884ab397f8",
+      "gt": "a9884ab397f8"
+    },
+    "ep_p_rosehip": {
+      "he": "befe60dc5550",
+      "ru": "befe60dc5550",
+      "de": "befe60dc5550",
+      "ja": "befe60dc5550",
+      "gt": "befe60dc5550"
+    },
+    "ep_p_standing": {
+      "he": "893170e4c578",
+      "ru": "893170e4c578",
+      "de": "893170e4c578",
+      "ja": "893170e4c578",
+      "gt": "893170e4c578"
+    },
+    "ep_p_white1": {
+      "he": "057833156ae0",
+      "ru": "057833156ae0",
+      "de": "057833156ae0",
+      "ja": "057833156ae0",
+      "gt": "057833156ae0"
+    },
+    "ep_p_white2": {
+      "he": "494c5a3d3630",
+      "ru": "494c5a3d3630",
+      "de": "494c5a3d3630",
+      "ja": "494c5a3d3630",
+      "gt": "494c5a3d3630"
+    },
+    "ep_p_white3": {
+      "he": "9f18ff0e210d",
+      "ru": "9f18ff0e210d",
+      "de": "9f18ff0e210d",
+      "ja": "9f18ff0e210d",
+      "gt": "9f18ff0e210d"
+    },
+    "ep_p_white_intro": {
+      "he": "4c282a174c9b",
+      "ru": "4c282a174c9b",
+      "de": "4c282a174c9b",
+      "ja": "4c282a174c9b",
+      "gt": "4c282a174c9b"
+    },
+    "ep_p_yellow1": {
+      "he": "cec641057f6c",
+      "ru": "cec641057f6c",
+      "de": "cec641057f6c",
+      "ja": "cec641057f6c",
+      "gt": "cec641057f6c"
+    },
+    "ep_p_yellow2": {
+      "he": "6df5ca406dec",
+      "ru": "6df5ca406dec",
+      "de": "6df5ca406dec",
+      "ja": "6df5ca406dec",
+      "gt": "6df5ca406dec"
+    },
+    "ep_p_yellow_intro": {
+      "he": "9d45bbd1d87a",
+      "ru": "9d45bbd1d87a",
+      "de": "9d45bbd1d87a",
+      "ja": "9d45bbd1d87a",
+      "gt": "9d45bbd1d87a"
+    },
+    "ep_p_zinnia": {
+      "he": "d55fa36c097e",
+      "ru": "d55fa36c097e",
+      "de": "d55fa36c097e",
+      "ja": "d55fa36c097e",
+      "gt": "d55fa36c097e"
+    },
+    "ep_wingallerynav_title": {
+      "he": "00d962a16979",
+      "ru": "00d962a16979",
+      "de": "00d962a16979",
+      "ja": "00d962a16979",
+      "gt": "00d962a16979"
+    },
+    "epark_title": {
+      "he": "a91bafdc2d54",
+      "ru": "a91bafdc2d54",
+      "de": "a91bafdc2d54",
+      "ja": "a91bafdc2d54",
+      "gt": "a91bafdc2d54"
+    },
+    "nav_h2_bugs": {
+      "he": "ff7c5467ce49",
+      "ru": "ff7c5467ce49",
+      "de": "ff7c5467ce49",
+      "ja": "ff7c5467ce49",
+      "gt": "ff7c5467ce49"
+    },
+    "nav_h2_home": {
+      "he": "b13f7095d7d3",
+      "ru": "b13f7095d7d3",
+      "de": "b13f7095d7d3",
+      "ja": "b13f7095d7d3",
+      "gt": "b13f7095d7d3"
+    },
+    "nav_h2_roses": {
+      "he": "5c6f53e266a7",
+      "ru": "5c6f53e266a7",
+      "de": "5c6f53e266a7",
+      "ja": "5c6f53e266a7",
+      "gt": "5c6f53e266a7"
+    },
+    "nav_h3_bee": {
+      "he": "1ad5b273014e",
+      "ru": "1ad5b273014e",
+      "de": "1ad5b273014e",
+      "ja": "1ad5b273014e",
+      "gt": "1ad5b273014e"
+    },
+    "nav_h3_other": {
+      "he": "aca2972d6b25",
+      "ru": "aca2972d6b25",
+      "de": "aca2972d6b25",
+      "ja": "aca2972d6b25",
+      "gt": "aca2972d6b25"
+    },
+    "nav_h3_pink": {
+      "he": "98238913ec94",
+      "ru": "98238913ec94",
+      "de": "98238913ec94",
+      "ja": "98238913ec94",
+      "gt": "98238913ec94"
+    },
+    "nav_h3_purple": {
+      "he": "40e29c71a2ec",
+      "ru": "40e29c71a2ec",
+      "de": "40e29c71a2ec",
+      "ja": "40e29c71a2ec",
+      "gt": "40e29c71a2ec"
+    },
+    "nav_h3_red": {
+      "he": "165e5adeb1aa",
+      "ru": "165e5adeb1aa",
+      "de": "165e5adeb1aa",
+      "ja": "165e5adeb1aa",
+      "gt": "165e5adeb1aa"
+    },
+    "nav_h3_white": {
+      "he": "818578dfd20d",
+      "ru": "818578dfd20d",
+      "de": "818578dfd20d",
+      "ja": "818578dfd20d",
+      "gt": "818578dfd20d"
+    },
+    "nav_h3_yellow": {
+      "he": "89691ea3c4d3",
+      "ru": "89691ea3c4d3",
+      "de": "89691ea3c4d3",
+      "ja": "89691ea3c4d3",
+      "gt": "89691ea3c4d3"
+    },
+    "nav_li_aaaah": {
+      "he": "66b4bdb7b6a2",
+      "ru": "66b4bdb7b6a2",
+      "de": "66b4bdb7b6a2",
+      "ja": "66b4bdb7b6a2",
+      "gt": "66b4bdb7b6a2"
+    },
+    "nav_li_alone": {
+      "he": "bf098f47685a",
+      "ru": "bf098f47685a",
+      "de": "bf098f47685a",
+      "ja": "bf098f47685a",
+      "gt": "bf098f47685a"
+    },
+    "nav_li_canna": {
+      "he": "8196e7541b7a",
+      "ru": "8196e7541b7a",
+      "de": "8196e7541b7a",
+      "ja": "8196e7541b7a",
+      "gt": "8196e7541b7a"
+    },
+    "nav_li_closeup": {
+      "he": "50b26674a9ab",
+      "ru": "50b26674a9ab",
+      "de": "50b26674a9ab",
+      "ja": "50b26674a9ab",
+      "gt": "50b26674a9ab"
+    },
+    "nav_li_cockscomb": {
+      "he": "c301b7e0b480",
+      "ru": "c301b7e0b480",
+      "de": "c301b7e0b480",
+      "ja": "c301b7e0b480",
+      "gt": "c301b7e0b480"
+    },
+    "nav_li_cutebee": {
+      "he": "268a2def866f",
+      "ru": "268a2def866f",
+      "de": "268a2def866f",
+      "ja": "268a2def866f",
+      "gt": "268a2def866f"
+    },
+    "nav_li_fallen": {
+      "he": "ee211170796c",
+      "ru": "ee211170796c",
+      "de": "ee211170796c",
+      "ja": "ee211170796c",
+      "gt": "ee211170796c"
+    },
+    "nav_li_freckley": {
+      "he": "3e2ebe88318f",
+      "ru": "3e2ebe88318f",
+      "de": "3e2ebe88318f",
+      "ja": "3e2ebe88318f",
+      "gt": "3e2ebe88318f"
+    },
+    "nav_li_hanging1": {
+      "he": "b4ff8b4be8ac",
+      "ru": "b4ff8b4be8ac",
+      "de": "b4ff8b4be8ac",
+      "ja": "b4ff8b4be8ac",
+      "gt": "b4ff8b4be8ac"
+    },
+    "nav_li_hanging2": {
+      "he": "b4ff8b4be8ac",
+      "ru": "b4ff8b4be8ac",
+      "de": "b4ff8b4be8ac",
+      "ja": "b4ff8b4be8ac",
+      "gt": "b4ff8b4be8ac"
+    },
+    "nav_li_lookatitgo": {
+      "he": "7a48d9c414db",
+      "ru": "7a48d9c414db",
+      "de": "7a48d9c414db",
+      "ja": "7a48d9c414db",
+      "gt": "7a48d9c414db"
+    },
+    "nav_li_marigold": {
+      "he": "947f1a6302b9",
+      "ru": "947f1a6302b9",
+      "de": "947f1a6302b9",
+      "ja": "947f1a6302b9",
+      "gt": "947f1a6302b9"
+    },
+    "nav_li_onbush1": {
+      "he": "da6a93f27aa4",
+      "ru": "da6a93f27aa4",
+      "de": "da6a93f27aa4",
+      "ja": "da6a93f27aa4",
+      "gt": "da6a93f27aa4"
+    },
+    "nav_li_onbush2": {
+      "he": "da6a93f27aa4",
+      "ru": "da6a93f27aa4",
+      "de": "da6a93f27aa4",
+      "ja": "da6a93f27aa4",
+      "gt": "da6a93f27aa4"
+    },
+    "nav_li_onbush3": {
+      "he": "da6a93f27aa4",
+      "ru": "da6a93f27aa4",
+      "de": "da6a93f27aa4",
+      "ja": "da6a93f27aa4",
+      "gt": "da6a93f27aa4"
+    },
+    "nav_li_poke": {
+      "he": "17e3cc1ec70d",
+      "ru": "17e3cc1ec70d",
+      "de": "17e3cc1ec70d",
+      "ja": "17e3cc1ec70d",
+      "gt": "17e3cc1ec70d"
+    },
+    "nav_li_rosehip": {
+      "he": "bdabb7e62bc4",
+      "ru": "bdabb7e62bc4",
+      "de": "bdabb7e62bc4",
+      "ja": "bdabb7e62bc4",
+      "gt": "bdabb7e62bc4"
+    },
+    "nav_li_sofuzzy": {
+      "he": "13837ddde572",
+      "ru": "13837ddde572",
+      "de": "13837ddde572",
+      "ja": "13837ddde572",
+      "gt": "13837ddde572"
+    },
+    "nav_li_square": {
+      "he": "68beae710fee",
+      "ru": "68beae710fee",
+      "de": "68beae710fee",
+      "ja": "68beae710fee",
+      "gt": "68beae710fee"
+    },
+    "nav_li_standing": {
+      "he": "3405de84c15a",
+      "ru": "3405de84c15a",
+      "de": "3405de84c15a",
+      "ja": "3405de84c15a",
+      "gt": "3405de84c15a"
+    },
+    "nav_li_woahbee": {
+      "he": "1bf29bc0e18a",
+      "ru": "1bf29bc0e18a",
+      "de": "1bf29bc0e18a",
+      "ja": "1bf29bc0e18a",
+      "gt": "1bf29bc0e18a"
+    },
+    "nav_li_zinnia": {
+      "he": "bb4d73351d6e",
+      "ru": "bb4d73351d6e",
+      "de": "bb4d73351d6e",
+      "ja": "bb4d73351d6e",
+      "gt": "bb4d73351d6e"
+    },
+    "pic_win_gallery_title": {
+      "he": "42be2782b438",
+      "ru": "42be2782b438",
+      "de": "42be2782b438",
+      "ja": "42be2782b438",
+      "gt": "42be2782b438"
+    },
+    "win_music_title": {
+      "he": "9b134ed4b86b",
+      "ru": "9b134ed4b86b",
+      "de": "9b134ed4b86b",
+      "ja": "9b134ed4b86b",
+      "gt": "9b134ed4b86b"
+    }
+  },
+  "global": {
+    "about_h2": {
+      "he": "958b218e4aa5",
+      "ru": "958b218e4aa5",
+      "ja": "958b218e4aa5",
+      "de": "958b218e4aa5",
+      "gt": "958b218e4aa5"
+    },
+    "about_p": {
+      "he": "a6945b5e0049",
+      "ru": "a6945b5e0049",
+      "ja": "a6945b5e0049",
+      "de": "a6945b5e0049",
+      "gt": "a6945b5e0049"
+    },
+    "certs_link": {
+      "he": "178ab98127df",
+      "ru": "178ab98127df",
+      "ja": "178ab98127df",
+      "de": "178ab98127df",
+      "gt": "178ab98127df"
+    },
+    "info_p1": {
+      "he": "052abadb5fa5",
+      "ru": "052abadb5fa5",
+      "ja": "052abadb5fa5",
+      "de": "052abadb5fa5",
+      "gt": "052abadb5fa5"
+    },
+    "info_p2": {
+      "he": "f0ca70a0a74e",
+      "ru": "f0ca70a0a74e",
+      "ja": "f0ca70a0a74e",
+      "de": "f0ca70a0a74e",
+      "gt": "f0ca70a0a74e"
+    },
+    "info_p3": {
+      "he": "ac0a42e87001",
+      "ru": "ac0a42e87001",
+      "ja": "ac0a42e87001",
+      "de": "ac0a42e87001",
+      "gt": "ac0a42e87001"
+    },
+    "info_p4": {
+      "he": "3df159d08ac1",
+      "ru": "3df159d08ac1",
+      "ja": "3df159d08ac1",
+      "de": "3df159d08ac1",
+      "gt": "3df159d08ac1"
+    },
+    "info_title": {
+      "he": "e59496078a76",
+      "ru": "e59496078a76",
+      "ja": "e59496078a76",
+      "de": "e59496078a76",
+      "gt": "e59496078a76"
+    },
+    "lang_select_label": {
+      "he": "d1c76800f087",
+      "ru": "d1c76800f087",
+      "ja": "d1c76800f087",
+      "de": "d1c76800f087",
+      "gt": "d1c76800f087"
+    },
+    "settings_mode_btn_eink": {
+      "he": "c9151aa075ca",
+      "ru": "c9151aa075ca",
+      "ja": "c9151aa075ca",
+      "de": "c9151aa075ca",
+      "gt": "c9151aa075ca"
+    },
+    "settings_mode_btn_lcd": {
+      "he": "677198d0887d",
+      "ru": "677198d0887d",
+      "ja": "677198d0887d",
+      "de": "677198d0887d",
+      "gt": "677198d0887d"
+    },
+    "settings_nav_info": {
+      "he": "1cb0ba125f84",
+      "ru": "1cb0ba125f84",
+      "ja": "1cb0ba125f84",
+      "de": "1cb0ba125f84",
+      "gt": "1cb0ba125f84"
+    },
+    "settings_nav_lang": {
+      "he": "a4fe65264ef7",
+      "ru": "a4fe65264ef7",
+      "ja": "a4fe65264ef7",
+      "de": "a4fe65264ef7",
+      "gt": "a4fe65264ef7"
+    },
+    "settings_nav_theme": {
+      "he": "3907fa7f8072",
+      "ru": "3907fa7f8072",
+      "ja": "3907fa7f8072",
+      "de": "3907fa7f8072",
+      "gt": "3907fa7f8072"
+    },
+    "settings_theme_btn_dark": {
+      "he": "df8c7c89b3e4",
+      "ru": "df8c7c89b3e4",
+      "ja": "df8c7c89b3e4",
+      "de": "df8c7c89b3e4",
+      "gt": "df8c7c89b3e4"
+    },
+    "settings_theme_btn_light": {
+      "he": "4d72e72303c1",
+      "ru": "4d72e72303c1",
+      "ja": "4d72e72303c1",
+      "de": "4d72e72303c1",
+      "gt": "4d72e72303c1"
+    },
+    "share_copy_page_link_tooltip": {
+      "he": "2f9b129b76a1",
+      "ru": "2f9b129b76a1",
+      "ja": "2f9b129b76a1",
+      "de": "2f9b129b76a1",
+      "gt": "2f9b129b76a1"
+    },
+    "share_copy_url_tooltip": {
+      "he": "0c4edee162a8",
+      "ru": "0c4edee162a8",
+      "ja": "0c4edee162a8",
+      "de": "0c4edee162a8",
+      "gt": "0c4edee162a8"
+    },
+    "start_menu_btn": {
+      "he": "213d836c13ef",
+      "ru": "213d836c13ef",
+      "ja": "213d836c13ef",
+      "de": "213d836c13ef",
+      "gt": "213d836c13ef"
+    },
+    "theme_akai_label": {
+      "he": "97fe324892bf",
+      "ru": "97fe324892bf",
+      "ja": "97fe324892bf",
+      "de": "97fe324892bf",
+      "gt": "97fe324892bf"
+    },
+    "theme_bubblegum_label": {
+      "he": "593e363dd9a1",
+      "ru": "593e363dd9a1",
+      "ja": "593e363dd9a1",
+      "de": "593e363dd9a1",
+      "gt": "593e363dd9a1"
+    },
+    "theme_champagne_label": {
+      "he": "a9c33f078259",
+      "ru": "a9c33f078259",
+      "ja": "a9c33f078259",
+      "de": "a9c33f078259",
+      "gt": "a9c33f078259"
+    },
+    "theme_dark_label": {
+      "he": "60acc53f13a5",
+      "ru": "60acc53f13a5",
+      "ja": "60acc53f13a5",
+      "de": "60acc53f13a5",
+      "gt": "60acc53f13a5"
+    },
+    "theme_eink_label": {
+      "he": "aafaf9b07900",
+      "ru": "aafaf9b07900",
+      "ja": "aafaf9b07900",
+      "de": "aafaf9b07900",
+      "gt": "aafaf9b07900"
+    },
+    "theme_funky_label": {
+      "he": "480bf266e3d1",
+      "ru": "480bf266e3d1",
+      "ja": "480bf266e3d1",
+      "de": "480bf266e3d1",
+      "gt": "480bf266e3d1"
+    },
+    "theme_light_label": {
+      "he": "dbcd5e7bb7a0",
+      "ru": "dbcd5e7bb7a0",
+      "ja": "dbcd5e7bb7a0",
+      "de": "dbcd5e7bb7a0",
+      "gt": "dbcd5e7bb7a0"
+    },
+    "theme_rindswurst_label": {
+      "he": "69a7a14988fe",
+      "ru": "69a7a14988fe",
+      "ja": "69a7a14988fe",
+      "de": "69a7a14988fe",
+      "gt": "69a7a14988fe"
+    },
+    "theme_techelet_label": {
+      "he": "495f3344c47d",
+      "ru": "495f3344c47d",
+      "ja": "495f3344c47d",
+      "de": "495f3344c47d",
+      "gt": "495f3344c47d"
+    },
+    "theme_title": {
+      "he": "4a0a6dc866de",
+      "ru": "4a0a6dc866de",
+      "ja": "4a0a6dc866de",
+      "de": "4a0a6dc866de",
+      "gt": "4a0a6dc866de"
+    },
+    "theme_zelyonny_label": {
+      "he": "ec4b78bd3179",
+      "ru": "ec4b78bd3179",
+      "ja": "ec4b78bd3179",
+      "de": "ec4b78bd3179",
+      "gt": "ec4b78bd3179"
+    },
+    "win_about_title": {
+      "he": "99736370027f",
+      "ru": "99736370027f",
+      "ja": "99736370027f",
+      "de": "99736370027f",
+      "gt": "99736370027f"
+    },
+    "win_certs_title": {
+      "he": "d774429f3852",
+      "ru": "d774429f3852",
+      "ja": "d774429f3852",
+      "de": "d774429f3852",
+      "gt": "d774429f3852"
+    },
+    "win_langsettings_title": {
+      "he": "ddc6b779f894",
+      "ru": "ddc6b779f894",
+      "ja": "ddc6b779f894",
+      "de": "ddc6b779f894",
+      "gt": "ddc6b779f894"
+    },
+    "win_logo_title": {
+      "he": "401802d65484",
+      "ru": "401802d65484",
+      "ja": "401802d65484",
+      "de": "401802d65484",
+      "gt": "401802d65484"
+    },
+    "win_music_title": {
+      "he": "f83f4f1ffd4a",
+      "ru": "f83f4f1ffd4a",
+      "ja": "f83f4f1ffd4a",
+      "de": "f83f4f1ffd4a",
+      "gt": "f83f4f1ffd4a"
+    },
+    "win_pagesettings_title": {
+      "he": "c0900ff2c4d0",
+      "ru": "c0900ff2c4d0",
+      "ja": "c0900ff2c4d0",
+      "de": "c0900ff2c4d0",
+      "gt": "c0900ff2c4d0"
+    },
+    "win_settings_title": {
+      "he": "3e64789f4398",
+      "ru": "3e64789f4398",
+      "ja": "3e64789f4398",
+      "de": "3e64789f4398",
+      "gt": "3e64789f4398"
+    }
+  },
+  "graflect_ipa": {
+    "active_dict_label": {
+      "gt": "409fd239d275",
+      "he": "409fd239d275",
+      "ru": "409fd239d275",
+      "de": "409fd239d275",
+      "ja": "409fd239d275"
+    },
+    "direct_input_label": {
+      "gt": "b0cdddab5077",
+      "he": "b0cdddab5077",
+      "ru": "b0cdddab5077",
+      "de": "b0cdddab5077",
+      "ja": "b0cdddab5077"
+    },
+    "example_a_in_accent": {
+      "gt": "67dc967869b7",
+      "he": "67dc967869b7",
+      "ru": "67dc967869b7",
+      "de": "67dc967869b7",
+      "ja": "67dc967869b7"
+    },
+    "example_a_in_ant": {
+      "gt": "4c8cf2622652",
+      "he": "4c8cf2622652",
+      "ru": "4c8cf2622652",
+      "de": "4c8cf2622652",
+      "ja": "4c8cf2622652"
+    },
+    "example_a_in_game": {
+      "gt": "3361ca6c16a9",
+      "he": "3361ca6c16a9",
+      "ru": "3361ca6c16a9",
+      "de": "3361ca6c16a9",
+      "ja": "3361ca6c16a9"
+    },
+    "example_air_in_air": {
+      "gt": "cf3cc96028d6",
+      "he": "cf3cc96028d6",
+      "ru": "cf3cc96028d6",
+      "de": "cf3cc96028d6",
+      "ja": "cf3cc96028d6"
+    },
+    "example_b_in_band": {
+      "gt": "73074b803df7",
+      "he": "73074b803df7",
+      "ru": "73074b803df7",
+      "de": "73074b803df7",
+      "ja": "73074b803df7"
+    },
+    "example_british_r": {
+      "gt": "c3837194be7a",
+      "he": "c3837194be7a",
+      "ru": "c3837194be7a",
+      "de": "c3837194be7a",
+      "ja": "c3837194be7a"
+    },
+    "example_ch_in_bach": {
+      "gt": "a81b9a305dd9",
+      "he": "a81b9a305dd9",
+      "ru": "a81b9a305dd9",
+      "de": "a81b9a305dd9",
+      "ja": "a81b9a305dd9"
+    },
+    "example_ch_in_chase": {
+      "gt": "4e4ef7631fb1",
+      "he": "4e4ef7631fb1",
+      "ru": "4e4ef7631fb1",
+      "de": "4e4ef7631fb1",
+      "ja": "4e4ef7631fb1"
+    },
+    "example_d_in_lend": {
+      "gt": "88334c7cead1",
+      "he": "88334c7cead1",
+      "ru": "88334c7cead1",
+      "de": "88334c7cead1",
+      "ja": "88334c7cead1"
+    },
+    "example_e_in_lend": {
+      "gt": "a383c5c9cfc8",
+      "he": "a383c5c9cfc8",
+      "ru": "a383c5c9cfc8",
+      "de": "a383c5c9cfc8",
+      "ja": "a383c5c9cfc8"
+    },
+    "example_ea_in_lean": {
+      "gt": "a40e9d0e3840",
+      "he": "a40e9d0e3840",
+      "ru": "a40e9d0e3840",
+      "de": "a40e9d0e3840",
+      "ja": "a40e9d0e3840"
+    },
+    "example_f_in_fail": {
+      "gt": "9f7e3738557b",
+      "he": "9f7e3738557b",
+      "ru": "9f7e3738557b",
+      "de": "9f7e3738557b",
+      "ja": "9f7e3738557b"
+    },
+    "example_g_in_gone": {
+      "gt": "798b30230c04",
+      "he": "798b30230c04",
+      "ru": "798b30230c04",
+      "de": "798b30230c04",
+      "ja": "798b30230c04"
+    },
+    "example_h_in_home": {
+      "gt": "5a99ee834b59",
+      "he": "5a99ee834b59",
+      "ru": "5a99ee834b59",
+      "de": "5a99ee834b59",
+      "ja": "5a99ee834b59"
+    },
+    "example_i_in_in": {
+      "gt": "ccf16b3e7563",
+      "he": "ccf16b3e7563",
+      "ru": "ccf16b3e7563",
+      "de": "ccf16b3e7563",
+      "ja": "ccf16b3e7563"
+    },
+    "example_j_in_jump": {
+      "gt": "8c201f6cb6b9",
+      "he": "8c201f6cb6b9",
+      "ru": "8c201f6cb6b9",
+      "de": "8c201f6cb6b9",
+      "ja": "8c201f6cb6b9"
+    },
+    "example_k_in_kick": {
+      "gt": "779cf1091240",
+      "he": "779cf1091240",
+      "ru": "779cf1091240",
+      "de": "779cf1091240",
+      "ja": "779cf1091240"
+    },
+    "example_l_in_lend": {
+      "gt": "34180242074b",
+      "he": "34180242074b",
+      "ru": "34180242074b",
+      "de": "34180242074b",
+      "ja": "34180242074b"
+    },
+    "example_m_in_man": {
+      "gt": "a8eb91bb5ea8",
+      "he": "a8eb91bb5ea8",
+      "ru": "a8eb91bb5ea8",
+      "de": "a8eb91bb5ea8",
+      "ja": "a8eb91bb5ea8"
+    },
+    "example_n_in_north": {
+      "gt": "20f0f8a8dbe8",
+      "he": "20f0f8a8dbe8",
+      "ru": "20f0f8a8dbe8",
+      "de": "20f0f8a8dbe8",
+      "ja": "20f0f8a8dbe8"
+    },
+    "example_ng_in_long": {
+      "gt": "5279248ba913",
+      "he": "5279248ba913",
+      "ru": "5279248ba913",
+      "de": "5279248ba913",
+      "ja": "5279248ba913"
+    },
+    "example_o_in_hole": {
+      "gt": "f0148a694234",
+      "he": "f0148a694234",
+      "ru": "f0148a694234",
+      "de": "f0148a694234",
+      "ja": "f0148a694234"
+    },
+    "example_o_in_home": {
+      "gt": "e018c9fba5c7",
+      "he": "e018c9fba5c7",
+      "ru": "e018c9fba5c7",
+      "de": "e018c9fba5c7",
+      "ja": "e018c9fba5c7"
+    },
+    "example_o_in_soft": {
+      "gt": "d692ffb917be",
+      "he": "d692ffb917be",
+      "ru": "d692ffb917be",
+      "de": "d692ffb917be",
+      "ja": "d692ffb917be"
+    },
+    "example_oo_in_good": {
+      "gt": "b0ab5eee1ee1",
+      "he": "b0ab5eee1ee1",
+      "ru": "b0ab5eee1ee1",
+      "de": "b0ab5eee1ee1",
+      "ja": "b0ab5eee1ee1"
+    },
+    "example_oo_in_school": {
+      "gt": "9e5f1c609885",
+      "he": "9e5f1c609885",
+      "ru": "9e5f1c609885",
+      "de": "9e5f1c609885",
+      "ja": "9e5f1c609885"
+    },
+    "example_ou_in_south": {
+      "gt": "67dfbfbede24",
+      "he": "67dfbfbede24",
+      "ru": "67dfbfbede24",
+      "de": "67dfbfbede24",
+      "ja": "67dfbfbede24"
+    },
+    "example_p_in_plan": {
+      "gt": "2b8f273a4de0",
+      "he": "2b8f273a4de0",
+      "ru": "2b8f273a4de0",
+      "de": "2b8f273a4de0",
+      "ja": "2b8f273a4de0"
+    },
+    "example_r_in_rasgueado": {
+      "gt": "b375f4ef3605",
+      "he": "b375f4ef3605",
+      "ru": "b375f4ef3605",
+      "de": "b375f4ef3605",
+      "ja": "b375f4ef3605"
+    },
+    "example_r_in_rope": {
+      "gt": "8c53bb338bd7",
+      "he": "8c53bb338bd7",
+      "ru": "8c53bb338bd7",
+      "de": "8c53bb338bd7",
+      "ja": "8c53bb338bd7"
+    },
+    "example_re_in_kugelschreiber": {
+      "gt": "2c4ac8576a52",
+      "he": "2c4ac8576a52",
+      "ru": "2c4ac8576a52",
+      "de": "2c4ac8576a52",
+      "ja": "2c4ac8576a52"
+    },
+    "example_s_in_occasion": {
+      "gt": "4f5ff1aee81b",
+      "he": "4f5ff1aee81b",
+      "ru": "4f5ff1aee81b",
+      "de": "4f5ff1aee81b",
+      "ja": "4f5ff1aee81b"
+    },
+    "example_s_in_south": {
+      "gt": "4e23bbd0f78b",
+      "he": "4e23bbd0f78b",
+      "ru": "4e23bbd0f78b",
+      "de": "4e23bbd0f78b",
+      "ja": "4e23bbd0f78b"
+    },
+    "example_sh_in_shut": {
+      "gt": "cf8dc8cb3cf1",
+      "he": "cf8dc8cb3cf1",
+      "ru": "cf8dc8cb3cf1",
+      "de": "cf8dc8cb3cf1",
+      "ja": "cf8dc8cb3cf1"
+    },
+    "example_t_in_tend": {
+      "gt": "c7e080881de6",
+      "he": "c7e080881de6",
+      "ru": "c7e080881de6",
+      "de": "c7e080881de6",
+      "ja": "c7e080881de6"
+    },
+    "example_th_in_think": {
+      "gt": "3d6434069d1e",
+      "he": "3d6434069d1e",
+      "ru": "3d6434069d1e",
+      "de": "3d6434069d1e",
+      "ja": "3d6434069d1e"
+    },
+    "example_th_in_this": {
+      "gt": "2071d22c3a5e",
+      "he": "2071d22c3a5e",
+      "ru": "2071d22c3a5e",
+      "de": "2071d22c3a5e",
+      "ja": "2071d22c3a5e"
+    },
+    "example_u_in_tug": {
+      "gt": "1585f25ac59d",
+      "he": "1585f25ac59d",
+      "ru": "1585f25ac59d",
+      "de": "1585f25ac59d",
+      "ja": "1585f25ac59d"
+    },
+    "example_ui_in_huit": {
+      "gt": "89d0389e91d3",
+      "he": "89d0389e91d3",
+      "ru": "89d0389e91d3",
+      "de": "89d0389e91d3",
+      "ja": "89d0389e91d3"
+    },
+    "example_v_in_vine": {
+      "gt": "51a47d978692",
+      "he": "51a47d978692",
+      "ru": "51a47d978692",
+      "de": "51a47d978692",
+      "ja": "51a47d978692"
+    },
+    "example_w_in_woman": {
+      "gt": "c8dfdf5b786e",
+      "he": "c8dfdf5b786e",
+      "ru": "c8dfdf5b786e",
+      "de": "c8dfdf5b786e",
+      "ja": "c8dfdf5b786e"
+    },
+    "example_we_in_we": {
+      "gt": "391fe15ad693",
+      "he": "391fe15ad693",
+      "ru": "391fe15ad693",
+      "de": "391fe15ad693",
+      "ja": "391fe15ad693"
+    },
+    "example_y_in_your": {
+      "gt": "17dd0b92ae57",
+      "he": "17dd0b92ae57",
+      "ru": "17dd0b92ae57",
+      "de": "17dd0b92ae57",
+      "ja": "17dd0b92ae57"
+    },
+    "example_ye_in_bye": {
+      "gt": "daa12e4e1e47",
+      "he": "daa12e4e1e47",
+      "ru": "daa12e4e1e47",
+      "de": "daa12e4e1e47",
+      "ja": "daa12e4e1e47"
+    },
+    "example_you_in_you": {
+      "gt": "2e1b5171efcb",
+      "he": "2e1b5171efcb",
+      "ru": "2e1b5171efcb",
+      "de": "2e1b5171efcb",
+      "ja": "2e1b5171efcb"
+    },
+    "example_z_in_zone": {
+      "gt": "e6b53f68091f",
+      "he": "e6b53f68091f",
+      "ru": "e6b53f68091f",
+      "de": "e6b53f68091f",
+      "ja": "e6b53f68091f"
+    },
+    "graflect_example_p": {
+      "gt": "c47a63661955",
+      "he": "c47a63661955",
+      "ru": "c47a63661955",
+      "de": "c47a63661955",
+      "ja": "c47a63661955"
+    },
+    "graflect_ipa_title": {
+      "gt": "a4aa6e0ba166",
+      "he": "a4aa6e0ba166",
+      "ru": "a4aa6e0ba166",
+      "de": "a4aa6e0ba166",
+      "ja": "a4aa6e0ba166"
+    },
+    "graflect_tool_explanation": {
+      "gt": "0f1ad273d9b4",
+      "he": "0f1ad273d9b4",
+      "ru": "0f1ad273d9b4",
+      "de": "0f1ad273d9b4",
+      "ja": "0f1ad273d9b4"
+    },
+    "gt_nav_h2_home": {
+      "gt": "b13f7095d7d3",
+      "he": "b13f7095d7d3",
+      "ru": "b13f7095d7d3",
+      "de": "b13f7095d7d3",
+      "ja": "b13f7095d7d3"
+    },
+    "gt_nav_h2_intro": {
+      "gt": "b605350bc002",
+      "he": "b605350bc002",
+      "ru": "b605350bc002",
+      "de": "b605350bc002",
+      "ja": "b605350bc002"
+    },
+    "gt_nav_h3_consonants": {
+      "gt": "3e7336a04f6b",
+      "he": "3e7336a04f6b",
+      "ru": "3e7336a04f6b",
+      "de": "3e7336a04f6b",
+      "ja": "3e7336a04f6b"
+    },
+    "gt_nav_h3_other": {
+      "gt": "a7021f299581",
+      "he": "a7021f299581",
+      "ru": "a7021f299581",
+      "de": "a7021f299581",
+      "ja": "a7021f299581"
+    },
+    "gt_nav_h3_vowels": {
+      "gt": "07f90af12050",
+      "he": "07f90af12050",
+      "ru": "07f90af12050",
+      "de": "07f90af12050",
+      "ja": "07f90af12050"
+    },
+    "guide_h1": {
+      "gt": "94d2d2efd4ca",
+      "he": "94d2d2efd4ca",
+      "ru": "94d2d2efd4ca",
+      "de": "94d2d2efd4ca",
+      "ja": "94d2d2efd4ca"
+    },
+    "guide_h2_consonants": {
+      "gt": "182d0cc13b07",
+      "he": "182d0cc13b07",
+      "ru": "182d0cc13b07",
+      "de": "182d0cc13b07",
+      "ja": "182d0cc13b07"
+    },
+    "guide_h2_other": {
+      "gt": "0dbf59244384",
+      "he": "0dbf59244384",
+      "ru": "0dbf59244384",
+      "de": "0dbf59244384",
+      "ja": "0dbf59244384"
+    },
+    "guide_h2_table": {
+      "gt": "16d1c9050a0b",
+      "he": "16d1c9050a0b",
+      "ru": "16d1c9050a0b",
+      "de": "16d1c9050a0b",
+      "ja": "16d1c9050a0b"
+    },
+    "guide_h2_tool": {
+      "gt": "7731eb902833",
+      "he": "7731eb902833",
+      "ru": "7731eb902833",
+      "de": "7731eb902833",
+      "ja": "7731eb902833"
+    },
+    "guide_h2_vowels": {
+      "gt": "8d1ecf74ebb0",
+      "he": "8d1ecf74ebb0",
+      "ru": "8d1ecf74ebb0",
+      "de": "8d1ecf74ebb0",
+      "ja": "8d1ecf74ebb0"
+    },
+    "guide_p1": {
+      "gt": "af8a2f69a0cd",
+      "he": "af8a2f69a0cd",
+      "ru": "af8a2f69a0cd",
+      "de": "af8a2f69a0cd",
+      "ja": "af8a2f69a0cd"
+    },
+    "guide_p_tool": {
+      "gt": "ea8797372ab6",
+      "he": "ea8797372ab6",
+      "ru": "ea8797372ab6",
+      "de": "ea8797372ab6",
+      "ja": "ea8797372ab6"
+    },
+    "import_dict_btn": {
+      "gt": "650c37eb5bc6",
+      "he": "650c37eb5bc6",
+      "ru": "650c37eb5bc6",
+      "de": "650c37eb5bc6",
+      "ja": "650c37eb5bc6"
+    },
+    "insert_diagnostic_btn": {
+      "gt": "142549457769",
+      "he": "142549457769",
+      "ru": "142549457769",
+      "de": "142549457769",
+      "ja": "142549457769"
+    },
+    "manage_dict_btn": {
+      "gt": "7fab46d08684",
+      "he": "7fab46d08684",
+      "ru": "7fab46d08684",
+      "de": "7fab46d08684",
+      "ja": "7fab46d08684"
+    },
+    "new_dict_btn": {
+      "gt": "b4a6e7384370",
+      "he": "b4a6e7384370",
+      "ru": "b4a6e7384370",
+      "de": "b4a6e7384370",
+      "ja": "b4a6e7384370"
+    },
+    "remember_choice_label": {
+      "gt": "fc97569b6034",
+      "he": "fc97569b6034",
+      "ru": "fc97569b6034",
+      "de": "fc97569b6034",
+      "ja": "fc97569b6034"
+    },
+    "result_heading": {
+      "gt": "ccfbca650778",
+      "he": "ccfbca650778",
+      "ru": "ccfbca650778",
+      "de": "ccfbca650778",
+      "ja": "ccfbca650778"
+    },
+    "slug_clear_btn": {
+      "gt": "83b12c2216ef",
+      "he": "83b12c2216ef",
+      "ru": "83b12c2216ef",
+      "de": "83b12c2216ef",
+      "ja": "83b12c2216ef"
+    },
+    "slug_input_placeholder": {
+      "gt": "aea6f6c89d2f",
+      "he": "aea6f6c89d2f",
+      "ru": "aea6f6c89d2f",
+      "de": "aea6f6c89d2f",
+      "ja": "aea6f6c89d2f"
+    },
+    "slug_output_placeholder": {
+      "gt": "f255920c373a",
+      "he": "f255920c373a",
+      "ru": "f255920c373a",
+      "de": "f255920c373a",
+      "ja": "f255920c373a"
+    },
+    "slug_section_p1": {
+      "gt": "9726cd8d6fd1",
+      "he": "9726cd8d6fd1",
+      "ru": "9726cd8d6fd1",
+      "de": "9726cd8d6fd1",
+      "ja": "9726cd8d6fd1"
+    },
+    "slug_section_title": {
+      "gt": "60140a29ea7e",
+      "he": "60140a29ea7e",
+      "ru": "60140a29ea7e",
+      "de": "60140a29ea7e",
+      "ja": "60140a29ea7e"
+    },
+    "table_header_example": {
+      "gt": "6c1427dc5494",
+      "he": "6c1427dc5494",
+      "ru": "6c1427dc5494",
+      "de": "6c1427dc5494",
+      "ja": "6c1427dc5494"
+    },
+    "table_header_example_desc": {
+      "gt": "978639e3eb87",
+      "he": "978639e3eb87",
+      "ru": "978639e3eb87",
+      "de": "978639e3eb87",
+      "ja": "978639e3eb87"
+    },
+    "table_header_ipa": {
+      "gt": "c8ee2b817b14",
+      "he": "c8ee2b817b14",
+      "ru": "c8ee2b817b14",
+      "de": "c8ee2b817b14",
+      "ja": "c8ee2b817b14"
+    },
+    "table_header_symbol": {
+      "gt": "ebafb1902768",
+      "he": "ebafb1902768",
+      "ru": "ebafb1902768",
+      "de": "ebafb1902768",
+      "ja": "ebafb1902768"
+    },
+    "textarea_placeholder": {
+      "gt": "8394d8daeb99",
+      "he": "8394d8daeb99",
+      "ru": "8394d8daeb99",
+      "de": "8394d8daeb99",
+      "ja": "8394d8daeb99"
+    },
+    "translit_tools_title": {
+      "gt": "b58b950dc469",
+      "he": "b58b950dc469",
+      "ru": "b58b950dc469",
+      "de": "b58b950dc469",
+      "ja": "b58b950dc469"
+    },
+    "transliterate_btn": {
+      "gt": "570a9632d814",
+      "he": "570a9632d814",
+      "ru": "570a9632d814",
+      "de": "570a9632d814",
+      "ja": "570a9632d814"
+    },
+    "use_btn": {
+      "gt": "c36d819e7bc6",
+      "he": "c36d819e7bc6",
+      "ru": "c36d819e7bc6",
+      "de": "c36d819e7bc6",
+      "ja": "c36d819e7bc6"
+    },
+    "win_article_nav_title": {
+      "gt": "42a92819b566",
+      "he": "42a92819b566",
+      "ru": "42a92819b566",
+      "de": "42a92819b566",
+      "ja": "42a92819b566"
+    },
+    "win_edit_dict_title": {
+      "gt": "95473d1ab8a3",
+      "he": "95473d1ab8a3",
+      "ru": "95473d1ab8a3",
+      "de": "95473d1ab8a3",
+      "ja": "95473d1ab8a3"
+    },
+    "win_guide_title": {
+      "gt": "524ce7b7e5f8",
+      "he": "524ce7b7e5f8",
+      "ru": "524ce7b7e5f8",
+      "de": "524ce7b7e5f8",
+      "ja": "524ce7b7e5f8"
+    },
+    "win_manage_dicts_title": {
+      "gt": "c9fba6fb174a",
+      "he": "c9fba6fb174a",
+      "ru": "c9fba6fb174a",
+      "de": "c9fba6fb174a",
+      "ja": "c9fba6fb174a"
+    },
+    "win_slug_converter_title": {
+      "gt": "f06a6fe28825",
+      "he": "f06a6fe28825",
+      "ru": "f06a6fe28825",
+      "de": "f06a6fe28825",
+      "ja": "f06a6fe28825"
+    }
+  },
+  "index": {
+    "music_h4": {
+      "he": "b30e110432ea",
+      "ru": "b30e110432ea",
+      "ja": "b30e110432ea",
+      "de": "b30e110432ea",
+      "gt": "b30e110432ea"
+    },
+    "music_h5": {
+      "he": "afcc22d02aa1",
+      "ru": "afcc22d02aa1",
+      "ja": "afcc22d02aa1",
+      "de": "afcc22d02aa1",
+      "gt": "afcc22d02aa1"
+    },
+    "music_play_btn": {
+      "he": "1721df18593d",
+      "ru": "1721df18593d",
+      "ja": "1721df18593d",
+      "de": "1721df18593d",
+      "gt": "1721df18593d"
+    },
+    "photos_2023_h3": {
+      "he": "439b3de9b620",
+      "ru": "439b3de9b620",
+      "ja": "439b3de9b620",
+      "de": "439b3de9b620",
+      "gt": "439b3de9b620"
+    },
+    "photos_2024_h3": {
+      "he": "4f5e1cb26e4b",
+      "ru": "4f5e1cb26e4b",
+      "ja": "4f5e1cb26e4b",
+      "de": "4f5e1cb26e4b",
+      "gt": "4f5e1cb26e4b"
+    },
+    "photos_h2": {
+      "he": "acb5703caae9",
+      "ru": "acb5703caae9",
+      "ja": "acb5703caae9",
+      "de": "acb5703caae9",
+      "gt": "acb5703caae9"
+    },
+    "photos_h4": {
+      "he": "a43012fc3419",
+      "ru": "a43012fc3419",
+      "ja": "a43012fc3419",
+      "de": "a43012fc3419",
+      "gt": "a43012fc3419"
+    },
+    "projects_h2": {
+      "he": "9da8d45b8209",
+      "ru": "9da8d45b8209",
+      "ja": "9da8d45b8209",
+      "de": "9da8d45b8209",
+      "gt": "9da8d45b8209"
+    },
+    "projects_keyboards_h3": {
+      "he": "d39be2c992b9",
+      "ru": "d39be2c992b9",
+      "ja": "d39be2c992b9",
+      "de": "d39be2c992b9",
+      "gt": "d39be2c992b9"
+    },
+    "projects_sunshine_link": {
+      "he": "fdf0d4859927",
+      "ru": "fdf0d4859927",
+      "ja": "fdf0d4859927",
+      "de": "fdf0d4859927",
+      "gt": "fdf0d4859927"
+    },
+    "subscribe": {
+      "he": "a40f214df29e",
+      "ru": "a40f214df29e",
+      "ja": "a40f214df29e",
+      "de": "a40f214df29e",
+      "gt": "a40f214df29e"
+    },
+    "tools_h2": {
+      "he": "f947c6aada5a",
+      "ru": "f947c6aada5a",
+      "ja": "f947c6aada5a",
+      "de": "f947c6aada5a",
+      "gt": "f947c6aada5a"
+    },
+    "tools_h4": {
+      "he": "7dc3798e14d5",
+      "ru": "7dc3798e14d5",
+      "ja": "7dc3798e14d5",
+      "de": "7dc3798e14d5",
+      "gt": "7dc3798e14d5"
+    },
+    "tools_link1": {
+      "he": "f97d7771a3d8",
+      "ru": "f97d7771a3d8",
+      "ja": "f97d7771a3d8",
+      "de": "f97d7771a3d8",
+      "gt": "f97d7771a3d8"
+    },
+    "tools_link2": {
+      "he": "c66dc8c8f244",
+      "ru": "c66dc8c8f244",
+      "ja": "c66dc8c8f244",
+      "de": "c66dc8c8f244",
+      "gt": "c66dc8c8f244"
+    },
+    "welcome_h1": {
+      "he": "3d4f9871ec80",
+      "ru": "3d4f9871ec80",
+      "ja": "3d4f9871ec80",
+      "de": "3d4f9871ec80",
+      "gt": "3d4f9871ec80"
+    },
+    "welcome_text_eink": {
+      "he": "a5923d23361d",
+      "ru": "a5923d23361d",
+      "ja": "a5923d23361d",
+      "de": "a5923d23361d",
+      "gt": "a5923d23361d"
+    },
+    "welcome_text_lcd": {
+      "he": "283d47acd3b0",
+      "ru": "283d47acd3b0",
+      "ja": "283d47acd3b0",
+      "de": "283d47acd3b0",
+      "gt": "283d47acd3b0"
+    },
+    "win_blog_title": {
+      "he": "036025305de8",
+      "ru": "036025305de8",
+      "ja": "036025305de8",
+      "de": "036025305de8",
+      "gt": "036025305de8"
+    },
+    "win_photos_title": {
+      "he": "d737f2ccb98b",
+      "ru": "d737f2ccb98b",
+      "ja": "d737f2ccb98b",
+      "de": "d737f2ccb98b",
+      "gt": "d737f2ccb98b"
+    },
+    "win_projects_title": {
+      "he": "99247a561e1c",
+      "ru": "99247a561e1c",
+      "ja": "99247a561e1c",
+      "de": "99247a561e1c",
+      "gt": "99247a561e1c"
+    },
+    "win_tools_title": {
+      "he": "9b41db491ab6",
+      "ru": "9b41db491ab6",
+      "ja": "9b41db491ab6",
+      "de": "9b41db491ab6",
+      "gt": "9b41db491ab6"
+    },
+    "win_welcome_title": {
+      "he": "1fe2f4b54bdd",
+      "ru": "1fe2f4b54bdd",
+      "ja": "1fe2f4b54bdd",
+      "de": "1fe2f4b54bdd",
+      "gt": "1fe2f4b54bdd"
+    }
+  },
+  "lang": {
+    "gt_nav_h2_home": {
+      "he": "b13f7095d7d3",
+      "ru": "b13f7095d7d3",
+      "de": "b13f7095d7d3",
+      "ja": "b13f7095d7d3",
+      "gt": "b13f7095d7d3"
+    },
+    "lang_h2_does-gemini-do-the-graflect-transliterations-too": {
+      "he": "259e2053860f",
+      "ru": "259e2053860f",
+      "de": "259e2053860f",
+      "ja": "259e2053860f",
+      "gt": "259e2053860f"
+    },
+    "lang_h2_postface-commentary": {
+      "he": "af79e10821ca",
+      "ru": "af79e10821ca",
+      "de": "af79e10821ca",
+      "ja": "af79e10821ca",
+      "gt": "af79e10821ca"
+    },
+    "lang_h2_should-everyone-do-this": {
+      "he": "7d42c4aa13ea",
+      "ru": "7d42c4aa13ea",
+      "de": "7d42c4aa13ea",
+      "ja": "7d42c4aa13ea",
+      "gt": "7d42c4aa13ea"
+    },
+    "lang_h2_so-you-just-ask-ai-to-translate-the-pages-for-you": {
+      "he": "04500cfe2538",
+      "ru": "04500cfe2538",
+      "de": "04500cfe2538",
+      "ja": "04500cfe2538",
+      "gt": "04500cfe2538"
+    },
+    "lang_h2_tldr": {
+      "he": "64459b6056ce",
+      "ru": "64459b6056ce",
+      "de": "64459b6056ce",
+      "ja": "64459b6056ce",
+      "gt": "64459b6056ce"
+    },
+    "lang_h2_you-deliberately-left-out-my-language": {
+      "he": "9e35a3f98cea",
+      "ru": "9e35a3f98cea",
+      "de": "9e35a3f98cea",
+      "ja": "9e35a3f98cea",
+      "gt": "9e35a3f98cea"
+    },
+    "lang_li1": {
+      "he": "f8c444b7ef11",
+      "ru": "f8c444b7ef11",
+      "de": "f8c444b7ef11",
+      "ja": "f8c444b7ef11",
+      "gt": "f8c444b7ef11"
+    },
+    "lang_li10": {
+      "he": "56c57c45b998",
+      "ru": "56c57c45b998",
+      "de": "56c57c45b998",
+      "ja": "56c57c45b998",
+      "gt": "56c57c45b998"
+    },
+    "lang_li2": {
+      "he": "5a18e46ec7cf",
+      "ru": "5a18e46ec7cf",
+      "de": "5a18e46ec7cf",
+      "ja": "5a18e46ec7cf",
+      "gt": "5a18e46ec7cf"
+    },
+    "lang_li3": {
+      "he": "23652fa87bb2",
+      "ru": "23652fa87bb2",
+      "de": "23652fa87bb2",
+      "ja": "23652fa87bb2",
+      "gt": "23652fa87bb2"
+    },
+    "lang_li4": {
+      "he": "aa3e89d1693d",
+      "ru": "aa3e89d1693d",
+      "de": "aa3e89d1693d",
+      "ja": "aa3e89d1693d",
+      "gt": "aa3e89d1693d"
+    },
+    "lang_li5": {
+      "he": "07bf601c83c1",
+      "ru": "07bf601c83c1",
+      "de": "07bf601c83c1",
+      "ja": "07bf601c83c1",
+      "gt": "07bf601c83c1"
+    },
+    "lang_li6": {
+      "he": "97523aff57f3",
+      "ru": "97523aff57f3",
+      "de": "97523aff57f3",
+      "ja": "97523aff57f3",
+      "gt": "97523aff57f3"
+    },
+    "lang_li7": {
+      "he": "3b86f7d364c3",
+      "ru": "3b86f7d364c3",
+      "de": "3b86f7d364c3",
+      "ja": "3b86f7d364c3",
+      "gt": "3b86f7d364c3"
+    },
+    "lang_li8": {
+      "he": "8af3a9938fa5",
+      "ru": "8af3a9938fa5",
+      "de": "8af3a9938fa5",
+      "ja": "8af3a9938fa5",
+      "gt": "8af3a9938fa5"
+    },
+    "lang_li9": {
+      "he": "b7ed7a868c57",
+      "ru": "b7ed7a868c57",
+      "de": "b7ed7a868c57",
+      "ja": "b7ed7a868c57",
+      "gt": "b7ed7a868c57"
+    },
+    "lang_nav_does-gemini-do-the-graflect-transliterations-too": {
+      "he": "1377095724f3",
+      "ru": "1377095724f3",
+      "de": "1377095724f3",
+      "ja": "1377095724f3",
+      "gt": "1377095724f3"
+    },
+    "lang_nav_postface-commentary": {
+      "he": "af79e10821ca",
+      "ru": "af79e10821ca",
+      "de": "af79e10821ca",
+      "ja": "af79e10821ca",
+      "gt": "af79e10821ca"
+    },
+    "lang_nav_should-everyone-do-this": {
+      "he": "715a7a0f754e",
+      "ru": "715a7a0f754e",
+      "de": "715a7a0f754e",
+      "ja": "715a7a0f754e",
+      "gt": "715a7a0f754e"
+    },
+    "lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you": {
+      "he": "0ea5977074d1",
+      "ru": "0ea5977074d1",
+      "de": "0ea5977074d1",
+      "ja": "0ea5977074d1",
+      "gt": "0ea5977074d1"
+    },
+    "lang_nav_title": {
+      "he": "5a46894ed6b5",
+      "ru": "5a46894ed6b5",
+      "de": "5a46894ed6b5",
+      "ja": "5a46894ed6b5",
+      "gt": "5a46894ed6b5"
+    },
+    "lang_nav_tldr": {
+      "he": "64459b6056ce",
+      "ru": "64459b6056ce",
+      "de": "64459b6056ce",
+      "ja": "64459b6056ce",
+      "gt": "64459b6056ce"
+    },
+    "lang_nav_you-deliberately-left-out-my-language": {
+      "he": "9eb8cd756595",
+      "ru": "9eb8cd756595",
+      "de": "9eb8cd756595",
+      "ja": "9eb8cd756595",
+      "gt": "9eb8cd756595"
+    },
+    "lang_p1": {
+      "he": "55cdc13b7c03",
+      "ru": "55cdc13b7c03",
+      "de": "55cdc13b7c03",
+      "ja": "55cdc13b7c03",
+      "gt": "55cdc13b7c03"
+    },
+    "lang_p10": {
+      "he": "2c4e46a67943",
+      "ru": "2c4e46a67943",
+      "de": "2c4e46a67943",
+      "ja": "2c4e46a67943",
+      "gt": "2c4e46a67943"
+    },
+    "lang_p11": {
+      "he": "0988cc7e9d48",
+      "ru": "0988cc7e9d48",
+      "de": "0988cc7e9d48",
+      "ja": "0988cc7e9d48",
+      "gt": "0988cc7e9d48"
+    },
+    "lang_p12": {
+      "he": "b6507d60274c",
+      "ru": "b6507d60274c",
+      "de": "b6507d60274c",
+      "ja": "b6507d60274c",
+      "gt": "b6507d60274c"
+    },
+    "lang_p13": {
+      "he": "1f2d32c8c617",
+      "ru": "1f2d32c8c617",
+      "de": "1f2d32c8c617",
+      "ja": "1f2d32c8c617",
+      "gt": "1f2d32c8c617"
+    },
+    "lang_p14": {
+      "he": "aa3cd1ac5641",
+      "ru": "aa3cd1ac5641",
+      "de": "aa3cd1ac5641",
+      "ja": "aa3cd1ac5641",
+      "gt": "aa3cd1ac5641"
+    },
+    "lang_p15": {
+      "he": "70cc43f6d605",
+      "ru": "70cc43f6d605",
+      "de": "70cc43f6d605",
+      "ja": "70cc43f6d605",
+      "gt": "70cc43f6d605"
+    },
+    "lang_p16": {
+      "he": "51bf1ef2d1ae",
+      "ru": "51bf1ef2d1ae",
+      "de": "51bf1ef2d1ae",
+      "ja": "51bf1ef2d1ae",
+      "gt": "51bf1ef2d1ae"
+    },
+    "lang_p17": {
+      "he": "4139d568f7b4",
+      "ru": "4139d568f7b4",
+      "de": "4139d568f7b4",
+      "ja": "4139d568f7b4",
+      "gt": "4139d568f7b4"
+    },
+    "lang_p18": {
+      "he": "8660f815b09f",
+      "ru": "8660f815b09f",
+      "de": "8660f815b09f",
+      "ja": "8660f815b09f",
+      "gt": "8660f815b09f"
+    },
+    "lang_p19": {
+      "he": "a35a7df92c3d",
+      "ru": "a35a7df92c3d",
+      "de": "a35a7df92c3d",
+      "ja": "a35a7df92c3d",
+      "gt": "a35a7df92c3d"
+    },
+    "lang_p2": {
+      "he": "fcc087618cd6",
+      "ru": "fcc087618cd6",
+      "de": "fcc087618cd6",
+      "ja": "fcc087618cd6",
+      "gt": "fcc087618cd6"
+    },
+    "lang_p20": {
+      "he": "04dd38e6d790",
+      "ru": "04dd38e6d790",
+      "de": "04dd38e6d790",
+      "ja": "04dd38e6d790",
+      "gt": "04dd38e6d790"
+    },
+    "lang_p21": {
+      "he": "ecb55b2364ec",
+      "ru": "ecb55b2364ec",
+      "de": "ecb55b2364ec",
+      "ja": "ecb55b2364ec",
+      "gt": "ecb55b2364ec"
+    },
+    "lang_p22": {
+      "he": "81fabdc761f0",
+      "ru": "81fabdc761f0",
+      "de": "81fabdc761f0",
+      "ja": "81fabdc761f0",
+      "gt": "81fabdc761f0"
+    },
+    "lang_p23": {
+      "he": "035e709b23c9",
+      "ru": "035e709b23c9",
+      "de": "035e709b23c9",
+      "ja": "035e709b23c9",
+      "gt": "035e709b23c9"
+    },
+    "lang_p24": {
+      "he": "c405ebb25cc3",
+      "ru": "c405ebb25cc3",
+      "de": "c405ebb25cc3",
+      "ja": "c405ebb25cc3",
+      "gt": "c405ebb25cc3"
+    },
+    "lang_p25": {
+      "he": "398e44e7eb03",
+      "ru": "398e44e7eb03",
+      "de": "398e44e7eb03",
+      "ja": "398e44e7eb03",
+      "gt": "398e44e7eb03"
+    },
+    "lang_p26": {
+      "he": "682ae1774ae0",
+      "ru": "682ae1774ae0",
+      "de": "682ae1774ae0",
+      "ja": "682ae1774ae0",
+      "gt": "682ae1774ae0"
+    },
+    "lang_p27": {
+      "he": "ba821db26f34",
+      "ru": "ba821db26f34",
+      "de": "ba821db26f34",
+      "ja": "ba821db26f34",
+      "gt": "ba821db26f34"
+    },
+    "lang_p28": {
+      "he": "0b37b050df82",
+      "ru": "0b37b050df82",
+      "de": "0b37b050df82",
+      "ja": "0b37b050df82",
+      "gt": "0b37b050df82"
+    },
+    "lang_p29": {
+      "he": "ff23a1fe1e2d",
+      "ru": "ff23a1fe1e2d",
+      "de": "ff23a1fe1e2d",
+      "ja": "ff23a1fe1e2d",
+      "gt": "ff23a1fe1e2d"
+    },
+    "lang_p3": {
+      "he": "5f9a2b795615",
+      "ru": "5f9a2b795615",
+      "de": "5f9a2b795615",
+      "ja": "5f9a2b795615",
+      "gt": "5f9a2b795615"
+    },
+    "lang_p30": {
+      "he": "e19dacf2bfaa",
+      "ru": "e19dacf2bfaa",
+      "de": "e19dacf2bfaa",
+      "ja": "e19dacf2bfaa",
+      "gt": "e19dacf2bfaa"
+    },
+    "lang_p31": {
+      "he": "cb2df037a9a8",
+      "ru": "cb2df037a9a8",
+      "de": "cb2df037a9a8",
+      "ja": "cb2df037a9a8",
+      "gt": "cb2df037a9a8"
+    },
+    "lang_p32": {
+      "he": "a75840c058b2",
+      "ru": "a75840c058b2",
+      "de": "a75840c058b2",
+      "ja": "a75840c058b2",
+      "gt": "a75840c058b2"
+    },
+    "lang_p33": {
+      "he": "58aa770cc972",
+      "ru": "58aa770cc972",
+      "de": "58aa770cc972",
+      "ja": "58aa770cc972",
+      "gt": "58aa770cc972"
+    },
+    "lang_p34": {
+      "he": "0ae611b5f73a",
+      "ru": "0ae611b5f73a",
+      "de": "0ae611b5f73a",
+      "ja": "0ae611b5f73a",
+      "gt": "0ae611b5f73a"
+    },
+    "lang_p35": {
+      "he": "c9591e2909b6",
+      "ru": "c9591e2909b6",
+      "de": "c9591e2909b6",
+      "ja": "c9591e2909b6",
+      "gt": "c9591e2909b6"
+    },
+    "lang_p4": {
+      "he": "8dfcb3ac9af6",
+      "ru": "8dfcb3ac9af6",
+      "de": "8dfcb3ac9af6",
+      "ja": "8dfcb3ac9af6",
+      "gt": "8dfcb3ac9af6"
+    },
+    "lang_p5": {
+      "he": "0099c1d9d40c",
+      "ru": "0099c1d9d40c",
+      "de": "0099c1d9d40c",
+      "ja": "0099c1d9d40c",
+      "gt": "0099c1d9d40c"
+    },
+    "lang_p6": {
+      "he": "5545eacfc877",
+      "ru": "5545eacfc877",
+      "de": "5545eacfc877",
+      "ja": "5545eacfc877",
+      "gt": "5545eacfc877"
+    },
+    "lang_p7": {
+      "he": "d0add29b3dc5",
+      "ru": "d0add29b3dc5",
+      "de": "d0add29b3dc5",
+      "ja": "d0add29b3dc5",
+      "gt": "d0add29b3dc5"
+    },
+    "lang_p8": {
+      "he": "dd7c964a248a",
+      "ru": "dd7c964a248a",
+      "de": "dd7c964a248a",
+      "ja": "dd7c964a248a",
+      "gt": "dd7c964a248a"
+    },
+    "lang_p9": {
+      "he": "78d5f375d3c3",
+      "ru": "78d5f375d3c3",
+      "de": "78d5f375d3c3",
+      "ja": "78d5f375d3c3",
+      "gt": "78d5f375d3c3"
+    },
+    "lang_title": {
+      "he": "04f1ae7736a5",
+      "ru": "04f1ae7736a5",
+      "de": "04f1ae7736a5",
+      "ja": "04f1ae7736a5",
+      "gt": "04f1ae7736a5"
+    },
+    "lang_win_gallery_title": {
+      "he": "d683f3b5ab1d",
+      "ru": "d683f3b5ab1d",
+      "de": "d683f3b5ab1d",
+      "ja": "d683f3b5ab1d",
+      "gt": "d683f3b5ab1d"
+    },
+    "win_gallerynav_title": {
+      "he": "2985514611ce",
+      "ru": "2985514611ce",
+      "de": "2985514611ce",
+      "ja": "2985514611ce",
+      "gt": "2985514611ce"
+    }
+  },
+  "rsssitename": {
+    "site_description": {
+      "ru": "25262e054dda",
+      "he": "25262e054dda",
+      "de": "25262e054dda",
+      "ja": "25262e054dda",
+      "gt": "25262e054dda"
+    },
+    "site_title": {
+      "ru": "899b45c67348",
+      "he": "899b45c67348",
+      "de": "899b45c67348",
+      "ja": "899b45c67348",
+      "gt": "899b45c67348"
+    }
+  },
+  "sunshine": {
+    "bye_h2": {
+      "he": "795a3fd5e888",
+      "ru": "795a3fd5e888",
+      "de": "795a3fd5e888",
+      "ja": "795a3fd5e888",
+      "gt": "795a3fd5e888"
+    },
+    "bye_p1": {
+      "he": "6b60ae19443b",
+      "ru": "6b60ae19443b",
+      "de": "6b60ae19443b",
+      "ja": "6b60ae19443b",
+      "gt": "6b60ae19443b"
+    },
+    "cad_h3": {
+      "he": "82f579c089e0",
+      "ru": "82f579c089e0",
+      "de": "82f579c089e0",
+      "ja": "82f579c089e0",
+      "gt": "82f579c089e0"
+    },
+    "cad_p1": {
+      "he": "79ed060595fd",
+      "ru": "79ed060595fd",
+      "de": "79ed060595fd",
+      "ja": "79ed060595fd",
+      "gt": "79ed060595fd"
+    },
+    "cad_p2": {
+      "he": "aae86db44596",
+      "ru": "aae86db44596",
+      "de": "aae86db44596",
+      "ja": "aae86db44596",
+      "gt": "aae86db44596"
+    },
+    "cad_p3": {
+      "he": "efdb40531404",
+      "ru": "efdb40531404",
+      "de": "efdb40531404",
+      "ja": "efdb40531404",
+      "gt": "efdb40531404"
+    },
+    "cad_p4": {
+      "he": "f9a9795f1c5d",
+      "ru": "f9a9795f1c5d",
+      "de": "f9a9795f1c5d",
+      "ja": "f9a9795f1c5d",
+      "gt": "f9a9795f1c5d"
+    },
+    "design_h2": {
+      "he": "56ecf31c7e04",
+      "ru": "56ecf31c7e04",
+      "de": "56ecf31c7e04",
+      "ja": "56ecf31c7e04",
+      "gt": "56ecf31c7e04"
+    },
+    "design_p1": {
+      "he": "86e962577dff",
+      "ru": "86e962577dff",
+      "de": "86e962577dff",
+      "ja": "86e962577dff",
+      "gt": "86e962577dff"
+    },
+    "design_p2": {
+      "he": "3473059331f8",
+      "ru": "3473059331f8",
+      "de": "3473059331f8",
+      "ja": "3473059331f8",
+      "gt": "3473059331f8"
+    },
+    "discoveries_h2": {
+      "he": "cddb085696d6",
+      "ru": "cddb085696d6",
+      "de": "cddb085696d6",
+      "ja": "cddb085696d6",
+      "gt": "cddb085696d6"
+    },
+    "discoveries_li1": {
+      "he": "c69812459e3b",
+      "ru": "c69812459e3b",
+      "de": "c69812459e3b",
+      "ja": "c69812459e3b",
+      "gt": "c69812459e3b"
+    },
+    "discoveries_li2": {
+      "he": "01547fe088e3",
+      "ru": "01547fe088e3",
+      "de": "01547fe088e3",
+      "ja": "01547fe088e3",
+      "gt": "01547fe088e3"
+    },
+    "discoveries_li3": {
+      "he": "0535d9ea7fea",
+      "ru": "0535d9ea7fea",
+      "de": "0535d9ea7fea",
+      "ja": "0535d9ea7fea",
+      "gt": "0535d9ea7fea"
+    },
+    "discoveries_li4": {
+      "he": "8772c6f1e4d4",
+      "ru": "8772c6f1e4d4",
+      "de": "8772c6f1e4d4",
+      "ja": "8772c6f1e4d4",
+      "gt": "8772c6f1e4d4"
+    },
+    "discoveries_li5": {
+      "he": "83fc9f5e363f",
+      "ru": "83fc9f5e363f",
+      "de": "83fc9f5e363f",
+      "ja": "83fc9f5e363f",
+      "gt": "83fc9f5e363f"
+    },
+    "discoveries_p1": {
+      "he": "6a7988b1d06b",
+      "ru": "6a7988b1d06b",
+      "de": "6a7988b1d06b",
+      "ja": "6a7988b1d06b",
+      "gt": "6a7988b1d06b"
+    },
+    "discoveries_p2": {
+      "he": "617888c63240",
+      "ru": "617888c63240",
+      "de": "617888c63240",
+      "ja": "617888c63240",
+      "gt": "617888c63240"
+    },
+    "final_h3": {
+      "he": "d2a54324db64",
+      "ru": "d2a54324db64",
+      "de": "d2a54324db64",
+      "ja": "d2a54324db64",
+      "gt": "d2a54324db64"
+    },
+    "final_p1": {
+      "he": "47635801168d",
+      "ru": "47635801168d",
+      "de": "47635801168d",
+      "ja": "47635801168d",
+      "gt": "47635801168d"
+    },
+    "final_p2": {
+      "he": "991a86fbe67a",
+      "ru": "991a86fbe67a",
+      "de": "991a86fbe67a",
+      "ja": "991a86fbe67a",
+      "gt": "991a86fbe67a"
+    },
+    "final_p3": {
+      "he": "0c712ad2dfed",
+      "ru": "0c712ad2dfed",
+      "de": "0c712ad2dfed",
+      "ja": "0c712ad2dfed",
+      "gt": "0c712ad2dfed"
+    },
+    "final_p4": {
+      "he": "939d80b00472",
+      "ru": "939d80b00472",
+      "de": "939d80b00472",
+      "ja": "939d80b00472",
+      "gt": "939d80b00472"
+    },
+    "final_p5": {
+      "he": "4d8ff3188565",
+      "ru": "4d8ff3188565",
+      "de": "4d8ff3188565",
+      "ja": "4d8ff3188565",
+      "gt": "4d8ff3188565"
+    },
+    "intro_h2": {
+      "he": "ea2b8a878841",
+      "ru": "ea2b8a878841",
+      "de": "ea2b8a878841",
+      "ja": "ea2b8a878841",
+      "gt": "ea2b8a878841"
+    },
+    "intro_p1": {
+      "he": "ab860314d7e9",
+      "ru": "ab860314d7e9",
+      "de": "ab860314d7e9",
+      "ja": "ab860314d7e9",
+      "gt": "ab860314d7e9"
+    },
+    "intro_p2": {
+      "he": "5597dfa57d78",
+      "ru": "5597dfa57d78",
+      "de": "5597dfa57d78",
+      "ja": "5597dfa57d78",
+      "gt": "5597dfa57d78"
+    },
+    "intro_p3": {
+      "he": "85cb2a764e9e",
+      "ru": "85cb2a764e9e",
+      "de": "85cb2a764e9e",
+      "ja": "85cb2a764e9e",
+      "gt": "85cb2a764e9e"
+    },
+    "keymap_h3": {
+      "he": "5e076c0bda25",
+      "ru": "5e076c0bda25",
+      "de": "5e076c0bda25",
+      "ja": "5e076c0bda25",
+      "gt": "5e076c0bda25"
+    },
+    "keymap_p1": {
+      "he": "63ea3c155a67",
+      "ru": "63ea3c155a67",
+      "de": "63ea3c155a67",
+      "ja": "63ea3c155a67",
+      "gt": "63ea3c155a67"
+    },
+    "nav_h2_bye": {
+      "he": "3d1a70c8d493",
+      "ru": "3d1a70c8d493",
+      "de": "3d1a70c8d493",
+      "ja": "3d1a70c8d493",
+      "gt": "3d1a70c8d493"
+    },
+    "nav_h2_design": {
+      "he": "ac6d8bc3808c",
+      "ru": "ac6d8bc3808c",
+      "de": "ac6d8bc3808c",
+      "ja": "ac6d8bc3808c",
+      "gt": "ac6d8bc3808c"
+    },
+    "nav_h2_discoveries": {
+      "he": "7f675b4a0160",
+      "ru": "7f675b4a0160",
+      "de": "7f675b4a0160",
+      "ja": "7f675b4a0160",
+      "gt": "7f675b4a0160"
+    },
+    "nav_h2_home": {
+      "he": "b13f7095d7d3",
+      "ru": "b13f7095d7d3",
+      "de": "b13f7095d7d3",
+      "ja": "b13f7095d7d3",
+      "gt": "b13f7095d7d3"
+    },
+    "nav_h2_intro": {
+      "he": "a940d7bbf3ab",
+      "ru": "a940d7bbf3ab",
+      "de": "a940d7bbf3ab",
+      "ja": "a940d7bbf3ab",
+      "gt": "a940d7bbf3ab"
+    },
+    "nav_h2_objectives": {
+      "he": "e9f00583eb77",
+      "ru": "e9f00583eb77",
+      "de": "e9f00583eb77",
+      "ja": "e9f00583eb77",
+      "gt": "e9f00583eb77"
+    },
+    "nav_h2_tldr": {
+      "he": "e60ba174fad8",
+      "ru": "e60ba174fad8",
+      "de": "e60ba174fad8",
+      "ja": "e60ba174fad8",
+      "gt": "e60ba174fad8"
+    },
+    "nav_h3_cad": {
+      "he": "d3d13886ee62",
+      "ru": "d3d13886ee62",
+      "de": "d3d13886ee62",
+      "ja": "d3d13886ee62",
+      "gt": "d3d13886ee62"
+    },
+    "nav_h3_keymap": {
+      "he": "b3d6438aab2f",
+      "ru": "b3d6438aab2f",
+      "de": "b3d6438aab2f",
+      "ja": "b3d6438aab2f",
+      "gt": "b3d6438aab2f"
+    },
+    "nav_h3_pcb": {
+      "he": "8812a7e28082",
+      "ru": "8812a7e28082",
+      "de": "8812a7e28082",
+      "ja": "8812a7e28082",
+      "gt": "8812a7e28082"
+    },
+    "nav_h3_plans": {
+      "he": "2af74eaf0d58",
+      "ru": "2af74eaf0d58",
+      "de": "2af74eaf0d58",
+      "ja": "2af74eaf0d58",
+      "gt": "2af74eaf0d58"
+    },
+    "nav_h4_final": {
+      "he": "2d191b39b3a0",
+      "ru": "2d191b39b3a0",
+      "de": "2d191b39b3a0",
+      "ja": "2d191b39b3a0",
+      "gt": "2d191b39b3a0"
+    },
+    "objectives_h2": {
+      "he": "e36fbd3bdcdf",
+      "ru": "e36fbd3bdcdf",
+      "de": "e36fbd3bdcdf",
+      "ja": "e36fbd3bdcdf",
+      "gt": "e36fbd3bdcdf"
+    },
+    "objectives_h3_theory": {
+      "he": "09a51ed22a02",
+      "ru": "09a51ed22a02",
+      "de": "09a51ed22a02",
+      "ja": "09a51ed22a02",
+      "gt": "09a51ed22a02"
+    },
+    "objectives_h4_combos": {
+      "he": "ec6cfe05e638",
+      "ru": "ec6cfe05e638",
+      "de": "ec6cfe05e638",
+      "ja": "ec6cfe05e638",
+      "gt": "ec6cfe05e638"
+    },
+    "objectives_h4_phalanges": {
+      "he": "ffc081e44821",
+      "ru": "ffc081e44821",
+      "de": "ffc081e44821",
+      "ja": "ffc081e44821",
+      "gt": "ffc081e44821"
+    },
+    "objectives_li1": {
+      "he": "b0ef33a17168",
+      "ru": "b0ef33a17168",
+      "de": "b0ef33a17168",
+      "ja": "b0ef33a17168",
+      "gt": "b0ef33a17168"
+    },
+    "objectives_li2": {
+      "he": "b97d823d3b29",
+      "ru": "b97d823d3b29",
+      "de": "b97d823d3b29",
+      "ja": "b97d823d3b29",
+      "gt": "b97d823d3b29"
+    },
+    "objectives_li3": {
+      "he": "9bea8f17f3da",
+      "ru": "9bea8f17f3da",
+      "de": "9bea8f17f3da",
+      "ja": "9bea8f17f3da",
+      "gt": "9bea8f17f3da"
+    },
+    "objectives_li4": {
+      "he": "62a154a4a371",
+      "ru": "62a154a4a371",
+      "de": "62a154a4a371",
+      "ja": "62a154a4a371",
+      "gt": "62a154a4a371"
+    },
+    "objectives_li5": {
+      "he": "9f231a574eb4",
+      "ru": "9f231a574eb4",
+      "de": "9f231a574eb4",
+      "ja": "9f231a574eb4",
+      "gt": "9f231a574eb4"
+    },
+    "objectives_li6": {
+      "he": "03627c352295",
+      "ru": "03627c352295",
+      "de": "03627c352295",
+      "ja": "03627c352295",
+      "gt": "03627c352295"
+    },
+    "objectives_li7": {
+      "he": "bcca7a69b03a",
+      "ru": "bcca7a69b03a",
+      "de": "bcca7a69b03a",
+      "ja": "bcca7a69b03a",
+      "gt": "bcca7a69b03a"
+    },
+    "objectives_p1": {
+      "he": "32249260e5c6",
+      "ru": "32249260e5c6",
+      "de": "32249260e5c6",
+      "ja": "32249260e5c6",
+      "gt": "32249260e5c6"
+    },
+    "objectives_p2": {
+      "he": "6f1e8e1e61a5",
+      "ru": "6f1e8e1e61a5",
+      "de": "6f1e8e1e61a5",
+      "ja": "6f1e8e1e61a5",
+      "gt": "6f1e8e1e61a5"
+    },
+    "objectives_p3": {
+      "he": "434519a8a3af",
+      "ru": "434519a8a3af",
+      "de": "434519a8a3af",
+      "ja": "434519a8a3af",
+      "gt": "434519a8a3af"
+    },
+    "objectives_p4": {
+      "he": "5e61096fea78",
+      "ru": "5e61096fea78",
+      "de": "5e61096fea78",
+      "ja": "5e61096fea78",
+      "gt": "5e61096fea78"
+    },
+    "pcb_h3": {
+      "he": "6056865c387f",
+      "ru": "6056865c387f",
+      "de": "6056865c387f",
+      "ja": "6056865c387f",
+      "gt": "6056865c387f"
+    },
+    "pcb_p1": {
+      "he": "0c1f859cfb8f",
+      "ru": "0c1f859cfb8f",
+      "de": "0c1f859cfb8f",
+      "ja": "0c1f859cfb8f",
+      "gt": "0c1f859cfb8f"
+    },
+    "pcb_p2": {
+      "he": "d549330c9caf",
+      "ru": "d549330c9caf",
+      "de": "d549330c9caf",
+      "ja": "d549330c9caf",
+      "gt": "d549330c9caf"
+    },
+    "pcb_p3": {
+      "he": "0781a31a8fa5",
+      "ru": "0781a31a8fa5",
+      "de": "0781a31a8fa5",
+      "ja": "0781a31a8fa5",
+      "gt": "0781a31a8fa5"
+    },
+    "pcb_p4": {
+      "he": "5ce83bced876",
+      "ru": "5ce83bced876",
+      "de": "5ce83bced876",
+      "ja": "5ce83bced876",
+      "gt": "5ce83bced876"
+    },
+    "pcb_p5": {
+      "he": "4d82bf4327a9",
+      "ru": "4d82bf4327a9",
+      "de": "4d82bf4327a9",
+      "ja": "4d82bf4327a9",
+      "gt": "4d82bf4327a9"
+    },
+    "pcb_p6": {
+      "he": "853124a70295",
+      "ru": "853124a70295",
+      "de": "853124a70295",
+      "ja": "853124a70295",
+      "gt": "853124a70295"
+    },
+    "pcb_p7": {
+      "he": "f9ba3b0385b3",
+      "ru": "f9ba3b0385b3",
+      "de": "f9ba3b0385b3",
+      "ja": "f9ba3b0385b3",
+      "gt": "f9ba3b0385b3"
+    },
+    "pcb_p8": {
+      "he": "b47fdba5dced",
+      "ru": "b47fdba5dced",
+      "de": "b47fdba5dced",
+      "ja": "b47fdba5dced",
+      "gt": "b47fdba5dced"
+    },
+    "plans_h2": {
+      "he": "09c2caf86a8c",
+      "ru": "09c2caf86a8c",
+      "de": "09c2caf86a8c",
+      "ja": "09c2caf86a8c",
+      "gt": "09c2caf86a8c"
+    },
+    "plans_h3_features": {
+      "he": "0741ad1879b7",
+      "ru": "0741ad1879b7",
+      "de": "0741ad1879b7",
+      "ja": "0741ad1879b7",
+      "gt": "0741ad1879b7"
+    },
+    "plans_h3_layout": {
+      "he": "51152045b45f",
+      "ru": "51152045b45f",
+      "de": "51152045b45f",
+      "ja": "51152045b45f",
+      "gt": "51152045b45f"
+    },
+    "plans_h3_production": {
+      "he": "777bbed0732c",
+      "ru": "777bbed0732c",
+      "de": "777bbed0732c",
+      "ja": "777bbed0732c",
+      "gt": "777bbed0732c"
+    },
+    "plans_p1": {
+      "he": "8ea1ee3ef12f",
+      "ru": "8ea1ee3ef12f",
+      "de": "8ea1ee3ef12f",
+      "ja": "8ea1ee3ef12f",
+      "gt": "8ea1ee3ef12f"
+    },
+    "plans_p2": {
+      "he": "fa14e98f04b4",
+      "ru": "fa14e98f04b4",
+      "de": "fa14e98f04b4",
+      "ja": "fa14e98f04b4",
+      "gt": "fa14e98f04b4"
+    },
+    "plans_p3": {
+      "he": "a820e6aa20c8",
+      "ru": "a820e6aa20c8",
+      "de": "a820e6aa20c8",
+      "ja": "a820e6aa20c8",
+      "gt": "a820e6aa20c8"
+    },
+    "sun_win_gallery_title": {
+      "he": "30a6642b9e60",
+      "ru": "30a6642b9e60",
+      "de": "30a6642b9e60",
+      "ja": "30a6642b9e60",
+      "gt": "30a6642b9e60"
+    },
+    "sunshine_h1": {
+      "he": "6186ed0f5ba1",
+      "ru": "6186ed0f5ba1",
+      "de": "6186ed0f5ba1",
+      "ja": "6186ed0f5ba1",
+      "gt": "6186ed0f5ba1"
+    },
+    "sunshine_p1": {
+      "he": "0daa0e8fc2d3",
+      "ru": "0daa0e8fc2d3",
+      "de": "0daa0e8fc2d3",
+      "ja": "0daa0e8fc2d3",
+      "gt": "0daa0e8fc2d3"
+    },
+    "sunshine_p2": {
+      "he": "bf74ffdc5b2a",
+      "ru": "bf74ffdc5b2a",
+      "de": "bf74ffdc5b2a",
+      "ja": "bf74ffdc5b2a",
+      "gt": "bf74ffdc5b2a"
+    },
+    "sunshine_title": {
+      "he": "a941a4c4fd0c",
+      "ru": "a941a4c4fd0c",
+      "de": "a941a4c4fd0c",
+      "ja": "a941a4c4fd0c",
+      "gt": "a941a4c4fd0c"
+    },
+    "sunwin_gallerynav_title": {
+      "he": "42a92819b566",
+      "ru": "42a92819b566",
+      "de": "42a92819b566",
+      "ja": "42a92819b566",
+      "gt": "42a92819b566"
+    },
+    "tldr_h2": {
+      "he": "7c894375efc8",
+      "ru": "7c894375efc8",
+      "de": "7c894375efc8",
+      "ja": "7c894375efc8",
+      "gt": "7c894375efc8"
+    },
+    "tldr_p1": {
+      "he": "351b51822357",
+      "ru": "351b51822357",
+      "de": "351b51822357",
+      "ja": "351b51822357",
+      "gt": "351b51822357"
+    }
+  },
+  "tbns": {
+    "tbns_desc": {
+      "ja": "d3d1419c20e9",
+      "de": "d3d1419c20e9",
+      "he": "d3d1419c20e9",
+      "ru": "d3d1419c20e9",
+      "gt": "d3d1419c20e9"
+    },
+    "tbns_h2_rapacious-subscription-services": {
+      "ja": "c432d1ac0893",
+      "de": "c432d1ac0893",
+      "he": "c432d1ac0893",
+      "ru": "c432d1ac0893",
+      "gt": "c432d1ac0893"
+    },
+    "tbns_h2_reorganizing-some-stuff": {
+      "ja": "604b1d786d1f",
+      "de": "604b1d786d1f",
+      "he": "604b1d786d1f",
+      "ru": "604b1d786d1f",
+      "gt": "604b1d786d1f"
+    },
+    "tbns_h2_replacing-substack": {
+      "ja": "0a3c8189203a",
+      "de": "0a3c8189203a",
+      "he": "0a3c8189203a",
+      "ru": "0a3c8189203a",
+      "gt": "0a3c8189203a"
+    },
+    "tbns_h2_resolving-a-significant-snag": {
+      "ja": "5c6460df674c",
+      "de": "5c6460df674c",
+      "he": "5c6460df674c",
+      "ru": "5c6460df674c",
+      "gt": "5c6460df674c"
+    },
+    "tbns_h3_what-i-dislike-about-substack": {
+      "ja": "3714243fcc1d",
+      "de": "3714243fcc1d",
+      "he": "3714243fcc1d",
+      "ru": "3714243fcc1d",
+      "gt": "3714243fcc1d"
+    },
+    "tbns_h3_what-i-like-about-substack": {
+      "ja": "c6d8429fbbee",
+      "de": "c6d8429fbbee",
+      "he": "c6d8429fbbee",
+      "ru": "c6d8429fbbee",
+      "gt": "c6d8429fbbee"
+    },
+    "tbns_h3_what-i-want": {
+      "ja": "23b4ea74bd10",
+      "de": "23b4ea74bd10",
+      "he": "23b4ea74bd10",
+      "ru": "23b4ea74bd10",
+      "gt": "23b4ea74bd10"
+    },
+    "tbns_nav_rapacious-subscription-services": {
+      "ja": "1a1565a4acdf",
+      "de": "1a1565a4acdf",
+      "he": "1a1565a4acdf",
+      "ru": "1a1565a4acdf",
+      "gt": "1a1565a4acdf"
+    },
+    "tbns_nav_reorganizing-some-stuff": {
+      "ja": "6d1da526a25f",
+      "de": "6d1da526a25f",
+      "he": "6d1da526a25f",
+      "ru": "6d1da526a25f",
+      "gt": "6d1da526a25f"
+    },
+    "tbns_nav_replacing-substack": {
+      "ja": "7667c0d60667",
+      "de": "7667c0d60667",
+      "he": "7667c0d60667",
+      "ru": "7667c0d60667",
+      "gt": "7667c0d60667"
+    },
+    "tbns_nav_resolving-a-significant-snag": {
+      "ja": "1fc6c6d34083",
+      "de": "1fc6c6d34083",
+      "he": "1fc6c6d34083",
+      "ru": "1fc6c6d34083",
+      "gt": "1fc6c6d34083"
+    },
+    "tbns_nav_title": {
+      "ja": "3bcf9f2bf072",
+      "de": "3bcf9f2bf072",
+      "he": "3bcf9f2bf072",
+      "ru": "3bcf9f2bf072",
+      "gt": "3bcf9f2bf072"
+    },
+    "tbns_nav_what-i-dislike-about-substack": {
+      "ja": "4cd55f7a9a40",
+      "de": "4cd55f7a9a40",
+      "he": "4cd55f7a9a40",
+      "ru": "4cd55f7a9a40",
+      "gt": "4cd55f7a9a40"
+    },
+    "tbns_nav_what-i-like-about-substack": {
+      "ja": "00f37e0b31b4",
+      "de": "00f37e0b31b4",
+      "he": "00f37e0b31b4",
+      "ru": "00f37e0b31b4",
+      "gt": "00f37e0b31b4"
+    },
+    "tbns_nav_what-i-want": {
+      "ja": "049095a54612",
+      "de": "049095a54612",
+      "he": "049095a54612",
+      "ru": "049095a54612",
+      "gt": "049095a54612"
+    },
+    "tbns_p1": {
+      "ja": "b2b7754abc6e",
+      "de": "b2b7754abc6e",
+      "he": "b2b7754abc6e",
+      "ru": "b2b7754abc6e",
+      "gt": "b2b7754abc6e"
+    },
+    "tbns_p10": {
+      "ja": "07ad85da6863",
+      "de": "07ad85da6863",
+      "he": "07ad85da6863",
+      "ru": "07ad85da6863",
+      "gt": "07ad85da6863"
+    },
+    "tbns_p11": {
+      "ja": "1c2b4068cacb",
+      "de": "1c2b4068cacb",
+      "he": "1c2b4068cacb",
+      "ru": "1c2b4068cacb",
+      "gt": "1c2b4068cacb"
+    },
+    "tbns_p12": {
+      "ja": "22bfcf32ee15",
+      "de": "22bfcf32ee15",
+      "he": "22bfcf32ee15",
+      "ru": "22bfcf32ee15",
+      "gt": "22bfcf32ee15"
+    },
+    "tbns_p13": {
+      "ja": "6c51da4d5d91",
+      "de": "6c51da4d5d91",
+      "he": "6c51da4d5d91",
+      "ru": "6c51da4d5d91",
+      "gt": "6c51da4d5d91"
+    },
+    "tbns_p15": {
+      "ja": "204f1ff01990",
+      "de": "204f1ff01990",
+      "he": "204f1ff01990",
+      "ru": "204f1ff01990",
+      "gt": "204f1ff01990"
+    },
+    "tbns_p2": {
+      "ja": "aecc2045441b",
+      "de": "aecc2045441b",
+      "he": "aecc2045441b",
+      "ru": "aecc2045441b",
+      "gt": "aecc2045441b"
+    },
+    "tbns_p3": {
+      "ja": "779aecbf142b",
+      "de": "779aecbf142b",
+      "he": "779aecbf142b",
+      "ru": "779aecbf142b",
+      "gt": "779aecbf142b"
+    },
+    "tbns_p4": {
+      "ja": "a78dc24ee319",
+      "de": "a78dc24ee319",
+      "he": "a78dc24ee319",
+      "ru": "a78dc24ee319",
+      "gt": "a78dc24ee319"
+    },
+    "tbns_p5": {
+      "ja": "b09c79f78efb",
+      "de": "b09c79f78efb",
+      "he": "b09c79f78efb",
+      "ru": "b09c79f78efb",
+      "gt": "b09c79f78efb"
+    },
+    "tbns_p6": {
+      "ja": "e66cd16b728c",
+      "de": "e66cd16b728c",
+      "he": "e66cd16b728c",
+      "ru": "e66cd16b728c",
+      "gt": "e66cd16b728c"
+    },
+    "tbns_p7": {
+      "ja": "12d8469fa5ed",
+      "de": "12d8469fa5ed",
+      "he": "12d8469fa5ed",
+      "ru": "12d8469fa5ed",
+      "gt": "12d8469fa5ed"
+    },
+    "tbns_p7.5": {
+      "ja": "c3d023e71603",
+      "de": "c3d023e71603",
+      "he": "c3d023e71603",
+      "ru": "c3d023e71603",
+      "gt": "c3d023e71603"
+    },
+    "tbns_p8": {
+      "ja": "8f7456a8d6eb",
+      "de": "8f7456a8d6eb",
+      "he": "8f7456a8d6eb",
+      "ru": "8f7456a8d6eb",
+      "gt": "8f7456a8d6eb"
+    },
+    "tbns_p9": {
+      "ja": "15f5606bbae0",
+      "de": "15f5606bbae0",
+      "he": "15f5606bbae0",
+      "ru": "15f5606bbae0",
+      "gt": "15f5606bbae0"
+    },
+    "tbns_title": {
+      "ja": "b0601d194dda",
+      "de": "b0601d194dda",
+      "he": "b0601d194dda",
+      "ru": "b0601d194dda",
+      "gt": "b0601d194dda"
+    },
+    "tbns_win_gallery_title": {
+      "ja": "ca25ca8a3143",
+      "de": "ca25ca8a3143",
+      "he": "ca25ca8a3143",
+      "ru": "ca25ca8a3143",
+      "gt": "ca25ca8a3143"
+    }
+  }
+}
