@@ -111,6 +111,111 @@ function setupShareTools() {
         currentSelectionRange = null;
     });
 
+    // --- Share as image (canvas — no dependency) ---
+    // Renders the selected text over the article's hero image (or the theme
+    // colours when there's no image), then shares it via the Web Share API where
+    // available, otherwise downloads the PNG. No selection => just the hero image.
+    const cssVar = (name, fallback) =>
+        getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+    function wrapText(ctx, text, maxWidth, maxLines) {
+        const words = text.split(/\s+/);
+        const lines = [];
+        let line = '';
+        for (const w of words) {
+            const test = line ? line + ' ' + w : w;
+            if (ctx.measureText(test).width > maxWidth && line) {
+                lines.push(line); line = w;
+                if (lines.length === maxLines) break;
+            } else { line = test; }
+        }
+        if (line && lines.length < maxLines) lines.push(line);
+        if (lines.length === maxLines) { // ran out of room → ellipsis
+            let last = lines[maxLines - 1];
+            while (last.length && ctx.measureText(last + '…').width > maxWidth) last = last.slice(0, -1);
+            lines[maxLines - 1] = last + '…';
+        }
+        return lines;
+    }
+
+    function drawCover(ctx, img, W, H) {
+        const ir = img.naturalWidth / img.naturalHeight, cr = W / H;
+        let dw, dh;
+        if (ir > cr) { dh = H; dw = H * ir; } else { dw = W; dh = W / ir; }
+        ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    }
+
+    async function buildShareCanvas(text) {
+        if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (_) { /* ignore */ } }
+        const W = 1200, H = 630, pad = 84;
+        const canvas = document.createElement('canvas');
+        canvas.width = W; canvas.height = H;
+        const ctx = canvas.getContext('2d');
+        const hero = document.querySelector('article.content img');
+        const heroReady = hero && hero.complete && hero.naturalWidth > 0;
+        let overImage = false;
+        if (heroReady) {
+            drawCover(ctx, hero, W, H);
+            if (text) { ctx.fillStyle = 'rgba(0,0,0,0.58)'; ctx.fillRect(0, 0, W, H); overImage = true; }
+        } else {
+            ctx.fillStyle = cssVar('--win-bg-color', cssVar('--bg-color', '#ffffff'));
+            ctx.fillRect(0, 0, W, H);
+        }
+        const fg = overImage ? '#ffffff' : cssVar('--text-color', '#000000');
+        const title = (document.querySelector('#title')?.textContent || document.title || '').trim();
+        const main = text ? `“${text}”` : title;
+
+        if (main) {
+            ctx.fillStyle = fg;
+            ctx.textBaseline = 'top';
+            const fontSize = main.length > 170 ? 40 : main.length > 90 ? 50 : 62;
+            ctx.font = `bold ${fontSize}px 'FrankRuhl', Garamond, Georgia, serif`;
+            const lines = wrapText(ctx, main, W - pad * 2, 6);
+            const lh = fontSize * 1.3;
+            let y = Math.max(pad, (H - lines.length * lh - 70) / 2);
+            for (const ln of lines) { ctx.fillText(ln, pad, y); y += lh; }
+        }
+
+        // Footer: article title (when the main text is a quote) + the site.
+        ctx.font = "26px 'FrankRuhl', Georgia, serif";
+        ctx.fillStyle = overImage ? 'rgba(255,255,255,0.85)' : cssVar('--text-color', '#000000');
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText((text && title ? title + '  ·  ' : '') + 'pelmeniboiler.github.io', pad, H - 46);
+        return canvas;
+    }
+
+    async function shareAsImage(text) {
+        let canvas;
+        try { canvas = await buildShareCanvas(text); }
+        catch (e) { console.error('Share image failed:', e); return; }
+        canvas.toBlob(async (blob) => {
+            if (!blob) return;
+            const slug = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || 'pelmeniboiler';
+            const file = new File([blob], `${slug}.png`, { type: 'image/png' });
+            try {
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file], title: document.title });
+                    return;
+                }
+            } catch (_) { /* cancelled / unsupported → download instead */ }
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = file.name;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }, 'image/png');
+    }
+
+    // Popup image button: share the current selection as an image.
+    const shareImageBtn = document.getElementById('share-image-btn');
+    if (shareImageBtn) {
+        shareImageBtn.addEventListener('click', () => {
+            const text = currentSelectionRange ? currentSelectionRange.toString().trim() : '';
+            sharePopup.style.display = 'none';
+            shareAsImage(text);
+        });
+    }
+
     // --- [UPDATED] Highlighting Logic on Page Load ---
     // This function now applies a permanent style using the .shared-highlight class.
     function applyHighlightFromUrl() {
@@ -211,11 +316,20 @@ function setupShareTools() {
                 const baseUrl = window.location.href.split('?')[0].split('#')[0];
                 const urlToCopy = `${baseUrl}?l=${lang}`;
                 copyToClipboard(urlToCopy, 'Page link with language copied!');
-                
+
                 const originalText = button.innerHTML;
                 button.innerHTML = '✓';
                 setTimeout(() => { button.innerHTML = originalText; }, 1000);
             });
+
+            // Second titlebar button: share the whole article as an image
+            // (no selection => just the hero image).
+            const imgButton = document.createElement('button');
+            imgButton.className = 'share-titlebar-btn';
+            imgButton.title = 'Share as image';
+            imgButton.innerHTML = `<span class="symbol">📷</span>`;
+            titleBar.insertBefore(imgButton, closeButton);
+            imgButton.addEventListener('click', (e) => { e.stopPropagation(); shareAsImage(''); });
         });
     }
     
