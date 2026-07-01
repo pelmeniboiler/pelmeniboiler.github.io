@@ -37,6 +37,15 @@
         .report .ok { font-weight: bold; }
         code { background: color-mix(in srgb, var(--text-color) 12%, transparent); padding: 0 3px; }
         h2.sec { border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
+        #edit-table { max-height: 380px; overflow-y: auto; margin: 8px 0; }
+        .edit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: start;
+            border-bottom: 1px solid var(--border-color); padding: 6px 0; }
+        .edit-row > div:first-child { grid-column: 1 / -1; font-size: 12px; }
+        .badge { font-size: 11px; padding: 0 6px; border: 1px solid var(--border-color); margin-left: 6px; }
+        .b-stale { background: #e67e22; color: #000; font-weight: bold; }
+        .b-missing { background: #c0392b; color: #fff; font-weight: bold; }
+        .b-ok { opacity: 0.55; }
+        .b-untracked { opacity: 0.85; }
     </style>
 </head>
 <body class="eink-mode light-mode">
@@ -177,6 +186,31 @@
             <textarea class="out" id="paste-in" placeholder='Paste the model output here, e.g. { "he": { "...": "..." } }'></textarea>
             <div class="bar"><button class="normal-btn" id="validate">✔ Validate</button></div>
             <div class="report" id="report" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- 5. EDIT EXISTING -->
+    <div class="window">
+        <div class="title-bar"><span class="title">⑤ edit existing</span></div>
+        <div class="content">
+            <p class="note">Load a published article's localization to fix wording and see which translations went
+            <strong>stale</strong> (via the tracker). Text edits only — adding/removing blocks still goes through
+            create mode + the HTML skeleton.</p>
+            <div class="bar">
+                <input type="text" id="edit-prefix" list="edit-prefixes" placeholder="prefix (e.g. sunshine)" style="max-width: 220px;">
+                <datalist id="edit-prefixes"></datalist>
+                <button class="normal-btn" id="edit-load">ↆ Load</button>
+                <label for="edit-lang" class="note">language:</label>
+                <select id="edit-lang" style="max-width: 160px;"></select>
+                <span class="note" id="edit-summary"></span>
+            </div>
+            <div id="edit-table"></div>
+            <div class="bar">
+                <button class="normal-btn" id="edit-regen">⚙ Regenerate JSON</button>
+                <button class="normal-btn" id="edit-stale-prompt">✎ Prompt for stale + missing</button>
+            </div>
+            <textarea class="out" id="edit-out" readonly></textarea>
+            <div class="bar"><button class="normal-btn" data-copy="edit-out">⎘ copy</button></div>
         </div>
     </div>
 
@@ -463,6 +497,76 @@ ${sectionsHtml}
             ? `<div class="bad">✗ non-Graflect glyphs inside words:</div> <code>${esc([...badGlyphs].join(' '))}</code>`
             : '<div class="ok">✓ no stray non-Graflect glyphs</div>');
         report.innerHTML = parts.join('');
+    });
+
+    // ===== 5. Edit existing: load an article, surface staleness, regenerate JSON =====
+    let editData = null, editStatus = {};
+    // Same fingerprint the tracker uses: sha256(en value), first 12 hex.
+    async function hash12(s) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(s)));
+        return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 12);
+    }
+    fetch('/blog/blog-manifest.json').then((r) => r.json()).then((posts) => {
+        const srcs = [...new Set(posts.map((p) => p.translationSource).filter(Boolean))].sort();
+        $('edit-prefixes').innerHTML = srcs.map((s) => `<option value="${s}">`).join('');
+    }).catch(() => {});
+
+    async function keyStatus(lang, key) {
+        const v = editData[lang]?.[key];
+        if (v == null || String(v).trim() === '') return 'missing';
+        const stamped = editStatus[key]?.[lang];
+        if (!stamped) return 'untracked';
+        return (stamped === await hash12(editData.en[key])) ? 'ok' : 'stale';
+    }
+
+    async function renderEditTable() {
+        if (!editData) return;
+        const lang = $('edit-lang').value;
+        const keys = Object.keys(editData.en || {});
+        const statuses = await Promise.all(keys.map((k) => keyStatus(lang, k)));
+        let stale = 0, missing = 0;
+        const badge = { ok: ['b-ok', '✓ ok'], stale: ['b-stale', '⚠ stale'], missing: ['b-missing', '∅ missing'], untracked: ['b-untracked', '? untracked'] };
+        $('edit-table').innerHTML = keys.map((k, i) => {
+            const s = statuses[i];
+            if (s === 'stale') stale++; if (s === 'missing') missing++;
+            const [cls, label] = badge[s];
+            return `<div class="edit-row">
+                <div><code>${esc(k)}</code> <span class="badge ${cls}">${label}</span></div>
+                <textarea data-k="${esc(k)}" data-f="en" rows="2">${esc(editData.en[k] ?? '')}</textarea>
+                <textarea data-k="${esc(k)}" data-f="${lang}" rows="2" placeholder="(${lang})">${esc(editData[lang]?.[k] ?? '')}</textarea>
+            </div>`;
+        }).join('');
+        $('edit-summary').textContent = `${keys.length} keys · ${stale} stale · ${missing} missing`;
+        $('edit-table').querySelectorAll('textarea').forEach((ta) => ta.addEventListener('input', () => {
+            (editData[ta.dataset.f] = editData[ta.dataset.f] || {})[ta.dataset.k] = ta.value;
+        }));
+    }
+
+    $('edit-load').addEventListener('click', async () => {
+        const prefix = $('edit-prefix').value.trim();
+        if (!prefix) return;
+        try { editData = await (await fetch(`/localization/${prefix}.json`)).json(); }
+        catch { $('edit-summary').textContent = `✗ could not load ${prefix}.json`; return; }
+        const status = await fetch('/localization/tl-status.json').then((r) => r.json()).catch(() => ({}));
+        editStatus = status[prefix] || {};
+        $('edit-lang').innerHTML = Object.keys(editData).filter((l) => l !== 'en')
+            .map((l) => `<option value="${l}">${l}</option>`).join('');
+        await renderEditTable();
+    });
+    $('edit-lang').addEventListener('change', renderEditTable);
+    $('edit-regen').addEventListener('click', () => { if (editData) $('edit-out').value = JSON.stringify(editData, null, 2); });
+    $('edit-stale-prompt').addEventListener('click', async () => {
+        if (!editData) return;
+        const lang = $('edit-lang').value;
+        const keys = Object.keys(editData.en || {});
+        const statuses = await Promise.all(keys.map((k) => keyStatus(lang, k)));
+        const need = keys.filter((k, i) => statuses[i] === 'stale' || statuses[i] === 'missing');
+        if (!need.length) { $('edit-out').value = `Nothing stale or missing for ${lang} 🎉`; return; }
+        const subset = Object.fromEntries(need.map((k) => [k, editData.en[k]]));
+        $('edit-out').value =
+            `Re-localize ONLY these keys from English into "${lang}". Localize, don't translate; keep every HTML tag. ` +
+            `Output JSON: { "${lang}": { ...these keys, translated... } }.\n\n` +
+            JSON.stringify({ en: subset }, null, 2);
     });
 })();
 </script>
