@@ -14,10 +14,17 @@
   clusters, and learn-and-remember. Named dictionaries ("Wendy's Accent"),
   import/export JSON, localStorage-persisted.
 - `tools/gt.html`: a fuller workbench (SLUG↔Graflect both ways).
-- `slugMap`: glyph ↔ romanization. `romaji.js`: the same architecture for Japanese.
+- `romaji.js`: a **Graflect IME** (named by analogy to a Japanese romaji IME — not
+  Japanese itself): type English, and an IME-style candidate dropdown lets you pick
+  the glyph for each chunk, saving finished words to the dictionary.
+- `slugMap`: glyph ↔ romanization (slug).
 
-**The gap:** the dictionary lives only in one browser's localStorage, and the
-engine only runs in the standalone tool. It never touches the site pipeline.
+**The common thread:** the transliterator, the IME, and `gt.html` all share the
+same `graflect-data.js` and the same `DictionaryManager`/dictionary.
+
+**The gap:** that dictionary lives only in one browser's localStorage, and the
+engine only runs in the standalone tools. It never touches the site pipeline — so
+committing and seeding one dictionary upgrades all three tools *and* the build.
 
 ## The core idea
 
