@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofrut — article scribe</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        body { overflow: auto; padding: 16px; box-sizing: border-box; }
+        .forge { max-width: 920px; margin: 0 auto; }
+        .forge .window { position: relative; left: 0; top: 0; margin-bottom: 18px; }
+        .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+        .field label { font-weight: bold; font-size: 14px; }
+        .field small { opacity: 0.7; font-size: 12px; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row .field { flex: 1; min-width: 180px; }
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%; box-sizing: border-box; padding: 7px;
+            border: 2px solid var(--border-color); background: var(--win-bg-color);
+            color: var(--text-color); font-family: inherit;
+        }
+        textarea { resize: vertical; }
+        textarea.body { min-height: 220px; }
+        textarea.out { min-height: 180px; white-space: pre; font-family: monospace; font-size: 12px; }
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip {
+            border: 2px solid var(--border-color); background: var(--win-bg-color);
+            color: var(--text-color); padding: 3px 10px; cursor: pointer; font-family: inherit;
+        }
+        .chip.on { background: var(--text-color); color: var(--win-bg-color); font-weight: bold; }
+        .bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
+        .note { font-size: 13px; opacity: 0.85; }
+        .report { border-left: 4px solid var(--border-color); padding: 4px 12px; margin-top: 8px; font-size: 13px; }
+        .report .bad { color: #c0392b; font-weight: bold; }
+        .report .ok { font-weight: bold; }
+        code { background: color-mix(in srgb, var(--text-color) 12%, transparent); padding: 0 3px; }
+        h2.sec { border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
+    </style>
+</head>
+<body class="eink-mode light-mode">
+<div class="forge">
+
+    <div class="window">
+        <div class="title-bar"><span class="title">🖋 sofrut.scribe</span></div>
+        <div class="content">
+            <p class="note">Scaffold a new blog post: fill this in, generate the <code>.html</code> skeleton and
+            the English <code>.json</code>, drop them in <code>/blog/</code> and <code>/localization/</code>, then
+            push — CI bakes the per-language pages, manifest, feeds, and the blog card. Then use the
+            <strong>MTPE</strong> panel below to translate.</p>
+        </div>
+    </div>
+
+    <!-- 1. METADATA -->
+    <div class="window">
+        <div class="title-bar"><span class="title">① metadata</span></div>
+        <div class="content">
+            <div class="field">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="An Intro to Something Cool">
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="slug">Slug <small>→ /blog/&lt;slug&gt;.html</small></label>
+                    <input type="text" id="slug" placeholder="an-intro-to-something-cool">
+                    <small id="slug-warn"></small>
+                </div>
+                <div class="field">
+                    <label for="prefix">Prefix <small>→ data-keys + /localization/&lt;prefix&gt;.json</small></label>
+                    <input type="text" id="prefix" placeholder="aitsc">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="date">Publish date</label>
+                    <input type="date" id="date">
+                </div>
+                <div class="field">
+                    <label for="author">Author</label>
+                    <input type="text" id="author" value="Wendy Zhulkovsky">
+                </div>
+                <div class="field">
+                    <label for="eink">E-ink compatibility</label>
+                    <select id="eink">
+                        <option value="optimized">optimized</option>
+                        <option value="not-recommended">not-recommended</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field">
+                <label for="desc">Description <small>(meta + blog-card summary; blank = first paragraph)</small></label>
+                <textarea id="desc" rows="2" placeholder="One or two sentences describing the post."></textarea>
+            </div>
+            <div class="field">
+                <label>Keywords <small>(known pool auto-loaded; click to toggle, or add your own)</small></label>
+                <div class="chips" id="kw-pool"></div>
+                <div class="bar">
+                    <input type="text" id="kw-new" placeholder="new keyword" style="max-width: 220px;">
+                    <button class="normal-btn" id="kw-add">+ add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. BODY -->
+    <div class="window">
+        <div class="title-bar"><span class="title">② body</span></div>
+        <div class="content">
+            <p class="note">One block per line / blank-line-separated paragraph. Syntax:
+            <code>## Heading</code>, <code>### Subheading</code>, <code>&gt; aside</code>,
+            <code>![alt](/photos/x.png)</code>, anything else = paragraph.</p>
+            <textarea class="body" id="body" placeholder="## Background&#10;&#10;This is the first paragraph...&#10;&#10;### A detail&#10;&#10;More text.&#10;&#10;> A pull-aside / note.&#10;&#10;![a diagram](/photos/example.png)"></textarea>
+            <div class="bar">
+                <button class="normal-btn" id="generate">⚙ Generate files</button>
+                <span class="note" id="stats"></span>
+            </div>
+            <div class="field">
+                <label>Blog-card preview <small>(how it looks in the list — the card summary is your first paragraph)</small></label>
+                <div class="content" style="border: 2px solid var(--border-color); padding: 10px; max-height: none;">
+                    <div id="card-preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. OUTPUT -->
+    <div class="window">
+        <div class="title-bar"><span class="title">③ output</span></div>
+        <div class="content">
+            <div class="field">
+                <label>blog/<span id="out-html-name">&lt;slug&gt;.html</span></label>
+                <textarea class="out" id="out-html" readonly></textarea>
+                <div class="bar">
+                    <button class="normal-btn" data-copy="out-html">⎘ copy</button>
+                    <button class="normal-btn" data-download="html">⬇ download</button>
+                </div>
+            </div>
+            <div class="field">
+                <label>localization/<span id="out-json-name">&lt;prefix&gt;.json</span></label>
+                <textarea class="out" id="out-json" readonly></textarea>
+                <div class="bar">
+                    <button class="normal-btn" data-copy="out-json">⎘ copy</button>
+                    <button class="normal-btn" data-download="json">⬇ download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MTPE -->
+    <div class="window">
+        <div class="title-bar"><span class="title">④ MTPE — translate</span></div>
+        <div class="content">
+            <p class="note">Generate a paste-ready prompt for your model (one language at a time), then paste the
+            returned JSON back to validate it before saving it into <code>&lt;prefix&gt;.json</code>.</p>
+            <div class="row">
+                <div class="field">
+                    <label for="mtpe-lang">Target language</label>
+                    <select id="mtpe-lang">
+                        <option value="he">Hebrew (he)</option>
+                        <option value="ru">Russian (ru)</option>
+                        <option value="de">German (de)</option>
+                        <option value="ja">Japanese (ja)</option>
+                        <option value="gt">Graflect (gt)</option>
+                    </select>
+                </div>
+                <div class="field" style="flex: 2;">
+                    <label for="glossary">Glossary / jargon <small>(one per line: <code>English term = target term</code>)</small></label>
+                    <textarea id="glossary" rows="3" placeholder="Featural writing system = ..."></textarea>
+                </div>
+            </div>
+            <div class="bar"><button class="normal-btn" id="mk-prompt">✎ Generate prompt</button></div>
+            <textarea class="out" id="prompt-out" readonly></textarea>
+            <div class="bar"><button class="normal-btn" data-copy="prompt-out">⎘ copy prompt</button></div>
+
+            <h2 class="sec">validate returned JSON</h2>
+            <textarea class="out" id="paste-in" placeholder='Paste the model output here, e.g. { "he": { "...": "..." } }'></textarea>
+            <div class="bar"><button class="normal-btn" id="validate">✔ Validate</button></div>
+            <div class="report" id="report" style="display:none;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    const $ = (id) => document.getElementById(id);
+    const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const isGraflect = (c) => c >= 0xec70 && c <= 0xecef; // Graflect Private-Use range
+
+    // ----- Keyword pool (auto-recognized from the live manifest) -----
+    const selectedKw = new Set();
+    function addChip(kw, on) {
+        if ([...$('kw-pool').children].some((c) => c.dataset.kw === kw)) return;
+        const b = document.createElement('button');
+        b.className = 'chip' + (on ? ' on' : ''); b.textContent = kw; b.dataset.kw = kw;
+        if (on) selectedKw.add(kw);
+        b.addEventListener('click', () => {
+            b.classList.toggle('on');
+            if (b.classList.contains('on')) selectedKw.add(kw); else selectedKw.delete(kw);
+        });
+        $('kw-pool').appendChild(b);
+    }
+    fetch('/blog/blog-manifest.json').then((r) => r.json()).then((posts) => {
+        [...new Set(posts.flatMap((p) => p.keywords || []))].sort().forEach((k) => addChip(k, false));
+        window.__slugs = new Set(posts.map((p) => p.slug).filter(Boolean));
+    }).catch(() => {});
+    $('kw-add').addEventListener('click', () => {
+        const v = $('kw-new').value.trim();
+        if (!v) return;
+        const existing = [...$('kw-pool').children].find((c) => c.dataset.kw === v);
+        if (existing) { existing.classList.add('on'); selectedKw.add(v); } // select an existing chip
+        else addChip(v, true);                                            // or create a new selected one
+        $('kw-new').value = '';
+    });
+
+    // ----- Auto-derive slug / prefix from title -----
+    $('title').addEventListener('input', () => {
+        if (!$('slug').dataset.touched) $('slug').value = slugify($('title').value);
+        if (!$('prefix').dataset.touched) {
+            const words = slugify($('title').value).split('-').filter(Boolean);
+            $('prefix').value = words.length > 1 ? words.map((w) => w[0]).join('') : (words[0] || '');
+        }
+        checkSlug();
+    });
+    $('slug').addEventListener('input', () => { $('slug').dataset.touched = '1'; checkSlug(); });
+    $('prefix').addEventListener('input', () => { $('prefix').dataset.touched = '1'; });
+    function checkSlug() {
+        const s = slugify($('slug').value);
+        $('slug-warn').textContent = (window.__slugs && window.__slugs.has(s)) ? '⚠ a post with this slug already exists' : '';
+    }
+    $('date').valueAsDate = new Date();
+
+    // ----- Body parsing -> blocks -----
+    function parseBody(text) {
+        const blocks = [];
+        text.split(/\n{2,}/).forEach((raw) => {
+            const t = raw.trim();
+            if (!t) return;
+            if (t.startsWith('### ')) blocks.push({ type: 'h3', text: t.slice(4).trim() });
+            else if (t.startsWith('## ')) blocks.push({ type: 'h2', text: t.slice(3).trim() });
+            else if (t.startsWith('> ')) blocks.push({ type: 'aside', text: t.slice(2).trim() });
+            else {
+                const m = t.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+                if (m) blocks.push({ type: 'img', alt: m[1], src: m[2] });
+                else blocks.push({ type: 'p', text: t });
+            }
+        });
+        return blocks;
+    }
+
+    // ----- Generation -----
+    let lastEn = {}; // last generated English key->value, for the MTPE panel
+    function generate() {
+        const title = $('title').value.trim() || 'Untitled';
+        const slug = slugify($('slug').value) || 'untitled';
+        const prefix = slugify($('prefix').value).replace(/-/g, '') || 'untitled';
+        const author = $('author').value.trim() || 'Wendy Zhulkovsky';
+        const iso = ($('date').valueAsDate || new Date()).toISOString().replace(/\.\d+Z$/, 'Z');
+        const keywords = [...selectedKw];
+        const blocks = parseBody($('body').value);
+        const en = {};
+        const usedIds = new Set();
+        const mkId = (s) => { let b = slugify(s) || 'sec'; let id = b, i = 2; while (usedIds.has(id)) id = b + '-' + (i++); usedIds.add(id); return id; };
+
+        // chrome / nav titles
+        en[`${prefix}_nav_title`] = '<span class="symbol">◈</span> article.nav';
+        en[`${prefix}_win_title`] = `<span class="symbol">▤</span> ${slug}.article`;
+        en[`${prefix}_nav_home`] = '⌂←';
+        en[`${prefix}_title`] = title;
+
+        let pN = 0, asideN = 0;
+        const navParts = [];
+        const headerParts = [];   // before first h2
+        const sections = [];
+        let cur = null;           // current section array
+        const pushHtml = (html) => (cur ? cur.html.push(html) : headerParts.push(html));
+
+        blocks.forEach((b) => {
+            if (b.type === 'h2') {
+                const id = mkId(b.text); const key = `${prefix}_h2_${id}`;
+                en[key] = b.text; en[`${prefix}_nav_${id}`] = b.text;
+                navParts.push(`            <h2><a href="#${id}" data-key="${prefix}_nav_${id}">${esc(b.text)}</a></h2>`);
+                cur = { html: [`                <h2 id="${id}" data-key="${key}"></h2>`] };
+                sections.push(cur);
+            } else if (b.type === 'h3') {
+                const id = mkId(b.text); const key = `${prefix}_h3_${id}`;
+                en[key] = b.text; en[`${prefix}_nav_${id}`] = b.text;
+                navParts.push(`            <ul><li><a href="#${id}" data-key="${prefix}_nav_${id}">${esc(b.text)}</a></li></ul>`);
+                pushHtml(`                <h3 id="${id}" data-key="${key}"></h3>`);
+            } else if (b.type === 'p') {
+                const key = `${prefix}_p${++pN}`; en[key] = b.text;
+                pushHtml(`                <p data-key="${key}"></p>`);
+            } else if (b.type === 'aside') {
+                const key = `${prefix}_aside_${++asideN}`; en[key] = b.text;
+                pushHtml(`                <aside data-key="${key}"></aside>`);
+            } else if (b.type === 'img') {
+                pushHtml(`                <img src="${esc(b.src)}" alt="${esc(b.alt)}" class="article-image" style="max-height: 300px;">`);
+            }
+        });
+
+        const description = ($('desc').value.trim()) || (blocks.find((b) => b.type === 'p')?.text || 'No description found.');
+        const sectionsHtml = sections.map((s) => `            <section>\n${s.html.join('\n')}\n            </section>`).join('\n');
+        const headerInner = headerParts.length ? '\n' + headerParts.join('\n') : '';
+
+        const html =
+`<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"><\/script>
+    <meta charset="UTF-8">
+    <meta name="eink-compatibility" content="${$('eink').value}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="translation-source" content="${prefix}">
+    <meta name="description" content="${esc(description)}">
+    <meta name="pubDate" content="${iso}">
+    <meta name="keywords" content="${esc(keywords.join(', '))}">
+    <meta name="author" content="${esc(author)}">
+    <title>${esc(title)}</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+</head>
+<body class="eink-mode light-mode">
+    <nav id="nav-window" class="window">
+        <div class="title-bar">
+            <span class="title" data-key="${prefix}_nav_title">◈ article.nav</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="content">
+${navParts.join('\n')}
+            <h2><a href="/index.html" data-key="${prefix}_nav_home">⌂←</a></h2>
+        </div>
+    </nav>
+    <main id="gallery-window" class="window" style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
+        <div class="title-bar">
+            <span class="title" data-key="${prefix}_win_title">▤ ${slug}.article</span>
+            <button class="close-btn">&times;</button>
+        </div>
+        <article class="content">
+            <header>
+                <h1 id="title" data-key="${prefix}_title"></h1>${headerInner}
+                <hr>
+            </header>
+${sectionsHtml}
+        </article>
+    </main>
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    <div id="share-module-placeholder"></div>
+    <script src="/scripts/module-loader.js" defer><\/script>
+</body>
+</html>`;
+
+        lastEn = en;
+        $('out-html').value = html;
+        $('out-json').value = JSON.stringify({ en }, null, 2);
+        $('out-html-name').textContent = slug + '.html';
+        $('out-json-name').textContent = prefix + '.json';
+        const words = blocks.filter((b) => b.text).reduce((n, b) => n + b.text.split(/\s+/).length, 0);
+        $('stats').textContent = `${blocks.length} blocks · ${words} words · ~${Math.max(1, Math.round(words / 220))} min read · ${Object.keys(en).length} keys`;
+    }
+    $('generate').addEventListener('click', generate);
+
+    // ----- Live blog-card preview (mirrors what the build bakes into the list:
+    //       the card summary is the article's FIRST paragraph, not the meta desc) -----
+    function updateCardPreview() {
+        const title = $('title').value.trim() || 'Untitled';
+        const date = ($('date').valueAsDate || new Date())
+            .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const firstPara = parseBody($('body').value).find((b) => b.type === 'p');
+        const summary = (firstPara && firstPara.text) || $('desc').value.trim() ||
+            'Your first paragraph becomes the card summary.';
+        $('card-preview').innerHTML =
+            `<article class="blog-post">` +
+            `<h3><a href="#">${esc(title)}</a></h3>` +
+            `<p class="post-date">${date}</p>` +
+            `<p>${esc(summary)}</p>` +
+            `<p><i><a href="#">read more &rarr;</a></i></p>` +
+            `</article>`;
+    }
+    ['title', 'date', 'desc', 'body'].forEach((id) => $(id).addEventListener('input', updateCardPreview));
+    updateCardPreview();
+
+    // ----- copy / download -----
+    document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => {
+        const el = $(btn.dataset.copy); el.select();
+        navigator.clipboard?.writeText(el.value); btn.textContent = '✓ copied';
+        setTimeout(() => (btn.textContent = btn.textContent.replace('✓ copied', '⎘ copy')), 1200);
+    }));
+    document.querySelectorAll('[data-download]').forEach((btn) => btn.addEventListener('click', () => {
+        const isHtml = btn.dataset.download === 'html';
+        const name = isHtml ? ($('out-html-name').textContent) : ($('out-json-name').textContent);
+        const blob = new Blob([isHtml ? $('out-html').value : $('out-json').value], { type: 'text/plain' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+        URL.revokeObjectURL(a.href);
+    }));
+
+    // ----- MTPE prompt -----
+    $('mk-prompt').addEventListener('click', () => {
+        if (!Object.keys(lastEn).length) { generate(); }
+        const langName = $('mtpe-lang').selectedOptions[0].textContent.replace(/\s*\([a-z]+\)$/, '');
+        const langCode = $('mtpe-lang').value;
+        const glossary = $('glossary').value.trim();
+        const isGt = langCode === 'gt';
+        const lines = [];
+        lines.push(`You are localizing a personal blog article from English into ${langName} (code "${langCode}").`);
+        lines.push('Rules:');
+        lines.push('- Localize, do not translate. Avoid "translatese"; preserve the author\'s voice and register.');
+        lines.push('- Keep every HTML tag and entity (<br>, <span ...>, <strong>, &nbsp;, etc.) exactly where it is.');
+        lines.push('- Output ONLY valid JSON: the SAME keys as the input, values translated. No commentary.');
+        if (glossary) {
+            lines.push('- Use these established terms for jargon (keep the English if you are unsure):');
+            glossary.split('\n').map((l) => l.trim()).filter(Boolean).forEach((l) => lines.push('    · ' + l));
+        }
+        if (isGt) {
+            lines.push('- Graflect is a featural phonetic script in the Unicode Private Use Area (U+EC70–U+ECEF).');
+            lines.push('  Render the ENGLISH pronunciation in Graflect. Use ONLY Graflect glyphs — never Latin/Cyrillic/other letters inside a Graflect word.');
+        }
+        lines.push('');
+        lines.push(`Output shape: { "${langCode}": { ...same keys, translated values... } }`);
+        lines.push('');
+        lines.push('English source:');
+        lines.push(JSON.stringify({ en: lastEn }, null, 2));
+        $('prompt-out').value = lines.join('\n');
+    });
+
+    // ----- MTPE validate -----
+    $('validate').addEventListener('click', () => {
+        const report = $('report'); report.style.display = 'block';
+        const langCode = $('mtpe-lang').value;
+        let data;
+        try { data = JSON.parse($('paste-in').value); }
+        catch (e) { report.innerHTML = `<span class="bad">✗ Not valid JSON:</span> ${esc(e.message)}`; return; }
+        const table = data[langCode] || data; // accept {gt:{...}} or a flat object
+        const enKeys = Object.keys(lastEn);
+        if (!enKeys.length) { report.innerHTML = '<span class="bad">Generate the article first so there are keys to compare.</span>'; return; }
+        const got = new Set(Object.keys(table));
+        const missing = enKeys.filter((k) => !got.has(k));
+        const extra = [...got].filter((k) => !enKeys.includes(k));
+        const tagMismatch = [], badGlyphs = new Set();
+        const tagCount = (s) => (String(s).match(/<[^>]+>/g) || []).length;
+        enKeys.forEach((k) => {
+            if (table[k] == null) return;
+            if (tagCount(lastEn[k]) !== tagCount(table[k])) tagMismatch.push(k);
+            if (langCode === 'gt') {
+                String(table[k]).replace(/<[^>]*>/g, ' ').split(/\s+/).forEach((w) => {
+                    let hasG = false, hasN = false;
+                    for (const ch of w) { if (isGraflect(ch.charCodeAt(0))) hasG = true; else if (/\S/.test(ch)) hasN = true; }
+                    if (hasG && hasN) for (const ch of w) if (!isGraflect(ch.charCodeAt(0)) && /\S/.test(ch)) badGlyphs.add(ch);
+                });
+            }
+        });
+        const parts = [];
+        if (!missing.length && !extra.length) parts.push('<div class="ok">✓ keys match</div>');
+        if (missing.length) parts.push(`<div class="bad">✗ missing ${missing.length} key(s):</div> <code>${esc(missing.join(', '))}</code>`);
+        if (extra.length) parts.push(`<div class="bad">✗ ${extra.length} unexpected key(s):</div> <code>${esc(extra.join(', '))}</code>`);
+        parts.push(tagMismatch.length
+            ? `<div class="bad">✗ HTML-tag count differs in:</div> <code>${esc(tagMismatch.join(', '))}</code>`
+            : '<div class="ok">✓ HTML tags preserved</div>');
+        if (langCode === 'gt') parts.push(badGlyphs.size
+            ? `<div class="bad">✗ non-Graflect glyphs inside words:</div> <code>${esc([...badGlyphs].join(' '))}</code>`
+            : '<div class="ok">✓ no stray non-Graflect glyphs</div>');
+        report.innerHTML = parts.join('');
+    });
+})();
+</script>
+</body>
+</html>
