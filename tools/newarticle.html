@@ -115,6 +115,12 @@
                 <button class="normal-btn" id="generate">⚙ Generate files</button>
                 <span class="note" id="stats"></span>
             </div>
+            <div class="field">
+                <label>Blog-card preview <small>(how it looks in the list — the card summary is your first paragraph)</small></label>
+                <div class="content" style="border: 2px solid var(--border-color); padding: 10px; max-height: none;">
+                    <div id="card-preview"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -356,6 +362,26 @@ ${sectionsHtml}
         $('stats').textContent = `${blocks.length} blocks · ${words} words · ~${Math.max(1, Math.round(words / 220))} min read · ${Object.keys(en).length} keys`;
     }
     $('generate').addEventListener('click', generate);
+
+    // ----- Live blog-card preview (mirrors what the build bakes into the list:
+    //       the card summary is the article's FIRST paragraph, not the meta desc) -----
+    function updateCardPreview() {
+        const title = $('title').value.trim() || 'Untitled';
+        const date = ($('date').valueAsDate || new Date())
+            .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const firstPara = parseBody($('body').value).find((b) => b.type === 'p');
+        const summary = (firstPara && firstPara.text) || $('desc').value.trim() ||
+            'Your first paragraph becomes the card summary.';
+        $('card-preview').innerHTML =
+            `<article class="blog-post">` +
+            `<h3><a href="#">${esc(title)}</a></h3>` +
+            `<p class="post-date">${date}</p>` +
+            `<p>${esc(summary)}</p>` +
+            `<p><i><a href="#">read more &rarr;</a></i></p>` +
+            `</article>`;
+    }
+    ['title', 'date', 'desc', 'body'].forEach((id) => $(id).addEventListener('input', updateCardPreview));
+    updateCardPreview();
 
     // ----- copy / download -----
     document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => {
