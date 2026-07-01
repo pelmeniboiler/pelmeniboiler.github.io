@@ -87,27 +87,26 @@ function setupShareTools() {
 
         const lang = localStorage.getItem('pelmeniboiler-lang') || 'en';
         const baseUrl = window.location.href.split('?')[0].split('#')[0];
-        let urlToCopy;
+        let url, message;
 
         if (anchorElement) {
             const dataKey = anchorElement.getAttribute('data-key');
-            
             const preRange = document.createRange();
             preRange.selectNodeContents(anchorElement);
             preRange.setEnd(currentSelectionRange.startContainer, currentSelectionRange.startOffset);
-            
             const start = preRange.toString().length;
             const end = start + currentSelectionRange.toString().length;
-
-            urlToCopy = `${baseUrl}?l=${lang}#highlight=${dataKey},${start},${end}`;
-            copyToClipboard(urlToCopy, 'Precise link to selection copied!');
+            url = `${baseUrl}?l=${lang}#highlight=${dataKey},${start},${end}`;
+            message = 'Precise link to selection copied!';
         } else {
-            console.warn("No parent with data-key found for selection. Falling back to text-based fragment.");
-            urlToCopy = `${baseUrl}?l=${lang}#:~:text=${encodeURIComponent(selectedText)}`;
-            copyToClipboard(urlToCopy, 'Link to selection copied (fallback)!');
+            url = `${baseUrl}?l=${lang}#:~:text=${encodeURIComponent(selectedText)}`;
+            message = 'Link to selection copied (fallback)!';
         }
-        
+
         sharePopup.style.display = 'none';
+        // One share action: native share sheet with the generated image where
+        // supported, otherwise copy the link.
+        smartShare(selectedText, url, message);
         currentSelectionRange = null;
     });
 
@@ -184,36 +183,27 @@ function setupShareTools() {
         return canvas;
     }
 
-    async function shareAsImage(text) {
-        let canvas;
-        try { canvas = await buildShareCanvas(text); }
-        catch (e) { console.error('Share image failed:', e); return; }
-        canvas.toBlob(async (blob) => {
-            if (!blob) return;
-            const slug = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || 'pelmeniboiler';
-            const file = new File([blob], `${slug}.png`, { type: 'image/png' });
+    // One "share" action, behind the chain button: on platforms that can share
+    // files (mostly mobile), open the native share sheet with the generated image
+    // AND the link; everywhere else, copy the link. `text` is the selection (or ''
+    // for a whole-page share).
+    async function smartShare(text, url, copyMessage) {
+        if (navigator.canShare) {
             try {
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({ files: [file], title: document.title });
+                const canvas = await buildShareCanvas(text);
+                const blob = await new Promise((res) => canvas.toBlob(res, 'image/png'));
+                const slug = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || 'pelmeniboiler';
+                const file = blob && new File([blob], `${slug}.png`, { type: 'image/png' });
+                if (file && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file], url, title: document.title });
                     return;
                 }
-            } catch (_) { /* cancelled / unsupported → download instead */ }
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = file.name;
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }, 'image/png');
-    }
-
-    // Popup image button: share the current selection as an image.
-    const shareImageBtn = document.getElementById('share-image-btn');
-    if (shareImageBtn) {
-        shareImageBtn.addEventListener('click', () => {
-            const text = currentSelectionRange ? currentSelectionRange.toString().trim() : '';
-            sharePopup.style.display = 'none';
-            shareAsImage(text);
-        });
+            } catch (e) {
+                if (e && e.name === 'AbortError') return; // user dismissed the share sheet
+                // otherwise fall through to copying the link
+            }
+        }
+        copyToClipboard(url, copyMessage);
     }
 
     // --- [UPDATED] Highlighting Logic on Page Load ---
@@ -314,22 +304,15 @@ function setupShareTools() {
                 e.stopPropagation();
                 const lang = localStorage.getItem('pelmeniboiler-lang') || 'en';
                 const baseUrl = window.location.href.split('?')[0].split('#')[0];
-                const urlToCopy = `${baseUrl}?l=${lang}`;
-                copyToClipboard(urlToCopy, 'Page link with language copied!');
+                const url = `${baseUrl}?l=${lang}`;
+                // Whole-page share: native sheet with the hero image where
+                // supported, otherwise copy the page link.
+                smartShare('', url, 'Page link with language copied!');
 
                 const originalText = button.innerHTML;
                 button.innerHTML = '✓';
                 setTimeout(() => { button.innerHTML = originalText; }, 1000);
             });
-
-            // Second titlebar button: share the whole article as an image
-            // (no selection => just the hero image).
-            const imgButton = document.createElement('button');
-            imgButton.className = 'share-titlebar-btn';
-            imgButton.title = 'Share as image';
-            imgButton.innerHTML = `<span class="symbol">📷</span>`;
-            titleBar.insertBefore(imgButton, closeButton);
-            imgButton.addEventListener('click', (e) => { e.stopPropagation(); shareAsImage(''); });
         });
     }
     
