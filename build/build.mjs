@@ -155,6 +155,18 @@ async function generateBlogManifest(processedPosts, localizationData, blogDir) {
 
 const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻' };
 
+// Human-facing dates: Anno Mundi (Hebrew calendar) by default, Japanese era for
+// ja. Machine dates (RSS/JSON-LD/manifest) stay ISO/RFC — this is display only.
+// (The same logic is mirrored in scripts/blog-loader.js for runtime re-formatting.)
+function formatDisplayDate(date, lang) {
+    const d = new Date(date);
+    if (lang === 'ja') {
+        return new Intl.DateTimeFormat('ja-u-ca-japanese', { era: 'short', year: 'numeric', month: 'long', day: 'numeric' }).format(d);
+    }
+    const loc = ({ he: 'he', de: 'de', ru: 'ru' })[lang] || 'en';
+    return new Intl.DateTimeFormat(`${loc}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+}
+
 /**
  * Render the blog filter buttons + post cards as static HTML and inject them into
  * the hub between the FILTERS/POSTS markers. The list only changes when a post is
@@ -182,11 +194,12 @@ async function bakeBlogList(manifestItems, localizationData, rootDir) {
         const href = `/blog/${p.slug}/en/`;
         const title = enVal(p.translationSource, p.titleKey, p.title);      // localization HTML
         const desc = enVal(p.translationSource, p.descriptionKey, p.description);
-        const date = new Date(p.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const isoDate = new Date(p.date).toISOString();
+        const date = formatDisplayDate(p.date, 'en'); // baked default (Anno Mundi); JS re-formats per language
         const kws = (p.keywords || []).join(',');
         return `<article class="blog-post" data-keywords="${kws}">
   <h3><a href="${href}" data-key="${p.titleKey}" data-slug="${p.slug}" data-langs="${langs}">${title}</a></h3>
-  <p class="post-date">${date}</p>
+  <p class="post-date" data-date="${isoDate}">${date}</p>
   <p data-key="${p.descriptionKey}">${desc}</p>
   <p><i><a href="${href}" data-slug="${p.slug}" data-langs="${langs}">read more &rarr;</a></i></p>
 </article>`;

@@ -48,7 +48,35 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target) a.href = `/blog/${a.dataset.slug}/${target}/`;
         });
     };
-    document.addEventListener('translationsReady', (e) => updateRenderedLinks(e.detail.lang));
+
+    /**
+     * Human-facing dates: Anno Mundi (Hebrew calendar) by default, Japanese era
+     * for ja. Mirrors formatDisplayDate() in build/build.mjs. Machine dates
+     * elsewhere (RSS/JSON-LD) stay ISO/RFC — this only touches what people read.
+     */
+    const formatDisplayDate = (date, lang) => {
+        const d = new Date(date);
+        try {
+            if (lang === 'ja') {
+                return new Intl.DateTimeFormat('ja-u-ca-japanese', { era: 'short', year: 'numeric', month: 'long', day: 'numeric' }).format(d);
+            }
+            const loc = ({ he: 'he', de: 'de', ru: 'ru' })[lang] || 'en';
+            return new Intl.DateTimeFormat(`${loc}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+        } catch (_) {
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+    };
+    /** Re-format the (baked) card dates for the active language. */
+    const updateDates = (lang) => {
+        postsListContainer.querySelectorAll('.post-date[data-date]').forEach((el) => {
+            el.textContent = formatDisplayDate(el.dataset.date, lang);
+        });
+    };
+
+    document.addEventListener('translationsReady', (e) => {
+        updateRenderedLinks(e.detail.lang);
+        updateDates(e.detail.lang);
+    });
 
     /**
      * Re-applies translations to a specific container.
@@ -246,7 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (postsListContainer.querySelector('.blog-post')) {
         setupBakedFiltering();
         setupRssDropdown();
-        document.addEventListener('translationsReady', (e) => updateRenderedLinks(e.detail.lang));
+        // Format the baked dates + links for the current language right away;
+        // the translationsReady listener above keeps them in sync on switches.
+        updateRenderedLinks(currentLang());
+        updateDates(currentLang());
     } else {
         loadBlogPosts();
     }
