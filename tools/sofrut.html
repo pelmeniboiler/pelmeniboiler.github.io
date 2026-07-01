@@ -178,6 +178,14 @@
                     <textarea id="glossary" rows="3" placeholder="Featural writing system = ..."></textarea>
                 </div>
             </div>
+            <div class="field">
+                <label for="concept-term">Connect a concept <small>(Wikidata — the term each language actually uses; click a result to add it)</small></label>
+                <div class="bar">
+                    <input type="text" id="concept-term" placeholder="e.g. featural writing system" style="max-width: 300px;">
+                    <button class="normal-btn" id="concept-lookup">🔎 look up</button>
+                </div>
+                <div id="concept-result" class="note"></div>
+            </div>
             <div class="bar"><button class="normal-btn" id="mk-prompt">✎ Generate prompt</button></div>
             <textarea class="out" id="prompt-out" readonly></textarea>
             <div class="bar"><button class="normal-btn" data-copy="prompt-out">⎘ copy prompt</button></div>
@@ -497,6 +505,34 @@ ${sectionsHtml}
             ? `<div class="bad">✗ non-Graflect glyphs inside words:</div> <code>${esc([...badGlyphs].join(' '))}</code>`
             : '<div class="ok">✓ no stray non-Graflect glyphs</div>');
         report.innerHTML = parts.join('');
+    });
+
+    // ----- Concept lookup (Wikidata): connect an English concept to the term
+    //       each language actually uses, via Wikidata's cross-language labels.
+    //       Pure fetch to a public API — no dependency. -----
+    const WD = 'https://www.wikidata.org/w/api.php';
+    const CONCEPT_LANGS = ['he', 'ja', 'de', 'ru']; // gt isn't on Wikidata
+    $('concept-lookup').addEventListener('click', async () => {
+        const term = $('concept-term').value.trim();
+        const box = $('concept-result');
+        if (!term) return;
+        box.textContent = 'Searching Wikidata…';
+        try {
+            const s = await fetch(`${WD}?action=wbsearchentities&search=${encodeURIComponent(term)}&language=en&format=json&origin=*&limit=1`).then((r) => r.json());
+            const hit = s.search && s.search[0];
+            if (!hit) { box.textContent = 'No Wikidata match — set this jargon term by hand.'; return; }
+            const e = await fetch(`${WD}?action=wbgetentities&ids=${hit.id}&props=labels&languages=${CONCEPT_LANGS.join('|')}&format=json&origin=*`).then((r) => r.json());
+            const labels = (e.entities[hit.id] && e.entities[hit.id].labels) || {};
+            box.innerHTML =
+                `<strong>${esc(hit.label)}</strong> <span class="badge">${esc(hit.id)}</span> ${hit.description ? '— ' + esc(hit.description) : ''}<br>` +
+                CONCEPT_LANGS.map((l) => labels[l]
+                    ? `<button class="chip" data-l="${l}" data-t="${esc(labels[l].value)}">${l}: ${esc(labels[l].value)}</button>`
+                    : `<span class="chip" style="opacity:.5">${l}: —</span>`).join(' ');
+            box.querySelectorAll('button[data-l]').forEach((btn) => btn.addEventListener('click', () => {
+                const g = $('glossary');
+                g.value = (g.value.trim() ? g.value.trim() + '\n' : '') + `${term} = ${btn.dataset.t}`;
+            }));
+        } catch (err) { box.textContent = 'Lookup failed (network/CORS): ' + err.message; }
     });
 
     // ===== 5. Edit existing: load an article, surface staleness, regenerate JSON =====
