@@ -293,6 +293,14 @@ function setupSettings() {
         // Save the theme choice to localStorage.
         localStorage.setItem(THEME_KEY, theme);
 
+        // Keep the PWA manifest on the theme's variant, so installing from this
+        // session bakes in a matching icon. (Already-installed apps keep theirs.)
+        const THEMED_MANIFESTS = ['light', 'dark', 'champagne', 'bubblegum', 'techelet', 'zelyonny', 'akai', 'rindswurst'];
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        if (manifestLink) {
+            manifestLink.href = THEMED_MANIFESTS.includes(theme) ? `/manifest-${theme}.json` : '/manifest.json';
+        }
+
         // Call the new function to update the favicon after the theme has been applied.
         updateFavicon();
     }

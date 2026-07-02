@@ -1,34 +1,42 @@
 @font-face {
   font-family: 'FairfaxHD';
   src: url('fonts/FairfaxHD.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Selyodka';
   src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'SymbolaNoRI';
   src: url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Garamond';
   src: url('fonts/EBGaramond.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'FrankRuhl';
   src: url('fonts/FrankRuhl.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Noto EmojiNoRI';
   src: url('fonts/NotoEmoji-Regular-NoRI.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Android EmojiNoRI';
   src: url('fonts/AndroidEmojiNoRI.ttf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'TwitterBWEmoji.ttf';
   src: url('fonts/TwitterColorEmoji-SVGinOT.ttf') format('truetype');
+  font-display: swap;
 }
 /* --- THEME DEFINITIONS --- */
 :root {
