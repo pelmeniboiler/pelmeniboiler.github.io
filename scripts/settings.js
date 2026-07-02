@@ -440,7 +440,8 @@ function setupSettings() {
         // Asynchronously inject SVGs.
         await Promise.all([
             injectSVG(getElement('logo-img'), '/logo/shzh.svg'),
-            injectSVG(getElement('start-menu-logo'), '/logo/shzh.svg')
+            injectSVG(getElement('start-menu-logo'), '/logo/shzh.svg'),
+            injectSVG(getElement('tray-logo-img'), '/logo/shzh.svg')
         ]);
         
         // Sync UI controls to match the state already set by theme-loader.js.

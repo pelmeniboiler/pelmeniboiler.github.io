@@ -272,7 +272,7 @@ async function computeAssetVersion(rootDir) {
 // lives in its own nested "folder".
 const APP_LIBRARY = {
     tools: [
-        { href: '/tools/gt.html', icon: '🔤', label: 'graflect.workbench' },
+        // graflect.workbench deliberately unlisted for now.
         { href: '/tools/emojiviewer.html', icon: '🙾', label: 'emoji.viewer' },
     ],
     folders: [{

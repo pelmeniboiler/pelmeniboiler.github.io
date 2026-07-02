@@ -7,10 +7,48 @@
     </div>
     <ul class="window-list"></ul>
 </div>
-<!-- Tray (wide screens): windows that started open dock here as icons when
-     closed, beside an Anno Mundi clock (Japanese era on ja pages).
-     Populated by start-menu.js. -->
+<!-- Tray (wide screens): THE program launcher. ShZh mark on the left, closed
+     windows dock as icons, settings pinned before the live zmanim clock.
+     The start-menu box remains for narrow screens only. -->
 <div id="tray" class="tray">
+    <a id="tray-logo" class="tray-logo" href="/" title="pelmeniboiler"><img id="tray-logo-img" src="/logo/shzh.svg" alt="ש-Ж"></a>
     <ul id="tray-icons"></ul>
-    <span id="tray-clock"></span>
+    <button id="tray-settings" class="tray-icon" title="system.settings"><span class="symbol">⚙</span></button>
+    <button id="tray-clock" title="shaon.zmanim"></button>
+</div>
+
+<!-- Zmanim clock window (opened from the tray clock). Counterclockwise dial in
+     homage to Chaykin's Decalogue: Hebrew hour letters, hands run right-to-left,
+     time in sha'ot zmaniyot with chalakim (1/1080 hour) and regaim (1/76 chelek). -->
+<div id="zman-clock-window" class="window init-closed" style="top: 16%; left: 32%; z-index: var(--z-window-active);">
+    <div class="title-bar">
+        <span class="title"><span class="symbol">🕰</span> shaon.zmanim</span>
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="content zman-content">
+        <svg id="zman-dial" viewBox="-110 -110 220 220" aria-label="zmanim clock dial">
+            <circle r="104" class="zman-rim"/>
+            <g id="zman-marks"></g>
+            <g id="zman-letters"></g>
+            <line id="zman-hand" x1="0" y1="0" x2="0" y2="-78" class="zman-hand"/>
+            <circle r="4" class="zman-hub"/>
+            <text id="zman-daynight" y="52" text-anchor="middle" class="zman-symbol"></text>
+        </svg>
+        <div class="zman-readouts">
+            <div class="zman-big"><span id="zman-hour">–</span></div>
+            <div class="zman-units">
+                <span title="chalakim — 1/1080 of a zmanit hour">חלקים <b id="zman-chalakim">–</b></span>
+                <span title="regaim — 1/76 of a chelek">רגעים <b id="zman-regaim">–</b></span>
+            </div>
+            <div class="zman-date" id="zman-hebdate">–</div>
+            <div class="zman-sun">
+                <span title="sunrise">☀ <span id="zman-sunrise">–</span></span>
+                <span title="sunset">🌙 <span id="zman-sunset">–</span></span>
+            </div>
+            <div class="zman-loc">
+                <span id="zman-loc-label">ירושלים</span>
+                <button id="zman-geo" class="normal-btn" title="Use this device's location">📍</button>
+            </div>
+        </div>
+    </div>
 </div>
