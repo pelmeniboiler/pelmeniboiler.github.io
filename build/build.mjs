@@ -38,6 +38,7 @@ async function main() {
     console.log('Baking blog list into the hub...');
     await bakeBlogList(manifestItems, localizationData, ROOT_DIR);
     await versionHubAssets(ROOT_DIR, assetVersion);
+    await stampServiceWorker(ROOT_DIR, assetVersion);
 
     console.log('Generating per-language article pages...');
     const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion);
@@ -253,6 +254,19 @@ async function computeAssetVersion(rootDir) {
         try { await walk(base); } catch { /* dir may not exist */ }
     }
     return crypto.createHash('sha256').update(Buffer.concat(parts)).digest('hex').slice(0, 8);
+}
+
+/**
+ * Stamp the service worker's cache version with the asset hash, in place
+ * (idempotent). A deploy that changes any CSS/JS therefore also retires the old
+ * offline cache — the SW and the ?v= cache-buster share one version.
+ */
+async function stampServiceWorker(rootDir, version) {
+    const swPath = path.join(rootDir, 'sw.js');
+    try {
+        const src = await fs.readFile(swPath, 'utf-8');
+        await fs.writeFile(swPath, src.replace(/const VERSION = '[^']*';/, `const VERSION = '${version}';`));
+    } catch { /* no sw.js */ }
 }
 
 /** Apply the asset version to the hub's own CSS/JS references, in place. */
