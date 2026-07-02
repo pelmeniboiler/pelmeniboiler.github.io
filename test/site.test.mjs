@@ -334,6 +334,81 @@ try {
         await ctx.close();
     }
 
+    // ============ APP LIBRARY (baked) ============
+    {
+        const ctx = await browser.newContext();
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        const lib = await page.evaluate(() => ({
+            exists: !!document.getElementById('app-library'),
+            tools: document.querySelectorAll('#app-library > .content > .app-list a').length,
+            folderItems: document.querySelectorAll('#app-library .app-folder .app-list a').length,
+            demos: [...document.querySelectorAll('#app-library .app-section ~ .app-list a')].length,
+        }));
+        ok(lib.exists && lib.tools >= 2 && lib.folderItems === 2 && lib.demos >= 3,
+            `App library: tools + hoi4 folder + auto-discovered demos (${JSON.stringify(lib)})`);
+        await ctx.close();
+    }
+
+    // ============ TRAY: minimized windows + calendar clock ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForTimeout(800); // modules + start-menu wiring
+
+        const clock = (await page.textContent('#tray-clock').catch(() => '')) || '';
+        ok(/57\d\d/.test(clock) && /\d{2}:\d{2}/.test(clock), `Tray clock shows Anno Mundi date + time (got "${clock}")`);
+
+        // Close the welcome window (started open) → docks to tray as an icon.
+        await page.evaluate(() => {
+            const win = document.querySelector('[data-key="welcome_h1"]').closest('.window');
+            win.querySelector('.close-btn').click();
+        });
+        await page.waitForTimeout(300);
+        const trayCount = await page.locator('#tray-icons .tray-icon').count();
+        ok(trayCount === 1, `Tray: closed started-open window docks as icon (${trayCount})`);
+
+        await page.click('#tray-icons .tray-icon');
+        await page.waitForTimeout(300);
+        const reopened = await page.evaluate(() =>
+            getComputedStyle(document.querySelector('[data-key="welcome_h1"]').closest('.window')).display !== 'none');
+        const trayAfter = await page.locator('#tray-icons .tray-icon').count();
+        ok(reopened && trayAfter === 0, 'Tray: clicking the icon restores the window');
+        await ctx.close();
+    }
+
+    // ============ RESET BUTTON: clears state + caches ============
+    {
+        const ctx = await browser.newContext();
+        await ctx.addInitScript(() => {
+            window.confirm = () => true;
+            // Init scripts run on EVERY navigation — including the post-reset
+            // reload — so seed the state to be cleared only once.
+            if (!sessionStorage.getItem('reset-test-seeded')) {
+                sessionStorage.setItem('reset-test-seeded', '1');
+                localStorage.setItem('pelmeniboiler-theme', 'akai');
+                localStorage.setItem('pelmeniboiler-liquid-glass', '1');
+            }
+        });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForSelector('#reset-site-btn', { state: 'attached', timeout: 8000 });
+        // The button exists once the module HTML is injected, but its handler is
+        // bound by settings.js — wait for settings to finish wiring first.
+        await page.waitForFunction(() => window.translationsData, { timeout: 10000 });
+        await page.evaluate(() => document.getElementById('reset-site-btn').click());
+        await page.waitForTimeout(1500); // reset + reload
+        const after = await page.evaluate(() => ({
+            theme: localStorage.getItem('pelmeniboiler-theme'),
+            glass: localStorage.getItem('pelmeniboiler-liquid-glass'),
+            glassClass: document.documentElement.classList.contains('liquid-glass'),
+        }));
+        ok(after.theme === null && after.glass === null && !after.glassClass,
+            `Reset button clears saved state and reloads clean (${JSON.stringify(after)})`);
+        await ctx.close();
+    }
+
     // ============ OFFLINE PWA ============
     {
         const ctx = await browser.newContext();

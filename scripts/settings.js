@@ -522,6 +522,29 @@ function setupSettings() {
         });
     }
 
+    // Escape hatch: clear every bit of client state this site keeps —
+    // settings, easter eggs, notification prefs, offline caches, the service
+    // worker itself — then reload fresh from the network. For anyone stuck in
+    // liquid glass, a broken cache, or any other odd state.
+    const resetBtn = getElement('reset-site-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', async () => {
+            if (!window.confirm('Reset all site data (settings, caches, offline copy) and reload?')) return;
+            try {
+                Object.keys(localStorage)
+                    .filter((k) => k.startsWith('pelmeniboiler') || k === 'graflectDictionaries')
+                    .forEach((k) => localStorage.removeItem(k));
+                if (window.caches) {
+                    for (const key of await caches.keys()) await caches.delete(key);
+                }
+                if (navigator.serviceWorker) {
+                    for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
+                }
+            } catch (e) { console.error('Reset ran into trouble (reloading anyway):', e); }
+            location.reload();
+        });
+    }
+
     // Run the main initialization.
     initialize();
 

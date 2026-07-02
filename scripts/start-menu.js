@@ -20,13 +20,81 @@ function setupStartMenu() {
 
     const isMobile = () => window.innerWidth <= 768;
 
+    // --- Tray (wide screens) ---
+    // Windows that STARTED open dock to the tray as icons when closed;
+    // init-closed windows (settings etc.) keep using the start-menu list.
+    // Initial state is recorded up-front because openWindow strips init-closed.
+    const trayIconsEl = document.getElementById('tray-icons');
+    const trayClockEl = document.getElementById('tray-clock');
+    windows.forEach((win) => {
+        if (!('startedOpen' in win.dataset)) {
+            win.dataset.startedOpen = win.classList.contains('init-closed') ? '0' : '1';
+        }
+    });
+    let lastTranslations = null, lastLang = null;
+
+    function windowIcon(win) {
+        const titleEl = win.querySelector('.title-bar .title');
+        const sym = titleEl?.querySelector('.symbol')?.textContent?.trim();
+        if (sym) return sym;
+        const text = titleEl?.textContent?.trim() || '❒';
+        return [...text][0];
+    }
+
+    function renderTray(trayWindows, translations, lang) {
+        if (!trayIconsEl) return;
+        trayIconsEl.innerHTML = '';
+        trayWindows.forEach((win) => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.className = 'tray-icon';
+            btn.innerHTML = `<span class="symbol">${windowIcon(win)}</span>`;
+            btn.title = win.querySelector('.title-bar .title')?.textContent?.trim() || 'window';
+            btn.addEventListener('click', () => openWindow(win, translations, lang));
+            li.appendChild(btn);
+            trayIconsEl.appendChild(li);
+        });
+    }
+
+    // Tray clock: Hebrew-calendar date by default, Japanese era on ja pages.
+    function updateTrayClock() {
+        if (!trayClockEl) return;
+        const now = new Date();
+        const lang = document.documentElement.lang || 'en';
+        let dateText;
+        try {
+            dateText = (lang === 'ja')
+                ? new Intl.DateTimeFormat('ja-u-ca-japanese', { era: 'short', year: 'numeric', month: 'long', day: 'numeric' }).format(now)
+                : new Intl.DateTimeFormat(`${lang === 'he' ? 'he' : 'en'}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+        } catch (_) {
+            dateText = now.toLocaleDateString();
+        }
+        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        trayClockEl.textContent = `${dateText} · ${time}`;
+    }
+    updateTrayClock();
+    setInterval(updateTrayClock, 30000);
+    document.addEventListener('translationsReady', updateTrayClock);
+
+    let trayResizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(trayResizeTimer);
+        trayResizeTimer = setTimeout(() => updateWindowList(lastTranslations, lastLang), 200);
+    });
+
     // --- Function Definitions ---
 
     function updateWindowList(translations, lang) {
         if (!windowList) return;
+        lastTranslations = translations; lastLang = lang;
         windowList.innerHTML = '';
 
-        closedWindows.forEach((closedItemWindow) => {
+        // Partition: tray gets started-open windows on wide screens.
+        const toTray = closedWindows.filter((w) => !isMobile() && w.dataset.startedOpen === '1');
+        const toList = closedWindows.filter((w) => !toTray.includes(w));
+        renderTray(toTray, translations, lang);
+
+        toList.forEach((closedItemWindow) => {
             const listItem = document.createElement('li');
             listItem.setAttribute('tabindex', '0');
             const titleElement = closedItemWindow.querySelector('.title');
