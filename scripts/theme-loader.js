@@ -43,6 +43,16 @@
             docEl.classList.add('liquid-glass');
         }
 
+        // Point the PWA manifest at the current theme's variant so an install
+        // picks up a matching icon + colours. (Installed apps keep the icon
+        // they were installed with — the platform offers no way to change it
+        // afterwards — so this decides the icon at install time.)
+        const THEMED_MANIFESTS = ['light', 'dark', 'champagne', 'bubblegum', 'techelet', 'zelyonny', 'akai', 'rindswurst'];
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        if (manifestLink && THEMED_MANIFESTS.includes(theme)) {
+            manifestLink.href = `/manifest-${theme}.json`;
+        }
+
         /**
          * This function finds the <body> tag, removes any outdated theme or mode classes
          * that might be hardcoded in the HTML, and applies the correct ones from localStorage.

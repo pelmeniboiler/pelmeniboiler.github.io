@@ -1,0 +1,28 @@
+{
+    "name": "Pelmeniboiler",
+    "short_name": "Pelmeniboiler",
+    "description": "Neat stuff I like. Keyboards, language, photos, projects.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/logo/icons/light-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo/icons/light-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo/icons/light-mask-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

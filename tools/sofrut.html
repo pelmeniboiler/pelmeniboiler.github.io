@@ -3,15 +3,50 @@
 <head>
     <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
     <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/styles/fonts/FrankRuhl.ttf" as="font" type="font/ttf" crossorigin>
     <script src="/scripts/theme-loader.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sofrut — article scribe</title>
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <style>
-        body { overflow: auto; padding: 16px; box-sizing: border-box; }
+        /* Narrow screens: stacked panes, page scrolls (the old behaviour). */
+        body { overflow: auto; padding: 12px; box-sizing: border-box; }
         .forge { max-width: 920px; margin: 0 auto; }
-        .forge .window { position: relative; left: 0; top: 0; margin-bottom: 18px; }
+        .forge .window { position: relative; left: 0; top: 0; margin-bottom: 14px; }
+
+        /* Wide screens: multiplex the panes tmux-style — one full-viewport grid,
+           no page scroll, each pane scrolls internally. */
+        @media (min-width: 1100px) {
+            html, body { height: 100%; }
+            body { overflow: hidden; padding: 10px; }
+            .forge {
+                display: grid;
+                height: calc(100vh - 20px);
+                max-width: none;
+                gap: 10px;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+                grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-areas:
+                    "intro intro intro"
+                    "meta  body  out"
+                    "mtpe  body  edit";
+            }
+            .forge .window { display: flex; flex-direction: column; margin: 0; min-height: 0; min-width: 0; }
+            .forge .window > .content { flex: 1; overflow: auto; min-height: 0; max-height: none; }
+            .pane-intro { grid-area: intro; }
+            .pane-intro > .content { padding: 4px 10px; }
+            .pane-intro p { margin: 2px 0; }
+            .pane-meta  { grid-area: meta; }
+            .pane-body  { grid-area: body; }
+            .pane-body > .content { display: flex; flex-direction: column; }
+            .pane-body textarea.body { flex: 1; min-height: 120px; }
+            .pane-out   { grid-area: out; }
+            .pane-mtpe  { grid-area: mtpe; }
+            .pane-edit  { grid-area: edit; }
+            textarea.out { min-height: 100px; }
+            #edit-table { max-height: none; flex: 1; }
+        }
         .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
         .field label { font-weight: bold; font-size: 14px; }
         .field small { opacity: 0.7; font-size: 12px; }
@@ -52,7 +87,7 @@
 <body class="eink-mode light-mode">
 <div class="forge">
 
-    <div class="window">
+    <div class="window pane-intro">
         <div class="title-bar"><span class="title">🖋 sofrut.scribe</span></div>
         <div class="content">
             <p class="note">Scaffold a new blog post: fill this in, generate the <code>.html</code> skeleton and
@@ -63,7 +98,7 @@
     </div>
 
     <!-- 1. METADATA -->
-    <div class="window">
+    <div class="window pane-meta">
         <div class="title-bar"><span class="title">① metadata</span></div>
         <div class="content">
             <div class="field">
@@ -114,7 +149,7 @@
     </div>
 
     <!-- 2. BODY -->
-    <div class="window">
+    <div class="window pane-body">
         <div class="title-bar"><span class="title">② body</span></div>
         <div class="content">
             <p class="note">One block per line / blank-line-separated paragraph. Syntax:
@@ -135,7 +170,7 @@
     </div>
 
     <!-- 3. OUTPUT -->
-    <div class="window">
+    <div class="window pane-out">
         <div class="title-bar"><span class="title">③ output</span></div>
         <div class="content">
             <div class="field">
@@ -158,7 +193,7 @@
     </div>
 
     <!-- 4. MTPE -->
-    <div class="window">
+    <div class="window pane-mtpe">
         <div class="title-bar"><span class="title">④ MTPE — translate</span></div>
         <div class="content">
             <p class="note">Generate a paste-ready prompt for your model (one language at a time), then paste the
@@ -199,7 +234,7 @@
     </div>
 
     <!-- 5. EDIT EXISTING -->
-    <div class="window">
+    <div class="window pane-edit">
         <div class="title-bar"><span class="title">⑤ edit existing</span></div>
         <div class="content">
             <p class="note">Load a published article's localization to fix wording and see which translations went

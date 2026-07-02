@@ -76,6 +76,11 @@ try {
         const dateText = (await page.textContent('#blog-posts-list .post-date'))?.trim();
         ok(/57\d\d/.test(dateText), `Hub: dates render Anno Mundi (got "${dateText}")`);
 
+        const welcome = await page.evaluate(() => document.querySelector('.welcome-text-eink')?.textContent || '');
+        ok(!welcome.includes('without JavaScript'), 'Hub: JS-availability note removed from welcome');
+        const about = await page.evaluate(() => document.querySelector('[data-key="about_p"]')?.textContent || '');
+        ok(about.startsWith('Interlinked interdisciplinary'), `Hub: inter-wordplay about text baked (got "${about.slice(0, 40)}…")`);
+
         await page.evaluate(() => document.querySelector('.custom-dropdown-item[data-value="ja"]').click());
         await page.waitForFunction(() =>
             document.querySelector('#blog-posts-list a[data-slug="sunshine"]')?.getAttribute('href') === '/blog/sunshine/ja/',
@@ -293,6 +298,39 @@ try {
         await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         await page.waitForTimeout(500);
         ok(await page.locator('#notify-bell-btn').count() === 0, 'Bell: hidden in a plain browser tab');
+        await ctx.close();
+    }
+
+    // ============ THEMED MANIFEST (icon follows theme at install time) ============
+    {
+        const ctx = await browser.newContext();
+        await ctx.addInitScript(() => {
+            localStorage.setItem('pelmeniboiler-mode', 'lcd');
+            localStorage.setItem('pelmeniboiler-theme', 'techelet');
+        });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/blog/sunshine/en/`, { waitUntil: 'load' });
+        const mhref = await page.getAttribute('link[rel="manifest"]', 'href');
+        ok(mhref === '/manifest-techelet.json', `Manifest follows theme (got ${mhref})`);
+        const mResp = await page.evaluate(async () => (await fetch('/manifest-techelet.json')).json());
+        ok(mResp.theme_color === '#4169E1' && mResp.icons[0].src.includes('techelet'),
+            `Techelet manifest carries themed colours + icons (${mResp.theme_color})`);
+        await ctx.close();
+    }
+
+    // ============ SOFRUT multiplex (no page scroll on wide screens) ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/tools/sofrut.html`, { waitUntil: 'load' });
+        await page.waitForTimeout(400);
+        const r = await page.evaluate(() => ({
+            display: getComputedStyle(document.querySelector('.forge')).display,
+            pageScroll: document.scrollingElement.scrollHeight - window.innerHeight,
+            panes: document.querySelectorAll('.forge > .window').length,
+        }));
+        ok(r.display === 'grid' && r.panes === 6 && r.pageScroll <= 1,
+            `Sofrut: 6 panes multiplexed in a grid, no page scroll (${JSON.stringify(r)})`);
         await ctx.close();
     }
 

@@ -4,7 +4,7 @@
 // with the same content hash used for ?v= asset cache-busting, so every deploy
 // that changes an asset also retires the old cache.
 
-const VERSION = '840b7e36';
+const VERSION = '82fabed0';
 const CACHE = `pelmeniboiler-${VERSION}`;
 
 // The minimal shell needed to render pages offline. Everything else (articles,
@@ -18,6 +18,8 @@ const PRECACHE = [
     '/scripts/settings.js',
     '/scripts/start-menu.js',
     '/scripts/share.js',
+    '/scripts/eink-dither.js',
+    '/scripts/notify-bell.js',
     '/logo/favicon.svg',
     '/logo/shzh.svg',
     '/manifest.json',

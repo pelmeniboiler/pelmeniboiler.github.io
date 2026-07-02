@@ -1,0 +1,28 @@
+{
+    "name": "Pelmeniboiler",
+    "short_name": "Pelmeniboiler",
+    "description": "Neat stuff I like. Keyboards, language, photos, projects.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#FFEBEE",
+    "theme_color": "#C62828",
+    "icons": [
+        {
+            "src": "/logo/icons/akai-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo/icons/akai-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo/icons/akai-mask-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
