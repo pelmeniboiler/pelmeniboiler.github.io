@@ -86,15 +86,6 @@ tell you exactly how close the engine's output is to what you already wrote.
 5. **Sofrut gt panel**: draft with the existing engine + disambiguation; confirmed choices append to the committed dictionary (downloadable to commit).
 6. **`gt:draft` + staleness tracker**: on English edit, re-draft changed keys; drafts start "untracked" until blessed.
 7. **Stretch — "read any page in Graflect"** live, once the dictionary is rich enough. Graflect becomes a language the whole site speaks, powered by your engine.
-8. **The writeup** (see below).
-
-## The writeup (worth doing)
-
-A blog post: how a personal constructed-script transliterator went from a demo to a
-living, build-integrated writing system — the corpus-mining bootstrap, the
-human-in-the-loop dictionary, the "edit English, Graflect follows" loop. Genuinely
-inspiring for anyone building a conlang, a personal orthography, or a hand-crafted
-site. Keywords: `Meta`, `Language`. Credits Aaron's design explicitly.
 
 ## Open questions
 - Dictionary location/format: `localization/graflect-dict.json` in the
