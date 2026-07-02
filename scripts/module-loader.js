@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '/scripts/settings.js',
         '/scripts/start-menu.js',
         '/scripts/share.js',
-        '/scripts/eink-dither.js'
+        '/scripts/eink-dither.js',
+        '/scripts/zman-clock.js'
     ];
 
     /**

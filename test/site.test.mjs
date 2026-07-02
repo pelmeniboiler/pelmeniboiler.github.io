@@ -341,12 +341,12 @@ try {
         await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         const lib = await page.evaluate(() => ({
             exists: !!document.getElementById('app-library'),
-            tools: document.querySelectorAll('#app-library > .content > .app-list a').length,
             folderItems: document.querySelectorAll('#app-library .app-folder .app-list a').length,
             demos: [...document.querySelectorAll('#app-library .app-section ~ .app-list a')].length,
+            workbench: document.getElementById('app-library').textContent.includes('graflect.workbench'),
         }));
-        ok(lib.exists && lib.tools >= 2 && lib.folderItems === 2 && lib.demos >= 3,
-            `App library: tools + hoi4 folder + auto-discovered demos (${JSON.stringify(lib)})`);
+        ok(lib.exists && lib.folderItems === 2 && lib.demos >= 3 && !lib.workbench,
+            `App library: hoi4 folder + demos, graflect.workbench suppressed (${JSON.stringify(lib)})`);
         await ctx.close();
     }
 
@@ -375,6 +375,56 @@ try {
             getComputedStyle(document.querySelector('[data-key="welcome_h1"]').closest('.window')).display !== 'none');
         const trayAfter = await page.locator('#tray-icons .tray-icon').count();
         ok(reopened && trayAfter === 0, 'Tray: clicking the icon restores the window');
+        await ctx.close();
+    }
+
+    // ============ TRAY IS THE LAUNCHER (wide): logo, settings, clock window ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForTimeout(800);
+
+        const launcher = await page.evaluate(() => ({
+            startMenuHidden: getComputedStyle(document.querySelector('.start-menu')).display === 'none',
+            logo: !!document.getElementById('tray-logo'),
+            settings: !!document.getElementById('tray-settings'),
+        }));
+        ok(launcher.startMenuHidden && launcher.logo && launcher.settings,
+            `Tray is the launcher on wide: start-menu hidden, ShZh + ⚙ present (${JSON.stringify(launcher)})`);
+
+        await page.click('#tray-settings');
+        await page.waitForTimeout(300);
+        const settingsOpen = await page.evaluate(() =>
+            getComputedStyle(document.getElementById('settings-main-window')).display !== 'none');
+        ok(settingsOpen, 'Tray ⚙ opens the settings window');
+
+        // Zmanim clock: click the tray clock, verify the window + live values.
+        await page.click('#tray-clock');
+        await page.waitForTimeout(600);
+        const zman = await page.evaluate(() => ({
+            open: getComputedStyle(document.getElementById('zman-clock-window')).display !== 'none',
+            chalakim: parseInt(document.getElementById('zman-chalakim').textContent, 10),
+            heb: document.getElementById('zman-hebdate').textContent,
+            letters: document.querySelectorAll('#zman-letters text').length,
+            hand: document.getElementById('zman-hand').getAttribute('transform') || '',
+        }));
+        const regaimA = await page.textContent('#zman-regaim');
+        await page.waitForTimeout(250);
+        const regaimB = await page.textContent('#zman-regaim');
+        ok(zman.open && zman.letters === 12 && zman.chalakim >= 0 && zman.chalakim < 1080,
+            `Zmanim clock opens: 12 Hebrew hour letters, chalakim in range (${zman.chalakim})`);
+        ok(/57\d\d|5\d{3}/.test(zman.heb), `Zmanim clock: sunset-adjusted Hebrew date (got "${zman.heb}")`);
+        ok(/rotate\(-/.test(zman.hand), `Zmanim clock: hand runs COUNTERCLOCKWISE (${zman.hand})`);
+        ok(regaimA !== regaimB, `Zmanim clock: regaim tick live (${regaimA} → ${regaimB})`);
+
+        // About window: description wraps at the heading's width.
+        const about = await page.evaluate(() => {
+            const h2 = document.querySelector('#about-window h2').getBoundingClientRect().width;
+            const p = document.querySelector('#about-window p').getBoundingClientRect().width;
+            return { h2: Math.round(h2), p: Math.round(p) };
+        });
+        ok(about.p <= about.h2 + 2, `About: description no wider than the name heading (${JSON.stringify(about)})`);
         await ctx.close();
     }
 

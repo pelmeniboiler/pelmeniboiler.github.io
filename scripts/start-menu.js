@@ -57,15 +57,22 @@ function setupStartMenu() {
     }
 
     // Tray clock: Hebrew-calendar date by default, Japanese era on ja pages.
+    // When zman-clock.js is loaded it provides a sunset-adjusted Hebrew date
+    // (the Torah day begins at sunset) — prefer it over the midnight-flipping
+    // Intl default.
     function updateTrayClock() {
         if (!trayClockEl) return;
         const now = new Date();
         const lang = document.documentElement.lang || 'en';
         let dateText;
         try {
-            dateText = (lang === 'ja')
-                ? new Intl.DateTimeFormat('ja-u-ca-japanese', { era: 'short', year: 'numeric', month: 'long', day: 'numeric' }).format(now)
-                : new Intl.DateTimeFormat(`${lang === 'he' ? 'he' : 'en'}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+            if (lang === 'ja') {
+                dateText = new Intl.DateTimeFormat('ja-u-ca-japanese', { era: 'short', year: 'numeric', month: 'long', day: 'numeric' }).format(now);
+            } else if (typeof window.zmanHebrewDate === 'function') {
+                dateText = window.zmanHebrewDate(now).replace(/^[^,]+,\s*/, ''); // drop weekday for the tray
+            } else {
+                dateText = new Intl.DateTimeFormat(`${lang === 'he' ? 'he' : 'en'}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+            }
         } catch (_) {
             dateText = now.toLocaleDateString();
         }
@@ -75,6 +82,12 @@ function setupStartMenu() {
     updateTrayClock();
     setInterval(updateTrayClock, 30000);
     document.addEventListener('translationsReady', updateTrayClock);
+
+    // Pinned tray settings button (the tray is the launcher on wide screens).
+    document.getElementById('tray-settings')?.addEventListener('click', () => {
+        const settingsWin = document.getElementById('settings-main-window');
+        if (settingsWin) openWindow(settingsWin, lastTranslations, lastLang);
+    });
 
     let trayResizeTimer;
     window.addEventListener('resize', () => {
@@ -89,8 +102,11 @@ function setupStartMenu() {
         lastTranslations = translations; lastLang = lang;
         windowList.innerHTML = '';
 
-        // Partition: tray gets started-open windows on wide screens.
-        const toTray = closedWindows.filter((w) => !isMobile() && w.dataset.startedOpen === '1');
+        // On wide screens the tray IS the launcher: every closed window docks
+        // there as an icon — except settings and the zmanim clock, which have
+        // pinned tray buttons of their own. The start-menu list serves mobile.
+        const PINNED = ['settings-main-window', 'zman-clock-window'];
+        const toTray = closedWindows.filter((w) => !isMobile() && !PINNED.includes(w.id));
         const toList = closedWindows.filter((w) => !toTray.includes(w));
         renderTray(toTray, translations, lang);
 

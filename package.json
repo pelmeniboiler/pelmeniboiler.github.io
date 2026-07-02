@@ -10,7 +10,8 @@
     "lint:gt": "node build/validate-gt.mjs",
     "tl:status": "node build/tl.mjs status",
     "tl:stamp": "node build/tl.mjs stamp",
-    "icons": "node build/generate-icons.mjs"
+    "icons": "node build/generate-icons.mjs",
+    "tl:auto": "node build/tl-auto.mjs"
   },
   "dependencies": {
     "jsdom": "^24.0.0"
