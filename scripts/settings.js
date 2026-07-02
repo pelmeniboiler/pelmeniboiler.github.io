@@ -231,7 +231,9 @@ function setupSettings() {
         }
 
         localStorage.setItem(MODE_KEY, mode);
-        // **REMOVED:** The call to updateWelcomeText() is no longer necessary.
+
+        // Let listeners (e.g. the e-ink ditherer) react to the mode change.
+        document.dispatchEvent(new CustomEvent('einkmodechange', { detail: { isEink } }));
     }
 
     if (einkToggle) {

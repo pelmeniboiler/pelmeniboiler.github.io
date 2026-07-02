@@ -119,10 +119,16 @@ body.lcd-mode {
 }
 
 /* --- E-INK & LCD MODE STYLES --- */
-/* When e-ink mode is on, force images and iframes to be high-contrast monochrome. */
+/* When e-ink mode is on, force images and iframes to be high-contrast monochrome.
+   This filter is the no-JS fallback; eink-dither.js replaces image pixels with a
+   true 1-bit Floyd–Steinberg dither and marks them .dithered, which must NOT be
+   re-filtered (contrast-crushing a dither destroys it). */
 body.eink-mode img,
 body.eink-mode iframe {
     filter: grayscale(1) brightness(1) contrast(250);
+}
+body.eink-mode img.dithered {
+    filter: none;
 }
 
 /* When lcd mode is on, explicitly remove any filters from images and iframes. */
@@ -667,6 +673,12 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     border-color: color-mix(in srgb, var(--border-color) 40%, transparent);
 }
 
+/* --- NOTIFY BELL (installed-app only; injected by notify-bell.js) --- */
+.notify-dropdown { min-width: 180px; padding: 6px 10px; }
+.notify-row { display: block; padding: 3px 0; cursor: pointer; white-space: nowrap; }
+.notify-row input { margin-inline-end: 6px; }
+.notify-master { border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 4px; font-weight: bold; }
+
 /* --- REDUCED MOTION: honour the OS "reduce motion" setting --- */
 @media (prefers-reduced-motion: reduce) {
     body { transition: none; }
@@ -706,4 +718,8 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     /* Avoid ugly page breaks. */
     h1, h2, h3, h4 { break-after: avoid; }
     img, figure, aside, pre, kbd { break-inside: avoid; }
+
+    /* Zine: each article starts on a fresh page; cover stands alone. */
+    .zine-article { break-before: page; }
+    .zine-cover { break-after: page; }
 }

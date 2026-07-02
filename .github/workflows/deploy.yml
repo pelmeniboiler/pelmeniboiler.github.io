@@ -25,6 +25,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Browser smoke tests (informational — does not block deploys; flip the deploy
+  # job to `needs: [test]` to make it a gate once it's proven stable in CI).
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Build site
+        run: npm run build
+      - name: Run browser tests
+        run: npm test
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +63,9 @@ jobs:
 
       - name: Validate Graflect localization
         run: npm run lint:gt
+
+      - name: Translation staleness report (informational)
+        run: npm run tl:status || true
 
       - name: Build site (manifest, feeds, per-language pages, sitemap)
         run: npm run build

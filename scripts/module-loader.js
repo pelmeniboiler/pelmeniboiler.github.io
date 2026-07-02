@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dependentScripts = [
         '/scripts/settings.js',
         '/scripts/start-menu.js',
-        '/scripts/share.js'
+        '/scripts/share.js',
+        '/scripts/eink-dither.js'
     ];
 
     /**
