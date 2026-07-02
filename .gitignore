@@ -12,3 +12,4 @@ blog/*/
 # Generated feeds + manifest (built fresh in CI)
 /rss/
 /blog/blog-manifest.json
+/zine/

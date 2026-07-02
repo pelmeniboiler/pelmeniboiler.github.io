@@ -41,7 +41,14 @@ async function main() {
     await stampServiceWorker(ROOT_DIR, assetVersion);
 
     console.log('Generating per-language article pages...');
-    const pageUrls = await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion);
+    const { builtUrls: pageUrls, zineArticles } =
+        await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion);
+
+    console.log('Generating zines...');
+    await generateZines(zineArticles, ROOT_DIR, assetVersion);
+
+    console.log('Stamping canonical links on legacy article pages...');
+    await injectLegacyCanonicals(processedPosts, BLOG_DIR);
 
     console.log('Generating sitemap...');
     await generateSitemap(pageUrls, processedPosts, ROOT_DIR);
@@ -322,6 +329,7 @@ function bakeFragment(fragmentHtml, lang, lookup) {
 async function generateLanguagePages(processedPosts, localizationData, blogDir, assetVersion) {
     const globalData = localizationData.global || {};
     const builtUrls = [];
+    const zineArticles = []; // per-language article content, reused by the zine
 
     // Universal chrome modules (identical on every page) get inlined at build
     // time with text baked in the page's language, so the runtime no longer has
@@ -388,7 +396,24 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
                 descEl.setAttribute('content', descText);
             }
 
+            // Collect the baked article body for the zine (clone, minus demo
+            // placeholders — they're inert without their runtime modules).
+            const contentEl = doc.querySelector('article.content');
+            if (contentEl) {
+                const clone = contentEl.cloneNode(true);
+                clone.querySelectorAll('[id$="-placeholder"]').forEach((el) => el.remove());
+                zineArticles.push({
+                    slug, lang,
+                    title: stripHtml(titleKey && lookup(lang, titleKey)) || slug,
+                    pubDate: post.pubDate,
+                    html: clone.innerHTML,
+                });
+            }
+
             // Head metadata: canonical, hreflang alternates, build markers.
+            // Drop any canonical inherited from the source skeleton first (the
+            // legacy flat pages now carry one pointing at their /en/ sibling).
+            doc.querySelectorAll('link[rel="canonical"]').forEach((el) => el.remove());
             const selfUrl = `${SITE_URL}blog/${slug}/${lang}/`;
             const ogTitle = titleText || post.doc.querySelector('title')?.textContent || slug;
             const ogDesc = descText || '';
@@ -460,7 +485,97 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
     }
 
     console.log(`  → built ${builtUrls.length} language pages.`);
-    return builtUrls;
+    return { builtUrls, zineArticles };
+}
+
+/**
+ * Emit one "zine" per language at /zine/<lang>/: the whole blog, oldest-first,
+ * as a single clean document. On screen it's a simple scrollable page; printed
+ * (via the print stylesheet + the page-break rules below) it becomes a booklet.
+ * Chrome-free by design — just theme-loader for themes/offline, no modules.
+ */
+async function generateZines(zineArticles, rootDir, assetVersion) {
+    const byLang = {};
+    for (const a of zineArticles) (byLang[a.lang] = byLang[a.lang] || []).push(a);
+
+    for (const [lang, articles] of Object.entries(byLang)) {
+        articles.sort((a, b) => new Date(a.pubDate) - new Date(b.pubDate));
+        const dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+        const langs = Object.keys(byLang);
+        const toc = articles.map((a) =>
+            `        <li><a href="#${a.slug}">${a.title}</a> <small>${formatDisplayDate(a.pubDate, lang)}</small></li>`).join('\n');
+        const bodies = articles.map((a) => `
+    <article class="zine-article" id="${a.slug}">
+        <p class="post-date">${formatDisplayDate(a.pubDate, lang)}</p>
+${a.html}
+        <hr>
+    </article>`).join('\n');
+
+        const html = `<!DOCTYPE html>
+<html lang="${lang}" translate="no" dir="${dir}">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/scripts/theme-loader.js?v=${assetVersion}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Pelmeniboiler — zine (${lang})</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css?v=${assetVersion}">
+    <style>
+        body { overflow: auto; }
+        .zine { max-width: 720px; margin: 0 auto; padding: 24px 16px 80px; }
+        .zine-cover { text-align: center; margin-bottom: 3em; }
+        .zine-cover img { width: 120px; height: 120px; }
+        .zine nav ol { text-align: start; }
+        .zine-article { margin-top: 3em; }
+    </style>
+</head>
+<body class="eink-mode light-mode">
+    <div class="zine">
+        <header class="zine-cover">
+            <img src="/logo/shzh.svg" alt="Pelmeniboiler">
+            <h1>Pelmeniboiler</h1>
+            <p>the whole blog, in order · ${lang}</p>
+            <p><small>${langs.map((l) => l === lang ? l : `<a href="/zine/${l}/">${l}</a>`).join(' · ')}</small></p>
+            <nav><ol>
+${toc}
+            </ol></nav>
+        </header>
+${bodies}
+    </div>
+</body>
+</html>`;
+
+        const outDir = path.join(rootDir, 'zine', lang);
+        await fs.mkdir(outDir, { recursive: true });
+        await fs.writeFile(path.join(outDir, 'index.html'), html);
+    }
+    console.log(`  → built ${Object.keys(byLang).length} zines.`);
+}
+
+/**
+ * Give each legacy flat article page (blog/<slug>.html — still served, still
+ * linked from old bookmarks/feeds) a rel=canonical pointing at its pre-built
+ * English page, so search engines fold the duplicate into the real URL.
+ * In-place and idempotent, like the other build stamps.
+ */
+async function injectLegacyCanonicals(processedPosts, blogDir) {
+    for (const post of processedPosts) {
+        if (!post.translationSource) continue;
+        const slug = post.filename.replace(/\.html$/, '');
+        const filePath = path.join(blogDir, post.filename);
+        let html = await fs.readFile(filePath, 'utf-8');
+        if (html.includes('rel="canonical"')) continue;
+        const canonical = `<link rel="canonical" href="${SITE_URL}blog/${slug}/en/">`;
+        const anchor = '<link rel="manifest" href="/manifest.json">';
+        if (html.includes(anchor)) {
+            html = html.replace(anchor, `${anchor}\n    ${canonical}`);
+        } else {
+            html = html.replace('</head>', `    ${canonical}\n</head>`);
+        }
+        await fs.writeFile(filePath, html);
+    }
 }
 
 /**
