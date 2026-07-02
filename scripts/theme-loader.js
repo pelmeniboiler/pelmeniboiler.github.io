@@ -77,4 +77,13 @@
     } catch (e) {
         console.error("Failed to apply initial theme from theme-loader.js", e);
     }
+
+    // Register the service worker (PWA: installable + offline reading). This
+    // script is on every page, so registration is site-wide. Deferred to the
+    // load event so it never competes with rendering the page.
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(() => { /* offline support is optional */ });
+        });
+    }
 })();
