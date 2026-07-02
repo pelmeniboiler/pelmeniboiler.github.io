@@ -37,6 +37,10 @@ async function main() {
 
     console.log('Baking blog list into the hub...');
     await bakeBlogList(manifestItems, localizationData, ROOT_DIR);
+
+    console.log('Baking app library into the hub...');
+    await bakeAppLibrary(ROOT_DIR, manifestItems);
+
     await versionHubAssets(ROOT_DIR, assetVersion);
     await stampServiceWorker(ROOT_DIR, assetVersion);
 
@@ -261,6 +265,82 @@ async function computeAssetVersion(rootDir) {
         try { await walk(base); } catch { /* dir may not exist */ }
     }
     return crypto.createHash('sha256').update(Buffer.concat(parts)).digest('hex').slice(0, 8);
+}
+
+// Curated standalone tools shown in the app library (deliberately not every
+// file in /tools — authoring/internal tools stay unlisted). The HOI4 pair
+// lives in its own nested "folder".
+const APP_LIBRARY = {
+    tools: [
+        { href: '/tools/gt.html', icon: '🔤', label: 'graflect.workbench' },
+        { href: '/tools/emojiviewer.html', icon: '🙾', label: 'emoji.viewer' },
+    ],
+    folders: [{
+        icon: '🗺', label: 'hoi4.mapping',
+        items: [
+            { href: '/tools/definitionviewer.html', icon: '➮', label: 'Web-based Definition.csv Wizard' },
+            { href: 'https://github.com/pelmeniboiler/hoi4-province-reassinger', icon: '➮', label: 'Province-Reassigning VSCode Extension' },
+        ],
+    }],
+};
+
+/**
+ * Bake the "app library" window on the hub: the curated tools above, a nested
+ * HOI4 folder, and — discovered automatically — every interactive demo that
+ * lives inside an article. Demo registry comes from module-loader.js itself
+ * (its id→path table is the runtime source of truth), the display name from
+ * each demo module's own title bar, and the link from whichever article hosts
+ * the placeholder. Adding a demo to a post makes it appear here on next build.
+ */
+async function bakeAppLibrary(rootDir, manifestItems) {
+    const hubPath = path.join(rootDir, 'index.html');
+    let html;
+    try { html = await fs.readFile(hubPath, 'utf-8'); } catch { return; }
+
+    // Demo id→path pairs from module-loader.js (skip the chrome modules).
+    const loaderSrc = await fs.readFile(path.join(rootDir, 'scripts/module-loader.js'), 'utf-8');
+    const demoDefs = [...loaderSrc.matchAll(/id:\s*'([^']+)'\s*,\s*path:\s*'([^']+)'/g)]
+        .map(([, id, p]) => ({ id, path: p }))
+        .filter((d) => d.path.includes('/blog/demos/'));
+
+    // Which article hosts which placeholder.
+    const bySlug = Object.fromEntries(manifestItems.map((m) => [m.slug, m]));
+    const hostOf = {};
+    for (const m of manifestItems) {
+        const src = await fs.readFile(path.join(rootDir, 'blog', m.filename), 'utf-8');
+        for (const d of demoDefs) if (src.includes(`id="${d.id}"`)) hostOf[d.id] = m.slug;
+    }
+
+    const demoItems = [];
+    for (const d of demoDefs) {
+        const slug = hostOf[d.id];
+        if (!slug) continue; // demo not embedded in any current article
+        let title = d.id;
+        try {
+            const doc = new JSDOM(await fs.readFile(path.join(rootDir, d.path.replace(/^\//, '')), 'utf-8')).window.document;
+            title = doc.querySelector('.title-bar .title')?.textContent.trim() || d.id;
+        } catch { /* keep id as name */ }
+        const chars = [...title];
+        demoItems.push({
+            href: `/blog/${slug}/en/`,
+            icon: chars[0], label: chars.slice(1).join('').trim(),
+            tip: `runs inside the “${bySlug[slug]?.title || slug}” article`,
+        });
+    }
+
+    const li = (i) => `<li><a href="${i.href}"${i.tip ? ` title="${i.tip}"` : ''}><span class="symbol">${i.icon}</span> ${i.label}</a></li>`;
+    const parts = [];
+    parts.push(`<ul class="app-list">\n${APP_LIBRARY.tools.map(li).join('\n')}\n</ul>`);
+    for (const f of APP_LIBRARY.folders) {
+        parts.push(`<details class="app-folder"><summary><span class="symbol">${f.icon}</span> ${f.label}</summary>\n<ul class="app-list">\n${f.items.map(li).join('\n')}\n</ul>\n</details>`);
+    }
+    if (demoItems.length) {
+        parts.push(`<h4 class="app-section">demos.from.articles</h4>\n<ul class="app-list">\n${demoItems.map(li).join('\n')}\n</ul>`);
+    }
+
+    html = html.replace(/(<!--APPS:START-->)[\s\S]*?(<!--APPS:END-->)/, (_m, a, b) => `${a}\n${parts.join('\n')}\n${b}`);
+    await fs.writeFile(hubPath, html);
+    console.log(`  → baked app library: ${APP_LIBRARY.tools.length} tools, ${APP_LIBRARY.folders.length} folder(s), ${demoItems.length} demos.`);
 }
 
 /**
