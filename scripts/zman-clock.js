@@ -159,18 +159,24 @@
     // Every one derives purely from sunrise, sunset and the sha'ah zmanit, so
     // they're unambiguous under the scheme this clock already uses. Alot/tzet are
     // deliberately omitted — they depend on a chosen shittah (degrees/minutes).
+    // Shown in SHA'OT ZMANIYOT — the dial's own unit — not civil clock time
+    // (that would be a sha'ah shava, the very thing this clock isn't about). Each
+    // GRA zman is a fixed count of zmanit hours into the day, so it reads straight
+    // off the same scale as the hand. netz/shkia are the day's edges, already
+    // shown as 🌅/🌇, so the list is the six zmanim between them.
     const ZMAN_KEYS = [
-        ['netz', 0], ['shema', 3], ['tefila', 4], ['chatzot', 6],
-        ['mgedola', 6.5], ['mketana', 9.5], ['plag', 10.75], ['shkia', 12],
+        ['shema', 3, '3'], ['tefila', 4, '4'], ['chatzot', 6, '6'],
+        ['mgedola', 6.5, '6½'], ['mketana', 9.5, '9½'], ['plag', 10.75, '10¾'],
     ];
     const ZMAN_LABELS = {
-        he: { netz: 'הנץ', shema: 'סוף ק״ש', tefila: 'סוף תפילה', chatzot: 'חצות', mgedola: 'מנחה גדולה', mketana: 'מנחה קטנה', plag: 'פלג המנחה', shkia: 'שקיעה' },
-        tl: { netz: 'Netz', shema: 'Sof Shema', tefila: 'Sof Tefila', chatzot: 'Chatzot', mgedola: 'Mincha Gedola', mketana: 'Mincha Ketana', plag: 'Plag HaMincha', shkia: 'Shkia' },
+        he: { shema: 'סוף ק״ש', tefila: 'סוף תפילה', chatzot: 'חצות', mgedola: 'מנחה גדולה', mketana: 'מנחה קטנה', plag: 'פלג המנחה' },
+        tl: { shema: 'Sof Shema', tefila: 'Sof Tefila', chatzot: 'Chatzot', mgedola: 'Mincha Gedola', mketana: 'Mincha Ketana', plag: 'Plag HaMincha' },
     };
     const zmanLabel = (key) => (docLang() === 'he' ? ZMAN_LABELS.he : ZMAN_LABELS.tl)[key];
+    const zmaniyotTitle = () => (docLang() === 'he' ? 'שעות זמניות' : "Sha'ot Zmaniyot");
     function zmanimFor(sun) {
         const shz = (sun.sunset - sun.sunrise) / 12;
-        return ZMAN_KEYS.map(([key, h]) => ({ key, t: new Date(sun.sunrise.valueOf() + h * shz) }));
+        return ZMAN_KEYS.map(([key, h, disp]) => ({ key, disp, t: new Date(sun.sunrise.valueOf() + h * shz) }));
     }
 
     // --- The molad (mean lunar conjunction, Rambam Kiddush HaChodesh) ----------
@@ -280,14 +286,16 @@
     }
 
     // The named zmanim list — rebuilt only when the day or the "next" one changes.
+    const zTitle = $('zman-z-title');
     function renderZmanim(now, sun) {
         if (!zmanList) return;
         const zs = zmanimFor(sun);
         const nextIdx = zs.findIndex((z) => z.t > now);
-        const sig = `${sun.sunrise.valueOf()}|${nextIdx}|${docLang()}|${loc.tz || ''}`;
+        const sig = `${sun.sunrise.valueOf()}|${nextIdx}|${docLang()}`;
         if (zmanList.dataset.sig === sig) return;
+        if (zTitle) zTitle.textContent = zmaniyotTitle();
         zmanList.innerHTML = zs.map((z, i) =>
-            `<li${i === nextIdx ? ' class="zman-next"' : ''}><span>${zmanLabel(z.key)}</span><b>${fmtTime(z.t)}</b></li>`).join('');
+            `<li${i === nextIdx ? ' class="zman-next"' : ''}><span>${zmanLabel(z.key)}</span><b>${z.disp}</b></li>`).join('');
         zmanList.dataset.sig = sig;
     }
 
