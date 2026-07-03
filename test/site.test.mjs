@@ -424,7 +424,7 @@ try {
             zmanNext: document.querySelectorAll('#zman-list li.zman-next').length,
             zmanimText: (document.getElementById('zman-list')?.textContent || '').trim(),
             zmarks: document.querySelectorAll('#zman-zmarks circle').length,
-            zmanTableFolded: !document.querySelector('.zman-table')?.open,
+            zmanTableFolded: !document.querySelector('.zman-details')?.open,
             molad: (document.getElementById('zman-molad')?.textContent || '').trim(),
         }));
         const regaimA = await page.textContent('#zman-regaim');

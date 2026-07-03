@@ -234,7 +234,7 @@ body.eink-mode .symbol {
 
 /* --- ZMANIM CLOCK (shaon.zmanim) --- */
 #zman-clock-window { width: 340px; }
-.zman-content { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+.zman-content { display: flex; flex-direction: column; gap: 6px; padding: 12px; }
 .zman-top { display: flex; gap: 14px; align-items: center; }
 #zman-dial { width: 170px; height: 170px; flex-shrink: 0; }
 /* Dial: always the page background with text-colour marks over it — flat and
@@ -264,13 +264,13 @@ body.eink-mode .symbol {
 .zman-sun { font-size: 13px; display: flex; gap: 10px; direction: ltr; }
 .zman-loc { font-size: 12px; display: flex; gap: 6px; align-items: center; }
 .zman-zmark { fill: var(--text-color); }
-/* Named zmanim (GRA, in sha'ot zmaniyot) + molad, full width beneath the dial. */
-.zman-zmanim { border-top: 1px solid var(--border-color); padding-top: 8px; }
-.zman-table { margin-top: 6px; }
+/* Everything secondary (sun times, zmanim table in sha'ot zmaniyot, molad)
+   folds behind the ⋯ toggle so the default view stays uncluttered. */
+.zman-details { border-top: 1px solid var(--border-color); }
 .zman-table-toggle { cursor: pointer; list-style: none; text-align: center; font-size: 15px; letter-spacing: 3px; padding: 2px 0; }
 .zman-table-toggle::-webkit-details-marker { display: none; }
-.zman-table[open] .zman-table-toggle { letter-spacing: 3px; margin-bottom: 5px; }
-.zman-zmanim-title { font-size: 11px; font-weight: bold; margin-bottom: 3px; }
+.zman-details-body { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+.zman-zmanim-title { font-size: 11px; font-weight: bold; margin-bottom: 1px; }
 .zman-list { list-style: none; margin: 0; padding: 0; font-size: 11px; direction: ltr;
     display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 1px; }
 .zman-list li { display: flex; justify-content: space-between; gap: 8px; }

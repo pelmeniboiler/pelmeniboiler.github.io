@@ -61,10 +61,6 @@
                 <span><span data-key="zman_regaim_label">regaim</span> <b id="zman-regaim">–</b></span>
             </div>
             <div class="zman-date" id="zman-hebdate">–</div>
-            <div class="zman-sun">
-                <span title="sunrise"><span class="symbol">🌅</span> <span id="zman-sunrise">–</span></span>
-                <span title="sunset"><span class="symbol">🌇</span> <span id="zman-sunset">–</span></span>
-            </div>
             <div class="zman-loc">
                 <button id="zman-geo" class="normal-btn" title="Use this device's location">
                     <span class="symbol">📍</span> <span id="zman-loc-label" data-key="zman_default_loc">Jerusalem</span>
@@ -73,15 +69,19 @@
             </div>
         </div>
         </div>
-        <!-- Molad (always shown); the full zmanim table folds away behind ⋯,
-             since the dial's dots already show them at a glance. -->
-        <div class="zman-zmanim">
-            <div class="zman-molad" id="zman-molad"></div>
-            <details class="zman-table">
-                <summary class="zman-table-toggle" title="zmanim table">⋯</summary>
+        <!-- Everything secondary folds behind ⋯ — the dial's dots already show
+             the zmanim at a glance, so the default view stays uncluttered. -->
+        <details class="zman-details">
+            <summary class="zman-table-toggle" title="sun times, zmanim &amp; molad">⋯</summary>
+            <div class="zman-details-body">
+                <div class="zman-sun">
+                    <span title="sunrise"><span class="symbol">🌅</span> <span id="zman-sunrise">–</span></span>
+                    <span title="sunset"><span class="symbol">🌇</span> <span id="zman-sunset">–</span></span>
+                </div>
                 <div class="zman-zmanim-title" id="zman-z-title"></div>
                 <ul id="zman-list" class="zman-list"></ul>
-            </details>
-        </div>
+                <div class="zman-molad" id="zman-molad"></div>
+            </div>
+        </details>
     </div>
 </div>

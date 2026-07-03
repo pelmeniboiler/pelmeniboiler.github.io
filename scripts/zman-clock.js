@@ -324,7 +324,10 @@
         try { month = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { month: 'long', timeZone: loc.tz }).format(new Date(m.abs.valueOf() + dayMs)); } catch (_) { /* skip */ }
         const civil = `${String((m.hours + 18) % 24).padStart(2, '0')}:${String(Math.floor(m.chalakim / 18)).padStart(2, '0')}`;
         const word = lang === 'he' ? 'מולד' : 'Molad';
-        moladEl.innerHTML = `<span>${word} ${month}</span><b>${YOM[lang][m.dow]} ${civil}</b><span class="zman-molad-parts">${m.hours}ש ${m.chalakim}ח</span>`;
+        const tip = lang === 'he'
+            ? 'מולד הלבנה — רגע החידוש הממוצע, מוכרז לפני ראש חודש'
+            : 'Molad — the mean "birth" of the new moon, announced before Rosh Chodesh';
+        moladEl.innerHTML = `<span title="${tip}">${word} ${month}</span><b>${YOM[lang][m.dow]} ${civil}</b><span class="zman-molad-parts">${m.hours}ש ${m.chalakim}ח</span>`;
         moladEl.dataset.sig = sig;
     }
 
