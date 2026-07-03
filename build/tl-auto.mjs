@@ -21,6 +21,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import vm from 'node:vm';
 
 const LOC = path.join(process.cwd(), 'localization');
 const STATUS_PATH = path.join(LOC, 'tl-status.json');
@@ -45,7 +46,23 @@ function gtGlyphsOk(value) {
     return true;
 }
 
-async function geminiTranslate(lang, entries) {
+// For gt, the model needs the actual glyph chart (the author's article on this:
+// no amount of prompt engineering stops stray non-Graflect glyphs — you give the
+// chart, then paste the offending glyphs back at it until clean). Chart derived
+// from the site's own slugMap in graflect-data.js.
+let gtChart = null;
+async function loadGtChart() {
+    if (gtChart) return gtChart;
+    const src = await fs.readFile(path.join(process.cwd(), 'scripts/blog/demos/graflect-data.js'), 'utf8');
+    const { slugMap } = vm.runInNewContext(src + ';({slugMap})', {});
+    gtChart = Object.entries(slugMap)
+        .filter(([, slug]) => slug.trim() !== '')
+        .map(([glyph, slug]) => `${glyph} = "${slug}"`)
+        .join('\n');
+    return gtChart;
+}
+
+async function geminiTranslate(lang, entries, retryNote = '') {
     const prompt = [
         `You are localizing a personal blog from English into ${LANG_NAMES[lang] || lang} (code "${lang}").`,
         'Rules:',
@@ -53,9 +70,12 @@ async function geminiTranslate(lang, entries) {
         '- Keep every HTML tag and entity (<br>, <span ...>, <strong>, &nbsp;) exactly where it is.',
         '- Output ONLY valid JSON: the same keys, values translated. No commentary, no code fences.',
         ...(lang === 'gt' ? [
-            '- Graflect is a featural phonetic script in Unicode Private Use Area U+EC70–U+ECEF.',
-            '  Render the ENGLISH pronunciation in Graflect glyphs ONLY — never Latin/Cyrillic letters inside a word.',
+            '- Graflect is a featural PHONETIC script. Render the ENGLISH pronunciation.',
+            '- Use ONLY the glyphs in this chart (glyph = its romanization). Never any',
+            '  Latin, Cyrillic, or other letters inside a Graflect word:',
+            await loadGtChart(),
         ] : []),
+        ...(retryNote ? ['', retryNote] : []),
         '', 'English source:', JSON.stringify(entries, null, 2),
     ].join('\n');
 
@@ -114,6 +134,27 @@ async function main() {
         let out;
         try { out = await geminiTranslate(lang, keys); }
         catch (e) { console.error(`✗ ${prefix}/${lang}: ${e.message}`); rejected += Object.keys(keys).length; continue; }
+
+        // The gt "whine loop" from the author's article, automated: if the model
+        // snuck non-Graflect glyphs in, paste the exact offenders back at it and
+        // ask again (one retry) — the only method that reliably works.
+        if (lang === 'gt' && !process.env.GEM_FAKE_RESPONSE) {
+            const offenders = new Set();
+            for (const v of Object.values(out || {})) {
+                for (const word of String(v).replace(/<[^>]*>/g, ' ').split(/\s+/)) {
+                    if ([...word].some((c) => isGraflect(c.charCodeAt(0)))) {
+                        for (const c of word) if (!isGraflect(c.charCodeAt(0)) && /[\p{L}\p{N}]/u.test(c)) offenders.add(c);
+                    }
+                }
+            }
+            if (offenders.size) {
+                console.warn(`  ↻ gt retry: offending glyphs ${[...offenders].join(' ')}`);
+                try {
+                    const note = `Your previous attempt included these NON-Graflect characters inside Graflect words: ${[...offenders].join(' ')}. Redo the output using ONLY glyphs from the chart.`;
+                    out = await geminiTranslate(lang, keys, note);
+                } catch (e) { console.error(`  ✗ gt retry failed: ${e.message}`); }
+            }
+        }
 
         const filePath = path.join(LOC, `${prefix}.json`);
         let raw = await fs.readFile(filePath, 'utf8');

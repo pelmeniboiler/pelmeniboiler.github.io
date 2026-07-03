@@ -358,7 +358,8 @@ try {
         await page.waitForTimeout(800); // modules + start-menu wiring
 
         const clock = (await page.textContent('#tray-clock').catch(() => '')) || '';
-        ok(/57\d\d/.test(clock) && /\d{2}:\d{2}/.test(clock), `Tray clock shows Anno Mundi date + time (got "${clock}")`);
+        ok(/57\d\d/.test(clock) && /[א-ת]{1,2}׳/.test(clock) && /ח/.test(clock) && !/\d{2}:\d{2}/.test(clock),
+            `Tray clock: Anno Mundi date + HEBREW time of day, no civil HH:MM (got "${clock}")`);
 
         // Close the welcome window (started open) → docks to tray as an icon.
         await page.evaluate(() => {
@@ -414,9 +415,32 @@ try {
         const regaimB = await page.textContent('#zman-regaim');
         ok(zman.open && zman.letters === 12 && zman.chalakim >= 0 && zman.chalakim < 1080,
             `Zmanim clock opens: 12 Hebrew hour letters, chalakim in range (${zman.chalakim})`);
-        ok(/57\d\d|5\d{3}/.test(zman.heb), `Zmanim clock: sunset-adjusted Hebrew date (got "${zman.heb}")`);
+        ok(/57\d\d|5\d{3}/.test(zman.heb) && /יום|שבת/.test(zman.heb) && !/[A-Z][a-z]+day/.test(zman.heb),
+            `Zmanim clock: sunset-adjusted date with HEBREW weekday (got "${zman.heb}")`);
         ok(/rotate\(-/.test(zman.hand), `Zmanim clock: hand runs COUNTERCLOCKWISE (${zman.hand})`);
-        ok(regaimA !== regaimB, `Zmanim clock: regaim tick live (${regaimA} → ${regaimB})`);
+        ok(regaimA !== regaimB, `Zmanim clock: regaim tick live in LCD (${regaimA} → ${regaimB})`);
+
+        const subs = await page.evaluate(() => ({
+            ch: document.getElementById('zman-sub-ch')?.getAttribute('transform') || '',
+            rg: document.getElementById('zman-sub-rg')?.getAttribute('transform') || '',
+            labels: [...document.querySelectorAll('.zman-units [data-key]')].map((e) => e.dataset.key),
+        }));
+        ok(/rotate\(-/.test(subs.ch) && /rotate\(-/.test(subs.rg) && subs.labels.length === 2,
+            `Zmanim clock: chalakim+regaim subdials turning, labels localized (${JSON.stringify(subs.labels)})`);
+
+        // E-INK: the clock must NOT animate — regaim frozen between samples.
+        const einkCtx2 = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+        await einkCtx2.addInitScript(() => localStorage.setItem('pelmeniboiler-mode', 'eink'));
+        const einkPage = await einkCtx2.newPage();
+        await einkPage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await einkPage.waitForTimeout(800);
+        await einkPage.click('#tray-clock');
+        await einkPage.waitForTimeout(400);
+        const eA = await einkPage.textContent('#zman-regaim');
+        await einkPage.waitForTimeout(500);
+        const eB = await einkPage.textContent('#zman-regaim');
+        ok(eA === eB && eA !== '–', `Zmanim clock: NO animation in e-ink mode (${eA} = ${eB})`);
+        await einkCtx2.close();
 
         // About window: description wraps at the heading's width.
         const about = await page.evaluate(() => {
