@@ -26,6 +26,7 @@
         <button class="close-btn">&times;</button>
     </div>
     <div class="content zman-content">
+        <div class="zman-top">
         <svg id="zman-dial" viewBox="-110 -110 220 220" aria-label="zmanim clock dial">
             <circle r="104" class="zman-rim"/>
             <g id="zman-marks"></g>
@@ -67,6 +68,12 @@
                 </button>
                 <span id="zman-here-label" data-key="zman_here_label" hidden>My location</span>
             </div>
+        </div>
+        </div>
+        <!-- The named zmanim (GRA scheme) for today, and the upcoming molad. -->
+        <div class="zman-zmanim">
+            <ul id="zman-list" class="zman-list"></ul>
+            <div class="zman-molad" id="zman-molad"></div>
         </div>
     </div>
 </div>

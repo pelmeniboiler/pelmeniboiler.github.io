@@ -234,7 +234,8 @@ body.eink-mode .symbol {
 
 /* --- ZMANIM CLOCK (shaon.zmanim) --- */
 #zman-clock-window { width: 340px; }
-.zman-content { display: flex; gap: 14px; align-items: center; padding: 12px; }
+.zman-content { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+.zman-top { display: flex; gap: 14px; align-items: center; }
 #zman-dial { width: 170px; height: 170px; flex-shrink: 0; }
 /* Dial: always the page background with text-colour marks over it — flat and
    monochrome in e-ink; theme colours do the talking elsewhere. Night is told by
@@ -262,6 +263,18 @@ body.eink-mode .symbol {
 .zman-date { font-size: 13px; border-top: 1px solid var(--border-color); padding-top: 6px; }
 .zman-sun { font-size: 13px; display: flex; gap: 10px; direction: ltr; }
 .zman-loc { font-size: 12px; display: flex; gap: 6px; align-items: center; }
+/* Named zmanim (GRA) + molad, full width beneath the dial. */
+.zman-zmanim { border-top: 1px solid var(--border-color); padding-top: 8px; }
+.zman-list { list-style: none; margin: 0; padding: 0; font-size: 11px; direction: ltr;
+    display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 1px; }
+.zman-list li { display: flex; justify-content: space-between; gap: 8px; }
+.zman-list li b { font-variant-numeric: tabular-nums; }
+.zman-next { font-weight: bold; }
+.zman-next::before { content: '‣ '; }
+.zman-molad { font-size: 11px; margin-top: 6px; display: flex; justify-content: space-between;
+    align-items: baseline; gap: 8px; flex-wrap: wrap; direction: ltr; }
+.zman-molad b { font-variant-numeric: tabular-nums; }
+.zman-molad-parts { font-family: var(--font-body); }
 
 /* --- ABOUT WINDOW: description wraps at the width of the name heading ---
    width:0 + min-width:100% makes the paragraph adopt the content box width

@@ -17,7 +17,10 @@
 
     const $ = (id) => document.getElementById(id);
     const LOC_KEY = 'pelmeniboiler-clock-loc';
-    const DEFAULT_LOC = { lat: 31.778, lon: 35.235 }; // Jerusalem; label is localized in the DOM
+    // Jerusalem; label is localized in the DOM. tz makes the sun/zmanim times
+    // read in the LOCATION's clock, not the viewer's (device location has none —
+    // "here" is wherever the device already is, so its own tz is correct).
+    const DEFAULT_LOC = { lat: 31.778, lon: 35.235, tz: 'Asia/Jerusalem' };
     const HOUR_LETTERS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב'];
 
     // --- Solar times (SunCalc-derived; returns sunrise/sunset Dates or null) ---
@@ -97,6 +100,16 @@
         return YOM[l] ? l : 'en';
     };
 
+    // Day-of-week in the LOCATION's timezone (not the viewer's), so the weekday
+    // and the sunset-adjusted date agree with the place the clock is set to.
+    const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    function weekdayIndex(date) {
+        try { return WD.indexOf(new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: loc.tz }).format(date)); }
+        catch (_) { return date.getDay(); }
+    }
+    // Format an absolute instant as HH:MM in the location's clock.
+    const fmtTime = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: loc.tz });
+
     /** Hebrew-calendar date string; the Torah day begins at sunset. */
     function hebrewDate(now) {
         const today = sunTimes(now, loc.lat, loc.lon);
@@ -104,9 +117,9 @@
         const lang = docLang();
         let datePart;
         try {
-            datePart = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(base);
+            datePart = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: loc.tz }).format(base);
         } catch (_) { datePart = base.toDateString(); }
-        return `${YOM[lang][base.getDay()]}, ${datePart}`;
+        return `${YOM[lang][weekdayIndex(base)]}, ${datePart}`;
     }
     // The tray clock (start-menu.js) prefers this over its midnight-flipping default.
     window.zmanHebrewDate = (now) => hebrewDate(now || new Date());
@@ -140,6 +153,44 @@
             return `<g class="dn-sun"><circle r="5.5"/>${rays}</g>`;
         }
         return `<circle r="8" class="dn-moon-disc"/><path class="dn-moon-lit" d="${moonPath(moonPhase(now), 8)}"/>`;
+    }
+
+    // --- The named zmanim (GRA scheme: proportions of netz→shkia) --------------
+    // Every one derives purely from sunrise, sunset and the sha'ah zmanit, so
+    // they're unambiguous under the scheme this clock already uses. Alot/tzet are
+    // deliberately omitted — they depend on a chosen shittah (degrees/minutes).
+    const ZMAN_KEYS = [
+        ['netz', 0], ['shema', 3], ['tefila', 4], ['chatzot', 6],
+        ['mgedola', 6.5], ['mketana', 9.5], ['plag', 10.75], ['shkia', 12],
+    ];
+    const ZMAN_LABELS = {
+        he: { netz: 'הנץ', shema: 'סוף ק״ש', tefila: 'סוף תפילה', chatzot: 'חצות', mgedola: 'מנחה גדולה', mketana: 'מנחה קטנה', plag: 'פלג המנחה', shkia: 'שקיעה' },
+        tl: { netz: 'Netz', shema: 'Sof Shema', tefila: 'Sof Tefila', chatzot: 'Chatzot', mgedola: 'Mincha Gedola', mketana: 'Mincha Ketana', plag: 'Plag HaMincha', shkia: 'Shkia' },
+    };
+    const zmanLabel = (key) => (docLang() === 'he' ? ZMAN_LABELS.he : ZMAN_LABELS.tl)[key];
+    function zmanimFor(sun) {
+        const shz = (sun.sunset - sun.sunrise) / 12;
+        return ZMAN_KEYS.map(([key, h]) => ({ key, t: new Date(sun.sunrise.valueOf() + h * shz) }));
+    }
+
+    // --- The molad (mean lunar conjunction, Rambam Kiddush HaChodesh) ----------
+    // One synodic month = 765433 chalakim (29d 12h 793ch); a chelek = 1/1080 hr.
+    // Anchored on the (validated) molad of Tishrei 5785 — Thursday 9h 391ch — and
+    // stepped by whole months. Day-of-week + hours-from-6pm + chalakim are exact
+    // integer arithmetic (the form announced in shul); the absolute instant is
+    // used only to name the month and place it on the civil calendar.
+    const CHELEK_MS = 3600000 / 1080, MOLAD_MONTH_CH = 765433, MOLAD_MONTH_MS = MOLAD_MONTH_CH * CHELEK_MS;
+    const MOLAD_ANCHOR_CH = 54758342911, MOLAD_ANCHOR_MS = Date.UTC(2024, 9, 3, 0, 21, 0);
+    function nextMolad(now) {
+        const k = Math.ceil((now.valueOf() - MOLAD_ANCHOR_MS) / MOLAD_MONTH_MS);
+        const total = MOLAD_ANCHOR_CH + k * MOLAD_MONTH_CH;
+        const within = total % 25920; // chalakim into the (6pm-based) day
+        return {
+            dow: Math.floor(total / 25920) % 7,
+            hours: Math.floor(within / 1080),   // from 6pm
+            chalakim: within % 1080,
+            abs: new Date(MOLAD_ANCHOR_MS + k * MOLAD_MONTH_MS),
+        };
     }
 
     /** Zmanit time snapshot; also feeds the tray via window.zmanTime. */
@@ -191,7 +242,12 @@
     const hand = $('zman-hand');
     const chCoarse = $('zman-sub-ch-coarse'), chFine = $('zman-sub-ch-fine');
     const subRg = $('zman-sub-rg'), dn = $('zman-daynight');
+    const zmanList = $('zman-list'), moladEl = $('zman-molad');
     const isEink = () => document.documentElement.classList.contains('eink-mode');
+    // Respect the OS "reduce motion" setting: like e-ink, drop the smooth needle
+    // and just repaint slowly — no continuous animation.
+    const reduceMotionMq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    const still = () => isEink() || (reduceMotionMq && reduceMotionMq.matches);
     let rafId = null, slowTimer = null;
 
     function render() {
@@ -213,30 +269,58 @@
             $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳`;
             $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
             $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');
-            const fmt = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-            $('zman-sunrise').textContent = fmt(t.p.sun.sunrise);
-            $('zman-sunset').textContent = fmt(t.p.sun.sunset);
+            $('zman-sunrise').textContent = fmtTime(t.p.sun.sunrise);
+            $('zman-sunset').textContent = fmtTime(t.p.sun.sunset);
+            renderZmanim(now, t.p.sun);
         } else {
             $('zman-hour').textContent = '— polar —'; // no sunrise/sunset here today
         }
+        renderMolad(now);
         $('zman-hebdate').textContent = hebrewDate(now);
+    }
+
+    // The named zmanim list — rebuilt only when the day or the "next" one changes.
+    function renderZmanim(now, sun) {
+        if (!zmanList) return;
+        const zs = zmanimFor(sun);
+        const nextIdx = zs.findIndex((z) => z.t > now);
+        const sig = `${sun.sunrise.valueOf()}|${nextIdx}|${docLang()}|${loc.tz || ''}`;
+        if (zmanList.dataset.sig === sig) return;
+        zmanList.innerHTML = zs.map((z, i) =>
+            `<li${i === nextIdx ? ' class="zman-next"' : ''}><span>${zmanLabel(z.key)}</span><b>${fmtTime(z.t)}</b></li>`).join('');
+        zmanList.dataset.sig = sig;
+    }
+
+    // The upcoming molad — rebuilt monthly.
+    function renderMolad(now) {
+        if (!moladEl) return;
+        const m = nextMolad(now);
+        const lang = docLang();
+        const sig = `${m.abs.valueOf()}|${lang}|${loc.tz || ''}`;
+        if (moladEl.dataset.sig === sig) return;
+        let month = '';
+        try { month = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { month: 'long', timeZone: loc.tz }).format(new Date(m.abs.valueOf() + dayMs)); } catch (_) { /* skip */ }
+        const civil = `${String((m.hours + 18) % 24).padStart(2, '0')}:${String(Math.floor(m.chalakim / 18)).padStart(2, '0')}`;
+        const word = lang === 'he' ? 'מולד' : 'Molad';
+        moladEl.innerHTML = `<span>${word} ${month}</span><b>${YOM[lang][m.dow]} ${civil}</b><span class="zman-molad-parts">${m.hours}ש ${m.chalakim}ח</span>`;
+        moladEl.dataset.sig = sig;
     }
 
     function loop() { render(); rafId = requestAnimationFrame(loop); }
     function start() {
         stop();
         render();
-        if (isEink()) slowTimer = setInterval(render, 20000);
+        if (still()) slowTimer = setInterval(render, 20000);
         else rafId = requestAnimationFrame(loop);
     }
     function stop() {
         if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
         if (slowTimer !== null) { clearInterval(slowTimer); slowTimer = null; }
     }
-    // Re-pick the engine when the user flips e-ink mode while the clock is open.
-    document.addEventListener('einkmodechange', () => {
-        if (win.style.display === 'flex') start();
-    });
+    // Re-pick the engine when e-ink or reduce-motion changes while the clock is open.
+    const repick = () => { if (win.style.display === 'flex') start(); };
+    document.addEventListener('einkmodechange', repick);
+    if (reduceMotionMq) reduceMotionMq.addEventListener('change', repick);
 
     // Open from the tray clock; animate only while the window is visible.
     function openClock() {

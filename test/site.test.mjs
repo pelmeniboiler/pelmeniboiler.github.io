@@ -420,6 +420,9 @@ try {
             dnSvg: document.querySelectorAll('#zman-daynight circle, #zman-daynight path, #zman-daynight line').length,
             dnText: (document.getElementById('zman-daynight')?.textContent || '').trim(),
             loc: document.getElementById('zman-loc-label')?.textContent || '',
+            zmanim: document.querySelectorAll('#zman-list li').length,
+            zmanNext: document.querySelectorAll('#zman-list li.zman-next').length,
+            molad: (document.getElementById('zman-molad')?.textContent || '').trim(),
         }));
         const regaimA = await page.textContent('#zman-regaim');
         await page.waitForTimeout(250);
@@ -432,6 +435,8 @@ try {
         ok(zman.dnSvg >= 1 && zman.dnText === '',
             `Zmanim clock: day/night drawn as monochrome SVG, no emoji glyph (shapes=${zman.dnSvg})`);
         ok(zman.loc === 'Jerusalem', `Zmanim clock: default location localized in the geo button (got "${zman.loc}")`);
+        ok(zman.zmanim === 8 && zman.zmanNext <= 1 && /Molad/i.test(zman.molad) && /Yom|Shabbat/.test(zman.molad),
+            `Zmanim clock: 8 named zmanim + upcoming molad (${zman.zmanim} zmanim, molad "${zman.molad}")`);
         ok(regaimA !== regaimB, `Zmanim clock: regaim tick live in LCD (${regaimA} → ${regaimB})`);
 
         // Sha'ot zmaniyot: in Israel's summer the DAYTIME hours run longer than
@@ -467,6 +472,19 @@ try {
         const eB = await einkPage.textContent('#zman-regaim');
         ok(eA === eB && eA !== '–', `Zmanim clock: NO animation in e-ink mode (${eA} = ${eB})`);
         await einkCtx2.close();
+
+        // REDUCED MOTION: prefers-reduced-motion halts the needle too (like e-ink).
+        const rmCtx = await browser.newContext({ viewport: { width: 1400, height: 900 }, reducedMotion: 'reduce' });
+        const rmPage = await rmCtx.newPage();
+        await rmPage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await rmPage.waitForTimeout(800);
+        await rmPage.click('#tray-clock');
+        await rmPage.waitForTimeout(400);
+        const rA = await rmPage.textContent('#zman-regaim');
+        await rmPage.waitForTimeout(500);
+        const rB = await rmPage.textContent('#zman-regaim');
+        ok(rA === rB && rA !== '–', `Zmanim clock: NO animation with prefers-reduced-motion (${rA} = ${rB})`);
+        await rmCtx.close();
 
         // About window: description wraps at the heading's width.
         const about = await page.evaluate(() => {
