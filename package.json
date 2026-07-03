@@ -11,6 +11,7 @@
     "tl:status": "node build/tl.mjs status",
     "tl:stamp": "node build/tl.mjs stamp",
     "icons": "node build/generate-icons.mjs",
+    "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs"
   },
   "dependencies": {

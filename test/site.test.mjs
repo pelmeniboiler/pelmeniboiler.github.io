@@ -401,6 +401,16 @@ try {
         ok(launcher.startMenuHidden && launcher.logo && launcher.settings,
             `Tray is the launcher on wide: start-menu hidden, ShZh + ⚙ present (${JSON.stringify(launcher)})`);
 
+        // Custom themed SVG cursors: default on the page, yod-pointer on links,
+        // move on title bars — all baked data-URIs (no fallback to a keyword).
+        const cursors = await page.evaluate(() => {
+            const c = (sel) => { const el = document.querySelector(sel); return el ? getComputedStyle(el).cursor : ''; };
+            return { body: c('body'), link: c('a'), titlebar: c('.title-bar') };
+        });
+        ok(/^url\("data:image\/svg/.test(cursors.body) && /^url\("data:image\/svg/.test(cursors.link)
+            && /^url\("data:image\/svg/.test(cursors.titlebar),
+            `Custom SVG cursors applied (default/pointer/move are data-URIs)`);
+
         await page.click('#tray-settings');
         await page.waitForTimeout(300);
         const settingsOpen = await page.evaluate(() =>
