@@ -30,19 +30,23 @@
             <circle r="104" class="zman-rim"/>
             <g id="zman-marks"></g>
             <g id="zman-letters"></g>
-            <!-- Chronograph-style subdials: chalakim (one turn per zmanit hour)
-                 and regaim (one turn per chelek). Counterclockwise, like the dial. -->
-            <g class="zman-subdial" transform="translate(-40,34)">
+            <!-- Chronograph-style subdials, counterclockwise like the dial.
+                 Left (ח): the chelek count read like hours+minutes — a coarse hand
+                 over 12 marks of 90 chalakim, and a fine hand for 0–90 within the
+                 block. Right (ר): regaim within the chelek. -->
+            <g class="zman-subdial" transform="translate(-35,30)">
                 <circle r="20"/>
-                <line id="zman-sub-ch" x1="0" y1="0" x2="0" y2="-15"/>
-                <text y="33" text-anchor="middle" class="zman-subcap">ח</text>
+                <g id="zman-ch-ticks"></g>
+                <line id="zman-sub-ch-fine" x1="0" y1="0" x2="0" y2="-16" class="zman-subhand-fine"/>
+                <line id="zman-sub-ch-coarse" x1="0" y1="0" x2="0" y2="-9" class="zman-subhand-coarse"/>
             </g>
-            <g class="zman-subdial" transform="translate(40,34)">
+            <g class="zman-subdial" transform="translate(35,30)">
                 <circle r="20"/>
                 <line id="zman-sub-rg" x1="0" y1="0" x2="0" y2="-15"/>
-                <text y="33" text-anchor="middle" class="zman-subcap">ר</text>
             </g>
-            <text id="zman-daynight" y="-38" text-anchor="middle" class="zman-symbol"></text>
+            <!-- Day: an SVG sun. Night: the moon at its true phase. Drawn by
+                 zman-clock.js so it stays monochrome (never OS colour emoji). -->
+            <g id="zman-daynight" transform="translate(0,-40)"></g>
             <line id="zman-hand" x1="0" y1="0" x2="0" y2="-78" class="zman-hand"/>
             <circle r="4" class="zman-hub"/>
         </svg>
@@ -54,12 +58,14 @@
             </div>
             <div class="zman-date" id="zman-hebdate">–</div>
             <div class="zman-sun">
-                <span title="sunrise">🌅 <span id="zman-sunrise">–</span></span>
-                <span title="sunset">🌇 <span id="zman-sunset">–</span></span>
+                <span title="sunrise"><span class="symbol">🌅</span> <span id="zman-sunrise">–</span></span>
+                <span title="sunset"><span class="symbol">🌇</span> <span id="zman-sunset">–</span></span>
             </div>
             <div class="zman-loc">
-                <span id="zman-loc-label">ירושלים</span>
-                <button id="zman-geo" class="normal-btn" title="Use this device's location">📍</button>
+                <button id="zman-geo" class="normal-btn" title="Use this device's location">
+                    <span class="symbol">📍</span> <span id="zman-loc-label" data-key="zman_default_loc">Jerusalem</span>
+                </button>
+                <span id="zman-here-label" data-key="zman_here_label" hidden>My location</span>
             </div>
         </div>
     </div>

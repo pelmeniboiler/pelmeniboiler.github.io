@@ -1,11 +1,15 @@
 // /scripts/zman-clock.js
 // A Torah-accurate clock: time as sha'ot zmaniyot — the daylight (sunrise→
 // sunset) divided into 12 variable hours, and likewise the night — with the
-// Talmudic subdivisions: 1080 chalakim per hour, 76 regaim per chelek
+// Talmudic subdivisions: 1080 chalakim per hour, 76 regaim per chelek, and the
+// Onah Ketana (24 per hour = 45 chalakim), a small "minute" for finer reading
 // (Rambam, Hilchot Kiddush HaChodesh; a rega ≈ 44ms). The dial runs
 // COUNTERCLOCKWISE with Hebrew-letter hour markers, in homage to Konstantin
 // Chaykin's Decalogue — Hebrew reads right to left, and so does this clock.
 // Solar position uses the standard NOAA/SunCalc equations. Pure vanilla.
+//
+// All indicators are drawn as SVG (sun, moon phase, hands) so they stay
+// monochrome and theme-coloured — never the OS's garish colour emoji.
 
 (function () {
     const win = document.getElementById('zman-clock-window');
@@ -13,11 +17,8 @@
 
     const $ = (id) => document.getElementById(id);
     const LOC_KEY = 'pelmeniboiler-clock-loc';
-    const DEFAULT_LOC = { lat: 31.778, lon: 35.235, label: 'ירושלים' };
+    const DEFAULT_LOC = { lat: 31.778, lon: 35.235 }; // Jerusalem; label is localized in the DOM
     const HOUR_LETTERS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב'];
-
-    let loc = DEFAULT_LOC;
-    try { loc = JSON.parse(localStorage.getItem(LOC_KEY)) || DEFAULT_LOC; } catch (_) { /* default */ }
 
     // --- Solar times (SunCalc-derived; returns sunrise/sunset Dates or null) ---
     const rad = Math.PI / 180, dayMs = 86400000, J1970 = 2440588, J2000 = 2451545;
@@ -39,6 +40,24 @@
         return { sunrise: fromJulian(Jtransit - w), sunset: fromJulian(Jtransit + w) };
     }
 
+    // Location: Jerusalem by default; device location only on explicit click.
+    // The visible place name lives (localized) in the DOM; we read it once.
+    const locLabel = $('zman-loc-label');
+    const DEFAULT_LABEL = (locLabel && locLabel.textContent.trim()) || 'Jerusalem';
+    const hereEl = $('zman-here-label');
+    const HERE_LABEL = (hereEl && hereEl.textContent.trim()) || 'My location';
+
+    let loc = { ...DEFAULT_LOC };
+    try {
+        const stored = JSON.parse(localStorage.getItem(LOC_KEY));
+        if (stored && typeof stored.lat === 'number') loc = stored;
+    } catch (_) { /* default */ }
+
+    function setLocLabel() {
+        if (locLabel) locLabel.textContent = loc.here ? HERE_LABEL : DEFAULT_LABEL;
+    }
+    setLocLabel();
+
     /** The current zmanit period: start, end, and whether it's day. */
     function currentPeriod(now) {
         const today = sunTimes(now, loc.lat, loc.lon);
@@ -52,32 +71,75 @@
         return t && { start: today.sunset, end: t.sunrise, day: false, sun: today };
     }
 
-    // Hebrew weekdays — never "Friday", never "Monday". After sunset the base
-    // date is already advanced, so Friday evening correctly reads שבת.
-    const HEB_WEEKDAYS = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום שישי', 'שבת'];
+    // Daytime vs nighttime zmanit-hour lengths for a date (exposed for tests /
+    // curiosity): in summer the day-hours are longer, in winter the night-hours.
+    window.zmanPeriodLengths = (date) => {
+        const d = date || new Date();
+        const today = sunTimes(d, loc.lat, loc.lon);
+        if (!today) return null;
+        const next = sunTimes(new Date(d.valueOf() + dayMs), loc.lat, loc.lon);
+        return { day: today.sunset - today.sunrise, night: next ? next.sunrise - today.sunset : null };
+    };
+
+    // Hebrew weekdays, transliterated per interface language — never "Friday",
+    // never "Monday". After sunset the base date is already advanced, so Friday
+    // evening correctly reads Shabbat. gt (Graflect) falls back to the Latin
+    // transliteration, as its Hebrew-calendar date does.
+    const YOM = {
+        en: ['Yom Rishon', 'Yom Sheni', 'Yom Shlishi', 'Yom Revii', 'Yom Chamishi', 'Yom Shishi', 'Shabbat'],
+        he: ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום שישי', 'שבת'],
+        ru: ['Йом Ришон', 'Йом Шени', 'Йом Шлиши', 'Йом Ревии', 'Йом Хамиши', 'Йом Шиши', 'Шаббат'],
+        de: ['Jom Rischon', 'Jom Scheni', 'Jom Schlischi', 'Jom Rewi’i', 'Jom Chamischi', 'Jom Schischi', 'Schabbat'],
+        ja: ['ヨム・リショーン', 'ヨム・シェニー', 'ヨム・シュリシー', 'ヨム・レヴィイー', 'ヨム・ハミシー', 'ヨム・シシー', 'シャバット'],
+    };
+    const docLang = () => {
+        const l = (document.documentElement.lang || 'en').slice(0, 2);
+        return YOM[l] ? l : 'en';
+    };
 
     /** Hebrew-calendar date string; the Torah day begins at sunset. */
     function hebrewDate(now) {
         const today = sunTimes(now, loc.lat, loc.lon);
         const base = (today && now >= today.sunset) ? new Date(now.valueOf() + dayMs) : now;
-        const lang = (document.documentElement.lang === 'he') ? 'he' : 'en';
+        const lang = docLang();
         let datePart;
         try {
             datePart = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(base);
         } catch (_) { datePart = base.toDateString(); }
-        return `${HEB_WEEKDAYS[base.getDay()]}, ${datePart}`;
+        return `${YOM[lang][base.getDay()]}, ${datePart}`;
     }
     // The tray clock (start-menu.js) prefers this over its midnight-flipping default.
     window.zmanHebrewDate = (now) => hebrewDate(now || new Date());
 
-    // Moon phase glyph for the actual current phase (synodic month 29.53059d
-    // from the 2000-01-06 18:14 UTC new moon) — not a decorative crescent.
+    // Moon phase (synodic month 29.53059d from the 2000-01-06 18:14 UTC new moon)
+    // as a fraction: 0 new, 0.25 first quarter, 0.5 full, 0.75 last quarter.
     const SYNODIC = 29.530588853 * dayMs;
     const NEW_MOON_EPOCH = Date.UTC(2000, 0, 6, 18, 14);
-    const MOONS = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
-    function moonGlyph(now) {
-        const phase = (((now - NEW_MOON_EPOCH) % SYNODIC) + SYNODIC) % SYNODIC / SYNODIC;
-        return MOONS[Math.round(phase * 8) % 8];
+    const moonPhase = (now) => ((((now - NEW_MOON_EPOCH) % SYNODIC) + SYNODIC) % SYNODIC) / SYNODIC;
+
+    // The lit portion of the disc as an SVG path: outer limb on the lit side +
+    // the terminator (a semi-ellipse whose x-radius shrinks to 0 at the quarters
+    // and grows to R at new/full). Waxing lights the right; waning the left.
+    function moonPath(phase, R) {
+        const waxing = phase < 0.5;
+        const cos = Math.cos(phase * 2 * Math.PI); // +1 at new, -1 at full
+        const rx = (Math.abs(cos) * R).toFixed(2);
+        const outer = waxing ? 1 : 0;                  // which limb is lit
+        const term = (waxing === (cos > 0)) ? 0 : 1;   // crescent vs gibbous bulge
+        return `M 0 ${-R} A ${R} ${R} 0 0 ${outer} 0 ${R} A ${rx} ${R} 0 0 ${term} 0 ${-R} Z`;
+    }
+
+    // Day: an SVG sun (disc + 8 rays). Night: the moon at its actual phase.
+    function daynightSVG(now, day) {
+        if (day) {
+            let rays = '';
+            for (let i = 0; i < 8; i++) {
+                const a = i * Math.PI / 4;
+                rays += `<line x1="${(Math.cos(a) * 8).toFixed(1)}" y1="${(Math.sin(a) * 8).toFixed(1)}" x2="${(Math.cos(a) * 11).toFixed(1)}" y2="${(Math.sin(a) * 11).toFixed(1)}"/>`;
+            }
+            return `<g class="dn-sun"><circle r="5.5"/>${rays}</g>`;
+        }
+        return `<circle r="8" class="dn-moon-disc"/><path class="dn-moon-lit" d="${moonPath(moonPhase(now), 8)}"/>`;
     }
 
     /** Zmanit time snapshot; also feeds the tray via window.zmanTime. */
@@ -87,14 +149,13 @@
         const frac = (now - p.start) / (p.end - p.start);
         const hourF = Math.min(11.9999, frac * 12);
         const hour = Math.floor(hourF);
-        const chalakim = (hourF - hour) * 1080;
+        const chalakim = (hourF - hour) * 1080;     // 0..1080 into the current hour
         return { p, hourF, hour, chalakim, regaim: (chalakim % 1) * 76 };
     }
     window.zmanTime = (now) => {
         const t = zmanNow(now || new Date());
         if (!t) return '';
-        const glyph = t.p.day ? '☀' : moonGlyph(now || new Date());
-        return `${HOUR_LETTERS[t.hour]}׳ ${String(Math.floor(t.chalakim)).padStart(4, '0')}ח ${glyph}`;
+        return `${HOUR_LETTERS[t.hour]}׳ ${String(Math.floor(t.chalakim)).padStart(4, '0')}ח`;
     };
 
     // --- Dial construction: counterclockwise, Hebrew letters, א at the top ---
@@ -112,12 +173,24 @@
                 `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="middle" class="zman-letter">${HOUR_LETTERS[i]}</text>`);
         }
     }
+    // Chalakim subdial ticks: 12 marks of 90 chalakim (1080 ÷ 12), echoing the
+    // 12 sha'ot — the coarse hand's scale for reading the chelek count.
+    const chTicks = $('zman-ch-ticks');
+    if (chTicks && !chTicks.childElementCount) {
+        for (let i = 0; i < 12; i++) {
+            const a = (-i * 30 - 90) * rad;
+            const r2 = (i % 6 === 0) ? 13 : 16; // longer marks at 0 and the halfway (540)
+            chTicks.insertAdjacentHTML('beforeend',
+                `<line x1="${(Math.cos(a) * 19).toFixed(1)}" y1="${(Math.sin(a) * 19).toFixed(1)}" x2="${(Math.cos(a) * r2).toFixed(1)}" y2="${(Math.sin(a) * r2).toFixed(1)}" class="zman-subtick"/>`);
+        }
+    }
 
     // --- Live update ---
-    // LCD: smooth requestAnimationFrame (the regaim needle spins ~once per
-    // 3.3s chelek). E-INK: no animation at all — a slow interval repaints the
-    // readouts every 20s, which suits the medium and the site's look.
-    const hand = $('zman-hand'), subCh = $('zman-sub-ch'), subRg = $('zman-sub-rg');
+    // LCD: smooth requestAnimationFrame. E-INK: no animation at all — a slow
+    // interval repaints the readouts every 20s, which suits the medium.
+    const hand = $('zman-hand');
+    const chCoarse = $('zman-sub-ch-coarse'), chFine = $('zman-sub-ch-fine');
+    const subRg = $('zman-sub-rg'), dn = $('zman-daynight');
     const isEink = () => document.documentElement.classList.contains('eink-mode');
     let rafId = null, slowTimer = null;
 
@@ -125,14 +198,21 @@
         const now = new Date();
         const t = zmanNow(now);
         if (t) {
-            // Counterclockwise everywhere: main hand, chalakim + regaim subdials.
+            // Counterclockwise everywhere. Hour hand: one turn per 12 zmanit hours.
             if (hand) hand.setAttribute('transform', `rotate(${(-t.hourF * 30).toFixed(3)})`);
-            if (subCh) subCh.setAttribute('transform', `rotate(${(-(t.chalakim / 1080) * 360).toFixed(2)})`);
+            // Chalakim read like hours+minutes: the coarse hand counts 90-chalakim
+            // blocks (one turn per hour, 12 ticks — echoing the 12 sha'ot); the fine
+            // hand runs 0–90 within the block. Coarse block + fine = the exact chelek.
+            if (chCoarse) chCoarse.setAttribute('transform', `rotate(${(-(t.chalakim / 1080) * 360).toFixed(2)})`);
+            if (chFine) chFine.setAttribute('transform', `rotate(${(-((t.chalakim % 90) / 90) * 360).toFixed(2)})`);
+            // Regaim subdial: one full turn per chelek.
             if (subRg) subRg.setAttribute('transform', `rotate(${(-(t.regaim / 76) * 360).toFixed(2)})`);
-            $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳ ${t.p.day ? '☀' : moonGlyph(now)}`;
+            // Sun/moon: only rebuild when the picture actually changes.
+            const dnKey = t.p.day ? 'sun' : 'moon' + Math.round(moonPhase(now) * 48);
+            if (dn && dn.dataset.dn !== dnKey) { dn.innerHTML = daynightSVG(now, t.p.day); dn.dataset.dn = dnKey; }
+            $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳`;
             $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
             $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');
-            $('zman-daynight').textContent = t.p.day ? '☀' : moonGlyph(now);
             const fmt = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
             $('zman-sunrise').textContent = fmt(t.p.sun.sunrise);
             $('zman-sunset').textContent = fmt(t.p.sun.sunset);
@@ -173,14 +253,15 @@
         else if (win.style.display === 'flex') start();
     });
 
-    // Location: Jerusalem by default; device location only on explicit click.
-    $('zman-loc-label').textContent = loc.label;
-    $('zman-geo')?.addEventListener('click', () => {
+    // Tap the location button (pin + name) to use this device's position.
+    $('zman-geo')?.addEventListener('click', (e) => {
+        e.preventDefault();
         if (!navigator.geolocation) return;
         navigator.geolocation.getCurrentPosition((pos) => {
-            loc = { lat: pos.coords.latitude, lon: pos.coords.longitude, label: '📍 כאן' };
+            loc = { lat: pos.coords.latitude, lon: pos.coords.longitude, here: true };
             try { localStorage.setItem(LOC_KEY, JSON.stringify(loc)); } catch (_) { /* ignore */ }
-            $('zman-loc-label').textContent = loc.label;
+            setLocLabel();
+            render();
         }, () => { /* declined — stay on default */ });
     });
 })();

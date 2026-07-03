@@ -1799,6 +1799,12 @@
       "de": "69a7a14988fe",
       "gt": "69a7a14988fe"
     },
+    "theme_tapuz_label": {
+      "he": "48871a758fc7",
+      "ru": "48871a758fc7",
+      "ja": "48871a758fc7",
+      "de": "48871a758fc7"
+    },
     "theme_techelet_label": {
       "he": "495f3344c47d",
       "ru": "495f3344c47d",
@@ -1882,6 +1888,18 @@
       "de": "2519f68f546b",
       "ja": "2519f68f546b",
       "gt": "2519f68f546b"
+    },
+    "zman_default_loc": {
+      "he": "451ebbe3f766",
+      "ru": "451ebbe3f766",
+      "ja": "451ebbe3f766",
+      "de": "451ebbe3f766"
+    },
+    "zman_here_label": {
+      "he": "3572a3960baa",
+      "ru": "3572a3960baa",
+      "ja": "3572a3960baa",
+      "de": "3572a3960baa"
     },
     "zman_regaim_label": {
       "he": "7b9bead6da91",

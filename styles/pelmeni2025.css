@@ -104,6 +104,11 @@
     --theme-bg-color: #F5E6E0; --theme-text-color: #5D4037; --theme-border-color: #8D6E63; --theme-accent-color: #A1887F;
     --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
+/* Tapuz (תפוז — "golden apple"): warm orange on paper white. */
+:root.tapuz-mode {
+    --theme-bg-color: #FFF3E0; --theme-text-color: #7A3B00; --theme-border-color: #E8590C; --theme-accent-color: #FB8C00;
+    --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
+}
 :root.funky-mode {
     --bg-color: var(--theme-bg-color, #b1de75); --win-bg-color: var(--theme-bg-color, #b1de75); --text-color: var(--theme-text-color, #b000b5); --border-color: var(--theme-border-color, #eb01a5); --inv-bg-color: var(--theme-border-color, #eb01a5); --inv-text-color: var(--theme-bg-color, #b1de75); --link-hover-bg: var(--theme-accent-color, #fa6607); --link-hover-color: var(--theme-bg-color, #b1de75);
 }
@@ -239,17 +244,24 @@ body.eink-mode .symbol {
 .zman-letter { fill: var(--text-color); font-size: 15px; font-family: var(--font-body); }
 .zman-hand { stroke: var(--text-color); stroke-width: 3; stroke-linecap: round; transition: none; }
 .zman-hub { fill: var(--text-color); }
-.zman-symbol { font-size: 16px; fill: var(--text-color); }
-.zman-subdial circle { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.5; }
-.zman-subdial line { stroke: var(--text-color); stroke-width: 2; stroke-linecap: round; }
-.zman-subcap { font-size: 10px; fill: var(--text-color); font-family: var(--font-body); }
+/* Sun/moon indicator: SVG, monochrome and theme-coloured — never OS emoji. */
+.dn-sun circle, .dn-sun line { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.4; stroke-linecap: round; }
+.dn-moon-disc { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.2; }
+.dn-moon-lit { fill: var(--text-color); stroke: none; }
+/* Inverted subdials: filled discs with cut-out (background-colour) hands/marks. */
+.zman-subdial circle { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.5; }
+.zman-subdial line { stroke: var(--bg-color); stroke-width: 2; stroke-linecap: round; }
+.zman-subtick { stroke: var(--bg-color); stroke-width: 1; }
+/* Chalakim register: short/thick coarse hand (90-blocks) + long/thin fine hand. */
+.zman-subhand-coarse { stroke-width: 2.5; }
+.zman-subhand-fine { stroke-width: 1.2; }
 .zman-readouts { display: flex; flex-direction: column; gap: 6px; direction: rtl; text-align: right; }
 .zman-big { font-size: 26px; font-weight: bold; }
 .zman-units { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
 .zman-units b { font-variant-numeric: tabular-nums; }
 .zman-date { font-size: 13px; border-top: 1px solid var(--border-color); padding-top: 6px; }
 .zman-sun { font-size: 13px; display: flex; gap: 10px; direction: ltr; }
-.zman-loc { font-size: 12px; opacity: 0.85; display: flex; gap: 6px; align-items: center; }
+.zman-loc { font-size: 12px; display: flex; gap: 6px; align-items: center; }
 
 /* --- ABOUT WINDOW: description wraps at the width of the name heading ---
    width:0 + min-width:100% makes the paragraph adopt the content box width
@@ -264,7 +276,9 @@ body.eink-mode .symbol {
 .app-folder { margin: 6px 0 6px 8px; }
 .app-folder summary { cursor: pointer; font-weight: bold; }
 .app-folder .app-list { padding-inline-start: 20px; }
-.app-section { margin: 10px 0 2px; opacity: 0.75; font-weight: normal; border-bottom: 1px solid var(--border-color); }
+/* Secondary heading: reuse the site's tuned muted convention (cf. .post-date),
+   not a bespoke grey — the low-contrast values are deliberately calibrated. */
+.app-section { margin: 10px 0 2px; font-size: 0.8em; font-style: italic; opacity: 0.7; }
 .window-list li { padding: 5px 8px 5px 2em; border-bottom: 1px solid var(--border-color); color: var(--text-color); background-color: var(--win-bg-color); font-family: var(--font-emoji), var(--font-body); }
 .window-list li:last-child { border-bottom: none; }
 .settings-window { min-width: 500px; }
@@ -311,9 +325,10 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 :root.techelet-mode ::selection,
 :root.zelyonny-mode ::selection,
 :root.akai-mode ::selection,
-:root.rindswurst-mode ::selection { 
-    background-color: var(--theme-accent-color); 
-    color: var(--theme-bg-color); 
+:root.rindswurst-mode ::selection,
+:root.tapuz-mode ::selection {
+    background-color: var(--theme-accent-color);
+    color: var(--theme-bg-color);
 }
 
 /* --- NEW ---: Persistent highlight for shared text */
@@ -336,9 +351,10 @@ p { font-size: 14px; margin-bottom: 0.8em; }
 :root.techelet-mode .shared-highlight,
 :root.zelyonny-mode .shared-highlight,
 :root.akai-mode .shared-highlight,
-:root.rindswurst-mode .shared-highlight { 
-    background-color: var(--theme-accent-color); 
-    color: var(--theme-bg-color); 
+:root.rindswurst-mode .shared-highlight,
+:root.tapuz-mode .shared-highlight {
+    background-color: var(--theme-accent-color);
+    color: var(--theme-bg-color);
     /* No additional rules needed, the wavy line will correctly inherit the color */
 }
 
@@ -396,7 +412,9 @@ input:focus-visible {
 :root.akai-mode .dropdown:focus-visible,
 :root.akai-mode input:focus-visible,
 :root.rindswurst-mode .dropdown:focus-visible,
-:root.rindswurst-mode input:focus-visible {
+:root.rindswurst-mode input:focus-visible,
+:root.tapuz-mode .dropdown:focus-visible,
+:root.tapuz-mode input:focus-visible {
      outline-color: var(--theme-border-color);
 }
 
