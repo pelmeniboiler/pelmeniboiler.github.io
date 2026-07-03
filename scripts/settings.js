@@ -84,7 +84,7 @@ function setupSettings() {
 
             // Default: bg tile with the logo in the text colour. For these themes,
             // invert the relationship — border colour tile, logo in the bg colour.
-            const FAVICON_SWAP_THEMES = ['techelet', 'zelyonny', 'akai'];
+            const FAVICON_SWAP_THEMES = ['techelet', 'zelyonny', 'akai', 'tapuz'];
             const swap = FAVICON_SWAP_THEMES.some((t) => document.documentElement.classList.contains(`${t}-mode`));
             const tileColor = swap ? borderColor : bgColor;
             const logoColor = swap ? bgColor : textColor;
@@ -295,7 +295,7 @@ function setupSettings() {
 
         // Keep the PWA manifest on the theme's variant, so installing from this
         // session bakes in a matching icon. (Already-installed apps keep theirs.)
-        const THEMED_MANIFESTS = ['light', 'dark', 'champagne', 'bubblegum', 'techelet', 'zelyonny', 'akai', 'rindswurst'];
+        const THEMED_MANIFESTS = ['light', 'dark', 'champagne', 'bubblegum', 'techelet', 'zelyonny', 'akai', 'rindswurst', 'tapuz'];
         const manifestLink = document.querySelector('link[rel="manifest"]');
         if (manifestLink) {
             manifestLink.href = THEMED_MANIFESTS.includes(theme) ? `/manifest-${theme}.json` : '/manifest.json';

@@ -150,8 +150,7 @@
         const hourF = Math.min(11.9999, frac * 12);
         const hour = Math.floor(hourF);
         const chalakim = (hourF - hour) * 1080;     // 0..1080 into the current hour
-        const onahFrac = (chalakim % 45) / 45;       // within the current Onah Ketana (45 chalakim)
-        return { p, hourF, hour, chalakim, onahFrac, regaim: (chalakim % 1) * 76 };
+        return { p, hourF, hour, chalakim, regaim: (chalakim % 1) * 76 };
     }
     window.zmanTime = (now) => {
         const t = zmanNow(now || new Date());
@@ -174,12 +173,24 @@
                 `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="middle" class="zman-letter">${HOUR_LETTERS[i]}</text>`);
         }
     }
+    // Chalakim subdial ticks: 12 marks of 90 chalakim (1080 ÷ 12), echoing the
+    // 12 sha'ot — the coarse hand's scale for reading the chelek count.
+    const chTicks = $('zman-ch-ticks');
+    if (chTicks && !chTicks.childElementCount) {
+        for (let i = 0; i < 12; i++) {
+            const a = (-i * 30 - 90) * rad;
+            const r2 = (i % 6 === 0) ? 13 : 16; // longer marks at 0 and the halfway (540)
+            chTicks.insertAdjacentHTML('beforeend',
+                `<line x1="${(Math.cos(a) * 19).toFixed(1)}" y1="${(Math.sin(a) * 19).toFixed(1)}" x2="${(Math.cos(a) * r2).toFixed(1)}" y2="${(Math.sin(a) * r2).toFixed(1)}" class="zman-subtick"/>`);
+        }
+    }
 
     // --- Live update ---
     // LCD: smooth requestAnimationFrame. E-INK: no animation at all — a slow
     // interval repaints the readouts every 20s, which suits the medium.
-    const hand = $('zman-hand'), onahHand = $('zman-onah-hand');
-    const subCh = $('zman-sub-ch'), subRg = $('zman-sub-rg'), dn = $('zman-daynight');
+    const hand = $('zman-hand');
+    const chCoarse = $('zman-sub-ch-coarse'), chFine = $('zman-sub-ch-fine');
+    const subRg = $('zman-sub-rg'), dn = $('zman-daynight');
     const isEink = () => document.documentElement.classList.contains('eink-mode');
     let rafId = null, slowTimer = null;
 
@@ -189,10 +200,11 @@
         if (t) {
             // Counterclockwise everywhere. Hour hand: one turn per 12 zmanit hours.
             if (hand) hand.setAttribute('transform', `rotate(${(-t.hourF * 30).toFixed(3)})`);
-            // Onah Ketana: the longer centre hand — one turn per zmanit hour (24 onot).
-            if (onahHand) onahHand.setAttribute('transform', `rotate(${(-(t.chalakim / 1080) * 360).toFixed(2)})`);
-            // Chalakim subdial: one full turn per Onah Ketana (45 chalakim).
-            if (subCh) subCh.setAttribute('transform', `rotate(${(-t.onahFrac * 360).toFixed(2)})`);
+            // Chalakim read like hours+minutes: the coarse hand counts 90-chalakim
+            // blocks (one turn per hour, 12 ticks — echoing the 12 sha'ot); the fine
+            // hand runs 0–90 within the block. Coarse block + fine = the exact chelek.
+            if (chCoarse) chCoarse.setAttribute('transform', `rotate(${(-(t.chalakim / 1080) * 360).toFixed(2)})`);
+            if (chFine) chFine.setAttribute('transform', `rotate(${(-((t.chalakim % 90) / 90) * 360).toFixed(2)})`);
             // Regaim subdial: one full turn per chelek.
             if (subRg) subRg.setAttribute('transform', `rotate(${(-(t.regaim / 76) * 360).toFixed(2)})`);
             // Sun/moon: only rebuild when the picture actually changes.

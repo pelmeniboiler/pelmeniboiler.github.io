@@ -25,6 +25,7 @@ const THEMES = {
     zelyonny:   { tile: '#3C763D', glyph: '#DFF0D8', bg: '#DFF0D8' },
     akai:       { tile: '#C62828', glyph: '#FFEBEE', bg: '#FFEBEE' },
     rindswurst: { tile: '#F5E6E0', glyph: '#5D4037', bg: '#F5E6E0' },
+    tapuz:      { tile: '#E8590C', glyph: '#FFF3E0', bg: '#FFF3E0' },
 };
 
 const browser = await chromium.launch({

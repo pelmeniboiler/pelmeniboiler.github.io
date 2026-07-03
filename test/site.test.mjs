@@ -409,7 +409,6 @@ try {
             heb: document.getElementById('zman-hebdate').textContent,
             letters: document.querySelectorAll('#zman-letters text').length,
             hand: document.getElementById('zman-hand').getAttribute('transform') || '',
-            onah: document.getElementById('zman-onah-hand')?.getAttribute('transform') || '',
             // The day/night indicator must be an SVG shape, NOT an OS colour emoji.
             dnSvg: document.querySelectorAll('#zman-daynight circle, #zman-daynight path, #zman-daynight line').length,
             dnText: (document.getElementById('zman-daynight')?.textContent || '').trim(),
@@ -422,8 +421,7 @@ try {
             `Zmanim clock opens: 12 Hebrew hour letters, chalakim in range (${zman.chalakim})`);
         ok(/57\d\d|5\d{3}/.test(zman.heb) && /Yom|Shabbat/.test(zman.heb) && !/[A-Z][a-z]+day/.test(zman.heb),
             `Zmanim clock: sunset-adjusted date with transliterated weekday (got "${zman.heb}")`);
-        ok(/rotate\(-/.test(zman.hand) && /rotate\(-/.test(zman.onah),
-            `Zmanim clock: hour + Onah Ketana hands run COUNTERCLOCKWISE (${zman.hand} / ${zman.onah})`);
+        ok(/rotate\(-/.test(zman.hand), `Zmanim clock: hour hand runs COUNTERCLOCKWISE (${zman.hand})`);
         ok(zman.dnSvg >= 1 && zman.dnText === '',
             `Zmanim clock: day/night drawn as monochrome SVG, no emoji glyph (shapes=${zman.dnSvg})`);
         ok(zman.loc === 'Jerusalem', `Zmanim clock: default location localized in the geo button (got "${zman.loc}")`);
@@ -439,12 +437,15 @@ try {
             `Sha'ot zmaniyot: summer day-hours > night-hours, winter reversed (${Math.round(dayNight.summer.day / 60000)}m vs ${Math.round(dayNight.summer.night / 60000)}m)`);
 
         const subs = await page.evaluate(() => ({
-            ch: document.getElementById('zman-sub-ch')?.getAttribute('transform') || '',
+            chCoarse: document.getElementById('zman-sub-ch-coarse')?.getAttribute('transform') || '',
+            chFine: document.getElementById('zman-sub-ch-fine')?.getAttribute('transform') || '',
             rg: document.getElementById('zman-sub-rg')?.getAttribute('transform') || '',
+            ticks: document.querySelectorAll('#zman-ch-ticks .zman-subtick').length,
             labels: [...document.querySelectorAll('.zman-units [data-key]')].map((e) => e.dataset.key),
         }));
-        ok(/rotate\(-/.test(subs.ch) && /rotate\(-/.test(subs.rg) && subs.labels.length === 2,
-            `Zmanim clock: chalakim+regaim subdials turning, labels localized (${JSON.stringify(subs.labels)})`);
+        ok(/rotate\(-/.test(subs.chCoarse) && /rotate\(-/.test(subs.chFine) && /rotate\(-/.test(subs.rg)
+            && subs.ticks === 12 && subs.labels.length === 2,
+            `Zmanim clock: two-hand chalakim register (12 marks) + regaim subdial turning, labels localized (${JSON.stringify(subs.labels)})`);
 
         // E-INK: the clock must NOT animate — regaim frozen between samples.
         const einkCtx2 = await browser.newContext({ viewport: { width: 1400, height: 900 } });
