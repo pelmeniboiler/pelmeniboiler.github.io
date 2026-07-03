@@ -274,6 +274,7 @@ const APP_LIBRARY = {
     tools: [
         // graflect.workbench deliberately unlisted for now.
         { href: '/tools/emojiviewer.html', icon: '🙾', label: 'emoji.viewer' },
+        { href: '/screensaver/', icon: '🖳', label: 'screensaver.dvd' },
     ],
     folders: [{
         icon: '🗺', label: 'hoi4.mapping',

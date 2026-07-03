@@ -14,6 +14,7 @@
     "zman_regaim_label": "regaim",
     "zman_default_loc": "Jerusalem",
     "zman_here_label": "My location",
+    "screensaver_hint": "click or press any key to exit",
     "certs_link": "Harvard CS50 Puzzle Day 2023",
     "settings_nav_lang": "Language",
     "settings_nav_theme": "Appearance",
