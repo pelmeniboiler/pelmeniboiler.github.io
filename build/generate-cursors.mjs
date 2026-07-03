@@ -23,7 +23,7 @@ const SHAPES = {
     pointer: { hot: [10, 2], fallback: 'pointer', svg: (k, h) => {
         const parts = "<rect x='5.6' y='10.5' width='12.6' height='11' rx='3.6'/>"
             + "<rect x='8.2' y='2' width='3.4' height='11' rx='1.7'/>"
-            + "<path d='M5.8,13.2 L3.6,15.4 a1.4,1.4 0 0 0 2,2 L7.8,15.2 Z'/>";
+            + "<rect x='3.6' y='12' width='4.2' height='3.1' rx='1.55'/>";
         return `<g fill='${h}' stroke='${h}' stroke-width='2.2' stroke-linejoin='round'>${parts}</g><g fill='${k}'>${parts}</g>`;
     } },
     text: { hot: [12, 12], fallback: 'text', svg: (k, h) =>
