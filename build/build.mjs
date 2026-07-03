@@ -322,9 +322,10 @@ async function bakeAppLibrary(rootDir, manifestItems) {
         } catch { /* keep id as name */ }
         const chars = [...title];
         demoItems.push({
+            slug,
+            articleTitle: bySlug[slug]?.title || slug,
             href: `/blog/${slug}/en/`,
             icon: chars[0], label: chars.slice(1).join('').trim(),
-            tip: `runs inside the “${bySlug[slug]?.title || slug}” article`,
         });
     }
 
@@ -335,7 +336,20 @@ async function bakeAppLibrary(rootDir, manifestItems) {
         parts.push(`<details class="app-folder"><summary><span class="symbol">${f.icon}</span> ${f.label}</summary>\n<ul class="app-list">\n${f.items.map(li).join('\n')}\n</ul>\n</details>`);
     }
     if (demoItems.length) {
-        parts.push(`<h4 class="app-section" data-key="applib_demos_h4">demos.from.articles</h4>\n<ul class="app-list">\n${demoItems.map(li).join('\n')}\n</ul>`);
+        // Group demos by their host article — each article becomes its own nested
+        // folder inside the demos.from.articles folder, mirroring the hoi4 folder.
+        const byArticle = new Map();
+        for (const d of demoItems) {
+            if (!byArticle.has(d.slug)) byArticle.set(d.slug, { title: d.articleTitle, items: [] });
+            byArticle.get(d.slug).items.push(d);
+        }
+        const articleFolders = [...byArticle.values()].map((a) => {
+            // Article titles follow the site's "leading glyph = icon" convention
+            // (like the demos), so the first char goes in the monochrome symbol font.
+            const t = [...a.title];
+            return `<details class="app-folder"><summary><span class="symbol">${t[0]}</span> ${t.slice(1).join('').trim()}</summary>\n<ul class="app-list">\n${a.items.map(li).join('\n')}\n</ul>\n</details>`;
+        }).join('\n');
+        parts.push(`<details class="app-folder app-folder-demos"><summary><span class="symbol">📚</span> <span data-key="applib_demos_h4">demos.from.articles</span></summary>\n${articleFolders}\n</details>`);
     }
 
     html = html.replace(/(<!--APPS:START-->)[\s\S]*?(<!--APPS:END-->)/, (_m, a, b) => `${a}\n${parts.join('\n')}\n${b}`);

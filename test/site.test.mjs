@@ -339,14 +339,21 @@ try {
         const ctx = await browser.newContext();
         const page = await ctx.newPage();
         await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
-        const lib = await page.evaluate(() => ({
-            exists: !!document.getElementById('app-library'),
-            folderItems: document.querySelectorAll('#app-library .app-folder .app-list a').length,
-            demos: [...document.querySelectorAll('#app-library .app-section ~ .app-list a')].length,
-            workbench: document.getElementById('app-library').textContent.includes('graflect.workbench'),
-        }));
-        ok(lib.exists && lib.folderItems === 2 && lib.demos >= 3 && !lib.workbench,
-            `App library: hoi4 folder + demos, graflect.workbench suppressed (${JSON.stringify(lib)})`);
+        const lib = await page.evaluate(() => {
+            const demosFolder = document.querySelector('#app-library .app-folder-demos');
+            return {
+                exists: !!document.getElementById('app-library'),
+                // hoi4 folder: a top-level folder that isn't the demos container.
+                hoiItems: [...document.querySelectorAll('#app-library .app-folder .app-list a')]
+                    .filter((a) => !a.closest('.app-folder-demos')).length,
+                // demos.from.articles: each host article is its own nested folder.
+                demoArticleFolders: demosFolder ? demosFolder.querySelectorAll('.app-folder').length : 0,
+                demos: demosFolder ? demosFolder.querySelectorAll('.app-list a').length : 0,
+                workbench: document.getElementById('app-library').textContent.includes('graflect.workbench'),
+            };
+        });
+        ok(lib.exists && lib.hoiItems === 2 && lib.demoArticleFolders >= 1 && lib.demos >= 3 && !lib.workbench,
+            `App library: hoi4 folder + per-article demo folders, graflect.workbench suppressed (${JSON.stringify(lib)})`);
         await ctx.close();
     }
 

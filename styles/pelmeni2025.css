@@ -276,9 +276,6 @@ body.eink-mode .symbol {
 .app-folder { margin: 6px 0 6px 8px; }
 .app-folder summary { cursor: pointer; font-weight: bold; }
 .app-folder .app-list { padding-inline-start: 20px; }
-/* Secondary heading: reuse the site's tuned muted convention (cf. .post-date),
-   not a bespoke grey — the low-contrast values are deliberately calibrated. */
-.app-section { margin: 10px 0 2px; font-size: 0.8em; font-style: italic; opacity: 0.7; }
 .window-list li { padding: 5px 8px 5px 2em; border-bottom: 1px solid var(--border-color); color: var(--text-color); background-color: var(--win-bg-color); font-family: var(--font-emoji), var(--font-body); }
 .window-list li:last-child { border-bottom: none; }
 .settings-window { min-width: 500px; }
@@ -564,7 +561,6 @@ textarea::-webkit-scrollbar-thumb {
 .blog-post .post-date {
     font-size: 0.8em;
     font-style: italic;
-    opacity: 0.7;
     margin-bottom: 0.5rem;
 }
 .blog-post p {
@@ -648,7 +644,6 @@ aside {
   border-left: 4px solid var(--border-color);
   background-color: transparent;
   font-style: italic;
-  opacity: 0.9;
 }
 aside h4 {
   font-style: normal;
