@@ -252,6 +252,10 @@ body.eink-mode .symbol {
    lit) reads as a waxing crescent. Full = open ring, new = solid (print convention). */
 .dn-moon-disc { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.2; }
 .dn-moon-lit { fill: var(--bg-color); stroke: none; }
+/* Dark themes: text-colour is the BRIGHTER ink, so flip — the lit part is drawn
+   in text-colour on a bg-colour disc, keeping "bright = illuminated". */
+:root.dark-mode .dn-moon-disc { fill: var(--bg-color); }
+:root.dark-mode .dn-moon-lit { fill: var(--text-color); }
 /* Inverted subdials: filled discs with cut-out (background-colour) hands/marks. */
 .zman-subdial circle { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.5; }
 .zman-subdial line { stroke: var(--bg-color); stroke-width: 2; stroke-linecap: round; }
