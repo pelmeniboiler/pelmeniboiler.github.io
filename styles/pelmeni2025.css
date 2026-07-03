@@ -247,8 +247,11 @@ body.eink-mode .symbol {
 .zman-hub { fill: var(--text-color); }
 /* Sun/moon indicator: SVG, monochrome and theme-coloured — never OS emoji. */
 .dn-sun circle, .dn-sun line { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.4; stroke-linecap: round; }
-.dn-moon-disc { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.2; }
-.dn-moon-lit { fill: var(--text-color); stroke: none; }
+/* Moon: a solid text-colour disc with the LIT portion carved in bg-colour, so
+   the eye reads the bright part as light — otherwise a waning gibbous (mostly
+   lit) reads as a waxing crescent. Full = open ring, new = solid (print convention). */
+.dn-moon-disc { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.2; }
+.dn-moon-lit { fill: var(--bg-color); stroke: none; }
 /* Inverted subdials: filled discs with cut-out (background-colour) hands/marks. */
 .zman-subdial circle { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.5; }
 .zman-subdial line { stroke: var(--bg-color); stroke-width: 2; stroke-linecap: round; }

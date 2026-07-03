@@ -100,15 +100,24 @@
         return YOM[l] ? l : 'en';
     };
 
+    // Intl.DateTimeFormat construction is expensive — the Hebrew calendar
+    // especially — so build each formatter once and reuse it. Rebuilding them
+    // inside the animation loop is what made the clock crawl on mobile.
+    const _fmt = new Map();
+    const getFmt = (key, make) => { let f = _fmt.get(key); if (!f) _fmt.set(key, f = make()); return f; };
+
     // Day-of-week in the LOCATION's timezone (not the viewer's), so the weekday
     // and the sunset-adjusted date agree with the place the clock is set to.
     const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     function weekdayIndex(date) {
-        try { return WD.indexOf(new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: loc.tz }).format(date)); }
-        catch (_) { return date.getDay(); }
+        try {
+            const f = getFmt(`wd|${loc.tz || ''}`, () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: loc.tz }));
+            return WD.indexOf(f.format(date));
+        } catch (_) { return date.getDay(); }
     }
     // Format an absolute instant as HH:MM in the location's clock.
-    const fmtTime = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: loc.tz });
+    const fmtTime = (d) => getFmt(`t|${loc.tz || ''}`, () =>
+        new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: loc.tz })).format(d);
 
     /** Hebrew-calendar date string; the Torah day begins at sunset. */
     function hebrewDate(now) {
@@ -117,7 +126,8 @@
         const lang = docLang();
         let datePart;
         try {
-            datePart = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: loc.tz }).format(base);
+            datePart = getFmt(`heb|${lang}|${loc.tz || ''}`, () =>
+                new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: loc.tz })).format(base);
         } catch (_) { datePart = base.toDateString(); }
         return `${YOM[lang][weekdayIndex(base)]}, ${datePart}`;
     }
@@ -268,11 +278,13 @@
     const still = () => isEink() || (reduceMotionMq && reduceMotionMq.matches);
     let rafId = null, slowTimer = null;
 
+    let lastSlow = 0;
     function render() {
         const now = new Date();
         const t = zmanNow(now);
+        // --- Per frame: only the moving needles + the fast numeric readouts.
+        // These are cheap (trig + a couple of setAttribute/textContent).
         if (t) {
-            // Counterclockwise everywhere. Hour hand: one turn per 12 zmanit hours.
             if (hand) hand.setAttribute('transform', `rotate(${(-t.hourF * 30).toFixed(3)})`);
             // Chalakim read like hours+minutes: the coarse hand counts 90-chalakim
             // blocks (one turn per hour, 12 ticks — echoing the 12 sha'ot); the fine
@@ -281,14 +293,19 @@
             if (chFine) chFine.setAttribute('transform', `rotate(${(-((t.chalakim % 90) / 90) * 360).toFixed(2)})`);
             // Regaim subdial: one full turn per chelek.
             if (subRg) subRg.setAttribute('transform', `rotate(${(-(t.regaim / 76) * 360).toFixed(2)})`);
-            // Sun/moon: only rebuild when the picture actually changes.
+            $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
+            $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');
+        }
+        // --- Throttled (~1/s): everything slow-changing or Intl-heavy (the Hebrew
+        // date, sun times, zmanim, molad, sun/moon). Decoupled from the 60fps
+        // needle so mobile isn't rebuilding calendar formatters every frame.
+        if (now - lastSlow < 950) return;
+        lastSlow = +now;
+        if (t) {
             const dnKey = t.p.day ? 'sun' : 'moon' + Math.round(moonPhase(now) * 48);
             if (dn && dn.dataset.dn !== dnKey) { dn.innerHTML = daynightSVG(now, t.p.day); dn.dataset.dn = dnKey; }
             if (zMarks) zMarks.style.display = t.p.day ? '' : 'none'; // day zmanim only
-
             $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳`;
-            $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
-            $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');
             $('zman-sunrise').textContent = fmtTime(t.p.sun.sunrise);
             $('zman-sunset').textContent = fmtTime(t.p.sun.sunset);
             renderZmanim(now, t.p.sun);
@@ -321,7 +338,7 @@
         const sig = `${m.abs.valueOf()}|${lang}|${loc.tz || ''}`;
         if (moladEl.dataset.sig === sig) return;
         let month = '';
-        try { month = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { month: 'long', timeZone: loc.tz }).format(new Date(m.abs.valueOf() + dayMs)); } catch (_) { /* skip */ }
+        try { month = getFmt(`mo|${lang}|${loc.tz || ''}`, () => new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { month: 'long', timeZone: loc.tz })).format(new Date(m.abs.valueOf() + dayMs)); } catch (_) { /* skip */ }
         const civil = `${String((m.hours + 18) % 24).padStart(2, '0')}:${String(Math.floor(m.chalakim / 18)).padStart(2, '0')}`;
         const word = lang === 'he' ? 'מולד' : 'Molad';
         const tip = lang === 'he'
