@@ -76,7 +76,10 @@ function setupStartMenu() {
         } catch (_) {
             dateText = now.toLocaleDateString();
         }
-        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        // Hebrew time of day (hour-letter + chalakim, from zman-clock.js) — not
+        // the civil clock. Falls back to HH:MM only before zman-clock loads.
+        const time = (typeof window.zmanTime === 'function' && window.zmanTime())
+            || now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         trayClockEl.textContent = `${dateText} · ${time}`;
     }
     updateTrayClock();

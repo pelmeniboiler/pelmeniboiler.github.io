@@ -217,9 +217,11 @@ body.eink-mode .symbol {
     background-color: var(--inv-bg-color); color: var(--inv-text-color);
     border-color: var(--border-color);
 }
-.tray-logo { display: flex; align-items: center; padding-inline-end: 4px; border-inline-end: 1px solid var(--border-color); }
+.tray-logo { display: flex; align-items: center; padding: 2px 6px 2px 4px; margin-inline-end: 2px; border-inline-end: 1px solid var(--border-color); }
 .tray-logo img, .tray-logo svg { width: 18px; height: 18px; }
 .tray-logo svg path { fill: var(--text-color); }
+.tray-logo:hover, .tray-logo:focus-visible { background-color: var(--text-color); }
+.tray-logo:hover svg path, .tray-logo:focus-visible svg path { fill: var(--bg-color); }
 #tray-settings { border-inline-start: 1px solid var(--border-color); border-radius: 0; }
 @media (max-width: 768px) { .tray { display: none; } }
 /* Wide screens: the tray IS the program launcher; retire the start-menu box. */
@@ -229,16 +231,18 @@ body.eink-mode .symbol {
 #zman-clock-window { width: 340px; }
 .zman-content { display: flex; gap: 14px; align-items: center; padding: 12px; }
 #zman-dial { width: 170px; height: 170px; flex-shrink: 0; }
-.zman-rim { fill: var(--win-bg-color); stroke: var(--border-color); stroke-width: 3; }
+/* Dial: always the page background with text-colour marks over it — flat and
+   monochrome in e-ink; theme colours do the talking elsewhere. Night is told by
+   the (phase-accurate) moon, not by inverting the dial. */
+.zman-rim { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 2.5; }
 .zman-tick { stroke: var(--text-color); stroke-width: 2; }
 .zman-letter { fill: var(--text-color); font-size: 15px; font-family: var(--font-body); }
 .zman-hand { stroke: var(--text-color); stroke-width: 3; stroke-linecap: round; transition: none; }
 .zman-hub { fill: var(--text-color); }
-.zman-symbol { font-size: 18px; fill: var(--text-color); }
-.zman-night .zman-rim { fill: var(--inv-bg-color); }
-.zman-night .zman-tick, .zman-night .zman-hub { stroke: var(--inv-text-color); fill: var(--inv-text-color); }
-.zman-night .zman-letter, .zman-night .zman-symbol { fill: var(--inv-text-color); }
-.zman-night .zman-hand { stroke: var(--inv-text-color); }
+.zman-symbol { font-size: 16px; fill: var(--text-color); }
+.zman-subdial circle { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.5; }
+.zman-subdial line { stroke: var(--text-color); stroke-width: 2; stroke-linecap: round; }
+.zman-subcap { font-size: 10px; fill: var(--text-color); font-family: var(--font-body); }
 .zman-readouts { display: flex; flex-direction: column; gap: 6px; direction: rtl; text-align: right; }
 .zman-big { font-size: 26px; font-weight: bold; }
 .zman-units { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }

@@ -1868,6 +1868,27 @@
       "ja": "3e64789f4398",
       "de": "3e64789f4398",
       "gt": "3e64789f4398"
+    },
+    "win_zman_title": {
+      "he": "ee6f4ac888f2",
+      "ru": "ee6f4ac888f2",
+      "de": "ee6f4ac888f2",
+      "ja": "ee6f4ac888f2",
+      "gt": "ee6f4ac888f2"
+    },
+    "zman_chalakim_label": {
+      "he": "2519f68f546b",
+      "ru": "2519f68f546b",
+      "de": "2519f68f546b",
+      "ja": "2519f68f546b",
+      "gt": "2519f68f546b"
+    },
+    "zman_regaim_label": {
+      "he": "7b9bead6da91",
+      "ru": "7b9bead6da91",
+      "de": "7b9bead6da91",
+      "ja": "7b9bead6da91",
+      "gt": "7b9bead6da91"
     }
   },
   "graflect_ipa": {
@@ -2489,6 +2510,13 @@
     }
   },
   "index": {
+    "applib_demos_h4": {
+      "he": "70e98dd0cf71",
+      "ru": "70e98dd0cf71",
+      "de": "70e98dd0cf71",
+      "ja": "70e98dd0cf71",
+      "gt": "70e98dd0cf71"
+    },
     "music_h4": {
       "he": "b30e110432ea",
       "ru": "b30e110432ea",
@@ -2614,6 +2642,13 @@
       "ja": "2926149dcd52",
       "de": "2926149dcd52",
       "gt": "2926149dcd52"
+    },
+    "win_applib_title": {
+      "he": "f9889ca3a14c",
+      "ru": "f9889ca3a14c",
+      "de": "f9889ca3a14c",
+      "ja": "f9889ca3a14c",
+      "gt": "f9889ca3a14c"
     },
     "win_blog_title": {
       "he": "036025305de8",

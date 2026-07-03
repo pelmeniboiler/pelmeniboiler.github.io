@@ -335,7 +335,7 @@ async function bakeAppLibrary(rootDir, manifestItems) {
         parts.push(`<details class="app-folder"><summary><span class="symbol">${f.icon}</span> ${f.label}</summary>\n<ul class="app-list">\n${f.items.map(li).join('\n')}\n</ul>\n</details>`);
     }
     if (demoItems.length) {
-        parts.push(`<h4 class="app-section">demos.from.articles</h4>\n<ul class="app-list">\n${demoItems.map(li).join('\n')}\n</ul>`);
+        parts.push(`<h4 class="app-section" data-key="applib_demos_h4">demos.from.articles</h4>\n<ul class="app-list">\n${demoItems.map(li).join('\n')}\n</ul>`);
     }
 
     html = html.replace(/(<!--APPS:START-->)[\s\S]*?(<!--APPS:END-->)/, (_m, a, b) => `${a}\n${parts.join('\n')}\n${b}`);

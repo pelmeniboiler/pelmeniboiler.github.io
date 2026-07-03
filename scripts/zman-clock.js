@@ -52,17 +52,50 @@
         return t && { start: today.sunset, end: t.sunrise, day: false, sun: today };
     }
 
+    // Hebrew weekdays — never "Friday", never "Monday". After sunset the base
+    // date is already advanced, so Friday evening correctly reads שבת.
+    const HEB_WEEKDAYS = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום שישי', 'שבת'];
+
     /** Hebrew-calendar date string; the Torah day begins at sunset. */
     function hebrewDate(now) {
         const today = sunTimes(now, loc.lat, loc.lon);
         const base = (today && now >= today.sunset) ? new Date(now.valueOf() + dayMs) : now;
         const lang = (document.documentElement.lang === 'he') ? 'he' : 'en';
+        let datePart;
         try {
-            return new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(base);
-        } catch (_) { return base.toDateString(); }
+            datePart = new Intl.DateTimeFormat(`${lang}-u-ca-hebrew`, { day: 'numeric', month: 'long', year: 'numeric' }).format(base);
+        } catch (_) { datePart = base.toDateString(); }
+        return `${HEB_WEEKDAYS[base.getDay()]}, ${datePart}`;
     }
     // The tray clock (start-menu.js) prefers this over its midnight-flipping default.
     window.zmanHebrewDate = (now) => hebrewDate(now || new Date());
+
+    // Moon phase glyph for the actual current phase (synodic month 29.53059d
+    // from the 2000-01-06 18:14 UTC new moon) — not a decorative crescent.
+    const SYNODIC = 29.530588853 * dayMs;
+    const NEW_MOON_EPOCH = Date.UTC(2000, 0, 6, 18, 14);
+    const MOONS = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+    function moonGlyph(now) {
+        const phase = (((now - NEW_MOON_EPOCH) % SYNODIC) + SYNODIC) % SYNODIC / SYNODIC;
+        return MOONS[Math.round(phase * 8) % 8];
+    }
+
+    /** Zmanit time snapshot; also feeds the tray via window.zmanTime. */
+    function zmanNow(now) {
+        const p = currentPeriod(now);
+        if (!p) return null;
+        const frac = (now - p.start) / (p.end - p.start);
+        const hourF = Math.min(11.9999, frac * 12);
+        const hour = Math.floor(hourF);
+        const chalakim = (hourF - hour) * 1080;
+        return { p, hourF, hour, chalakim, regaim: (chalakim % 1) * 76 };
+    }
+    window.zmanTime = (now) => {
+        const t = zmanNow(now || new Date());
+        if (!t) return '';
+        const glyph = t.p.day ? '☀' : moonGlyph(now || new Date());
+        return `${HOUR_LETTERS[t.hour]}׳ ${String(Math.floor(t.chalakim)).padStart(4, '0')}ח ${glyph}`;
+    };
 
     // --- Dial construction: counterclockwise, Hebrew letters, א at the top ---
     const marks = $('zman-marks'), letters = $('zman-letters');
@@ -81,38 +114,49 @@
     }
 
     // --- Live update ---
-    const hand = $('zman-hand');
-    let rafId = null;
-    function tick() {
-        const now = new Date();
-        const p = currentPeriod(now);
-        if (p) {
-            const frac = (now - p.start) / (p.end - p.start);     // 0..1 through the period
-            const hourF = frac * 12;                              // zmaniyot hours elapsed
-            const hour = Math.min(11, Math.floor(hourF));
-            const inHour = hourF - hour;
-            const chalakim = inHour * 1080;
-            const regaim = (chalakim % 1) * 76;
+    // LCD: smooth requestAnimationFrame (the regaim needle spins ~once per
+    // 3.3s chelek). E-INK: no animation at all — a slow interval repaints the
+    // readouts every 20s, which suits the medium and the site's look.
+    const hand = $('zman-hand'), subCh = $('zman-sub-ch'), subRg = $('zman-sub-rg');
+    const isEink = () => document.documentElement.classList.contains('eink-mode');
+    let rafId = null, slowTimer = null;
 
-            // Counterclockwise sweep: negative rotation.
-            if (hand) hand.setAttribute('transform', `rotate(${(-hourF * 30).toFixed(3)})`);
-            $('zman-hour').textContent = `${HOUR_LETTERS[hour]}׳ ${p.day ? '☀' : '🌙'}`;
-            $('zman-chalakim').textContent = String(Math.floor(chalakim)).padStart(4, '0');
-            $('zman-regaim').textContent = String(Math.floor(regaim)).padStart(2, '0');
-            $('zman-daynight').textContent = p.day ? '☀' : '🌙';
-            const t = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-            $('zman-sunrise').textContent = t(p.sun.sunrise);
-            $('zman-sunset').textContent = t(p.sun.sunset);
-            win.classList.toggle('zman-night', !p.day);
+    function render() {
+        const now = new Date();
+        const t = zmanNow(now);
+        if (t) {
+            // Counterclockwise everywhere: main hand, chalakim + regaim subdials.
+            if (hand) hand.setAttribute('transform', `rotate(${(-t.hourF * 30).toFixed(3)})`);
+            if (subCh) subCh.setAttribute('transform', `rotate(${(-(t.chalakim / 1080) * 360).toFixed(2)})`);
+            if (subRg) subRg.setAttribute('transform', `rotate(${(-(t.regaim / 76) * 360).toFixed(2)})`);
+            $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳ ${t.p.day ? '☀' : moonGlyph(now)}`;
+            $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
+            $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');
+            $('zman-daynight').textContent = t.p.day ? '☀' : moonGlyph(now);
+            const fmt = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+            $('zman-sunrise').textContent = fmt(t.p.sun.sunrise);
+            $('zman-sunset').textContent = fmt(t.p.sun.sunset);
         } else {
             $('zman-hour').textContent = '— polar —'; // no sunrise/sunset here today
         }
         $('zman-hebdate').textContent = hebrewDate(now);
-        rafId = requestAnimationFrame(tick);
     }
-    function running() { return rafId !== null; }
-    function start() { if (!running()) tick(); }
-    function stop() { if (running()) { cancelAnimationFrame(rafId); rafId = null; } }
+
+    function loop() { render(); rafId = requestAnimationFrame(loop); }
+    function start() {
+        stop();
+        render();
+        if (isEink()) slowTimer = setInterval(render, 20000);
+        else rafId = requestAnimationFrame(loop);
+    }
+    function stop() {
+        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+        if (slowTimer !== null) { clearInterval(slowTimer); slowTimer = null; }
+    }
+    // Re-pick the engine when the user flips e-ink mode while the clock is open.
+    document.addEventListener('einkmodechange', () => {
+        if (win.style.display === 'flex') start();
+    });
 
     // Open from the tray clock; animate only while the window is visible.
     function openClock() {
