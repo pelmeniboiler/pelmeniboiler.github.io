@@ -409,16 +409,34 @@ try {
             heb: document.getElementById('zman-hebdate').textContent,
             letters: document.querySelectorAll('#zman-letters text').length,
             hand: document.getElementById('zman-hand').getAttribute('transform') || '',
+            onah: document.getElementById('zman-onah-hand')?.getAttribute('transform') || '',
+            // The day/night indicator must be an SVG shape, NOT an OS colour emoji.
+            dnSvg: document.querySelectorAll('#zman-daynight circle, #zman-daynight path, #zman-daynight line').length,
+            dnText: (document.getElementById('zman-daynight')?.textContent || '').trim(),
+            loc: document.getElementById('zman-loc-label')?.textContent || '',
         }));
         const regaimA = await page.textContent('#zman-regaim');
         await page.waitForTimeout(250);
         const regaimB = await page.textContent('#zman-regaim');
         ok(zman.open && zman.letters === 12 && zman.chalakim >= 0 && zman.chalakim < 1080,
             `Zmanim clock opens: 12 Hebrew hour letters, chalakim in range (${zman.chalakim})`);
-        ok(/57\d\d|5\d{3}/.test(zman.heb) && /יום|שבת/.test(zman.heb) && !/[A-Z][a-z]+day/.test(zman.heb),
-            `Zmanim clock: sunset-adjusted date with HEBREW weekday (got "${zman.heb}")`);
-        ok(/rotate\(-/.test(zman.hand), `Zmanim clock: hand runs COUNTERCLOCKWISE (${zman.hand})`);
+        ok(/57\d\d|5\d{3}/.test(zman.heb) && /Yom|Shabbat/.test(zman.heb) && !/[A-Z][a-z]+day/.test(zman.heb),
+            `Zmanim clock: sunset-adjusted date with transliterated weekday (got "${zman.heb}")`);
+        ok(/rotate\(-/.test(zman.hand) && /rotate\(-/.test(zman.onah),
+            `Zmanim clock: hour + Onah Ketana hands run COUNTERCLOCKWISE (${zman.hand} / ${zman.onah})`);
+        ok(zman.dnSvg >= 1 && zman.dnText === '',
+            `Zmanim clock: day/night drawn as monochrome SVG, no emoji glyph (shapes=${zman.dnSvg})`);
+        ok(zman.loc === 'Jerusalem', `Zmanim clock: default location localized in the geo button (got "${zman.loc}")`);
         ok(regaimA !== regaimB, `Zmanim clock: regaim tick live in LCD (${regaimA} → ${regaimB})`);
+
+        // Sha'ot zmaniyot: in Israel's summer the DAYTIME hours run longer than
+        // the nighttime hours (and the reverse in winter) — the whole point.
+        const dayNight = await page.evaluate(() => ({
+            summer: window.zmanPeriodLengths(new Date('2026-07-03T09:00:00Z')),
+            winter: window.zmanPeriodLengths(new Date('2026-01-03T09:00:00Z')),
+        }));
+        ok(dayNight.summer.day > dayNight.summer.night && dayNight.winter.day < dayNight.winter.night,
+            `Sha'ot zmaniyot: summer day-hours > night-hours, winter reversed (${Math.round(dayNight.summer.day / 60000)}m vs ${Math.round(dayNight.summer.night / 60000)}m)`);
 
         const subs = await page.evaluate(() => ({
             ch: document.getElementById('zman-sub-ch')?.getAttribute('transform') || '',

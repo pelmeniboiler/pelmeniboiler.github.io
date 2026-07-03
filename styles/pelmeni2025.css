@@ -238,10 +238,15 @@ body.eink-mode .symbol {
 .zman-tick { stroke: var(--text-color); stroke-width: 2; }
 .zman-letter { fill: var(--text-color); font-size: 15px; font-family: var(--font-body); }
 .zman-hand { stroke: var(--text-color); stroke-width: 3; stroke-linecap: round; transition: none; }
+.zman-onah-hand { stroke: var(--text-color); stroke-width: 1.5; stroke-linecap: round; transition: none; }
 .zman-hub { fill: var(--text-color); }
-.zman-symbol { font-size: 16px; fill: var(--text-color); }
-.zman-subdial circle { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.5; }
-.zman-subdial line { stroke: var(--text-color); stroke-width: 2; stroke-linecap: round; }
+/* Sun/moon indicator: SVG, monochrome and theme-coloured — never OS emoji. */
+.dn-sun circle, .dn-sun line { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.4; stroke-linecap: round; }
+.dn-moon-disc { fill: var(--bg-color); stroke: var(--text-color); stroke-width: 1.2; }
+.dn-moon-lit { fill: var(--text-color); stroke: none; }
+/* Inverted subdials: filled discs with cut-out (background-colour) hands. */
+.zman-subdial circle { fill: var(--text-color); stroke: var(--text-color); stroke-width: 1.5; }
+.zman-subdial line { stroke: var(--bg-color); stroke-width: 2; stroke-linecap: round; }
 .zman-subcap { font-size: 10px; fill: var(--text-color); font-family: var(--font-body); }
 .zman-readouts { display: flex; flex-direction: column; gap: 6px; direction: rtl; text-align: right; }
 .zman-big { font-size: 26px; font-weight: bold; }
