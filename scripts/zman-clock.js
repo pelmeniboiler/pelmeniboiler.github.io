@@ -162,15 +162,15 @@
     // Shown in SHA'OT ZMANIYOT — the dial's own unit — not civil clock time
     // (that would be a sha'ah shava, the very thing this clock isn't about). Each
     // GRA zman is a fixed count of zmanit hours into the day, so it reads straight
-    // off the same scale as the hand. netz/shkia are the day's edges, already
-    // shown as 🌅/🌇, so the list is the six zmanim between them.
+    // off the same scale as the hand — and the six between netz and shkia are
+    // dotted on the dial itself. netz(0)/shkia(12) sit at the dial's top seam.
     const ZMAN_KEYS = [
-        ['shema', 3, '3'], ['tefila', 4, '4'], ['chatzot', 6, '6'],
-        ['mgedola', 6.5, '6½'], ['mketana', 9.5, '9½'], ['plag', 10.75, '10¾'],
+        ['netz', 0, '0'], ['shema', 3, '3'], ['tefila', 4, '4'], ['chatzot', 6, '6'],
+        ['mgedola', 6.5, '6½'], ['mketana', 9.5, '9½'], ['plag', 10.75, '10¾'], ['shkia', 12, '12'],
     ];
     const ZMAN_LABELS = {
-        he: { shema: 'סוף ק״ש', tefila: 'סוף תפילה', chatzot: 'חצות', mgedola: 'מנחה גדולה', mketana: 'מנחה קטנה', plag: 'פלג המנחה' },
-        tl: { shema: 'Sof Shema', tefila: 'Sof Tefila', chatzot: 'Chatzot', mgedola: 'Mincha Gedola', mketana: 'Mincha Ketana', plag: 'Plag HaMincha' },
+        he: { netz: 'הנץ', shema: 'סוף ק״ש', tefila: 'סוף תפילה', chatzot: 'חצות', mgedola: 'מנחה גדולה', mketana: 'מנחה קטנה', plag: 'פלג המנחה', shkia: 'שקיעה' },
+        tl: { netz: 'Netz', shema: 'Sof Shema', tefila: 'Sof Tefila', chatzot: 'Chatzot', mgedola: 'Mincha Gedola', mketana: 'Mincha Ketana', plag: 'Plag HaMincha', shkia: 'Shkia' },
     };
     const zmanLabel = (key) => (docLang() === 'he' ? ZMAN_LABELS.he : ZMAN_LABELS.tl)[key];
     const zmaniyotTitle = () => (docLang() === 'he' ? 'שעות זמניות' : "Sha'ot Zmaniyot");
@@ -241,6 +241,18 @@
                 `<line x1="${(Math.cos(a) * 19).toFixed(1)}" y1="${(Math.sin(a) * 19).toFixed(1)}" x2="${(Math.cos(a) * r2).toFixed(1)}" y2="${(Math.sin(a) * r2).toFixed(1)}" class="zman-subtick"/>`);
         }
     }
+    // Dots at the daytime zmanim positions (the six between netz and shkia), on
+    // the same scale as the hand: a zman at h zmanit hours sits where the hand
+    // points at hour h. Chatzot (midday) gets a slightly larger dot.
+    const zMarks = $('zman-zmarks');
+    if (zMarks && !zMarks.childElementCount) {
+        for (const [key, h] of ZMAN_KEYS) {
+            if (h <= 0 || h >= 12) continue; // netz/shkia share the dial's top seam
+            const a = (-h * 30 - 90) * rad;
+            zMarks.insertAdjacentHTML('beforeend',
+                `<circle cx="${(Math.cos(a) * 83).toFixed(1)}" cy="${(Math.sin(a) * 83).toFixed(1)}" r="${key === 'chatzot' ? 3 : 2.1}" class="zman-zmark"/>`);
+        }
+    }
 
     // --- Live update ---
     // LCD: smooth requestAnimationFrame. E-INK: no animation at all — a slow
@@ -272,6 +284,8 @@
             // Sun/moon: only rebuild when the picture actually changes.
             const dnKey = t.p.day ? 'sun' : 'moon' + Math.round(moonPhase(now) * 48);
             if (dn && dn.dataset.dn !== dnKey) { dn.innerHTML = daynightSVG(now, t.p.day); dn.dataset.dn = dnKey; }
+            if (zMarks) zMarks.style.display = t.p.day ? '' : 'none'; // day zmanim only
+
             $('zman-hour').textContent = `${HOUR_LETTERS[t.hour]}׳`;
             $('zman-chalakim').textContent = String(Math.floor(t.chalakim)).padStart(4, '0');
             $('zman-regaim').textContent = String(Math.floor(t.regaim)).padStart(2, '0');

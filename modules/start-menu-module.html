@@ -31,6 +31,9 @@
             <circle r="104" class="zman-rim"/>
             <g id="zman-marks"></g>
             <g id="zman-letters"></g>
+            <!-- Dots at the daytime zmanim positions (built by zman-clock.js);
+                 the hand reads them off directly. Hidden at night. -->
+            <g id="zman-zmarks"></g>
             <!-- Chronograph-style subdials, counterclockwise like the dial.
                  Left (ח): the chelek count read like hours+minutes — a coarse hand
                  over 12 marks of 90 chalakim, and a fine hand for 0–90 within the
@@ -70,11 +73,15 @@
             </div>
         </div>
         </div>
-        <!-- The named zmanim (GRA), in sha'ot zmaniyot, and the upcoming molad. -->
+        <!-- Molad (always shown); the full zmanim table folds away behind ⋯,
+             since the dial's dots already show them at a glance. -->
         <div class="zman-zmanim">
-            <div class="zman-zmanim-title" id="zman-z-title"></div>
-            <ul id="zman-list" class="zman-list"></ul>
             <div class="zman-molad" id="zman-molad"></div>
+            <details class="zman-table">
+                <summary class="zman-table-toggle" title="zmanim table">⋯</summary>
+                <div class="zman-zmanim-title" id="zman-z-title"></div>
+                <ul id="zman-list" class="zman-list"></ul>
+            </details>
         </div>
     </div>
 </div>

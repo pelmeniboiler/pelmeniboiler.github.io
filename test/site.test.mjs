@@ -423,6 +423,8 @@ try {
             zmanim: document.querySelectorAll('#zman-list li').length,
             zmanNext: document.querySelectorAll('#zman-list li.zman-next').length,
             zmanimText: (document.getElementById('zman-list')?.textContent || '').trim(),
+            zmarks: document.querySelectorAll('#zman-zmarks circle').length,
+            zmanTableFolded: !document.querySelector('.zman-table')?.open,
             molad: (document.getElementById('zman-molad')?.textContent || '').trim(),
         }));
         const regaimA = await page.textContent('#zman-regaim');
@@ -436,9 +438,9 @@ try {
         ok(zman.dnSvg >= 1 && zman.dnText === '',
             `Zmanim clock: day/night drawn as monochrome SVG, no emoji glyph (shapes=${zman.dnSvg})`);
         ok(zman.loc === 'Jerusalem', `Zmanim clock: default location localized in the geo button (got "${zman.loc}")`);
-        ok(zman.zmanim === 6 && zman.zmanNext <= 1 && !/\d{2}:\d{2}/.test(zman.zmanimText)
-            && /Molad/i.test(zman.molad) && /Yom|Shabbat/.test(zman.molad),
-            `Zmanim clock: 6 named zmanim in sha'ot zmaniyot (no civil time) + molad (${zman.zmanim}, "${zman.zmanimText}")`);
+        ok(zman.zmanim === 8 && zman.zmarks === 6 && zman.zmanTableFolded && zman.zmanNext <= 1
+            && !/\d{2}:\d{2}/.test(zman.zmanimText) && /Molad/i.test(zman.molad) && /Yom|Shabbat/.test(zman.molad),
+            `Zmanim clock: 6 dial dots + foldaway 8-row table in sha'ot zmaniyot (no civil time) + molad (marks=${zman.zmarks}, folded=${zman.zmanTableFolded})`);
         ok(regaimA !== regaimB, `Zmanim clock: regaim tick live in LCD (${regaimA} → ${regaimB})`);
 
         // Sha'ot zmaniyot: in Israel's summer the DAYTIME hours run longer than

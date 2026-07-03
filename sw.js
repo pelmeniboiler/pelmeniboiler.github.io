@@ -4,7 +4,7 @@
 // with the same content hash used for ?v= asset cache-busting, so every deploy
 // that changes an asset also retires the old cache.
 
-const VERSION = 'f1075895';
+const VERSION = '1c095f9f';
 const CACHE = `pelmeniboiler-${VERSION}`;
 
 // The minimal shell needed to render pages offline. Everything else (articles,

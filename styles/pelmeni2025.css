@@ -263,8 +263,13 @@ body.eink-mode .symbol {
 .zman-date { font-size: 13px; border-top: 1px solid var(--border-color); padding-top: 6px; }
 .zman-sun { font-size: 13px; display: flex; gap: 10px; direction: ltr; }
 .zman-loc { font-size: 12px; display: flex; gap: 6px; align-items: center; }
+.zman-zmark { fill: var(--text-color); }
 /* Named zmanim (GRA, in sha'ot zmaniyot) + molad, full width beneath the dial. */
 .zman-zmanim { border-top: 1px solid var(--border-color); padding-top: 8px; }
+.zman-table { margin-top: 6px; }
+.zman-table-toggle { cursor: pointer; list-style: none; text-align: center; font-size: 15px; letter-spacing: 3px; padding: 2px 0; }
+.zman-table-toggle::-webkit-details-marker { display: none; }
+.zman-table[open] .zman-table-toggle { letter-spacing: 3px; margin-bottom: 5px; }
 .zman-zmanim-title { font-size: 11px; font-weight: bold; margin-bottom: 3px; }
 .zman-list { list-style: none; margin: 0; padding: 0; font-size: 11px; direction: ltr;
     display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 1px; }
