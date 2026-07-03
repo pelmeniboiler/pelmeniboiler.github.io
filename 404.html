@@ -34,5 +34,30 @@
 
     <script src="/scripts/module-loader.js" defer></script>
 
+    <!-- When motion is welcome (not e-ink, not reduce-motion), the 404 window
+         skitters away from the cursor — you have to corner it to click Return. -->
+    <script>
+    (function () {
+        const win = document.querySelector('.window');
+        const eink = document.documentElement.classList.contains('eink-mode');
+        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!win || eink || reduce) return;
+        const r0 = win.getBoundingClientRect();
+        let x = r0.left, y = r0.top;
+        Object.assign(win.style, { position: 'fixed', left: x + 'px', top: y + 'px', transform: 'none',
+            transition: 'left .12s ease-out, top .12s ease-out', margin: '0' });
+        addEventListener('mousemove', (e) => {
+            const r = win.getBoundingClientRect();
+            const dx = (r.left + r.width / 2) - e.clientX, dy = (r.top + r.height / 2) - e.clientY;
+            const d = Math.hypot(dx, dy), R = 200;
+            if (d >= R || d === 0) return;
+            const push = (R - d) * 0.6;
+            x = Math.max(6, Math.min(innerWidth - r.width - 6, x + (dx / d) * push));
+            y = Math.max(6, Math.min(innerHeight - r.height - 6, y + (dy / d) * push));
+            win.style.left = x + 'px'; win.style.top = y + 'px';
+        });
+    })();
+    </script>
+
 </body>
 </html>

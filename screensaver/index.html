@@ -12,32 +12,27 @@
         html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg-color); cursor: none; }
         :root { --ss-mid: color-mix(in srgb, var(--text-color) 50%, var(--bg-color)); }
         #hint { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 9;
-            font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color);
-            opacity: 0.5; letter-spacing: 1px; user-select: none; }
+            font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color); opacity: 0.5;
+            letter-spacing: 1px; user-select: none; }
 
-        /* ---- LCD: a slow 3D-extruded ShZh, tumbling and drifting (keeps every
-                 pixel moving, so it genuinely spares a CRT from burn-in). ---- */
+        /* LCD: a slow 3D-extruded ShZh, tumbling and drifting. */
         .scene { position: fixed; inset: 0; perspective: 900px; display: grid; place-items: center; }
         #drifter { will-change: transform; }
-        #extrude { position: relative; width: 230px; height: 230px; transform-style: preserve-3d;
-            animation: ss-spin 30s linear infinite; }
+        #extrude { position: relative; width: 230px; height: 230px; transform-style: preserve-3d; animation: ss-spin 30s linear infinite; }
         @keyframes ss-spin { from { transform: rotateX(-15deg) rotateY(0deg); } to { transform: rotateX(-15deg) rotateY(360deg); } }
         #extrude .layer { position: absolute; inset: 0; }
         #extrude .glyph { width: 100%; height: 100%; display: block; }
 
-        /* ---- E-INK: a still poster — dithered gradient, a field of interlinked
-                 ShZhs, a long title above and a subtitle along the bottom. ---- */
+        /* E-INK: a dithered gradient, a gingham field of shins/zhes/shzhs sliding
+           diagonally beneath the text, a single-line title, a bottom-quarter subtitle. */
         #poster { position: fixed; inset: 0; }
         #dither { position: absolute; inset: 0; width: 100%; height: 100%; }
-        #field { position: absolute; inset: 0; opacity: 0.22; }
-        #field svg { width: 100%; height: 100%; }
-        .ss-title { position: absolute; top: 6%; left: 6%; right: 6%; font-family: var(--font-body, serif);
-            font-weight: 700; font-size: clamp(28px, 6vw, 74px); line-height: 1.05; color: var(--text-color);
-            text-transform: lowercase; }
-        /* The subtitle sits in the bottom quarter where the dither is text-coloured,
-           so draw it in the bg colour to read (holds for e-ink light AND dark). */
-        .ss-sub { position: absolute; bottom: 4%; left: 6%; right: 6%; height: 22%;
-            display: flex; align-items: flex-end; font-family: var(--font-body, serif);
+        #field { position: absolute; inset: 0; width: 100%; height: 100%; }
+        #field use { fill: var(--bg-color); }        /* the pattern reads as the page colour */
+        .ss-title { position: absolute; top: 7%; left: 6%; right: 6%; font-family: var(--font-body, serif);
+            font-weight: 700; font-size: clamp(26px, 5.2vw, 60px); line-height: 1; color: var(--text-color);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: lowercase; }
+        .ss-sub { position: absolute; bottom: 5%; left: 6%; right: 6%; font-family: var(--font-body, serif);
             font-size: clamp(13px, 1.8vw, 20px); letter-spacing: 2px; color: var(--bg-color); }
 
         body.mode-lcd #poster { display: none; }
@@ -45,19 +40,15 @@
     </style>
 </head>
 <body>
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="shzh" viewBox="0 0 800 800"><path d="m301 526.5q-23 0-43.5-23-19.6-22.9-34.4-57.3c-9.8-23-18.9-46.1-24.9-70.7-5.5-24.6-7-46.8-7-65.3q0-28.7 1.6-46.7 2.5-18-2.4-28.7-4.1-10.6-25.4-15.6l-62.3-15.5 37.7-168h18.8q0.8 20.5 8.2 31.1 8.2 10.7 26.2 15.6l41.8 10.7q19.7 4.9 30.3 13.9 10.7 9 10.7 30.3 0 24.6-9.8 47.5-9.9 22.1-20.5 46.7-9.9 23.8-9.9 53.3 0 40.1 15.6 64.7 16.4 24.6 38.5 36.1 23 10.6 41.8 10.6 4.9 0 9 0 32-42.6 47.5-72.9 16.4-31.1 16.4-54.9 0-14.8-6.5-26.2-6.6-11.5-31.2-17.2l-62.2-15.6 38.5-173.7h18.8q0.8 20.5 8.2 35.2 8.2 14 26.2 18.1l25.4 5.7q33.6 7.4 45.1 22.1 12.3 14.8 12.3 40.2 0 45.9-18.9 108.9-18 62.3-63.9 128.7 38.5-2.5 71.3-9 33.6-7.4 60.6-20.5 39.4-18.9 62.3-53.3 23.8-34.4 23.8-66.3 0-9.1-6.6-18.1-5.7-9-36.9-17.2l-52.4-14.7 36.9-159.8h18.8q0.8 20.5 7.4 28.7 7.4 8.2 22.9 12.3l35.2 9q21.3 5.7 30.4 22.9 9 16.4 9 41.8 0 91.8-30.3 164.7-29.5 72.1-82.8 111.4c-22.4 16.4-48 51.1-75.8 66.4-7.8 4.3-64.1 16.2-88.9 18.8-32.9 3.5-65.2 14.8-100.7 14.8z"/><path d="m94.2 783.8q-18 0-38.2-2.9-20.3-2.8-34.7-7.9v-16.6q14.4 0 32.5-11.6 18-11.5 36.8-46.2l129.3-233.9q5-9.4 5-13.8 0.7-5-5-10.1l-14-66.4c16.6-22.1 2.5-60.4-10-67.7-12.1-7.7 21.3-10.3 6.8-12.7v-16.6l22.2 1.9v16.7c-28.4 1.4-5.5 26.2-5.5 39.2q0 7.2 6.5 15.9c4.8 5.3 24.4 13.3-2.7 15.9l121.6 131.6h1.4l17.4-121.1c0-23.6 41.2-38.9 34-45.2-6.8-6.7 30.5-28.8 11.7-29.3v-16.6l24.2 0.7v16.7c-14.9 0.4 2.6 15.5-3.6 22.2-6.3 6.3-41.2 43.7-41.2 67.2l65.9 105.4h1.4l157.4-133.6q12.3-10.1 18.8-18c4.3-5.8 6.6-32.6 6.6-37.4 0-13-14.3 1.3-42.7-0.2l18.1-14.9 31.3-45.2-1.8 35c-14.4 2.4-5.9-69.1-1.4-46.7 2.7 13.8-7.3-92.2 2.5 82.8l-63.9 120.4q-5.8 5.1-5.8 10.1 0.8 4.4 5.8 13.8l129.3 233.9q18.8 34.7 36.8 46.2 18.8 11.6 32.5 11.6v16.6q-14.4 5.1-34.7 7.9-19.5 2.9-38.2 2.9-52 0-81.6-22.4-29.6-22.3-46.2-54.1l-83.8-161q-6.5-12.3-12.3-15.2-5-3.6-11.5-3.6-7.3 0-12.3 5.8-4.3 5.7-4.3 18.7v148.8q0 35.4 10.1 44.8 10.1 9.3 36.8 10.8v16.6h-198.6v-16.6q23.8-1.5 33.2-10.8 10.1-9.4 10.1-44.8v-148.8q0-13-5-18.7-4.3-5.8-11.6-5.8-6.5 0-12.2 3.6-5.1 2.9-11.6 15.2l-83.8 161q-16.6 31.8-46.2 54.1-29.6 22.4-81.6 22.4z"/></symbol></svg>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="shin" viewBox="0 0 800 800"><path d="m301 526.5q-23 0-43.5-23-19.6-22.9-34.4-57.3c-9.8-23-18.9-46.1-24.9-70.7-5.5-24.6-7-46.8-7-65.3q0-28.7 1.6-46.7 2.5-18-2.4-28.7-4.1-10.6-25.4-15.6l-62.3-15.5 37.7-168h18.8q0.8 20.5 8.2 31.1 8.2 10.7 26.2 15.6l41.8 10.7q19.7 4.9 30.3 13.9 10.7 9 10.7 30.3 0 24.6-9.8 47.5-9.9 22.1-20.5 46.7-9.9 23.8-9.9 53.3 0 40.1 15.6 64.7 16.4 24.6 38.5 36.1 23 10.6 41.8 10.6 4.9 0 9 0 32-42.6 47.5-72.9 16.4-31.1 16.4-54.9 0-14.8-6.5-26.2-6.6-11.5-31.2-17.2l-62.2-15.6 38.5-173.7h18.8q0.8 20.5 8.2 35.2 8.2 14 26.2 18.1l25.4 5.7q33.6 7.4 45.1 22.1 12.3 14.8 12.3 40.2 0 45.9-18.9 108.9-18 62.3-63.9 128.7 38.5-2.5 71.3-9 33.6-7.4 60.6-20.5 39.4-18.9 62.3-53.3 23.8-34.4 23.8-66.3 0-9.1-6.6-18.1-5.7-9-36.9-17.2l-52.4-14.7 36.9-159.8h18.8q0.8 20.5 7.4 28.7 7.4 8.2 22.9 12.3l35.2 9q21.3 5.7 30.4 22.9 9 16.4 9 41.8 0 91.8-30.3 164.7-29.5 72.1-82.8 111.4c-22.4 16.4-48 51.1-75.8 66.4-7.8 4.3-64.1 16.2-88.9 18.8-32.9 3.5-65.2 14.8-100.7 14.8z"/></symbol><symbol id="zhe" viewBox="0 0 800 800"><path d="m94.2 783.8q-18 0-38.2-2.9-20.3-2.8-34.7-7.9v-16.6q14.4 0 32.5-11.6 18-11.5 36.8-46.2l129.3-233.9q5-9.4 5-13.8 0.7-5-5-10.1l-14-66.4c16.6-22.1 2.5-60.4-10-67.7-12.1-7.7 21.3-10.3 6.8-12.7v-16.6l22.2 1.9v16.7c-28.4 1.4-5.5 26.2-5.5 39.2q0 7.2 6.5 15.9c4.8 5.3 24.4 13.3-2.7 15.9l121.6 131.6h1.4l17.4-121.1c0-23.6 41.2-38.9 34-45.2-6.8-6.7 30.5-28.8 11.7-29.3v-16.6l24.2 0.7v16.7c-14.9 0.4 2.6 15.5-3.6 22.2-6.3 6.3-41.2 43.7-41.2 67.2l65.9 105.4h1.4l157.4-133.6q12.3-10.1 18.8-18c4.3-5.8 6.6-32.6 6.6-37.4 0-13-14.3 1.3-42.7-0.2l18.1-14.9 31.3-45.2-1.8 35c-14.4 2.4-5.9-69.1-1.4-46.7 2.7 13.8-7.3-92.2 2.5 82.8l-63.9 120.4q-5.8 5.1-5.8 10.1 0.8 4.4 5.8 13.8l129.3 233.9q18.8 34.7 36.8 46.2 18.8 11.6 32.5 11.6v16.6q-14.4 5.1-34.7 7.9-19.5 2.9-38.2 2.9-52 0-81.6-22.4-29.6-22.3-46.2-54.1l-83.8-161q-6.5-12.3-12.3-15.2-5-3.6-11.5-3.6-7.3 0-12.3 5.8-4.3 5.7-4.3 18.7v148.8q0 35.4 10.1 44.8 10.1 9.3 36.8 10.8v16.6h-198.6v-16.6q23.8-1.5 33.2-10.8 10.1-9.4 10.1-44.8v-148.8q0-13-5-18.7-4.3-5.8-11.6-5.8-6.5 0-12.2 3.6-5.1 2.9-11.6 15.2l-83.8 161q-16.6 31.8-46.2 54.1-29.6 22.4-81.6 22.4z"/></symbol><symbol id="shzh" viewBox="0 0 800 800"><path d="m301 526.5q-23 0-43.5-23-19.6-22.9-34.4-57.3c-9.8-23-18.9-46.1-24.9-70.7-5.5-24.6-7-46.8-7-65.3q0-28.7 1.6-46.7 2.5-18-2.4-28.7-4.1-10.6-25.4-15.6l-62.3-15.5 37.7-168h18.8q0.8 20.5 8.2 31.1 8.2 10.7 26.2 15.6l41.8 10.7q19.7 4.9 30.3 13.9 10.7 9 10.7 30.3 0 24.6-9.8 47.5-9.9 22.1-20.5 46.7-9.9 23.8-9.9 53.3 0 40.1 15.6 64.7 16.4 24.6 38.5 36.1 23 10.6 41.8 10.6 4.9 0 9 0 32-42.6 47.5-72.9 16.4-31.1 16.4-54.9 0-14.8-6.5-26.2-6.6-11.5-31.2-17.2l-62.2-15.6 38.5-173.7h18.8q0.8 20.5 8.2 35.2 8.2 14 26.2 18.1l25.4 5.7q33.6 7.4 45.1 22.1 12.3 14.8 12.3 40.2 0 45.9-18.9 108.9-18 62.3-63.9 128.7 38.5-2.5 71.3-9 33.6-7.4 60.6-20.5 39.4-18.9 62.3-53.3 23.8-34.4 23.8-66.3 0-9.1-6.6-18.1-5.7-9-36.9-17.2l-52.4-14.7 36.9-159.8h18.8q0.8 20.5 7.4 28.7 7.4 8.2 22.9 12.3l35.2 9q21.3 5.7 30.4 22.9 9 16.4 9 41.8 0 91.8-30.3 164.7-29.5 72.1-82.8 111.4c-22.4 16.4-48 51.1-75.8 66.4-7.8 4.3-64.1 16.2-88.9 18.8-32.9 3.5-65.2 14.8-100.7 14.8z"/><path d="m94.2 783.8q-18 0-38.2-2.9-20.3-2.8-34.7-7.9v-16.6q14.4 0 32.5-11.6 18-11.5 36.8-46.2l129.3-233.9q5-9.4 5-13.8 0.7-5-5-10.1l-14-66.4c16.6-22.1 2.5-60.4-10-67.7-12.1-7.7 21.3-10.3 6.8-12.7v-16.6l22.2 1.9v16.7c-28.4 1.4-5.5 26.2-5.5 39.2q0 7.2 6.5 15.9c4.8 5.3 24.4 13.3-2.7 15.9l121.6 131.6h1.4l17.4-121.1c0-23.6 41.2-38.9 34-45.2-6.8-6.7 30.5-28.8 11.7-29.3v-16.6l24.2 0.7v16.7c-14.9 0.4 2.6 15.5-3.6 22.2-6.3 6.3-41.2 43.7-41.2 67.2l65.9 105.4h1.4l157.4-133.6q12.3-10.1 18.8-18c4.3-5.8 6.6-32.6 6.6-37.4 0-13-14.3 1.3-42.7-0.2l18.1-14.9 31.3-45.2-1.8 35c-14.4 2.4-5.9-69.1-1.4-46.7 2.7 13.8-7.3-92.2 2.5 82.8l-63.9 120.4q-5.8 5.1-5.8 10.1 0.8 4.4 5.8 13.8l129.3 233.9q18.8 34.7 36.8 46.2 18.8 11.6 32.5 11.6v16.6q-14.4 5.1-34.7 7.9-19.5 2.9-38.2 2.9-52 0-81.6-22.4-29.6-22.3-46.2-54.1l-83.8-161q-6.5-12.3-12.3-15.2-5-3.6-11.5-3.6-7.3 0-12.3 5.8-4.3 5.7-4.3 18.7v148.8q0 35.4 10.1 44.8 10.1 9.3 36.8 10.8v16.6h-198.6v-16.6q23.8-1.5 33.2-10.8 10.1-9.4 10.1-44.8v-148.8q0-13-5-18.7-4.3-5.8-11.6-5.8-6.5 0-12.2 3.6-5.1 2.9-11.6 15.2l-83.8 161q-16.6 31.8-46.2 54.1-29.6 22.4-81.6 22.4z"/></symbol></svg>
 
     <div class="scene"><div id="drifter"><div id="extrude"></div></div></div>
 
     <div id="poster">
         <canvas id="dither"></canvas>
-        <div id="field"><svg><defs><pattern id="shzhpat" width="120" height="104" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
-            <use href="#shzh" x="0" y="0" width="86" height="86"/>
-            <use href="#shzh" x="60" y="52" width="86" height="86"/>
-            <use href="#shzh" x="-60" y="52" width="86" height="86"/>
-        </pattern></defs><rect width="100%" height="100%" fill="url(#shzhpat)"/></svg></div>
-        <div class="ss-title">interlinked interdisciplinary intermediate internetter</div>
-        <div class="ss-sub">שЖ · pelmeniboiler.github.io</div>
+        <svg id="field"><defs><pattern id="gingham" width="128" height="128" patternUnits="userSpaceOnUse"><use href="#shin" x="4" y="4" width="56" height="56"/><use href="#zhe" x="68" y="4" width="56" height="56"/><use href="#zhe" x="4" y="68" width="56" height="56"/><use href="#shin" x="68" y="68" width="56" height="56"/><use href="#shzh" x="36" y="36" width="56" height="56"/><use href="#shzh" x="-28" y="36" width="56" height="56"/><use href="#shzh" x="100" y="36" width="56" height="56"/><use href="#shzh" x="36" y="-28" width="56" height="56"/><use href="#shzh" x="36" y="100" width="56" height="56"/></pattern></defs><rect width="100%" height="100%" fill="url(#gingham)"/></svg>
+        <div class="ss-title">wendy shoshana zhulkovsky</div>
+        <div class="ss-sub">· pelmeniboiler.github.io</div>
     </div>
 
     <div id="hint">click or press any key to exit</div>
@@ -69,9 +60,9 @@
         const css = getComputedStyle(document.body);
         const rgb = (s) => (s.match(/\d+/g) || [0,0,0]).map(Number).slice(0,3);
         const text = rgb(css.color), bg = rgb(css.backgroundColor);
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         if (!eink) {
-            // Build the extrusion: back layers in the mid shade, the front face bright.
             const ex = document.getElementById("extrude"), N = 16, depth = 2.3;
             for (let i = N - 1; i >= 0; i--) {
                 const layer = document.createElement("div");
@@ -81,29 +72,30 @@
                 layer.querySelector(".glyph").style.fill = i === 0 ? "var(--text-color)" : "var(--ss-mid)";
                 ex.appendChild(layer);
             }
-            // Slow Lissajous drift of the whole piece (CRT burn-in protection).
             const drifter = document.getElementById("drifter");
             let t = Math.random() * 10;
             (function drift() {
                 t += 0.005;
-                const dx = Math.sin(t * 0.7) * innerWidth * 0.30;
-                const dy = Math.cos(t * 0.9) * innerHeight * 0.30;
-                drifter.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
+                drifter.style.transform = "translate(" + (Math.sin(t * 0.7) * innerWidth * 0.30).toFixed(1) + "px," + (Math.cos(t * 0.9) * innerHeight * 0.30).toFixed(1) + "px)";
                 requestAnimationFrame(drift);
             })();
         } else {
-            // Static dithered vertical gradient (Bayer 4×4), text→bg, top to bottom.
             const cv = document.getElementById("dither");
             const w = cv.width = innerWidth, h = cv.height = innerHeight, ctx = cv.getContext("2d");
             const B = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
             const img = ctx.createImageData(w, h);
             for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-                const lvl = 0.12 + 0.76 * (y / h);            // darkness increases downward
-                const on = lvl > (B[y & 3][x & 3] + 0.5) / 16; // 1-bit threshold
+                const on = (0.12 + 0.76 * (y / h)) > (B[y & 3][x & 3] + 0.5) / 16;
                 const c = on ? text : bg, i = (y * w + x) * 4;
                 img.data[i] = c[0]; img.data[i+1] = c[1]; img.data[i+2] = c[2]; img.data[i+3] = 255;
             }
             ctx.putImageData(img, 0, 0);
+            // Slide the gingham diagonally, infinitely, beneath the text (motion-ok only).
+            if (!reduce) {
+                const pat = document.getElementById("gingham");
+                let o = 0;
+                (function slide() { o -= 0.25; pat.setAttribute("patternTransform", "translate(" + o.toFixed(2) + " " + o.toFixed(2) + ")"); requestAnimationFrame(slide); })();
+            }
         }
 
         const exit = () => { location.href = "/"; };
