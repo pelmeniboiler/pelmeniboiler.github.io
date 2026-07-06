@@ -317,7 +317,49 @@ body.eink-mode .symbol {
 .setting-divider { border: none; height: 2px; background-color: var(--border-color); margin: 20px 0; }
 .setting-group { display: flex; flex-direction: column; align-items: flex-start; }
 .radio-label { display: flex; align-items: center; gap: 0.5em; margin-bottom: 8px; cursor: var(--cur-pointer); }
-input[type="radio"], input[type="checkbox"] { margin-right: 8px; accent-color: var(--text-color); }
+
+/* Custom form controls outlined in the theme's TEXT colour — never browser grey.
+   Grey is reserved exclusively for the :disabled state below. The checkbox is a
+   square with pointy corners; the radio stays round. */
+input[type="checkbox"], input[type="radio"] {
+    appearance: none; -webkit-appearance: none; margin: 0 8px 0 0;
+    width: 1.05em; height: 1.05em; box-sizing: border-box; flex-shrink: 0;
+    vertical-align: -0.18em; background: transparent;
+    border: 2px solid var(--text-color); border-radius: 0;   /* square, pointy corners */
+    display: inline-grid; place-content: center; cursor: var(--cur-pointer);
+}
+input[type="radio"] { border-radius: 50%; }
+input[type="checkbox"]::before {
+    content: ""; width: 0.3em; height: 0.6em; opacity: 0;
+    transform: rotate(45deg) translate(-0.02em, -0.09em);
+    border: solid var(--bg-color); border-width: 0 0.16em 0.16em 0;   /* checkmark */
+}
+input[type="checkbox"]:checked { background: var(--text-color); }
+input[type="checkbox"]:checked::before { opacity: 1; }
+input[type="radio"]::before {
+    content: ""; width: 0.5em; height: 0.5em; border-radius: 50%;
+    background: var(--text-color); transform: scale(0); transition: transform 0.1s ease;
+}
+input[type="radio"]:checked::before { transform: scale(1); }
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
+    outline: 2px solid var(--text-color); outline-offset: 2px;
+}
+/* The one place grey belongs: a disabled control. */
+input[type="checkbox"]:disabled, input[type="radio"]:disabled {
+    border-color: gray; opacity: 0.55; cursor: default;
+}
+input[type="checkbox"]:disabled:checked { background: gray; }
+input[type="radio"]:disabled:checked::before { background: gray; }
+/* Range slider keeps the native track/thumb, tinted to the theme. */
+input[type="range"] { accent-color: var(--text-color); }
+
+/* --- Gallery background: a cross-fading slideshow of the photo-article gallery
+       behind the whole desktop (toggled in system.settings → Appearance). Two
+       layers so images can cross-fade; sits under every window. --- */
+#gallery-bg { display: none; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--bg-color); }
+body.gallery-mode #gallery-bg { display: block; }
+#gallery-bg .gallery-layer { position: absolute; inset: 0; opacity: 0;
+    background-size: cover; background-position: center; transition: opacity 1.4s ease; }
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
 p { font-size: 14px; margin-bottom: 0.8em; }
 .content { padding: 10px; overflow-y: auto; max-height: 350px; flex-grow: 1; min-height: 0; }

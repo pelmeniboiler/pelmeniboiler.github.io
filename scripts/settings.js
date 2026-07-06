@@ -242,6 +242,60 @@ function setupSettings() {
         });
     }
 
+    // --- Gallery background: a cross-fading slideshow of the photo-article
+    // gallery (the same set the screensaver uses) behind the desktop. ---
+    const galleryToggle = getElement('gallery-toggle');
+    const GALLERY_KEY = 'pelmeniboiler-gallery';
+    let galleryBox = null, galleryLayers = [], galleryActive = 0,
+        galleryPhotos = [], galleryIdx = 0, galleryTimer = null, galleryLoading = null;
+
+    function galleryNext() {
+        if (!galleryPhotos.length) return;
+        const p = galleryPhotos[galleryIdx++ % galleryPhotos.length];
+        const img = new Image();
+        img.onload = () => {
+            const nl = galleryLayers[galleryActive ^ 1];
+            nl.style.backgroundImage = `url("${p.src}")`;
+            nl.style.opacity = '1';
+            galleryLayers[galleryActive].style.opacity = '0';
+            galleryActive ^= 1;
+        };
+        img.src = p.src;
+    }
+    async function galleryStart() {
+        if (!galleryBox) {
+            galleryBox = document.createElement('div');
+            galleryBox.id = 'gallery-bg';
+            galleryBox.innerHTML = '<div class="gallery-layer"></div><div class="gallery-layer"></div>';
+            body.appendChild(galleryBox);
+            galleryLayers = [...galleryBox.children];
+        }
+        body.classList.add('gallery-mode');
+        if (!galleryPhotos.length && !galleryLoading) {
+            galleryLoading = fetch('/screensaver/photos.json').then((r) => r.json())
+                .then((d) => { galleryPhotos = (d.photos || []).slice().sort(() => Math.random() - 0.5); })
+                .catch(() => { galleryPhotos = []; });
+        }
+        await galleryLoading;
+        galleryNext();
+        clearInterval(galleryTimer);
+        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduce) galleryTimer = setInterval(galleryNext, 9000);
+    }
+    function galleryStop() {
+        body.classList.remove('gallery-mode');
+        clearInterval(galleryTimer); galleryTimer = null;
+    }
+    const galleryOn = localStorage.getItem(GALLERY_KEY) === '1';
+    if (galleryToggle) galleryToggle.checked = galleryOn;
+    if (galleryOn) galleryStart();
+    if (galleryToggle) {
+        galleryToggle.addEventListener('change', () => {
+            localStorage.setItem(GALLERY_KEY, galleryToggle.checked ? '1' : '0');
+            if (galleryToggle.checked) galleryStart(); else galleryStop();
+        });
+    }
+
     /**
      * Applies a specific theme to the page.
      * @param {string} theme - The name of the theme to apply (e.g., 'dark', 'funky').
