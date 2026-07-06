@@ -449,7 +449,7 @@ function initializeFilterTakeout() {
         const blockAll = filterModule.querySelector('#cat-all').checked;
 
         if (blockAll) {
-            livePreviewBox.innerHTML = '<span class="text-gray-600 font-medium">Blocking ALL emojis.</span>';
+            livePreviewBox.innerHTML = '<span style="font-weight: 600;">Blocking ALL emojis.</span>';
             previewCountEl.textContent = '';
             return;
         }
@@ -467,7 +467,7 @@ function initializeFilterTakeout() {
 
         const emojiArray = Array.from(bannedEmojis);
         if (emojiArray.length === 0) {
-            livePreviewBox.innerHTML = '<span class="text-gray-400 text-sm">Your selected emojis will appear here...</span>';
+            livePreviewBox.innerHTML = '<span style="font-style: italic;">Your selected emojis will appear here...</span>';
             previewCountEl.textContent = '';
         } else {
             livePreviewBox.textContent = emojiArray.join(' ');

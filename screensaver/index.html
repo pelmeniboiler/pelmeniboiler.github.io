@@ -11,7 +11,7 @@
     <style>
         html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg-color); cursor: none; }
         #hint { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 99;
-            font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color); opacity: 0.5;
+            font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color);
             letter-spacing: 1px; user-select: none; }
 
         /* --- LCD: logo.canvas windows bouncing around (the count scales with the
@@ -33,7 +33,7 @@
             padding: 14px 18px; background: var(--bg-color); color: var(--text-color);
             font-family: var(--font-body, serif); line-height: 1.4; }
         #ss-caption blockquote { margin: 0; font-size: clamp(15px, 2vw, 22px); }
-        #ss-caption figcaption { margin-top: 8px; font-style: italic; opacity: 0.7; font-size: 0.85em; }
+        #ss-caption figcaption { margin-top: 8px; font-style: italic; font-size: 0.85em; }
         #ss-mark { position: absolute; right: 0; bottom: 0; margin: 3%; width: clamp(56px, 9vw, 104px); }
         #ss-mark svg { width: 100%; height: auto; display: block; }
 
@@ -65,7 +65,10 @@
             // logo.canvas windows caroming off the walls and each other, plus the
             // exit window. Fewer of them on small screens (~one per 28k px²).
             const field = document.getElementById("lcd-field"), items = [];
-            const N = Math.max(6, Math.min(25, Math.floor((innerWidth * innerHeight) / 28000)));
+            // Saturating curve N = L(1 - e^(-area/A)): a roomy phone lands on a
+            // handful, a desktop approaches L, and tiny viewports floor at a single
+            // logo (the exit window bounces alongside regardless).
+            const N = Math.max(1, Math.round(25 * (1 - Math.exp(-(innerWidth * innerHeight) / 1300000))));
 
             function step() {
                 for (const it of items) {

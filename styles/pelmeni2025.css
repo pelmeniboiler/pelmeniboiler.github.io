@@ -346,7 +346,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 }
 /* The one place grey belongs: a disabled control. */
 input[type="checkbox"]:disabled, input[type="radio"]:disabled {
-    border-color: gray; opacity: 0.55; cursor: default;
+    border-color: gray; cursor: default;
 }
 input[type="checkbox"]:disabled:checked { background: gray; }
 input[type="radio"]:disabled:checked::before { background: gray; }
@@ -360,6 +360,8 @@ input[type="range"] { accent-color: var(--text-color); }
 body.gallery-mode #gallery-bg { display: block; }
 #gallery-bg .gallery-layer { position: absolute; inset: 0; opacity: 0;
     background-size: cover; background-position: center; transition: opacity 1.4s ease; }
+/* E-ink gallery is a single dithered still — no cross-fade, crisp dither dots. */
+body.eink-mode #gallery-bg .gallery-layer { transition: none; image-rendering: pixelated; }
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
 p { font-size: 14px; margin-bottom: 0.8em; }
 .content { padding: 10px; overflow-y: auto; max-height: 350px; flex-grow: 1; min-height: 0; }
@@ -806,35 +808,47 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     color: var(--inv-bg-color);
 }
 
-/* --- LIQUID GLASS (easter egg: triple-click the Funky preset) --- */
+/* --- LIQUID GLASS (easter egg: triple-click the Funky preset) ---
+   Each window reads like a convex glass pebble: very transparent, heavy
+   refraction blur, a rounded body, a bright top sheen and a darker underside so
+   it looks domed. (This is the one place transparency is intentional.) */
 :root.liquid-glass .window {
-    background-color: color-mix(in srgb, var(--win-bg-color) 55%, transparent);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    backdrop-filter: blur(14px) saturate(180%);
-    border: 1px solid color-mix(in srgb, var(--border-color) 55%, transparent);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
-                inset 0 1px 0 color-mix(in srgb, #ffffff 40%, transparent);
+    background-color: color-mix(in srgb, var(--win-bg-color) 28%, transparent);
+    background-image: radial-gradient(135% 95% at 28% 8%, color-mix(in srgb, #ffffff 38%, transparent), transparent 58%);
+    -webkit-backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+    backdrop-filter: blur(22px) saturate(200%) brightness(1.08);
+    border: 1px solid color-mix(in srgb, #ffffff 55%, transparent);
+    border-radius: 32px;
+    box-shadow:
+        0 16px 44px rgba(0, 0, 0, 0.30),                                  /* cast shadow → floats above */
+        inset 0 3px 5px color-mix(in srgb, #ffffff 72%, transparent),     /* crisp top highlight */
+        inset 0 -16px 34px color-mix(in srgb, #000000 22%, transparent),  /* shaded underside → domed */
+        inset 0 0 22px color-mix(in srgb, #ffffff 14%, transparent);      /* soft inner glow */
     overflow: hidden;
 }
 :root.liquid-glass .title-bar {
-    background-color: color-mix(in srgb, var(--inv-bg-color) 50%, transparent);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border-bottom-color: color-mix(in srgb, var(--border-color) 40%, transparent);
+    background-color: color-mix(in srgb, var(--inv-bg-color) 34%, transparent);
+    background-image: linear-gradient(color-mix(in srgb, #ffffff 24%, transparent), transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom-color: color-mix(in srgb, #ffffff 30%, transparent);
 }
 :root.liquid-glass .start-menu,
 :root.liquid-glass .custom-dropdown-menu,
 :root.liquid-glass .rss-dropdown-content,
 :root.liquid-glass .settings-window .settings-nav {
-    background-color: color-mix(in srgb, var(--win-bg-color) 60%, transparent);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    backdrop-filter: blur(14px) saturate(180%);
+    background-color: color-mix(in srgb, var(--win-bg-color) 32%, transparent);
+    background-image: radial-gradient(130% 90% at 26% 8%, color-mix(in srgb, #ffffff 32%, transparent), transparent 60%);
+    -webkit-backdrop-filter: blur(22px) saturate(200%);
+    backdrop-filter: blur(22px) saturate(200%);
+    border-radius: 22px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.26),
+                inset 0 2px 4px color-mix(in srgb, #ffffff 60%, transparent);
 }
 /* Soften inner dividers so the glass reads as one continuous surface. */
 :root.liquid-glass .settings-nav,
 :root.liquid-glass .settings-page h3 {
-    border-color: color-mix(in srgb, var(--border-color) 40%, transparent);
+    border-color: color-mix(in srgb, #ffffff 30%, transparent);
 }
 
 /* --- NOTIFY BELL (installed-app only; injected by notify-bell.js) --- */
