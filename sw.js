@@ -4,7 +4,7 @@
 // with the same content hash used for ?v= asset cache-busting, so every deploy
 // that changes an asset also retires the old cache.
 
-const VERSION = '3bb0d26c';
+const VERSION = 'a43b6c4d';
 const CACHE = `pelmeniboiler-${VERSION}`;
 
 // The minimal shell needed to render pages offline. Everything else (articles,
@@ -126,8 +126,13 @@ self.addEventListener('fetch', (event) => {
     if (req.mode === 'navigate') {
         // Pages: network-first so content is always fresh online, with the
         // cached copy as the offline fallback (and the hub as a last resort).
+        // IMPORTANT: cache:'no-store' bypasses the *browser's* HTTP cache.
+        // GitHub Pages serves HTML with max-age=600, so a plain fetch() would
+        // return a page up to 10 minutes stale — exactly why the screensaver
+        // kept showing an old version after a deploy. no-store forces a real
+        // network round-trip; offline still falls back to the cached copy.
         event.respondWith(
-            fetch(req)
+            fetch(req, { cache: 'no-store' })
                 .then((res) => {
                     const copy = res.clone();
                     caches.open(CACHE).then((cache) => cache.put(req, copy));
