@@ -406,7 +406,15 @@ function versionAssets(html, version) {
     );
 }
 
-/** Short content hash of all CSS + JS, used as the asset cache-busting version. */
+// Standalone pages that carry their own inline behaviour (not just a reference to
+// a versioned /scripts file). They must feed the version hash too, otherwise a
+// change to one of them leaves VERSION unchanged, the service worker never
+// reinstalls, and the old cached copy keeps being served (e.g. the screensaver
+// showing a previous version after a deploy). These files carry no ?v= stamp of
+// their own, so hashing them is stable (no chicken-and-egg with the version).
+const VERSIONED_PAGES = ['screensaver/index.html'];
+
+/** Short content hash of all CSS + JS (+ inline-logic pages), the cache-busting version. */
 async function computeAssetVersion(rootDir) {
     const dirs = ['styles', 'scripts'];
     const parts = [];
@@ -420,6 +428,9 @@ async function computeAssetVersion(rootDir) {
             }
         };
         try { await walk(base); } catch { /* dir may not exist */ }
+    }
+    for (const rel of VERSIONED_PAGES) {
+        try { parts.push(await fs.readFile(path.join(rootDir, rel))); } catch { /* optional */ }
     }
     return crypto.createHash('sha256').update(Buffer.concat(parts)).digest('hex').slice(0, 8);
 }
