@@ -352,6 +352,14 @@ input[type="checkbox"]:disabled:checked { background: gray; }
 input[type="radio"]:disabled:checked::before { background: gray; }
 /* Range slider keeps the native track/thumb, tinted to the theme. */
 input[type="range"] { accent-color: var(--text-color); }
+
+/* --- Gallery background: a cross-fading slideshow of the photo-article gallery
+       behind the whole desktop (toggled in system.settings → Appearance). Two
+       layers so images can cross-fade; sits under every window. --- */
+#gallery-bg { display: none; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--bg-color); }
+body.gallery-mode #gallery-bg { display: block; }
+#gallery-bg .gallery-layer { position: absolute; inset: 0; opacity: 0;
+    background-size: cover; background-position: center; transition: opacity 1.4s ease; }
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
 p { font-size: 14px; margin-bottom: 0.8em; }
 .content { padding: 10px; overflow-y: auto; max-height: 350px; flex-grow: 1; min-height: 0; }
