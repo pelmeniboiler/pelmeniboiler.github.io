@@ -119,6 +119,34 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
     console.log(`  → generated ${made} folder index page(s).`);
 }
 
+// Collect the photos shown in the "Photos"-keyword articles into a small manifest
+// the e-ink screensaver reads: it picks one at random and re-draws it as a halftone
+// mosaic built out of the ShZh logo. We keep only reasonably large images (real
+// photos, not tiny inline crops/icons) so the mosaic has something to work with.
+async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir) {
+    const photoPosts = manifestItems.filter((p) => (p.keywords || []).includes('Photos'));
+    const seen = new Set();
+    const photos = [];
+    for (const post of photoPosts) {
+        let html;
+        try { html = await fs.readFile(path.join(blogDir, post.filename), 'utf8'); } catch { continue; }
+        const title = post.title || post.slug;
+        for (const m of html.matchAll(/(?:src|href)="(\/photos\/[^"]+\.(?:png|jpe?g|webp))"/gi)) {
+            const src = m[1];
+            if (seen.has(src)) continue;
+            seen.add(src);
+            try {
+                const { size } = await fs.stat(path.join(rootDir, src.replace(/^\//, '')));
+                if (size >= 250_000) photos.push({ src, article: title });
+            } catch { /* referenced file missing — skip */ }
+        }
+    }
+    const outDir = path.join(rootDir, 'screensaver');
+    await fs.mkdir(outDir, { recursive: true });
+    await fs.writeFile(path.join(outDir, 'photos.json'), JSON.stringify(photos, null, 2));
+    console.log(`  → wrote ${photos.length} screensaver photos from ${photoPosts.length} photo article(s).`);
+}
+
 async function main() {
     await fs.mkdir(RSS_OUTPUT_DIR, { recursive: true });
 
@@ -158,6 +186,9 @@ async function main() {
 
     console.log('Generating folder index pages...');
     await generateFolderIndexes(ROOT_DIR, manifestItems, localizationData);
+
+    console.log('Generating e-ink screensaver photo manifest...');
+    await generatePhotoScreensaverManifest(manifestItems, BLOG_DIR, ROOT_DIR);
 
     console.log('Determining languages...');
     const allLanguages = new Set();

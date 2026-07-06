@@ -21,17 +21,10 @@
         .ss-logo-body { padding: 8px; display: flex; justify-content: center; }
         .ss-logo-body img { width: 62px; height: 62px; }
 
-        /* --- E-INK: dithered gradient + gingham field of real shins/zhes/shzhs
-               (from the font), a single-line title in the bottom quarter --- */
+        /* --- E-INK: a random photo from a photo article, redrawn as a halftone
+               mosaic built out of the ShZh logo (ink on background). --- */
         #poster { position: fixed; inset: 0; }
-        #dither { position: absolute; inset: 0; width: 100%; height: 100%; }
-        #field { position: absolute; inset: 0; width: 100%; height: 100%; }
-        #field text { fill: var(--bg-color); font-family: 'FrankRuhl', 'Times New Roman', serif; }
-        .ss-title { position: absolute; left: 0; right: 0; bottom: 0; height: 25%;
-            display: flex; align-items: center; padding: 0 5%; color: var(--bg-color);
-            font-family: var(--font-body, serif); font-weight: 700; line-height: 1;
-            font-size: clamp(24px, 5.4vw, 58px); white-space: nowrap; overflow: hidden;
-            text-overflow: ellipsis; text-transform: lowercase; }
+        #mosaic { position: absolute; inset: 0; width: 100%; height: 100%; }
 
         body.mode-lcd #poster { display: none; }
         body.mode-eink #lcd-field { display: none; }
@@ -41,20 +34,7 @@
     <div id="lcd-field"></div>
 
     <div id="poster">
-        <canvas id="dither"></canvas>
-        <svg id="field"><defs>
-            <pattern id="gingham" width="132" height="132" patternUnits="userSpaceOnUse">
-                <text x="14" y="56" font-size="46">ש</text>
-                <text x="80" y="56" font-size="46">Ж</text>
-                <text x="14" y="122" font-size="46">Ж</text>
-                <text x="80" y="122" font-size="46">ש</text>
-                <text x="44" y="90" font-size="26">ש</text>
-                <text x="63" y="90" font-size="26">Ж</text>
-                <text x="44" y="24" font-size="26">ש</text>
-                <text x="63" y="24" font-size="26">Ж</text>
-            </pattern>
-        </defs><rect width="100%" height="100%" fill="url(#gingham)"/></svg>
-        <div class="ss-title">wendy shoshana zhulkovsky</div>
+        <canvas id="mosaic"></canvas>
     </div>
 
     <div id="hint">click or press any key to exit</div>
@@ -98,26 +78,94 @@
                 requestAnimationFrame(step);
             })();
         } else {
-            // Static dithered vertical gradient (Bayer 4x4), text -> bg, top to bottom.
+            // A random photo from a photo article, redrawn as a halftone mosaic of
+            // ShZh logos: each cell stamps the logo, sized by how dark the photo is
+            // there (bigger = darker). Ink on background, so it stays e-ink friendly.
             const css = getComputedStyle(document.body);
-            const rgb = (s) => (s.match(/\d+/g) || [0, 0, 0]).map(Number).slice(0, 3);
-            const text = rgb(css.color), bg = rgb(css.backgroundColor);
-            const cv = document.getElementById("dither");
-            const w = cv.width = innerWidth, h = cv.height = innerHeight, ctx = cv.getContext("2d");
-            const B = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
-            const img = ctx.createImageData(w, h);
-            for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-                const on = (0.1 + 0.78 * (y / h)) > (B[y & 3][x & 3] + 0.5) / 16;
-                const c = on ? text : bg, i = (y * w + x) * 4;
-                img.data[i] = c[0]; img.data[i + 1] = c[1]; img.data[i + 2] = c[2]; img.data[i + 3] = 255;
-            }
-            ctx.putImageData(img, 0, 0);
-            // Slide the gingham diagonally, infinitely, beneath the text (motion-ok only).
-            if (!reduce) {
-                const pat = document.getElementById("gingham");
-                let o = 0;
-                (function slide() { o -= 0.22; pat.setAttribute("patternTransform", "translate(" + o.toFixed(2) + " " + o.toFixed(2) + ")"); requestAnimationFrame(slide); })();
-            }
+            const text = css.color, bg = css.backgroundColor;
+            const cv = document.getElementById("mosaic");
+            const ctx = cv.getContext("2d");
+
+            // The logo, tinted to the theme's text colour, ready to stamp at any size.
+            const loadLogo = async () => {
+                try {
+                    const svg = (await (await fetch("/logo/shzh.svg")).text())
+                        .replace(/fill:\s*#000000/gi, "fill:" + text)
+                        .replace(/<title>[\s\S]*?<\/title>/i, "");
+                    const img = new Image();
+                    img.src = "data:image/svg+xml," + encodeURIComponent(svg);
+                    await img.decode();
+                    return img;
+                } catch (_) { return null; }
+            };
+
+            const loadImage = (src) => new Promise((res, rej) => {
+                const im = new Image();
+                im.onload = () => res(im); im.onerror = rej; im.src = src;
+            });
+
+            // Sample the photo (cover-fit to the screen) onto a tiny grid and read
+            // each cell's luminance.
+            const sampleGrid = (im, cols, rows) => {
+                const off = document.createElement("canvas");
+                off.width = cols; off.height = rows;
+                const octx = off.getContext("2d");
+                const scale = Math.max(cols / im.width, rows / im.height);
+                const dw = im.width * scale, dh = im.height * scale;
+                octx.drawImage(im, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
+                const px = octx.getImageData(0, 0, cols, rows).data;
+                const lum = new Float32Array(cols * rows);
+                for (let i = 0; i < cols * rows; i++) {
+                    const r = px[i * 4], g = px[i * 4 + 1], b = px[i * 4 + 2];
+                    lum[i] = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                }
+                return lum;
+            };
+
+            const draw = (im, logo) => {
+                const w = cv.width = innerWidth, h = cv.height = innerHeight;
+                const cell = Math.max(16, Math.round(Math.min(w, h) / 28)); // ~28 logos on the short edge
+                const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
+                ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+                const lum = sampleGrid(im, cols, rows);
+
+                // Auto-levels: stretch the photo's 4th–96th luminance percentiles to the
+                // full range so every picture uses the whole ink scale (they're not all
+                // bright). Then a brightening gamma opens the midtones back up.
+                const sorted = Float32Array.from(lum).sort();
+                const lo = sorted[Math.floor(sorted.length * 0.04)];
+                const hi = sorted[Math.floor(sorted.length * 0.96)] || 1;
+                const span = Math.max(0.001, hi - lo);
+
+                for (let gy = 0; gy < rows; gy++) for (let gx = 0; gx < cols; gx++) {
+                    let L = Math.min(1, Math.max(0, (lum[gy * cols + gx] - lo) / span));
+                    L = Math.pow(L, 0.72);                  // lift midtones toward the highlights
+                    const d = 1 - L;                        // darkness → stamp coverage
+                    if (d < 0.12) continue;                 // leave the highlights blank
+                    const size = cell * (0.2 + 1.25 * d);   // darker → bigger stamp (overfills when black)
+                    const cx = gx * cell + cell / 2, cy = gy * cell + cell / 2;
+                    if (logo) ctx.drawImage(logo, cx - size / 2, cy - size / 2, size, size);
+                    else { ctx.fillStyle = text; ctx.beginPath(); ctx.arc(cx, cy, size * 0.4, 0, 6.2832); ctx.fill(); }
+                }
+            };
+
+            (async () => {
+                const logo = await loadLogo();
+                let photos = [];
+                try { photos = await (await fetch("/screensaver/photos.json")).json(); } catch (_) {}
+                if (!photos.length) { ctx.fillStyle = bg; ctx.fillRect(0, 0, innerWidth, innerHeight); return; }
+
+                const shuffle = photos.slice().sort(() => Math.random() - 0.5);
+                let idx = 0;
+                const show = async () => {
+                    const p = shuffle[idx % shuffle.length];
+                    try { draw(await loadImage(p.src), logo); } catch (_) {}
+                };
+                await show();
+                // On a motion-ok screen, drift through the gallery; otherwise hold one.
+                if (!reduce) setInterval(() => { idx++; show(); }, 11000);
+                addEventListener("resize", show);
+            })();
         }
 
         const exit = () => { location.href = "/"; };
