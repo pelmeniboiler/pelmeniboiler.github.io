@@ -14,18 +14,18 @@ import path from 'node:path';
 const CSS = path.join(process.cwd(), 'styles/pelmeni2025.css');
 
 // --- Cursor shapes (24×24). Each is a function of (ink, halo) colours. ---------
-// hotspot [x,y] is where the click actually lands.
+// The author's pointing-hand design (viewBox 0 0 1080 1080; the hand's bbox is
+// ~222,235 → 702,893). We crop to that bbox in the cursor and add a bg-colour
+// halo under the text-colour fill (never a hardcoded #000 — the "black svg" bug).
+const P_HAND = "m690.8 603.9l-49 201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18 0-45.98-19.07-45.98-38.77 0-19.7 20.52-43.12 46.7-43.12 26.18 0 46.54 23.84 46.54 43.54 0 19.7-21.08 38.35-47.26 38.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66 259.38c-26.18 0-45.98-19.07-45.98-38.77 0-19.7 20.53-43.12 46.71-43.12 26.18 0 46.53 23.84 46.53 43.54 0 19.7-21.08 38.35-47.26 38.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65 56.38c-26.18 0-48.35-15.73-48.35-35.42 0-19.7 22.9-46.47 49.08-46.47 26.18 0 46.54 23.84 46.54 43.54 0 19.7-21.09 38.35-47.27 38.35zm47.35-39.38v262.49l-96.17-0.41c0 0-4.28-260.97-0.71-262.06zm29.75 85.54c-21.22 0-37.27-17.94-37.27-36.48 0-18.54 16.64-40.57 37.86-40.57 21.22 0 37.73 22.43 37.73 40.97 0 18.53-17.09 36.08-38.32 36.08zm38.38-37.05l-62.02 249.27h-76l62.02-249.27zm-60 239v91h-290v-91zm-353.17-232.19c-24.83 12.77-52.91 4.34-62.53-14.34-9.61-18.69-1.57-50.92 23.27-63.69 24.83-12.78 55.78-0.09 65.39 18.59 9.61 18.69-1.3 46.66-26.13 59.44zm25.7-60.45l128.06 249-88.93 45.73-128.06-248.99z";
+
+// hotspot [x,y] is where the click actually lands. vb/w/h default to a 24×24 box.
 const SHAPES = {
     default: { hot: [3, 2], fallback: 'auto', svg: (k, h) =>
         `<path d='M3,2 L3,20 L8,15.5 L11.5,22.5 L14.3,21.2 L10.9,14.6 L17,14.5 Z' fill='${k}' stroke='${h}' stroke-width='1.1' stroke-linejoin='round'/>` },
-    // Yod-like: one long index finger, the rest retracted into a rounded fist
-    // (composed from a fist, a finger and a thumb; a halo silhouette underneath).
-    pointer: { hot: [10, 2], fallback: 'pointer', svg: (k, h) => {
-        const parts = "<rect x='5.6' y='10.5' width='12.6' height='11' rx='3.6'/>"
-            + "<rect x='8.2' y='2' width='3.4' height='11' rx='1.7'/>"
-            + "<rect x='2.8' y='14.8' width='4.8' height='3.2' rx='1.6' transform='rotate(-38 5.2 18)'/>";
-        return `<g fill='${h}' stroke='${h}' stroke-width='2.2' stroke-linejoin='round'>${parts}</g><g fill='${k}'>${parts}</g>`;
-    } },
+    // The author's pointing hand, cropped to its bbox, ink fill over a bg halo.
+    pointer: { hot: [9, 2], fallback: 'pointer', vb: '176 188 572 752', w: 24, h: 32, svg: (k, h) =>
+        `<path d='${P_HAND}' fill='${h}' stroke='${h}' stroke-width='58' stroke-linejoin='round'/><path d='${P_HAND}' fill='${k}'/>` },
     text: { hot: [12, 12], fallback: 'text', svg: (k, h) =>
         `<path d='M8,3 H16 M8,21 H16 M12,3 V21' stroke='${h}' stroke-width='3.4' fill='none' stroke-linecap='round'/><path d='M8,3 H16 M8,21 H16 M12,3 V21' stroke='${k}' stroke-width='1.5' fill='none' stroke-linecap='round'/>` },
     move: { hot: [12, 12], fallback: 'move', svg: (k, h) =>
@@ -36,8 +36,8 @@ const SHAPES = {
 };
 
 const uri = (name, ink, halo) => {
-    const { hot, fallback, svg } = SHAPES[name];
-    const doc = `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>${svg(ink, halo)}</svg>`;
+    const { hot, fallback, svg, vb = '0 0 24 24', w = 24, h = 24 } = SHAPES[name];
+    const doc = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='${vb}'>${svg(ink, halo)}</svg>`;
     return `url("data:image/svg+xml,${encodeURIComponent(doc)}") ${hot[0]} ${hot[1]}, ${fallback}`;
 };
 
