@@ -125,26 +125,53 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
 // photos, not tiny inline crops/icons) so the mosaic has something to work with.
 async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir) {
     const photoPosts = manifestItems.filter((p) => (p.keywords || []).includes('Photos'));
+    const stripTags = (s) => s.replace(/<[^>]+>/g, '');
+    const decode = (s) => s.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>').replace(/&#39;|&rsquo;|&apos;/g, "'").replace(/&quot;|&ldquo;|&rdquo;/g, '"')
+        .replace(/&mdash;/g, '—').replace(/&rarr;/g, '→');
+    const clean = (s) => decode(stripTags(s)).replace(/\s+/g, ' ').trim();
+
+    // Pull short human-readable snippets from an article: figure captions first
+    // (most photo-relevant), then sentences from body paragraphs. Filtered to a
+    // legible length and capped, so the e-ink screensaver can show a random one.
+    const excerptsFrom = (html) => {
+        const out = [];
+        for (const m of html.matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/gi)) {
+            const t = clean(m[1]); if (t.length >= 12 && t.length <= 220) out.push(t);
+        }
+        for (const m of html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)) {
+            for (const sent of clean(m[1]).split(/(?<=[.!?])\s+/)) {
+                if (sent.length >= 30 && sent.length <= 220) out.push(sent);
+            }
+        }
+        return [...new Set(out)].slice(0, 40);
+    };
+
     const seen = new Set();
     const photos = [];
+    const articles = {};
     for (const post of photoPosts) {
         let html;
         try { html = await fs.readFile(path.join(blogDir, post.filename), 'utf8'); } catch { continue; }
-        const title = post.title || post.slug;
+        const slug = post.slug;
+        // Drop any leading symbol/emoji glyph from the article title (some render
+        // as tofu in the screensaver's serif font) so the attribution reads clean.
+        const title = (post.title || slug).replace(/^[^\p{L}\p{N}]+/u, '').trim();
+        articles[slug] = { title, excerpts: excerptsFrom(html) };
         for (const m of html.matchAll(/(?:src|href)="(\/photos\/[^"]+\.(?:png|jpe?g|webp))"/gi)) {
             const src = m[1];
             if (seen.has(src)) continue;
             seen.add(src);
             try {
                 const { size } = await fs.stat(path.join(rootDir, src.replace(/^\//, '')));
-                if (size >= 250_000) photos.push({ src, article: title });
+                if (size >= 250_000) photos.push({ src, slug });
             } catch { /* referenced file missing — skip */ }
         }
     }
     const outDir = path.join(rootDir, 'screensaver');
     await fs.mkdir(outDir, { recursive: true });
-    await fs.writeFile(path.join(outDir, 'photos.json'), JSON.stringify(photos, null, 2));
-    console.log(`  → wrote ${photos.length} screensaver photos from ${photoPosts.length} photo article(s).`);
+    await fs.writeFile(path.join(outDir, 'photos.json'), JSON.stringify({ photos, articles }, null, 2));
+    console.log(`  → wrote ${photos.length} screensaver photos + excerpts from ${photoPosts.length} photo article(s).`);
 }
 
 async function main() {

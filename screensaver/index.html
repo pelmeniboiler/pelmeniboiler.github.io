@@ -14,33 +14,43 @@
             font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color); opacity: 0.5;
             letter-spacing: 1px; user-select: none; }
 
-        /* --- LCD: 25 logo.canvas windows bouncing around. These are the real
-               logo.canvas window (same markup + classes), so the shared
-               .window / .title-bar / .logo-image-container rules style them
-               identically — including the ShZh mark in the theme's text colour.
-               .ss-logo only takes over positioning for the bounce. --- */
+        /* --- LCD: logo.canvas windows bouncing around (the count scales with the
+               screen so small screens get fewer). They're the real logo.canvas
+               window — same markup + classes — so the shared .window /
+               .logo-image-container rules theme them, ShZh mark included.
+               .ss-logo / .ss-exit only take over positioning for the bounce, and
+               the exit prompt is itself a bouncing window (not an overlay). --- */
         #lcd-field { position: fixed; inset: 0; }
-        .ss-logo { position: fixed; top: 0; left: 0; margin: 0; will-change: transform; }
+        .ss-logo, .ss-exit { position: fixed; top: 0; left: 0; margin: 0; will-change: transform; }
+        .ss-exit .content { padding: 12px 16px; max-width: 190px; text-align: center;
+            font-family: var(--font-body, serif); color: var(--text-color); line-height: 1.3; }
 
-        /* --- E-INK: a random photo from a photo article, redrawn as a halftone
-               mosaic built out of the ShZh logo (ink on background). --- */
+        /* --- E-INK: a random photo, full-screen Floyd–Steinberg dither, with a
+               random excerpt from its article and a bg-colour ShZh in the corner. --- */
         #poster { position: fixed; inset: 0; }
-        #mosaic { position: absolute; inset: 0; width: 100%; height: 100%; }
+        #dither { position: absolute; inset: 0; width: 100%; height: 100%; }
+        #ss-caption { position: absolute; left: 0; bottom: 0; margin: 4%; max-width: min(48ch, 58%);
+            padding: 14px 18px; background: var(--bg-color); color: var(--text-color);
+            font-family: var(--font-body, serif); line-height: 1.4; }
+        #ss-caption blockquote { margin: 0; font-size: clamp(15px, 2vw, 22px); }
+        #ss-caption figcaption { margin-top: 8px; font-style: italic; opacity: 0.7; font-size: 0.85em; }
+        #ss-mark { position: absolute; right: 0; bottom: 0; margin: 3%; width: clamp(56px, 9vw, 104px); }
+        #ss-mark svg { width: 100%; height: auto; display: block; }
 
         body.mode-lcd #poster { display: none; }
         body.mode-eink #lcd-field { display: none; }
-        /* In LCD mode the exit prompt is a real window the logos bounce off, so
-           the floating overlay is only used for the e-ink poster. */
+        /* The exit prompt is a bouncing window in LCD mode, so the floating overlay
+           only appears on the e-ink poster. */
         body.mode-lcd #hint { display: none; }
-        .ss-exit .content { padding: 12px 16px; max-width: 180px; text-align: center;
-            font-family: var(--font-body, serif); color: var(--text-color); line-height: 1.3; }
     </style>
 </head>
 <body>
     <div id="lcd-field"></div>
 
     <div id="poster">
-        <canvas id="mosaic"></canvas>
+        <canvas id="dither"></canvas>
+        <figure id="ss-caption"></figure>
+        <div id="ss-mark"></div>
     </div>
 
     <div id="hint">click or press any key to exit</div>
@@ -52,75 +62,49 @@
         const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         if (!eink) {
-            // 25 real logo.canvas windows caroming off the walls and each other.
-            // We inline the ShZh SVG (exactly like settings.js injectSVG does on the
-            // hub) so the shared `.logo-image-container svg path` rule tints it to the
-            // theme's text colour — an <img> can't be themed and renders black.
-            const field = document.getElementById("lcd-field"), N = 25, items = [];
-
-            const place = (el) => {
-                field.appendChild(el);
-                el.style.transform = "translate(" + el._x + "px," + el._y + "px)";
-            };
+            // logo.canvas windows caroming off the walls and each other, plus the
+            // exit window. Fewer of them on small screens (~one per 28k px²).
+            const field = document.getElementById("lcd-field"), items = [];
+            const N = Math.max(6, Math.min(25, Math.floor((innerWidth * innerHeight) / 28000)));
 
             function step() {
                 for (const it of items) {
-                    if (it.fixed) continue;               // the exit window is an immovable obstacle
                     it.x += it.vx; it.y += it.vy;
                     if (it.x <= 0) { it.x = 0; it.vx = Math.abs(it.vx); } else if (it.x + it.w >= innerWidth) { it.x = innerWidth - it.w; it.vx = -Math.abs(it.vx); }
                     if (it.y <= 0) { it.y = 0; it.vy = Math.abs(it.vy); } else if (it.y + it.h >= innerHeight) { it.y = innerHeight - it.h; it.vy = -Math.abs(it.vy); }
                 }
                 for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) {
                     const a = items[i], b = items[j];
-                    if (a.fixed && b.fixed) continue;
                     if (a.x >= b.x + b.w || a.x + a.w <= b.x || a.y >= b.y + b.h || a.y + a.h <= b.y) continue;
                     const ox = Math.min(a.x + a.w - b.x, b.x + b.w - a.x), oy = Math.min(a.y + a.h - b.y, b.y + b.h - a.y);
-                    if (ox < oy) {
-                        const s = a.x < b.x ? 1 : -1;
-                        if (a.fixed) { b.vx = s < 0 ? Math.abs(b.vx) : -Math.abs(b.vx); b.x += s * ox; }
-                        else if (b.fixed) { a.vx = s < 0 ? -Math.abs(a.vx) : Math.abs(a.vx); a.x -= s * ox; }
-                        else { const t = a.vx; a.vx = b.vx; b.vx = t; a.x -= s * ox / 2; b.x += s * ox / 2; }
-                    } else {
-                        const s = a.y < b.y ? 1 : -1;
-                        if (a.fixed) { b.vy = s < 0 ? Math.abs(b.vy) : -Math.abs(b.vy); b.y += s * oy; }
-                        else if (b.fixed) { a.vy = s < 0 ? -Math.abs(a.vy) : Math.abs(a.vy); a.y -= s * oy; }
-                        else { const t = a.vy; a.vy = b.vy; b.vy = t; a.y -= s * oy / 2; b.y += s * oy / 2; }
-                    }
+                    if (ox < oy) { const t = a.vx; a.vx = b.vx; b.vx = t; const s = a.x < b.x ? 1 : -1; a.x -= s * ox / 2; b.x += s * ox / 2; }
+                    else { const t = a.vy; a.vy = b.vy; b.vy = t; const s = a.y < b.y ? 1 : -1; a.y -= s * oy / 2; b.y += s * oy / 2; }
                 }
-                for (const it of items) if (!it.fixed) it.el.style.transform = "translate(" + it.x.toFixed(1) + "px," + it.y.toFixed(1) + "px)";
+                for (const it of items) it.el.style.transform = "translate(" + it.x.toFixed(1) + "px," + it.y.toFixed(1) + "px)";
                 requestAnimationFrame(step);
             }
 
-            // The exit prompt: a real window, parked in the middle, that the logos
-            // carom off of (immovable obstacle) instead of a floating overlay.
-            const makeExit = () => {
+            const spawn = (cls, inner) => {
                 const el = document.createElement("div");
-                el.className = "window ss-exit";
-                el.innerHTML = '<div class="title-bar"><span class="title">◈ exit.screensaver</span> <button class="close-btn">&times;</button></div>'
-                    + '<div class="content">click or press any key to exit</div>';
-                el._x = 0; el._y = 0; place(el);
+                el.className = "window " + cls;
+                el.innerHTML = inner;
+                field.appendChild(el);
                 const w = el.offsetWidth, h = el.offsetHeight;
-                const x = (innerWidth - w) / 2, y = (innerHeight - h) / 2;
-                el.style.transform = "translate(" + x + "px," + y + "px)";
-                items.push({ el, w, h, x, y, vx: 0, vy: 0, fixed: true });
+                const sp = reduce ? 0 : 2.4;
+                const it = { el, w, h,
+                    x: Math.random() * Math.max(1, innerWidth - w),
+                    y: Math.random() * Math.max(1, innerHeight - h),
+                    vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6 };
+                items.push(it);
+                el.style.transform = "translate(" + it.x + "px," + it.y + "px)";
             };
 
             const build = (mark) => {
-                makeExit();
+                spawn("ss-exit", '<div class="title-bar"><span class="title">◈ exit.screensaver</span> <button class="close-btn">&times;</button></div>'
+                    + '<div class="content">click or press any key to exit</div>');
                 for (let i = 0; i < N; i++) {
-                    const el = document.createElement("div");
-                    el.className = "window ss-logo";
-                    el.innerHTML = '<div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>'
-                        + '<div class="content logo-image-container">' + mark + '</div>';
-                    el._x = 0; el._y = 0; place(el);
-                    const w = el.offsetWidth, h = el.offsetHeight;
-                    const sp = reduce ? 0 : 2.4;
-                    const it = { el, w, h,
-                        x: Math.random() * Math.max(1, innerWidth - w),
-                        y: Math.random() * Math.max(1, innerHeight - h),
-                        vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6, fixed: false };
-                    items.push(it);
-                    el.style.transform = "translate(" + it.x + "px," + it.y + "px)";
+                    spawn("ss-logo", '<div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>'
+                        + '<div class="content logo-image-container">' + mark + '</div>');
                 }
                 if (!reduce) requestAnimationFrame(step);
             };
@@ -129,92 +113,89 @@
                 .then((svg) => build(svg))
                 .catch(() => build('<img src="/logo/shzh.svg" alt="">'));
         } else {
-            // A random photo from a photo article, redrawn as a halftone mosaic of
-            // ShZh logos: each cell stamps the logo, sized by how dark the photo is
-            // there (bigger = darker). Ink on background, so it stays e-ink friendly.
+            // A random photo, full-screen Floyd–Steinberg dithered to the theme's
+            // ink/paper, with a random excerpt from its article and a bg-colour
+            // ShZh mark tucked in the bottom-right corner.
             const css = getComputedStyle(document.body);
-            const text = css.color, bg = css.backgroundColor;
-            const cv = document.getElementById("mosaic");
-            const ctx = cv.getContext("2d");
-
-            // The logo, tinted to the theme's text colour, ready to stamp at any size.
-            const loadLogo = async () => {
-                try {
-                    const svg = (await (await fetch("/logo/shzh.svg")).text())
-                        .replace(/fill:\s*#000000/gi, "fill:" + text)
-                        .replace(/<title>[\s\S]*?<\/title>/i, "");
-                    const img = new Image();
-                    img.src = "data:image/svg+xml," + encodeURIComponent(svg);
-                    await img.decode();
-                    return img;
-                } catch (_) { return null; }
-            };
+            const inkC = css.color, paperC = css.backgroundColor;
+            const toRGB = (s) => (s.match(/\d+/g) || [0, 0, 0]).map(Number).slice(0, 3);
+            const ink = toRGB(inkC), paper = toRGB(paperC);
+            const cv = document.getElementById("dither");
+            const ctx = cv.getContext("2d", { willReadFrequently: true });
+            const capEl = document.getElementById("ss-caption");
+            const markEl = document.getElementById("ss-mark");
 
             const loadImage = (src) => new Promise((res, rej) => {
-                const im = new Image();
-                im.onload = () => res(im); im.onerror = rej; im.src = src;
+                const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src;
             });
 
-            // Sample the photo (cover-fit to the screen) onto a tiny grid and read
-            // each cell's luminance.
-            const sampleGrid = (im, cols, rows) => {
-                const off = document.createElement("canvas");
-                off.width = cols; off.height = rows;
-                const octx = off.getContext("2d");
-                const scale = Math.max(cols / im.width, rows / im.height);
-                const dw = im.width * scale, dh = im.height * scale;
-                octx.drawImage(im, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
-                const px = octx.getImageData(0, 0, cols, rows).data;
-                const lum = new Float32Array(cols * rows);
-                for (let i = 0; i < cols * rows; i++) {
-                    const r = px[i * 4], g = px[i * 4 + 1], b = px[i * 4 + 2];
-                    lum[i] = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                }
-                return lum;
-            };
+            // bg-colour ShZh in the corner: recolour the logo's internal fill.
+            (async () => {
+                try {
+                    const svg = (await (await fetch("/logo/shzh.svg")).text())
+                        .replace(/fill:\s*#000000/gi, "fill:" + paperC)
+                        .replace(/<title>[\s\S]*?<\/title>/i, "");
+                    markEl.innerHTML = svg;
+                } catch (_) { /* mark is optional */ }
+            })();
 
-            const draw = (im, logo) => {
+            const dither = (im) => {
                 const w = cv.width = innerWidth, h = cv.height = innerHeight;
-                const cell = Math.max(9, Math.round(Math.min(w, h) / 52)); // fine grid: small stamps, more visible halftone
-                const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
-                ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-                const lum = sampleGrid(im, cols, rows);
+                ctx.fillStyle = paperC; ctx.fillRect(0, 0, w, h);
+                const scale = Math.max(w / im.width, h / im.height);   // cover-fit
+                const dw = im.width * scale, dh = im.height * scale;
+                ctx.drawImage(im, (w - dw) / 2, (h - dh) / 2, dw, dh);
 
-                // Auto-levels: stretch the photo's 4th–96th luminance percentiles to the
-                // full range so every picture uses the whole ink scale (they're not all
-                // bright). Then a brightening gamma opens the midtones back up.
-                const sorted = Float32Array.from(lum).sort();
-                const lo = sorted[Math.floor(sorted.length * 0.04)];
-                const hi = sorted[Math.floor(sorted.length * 0.96)] || 1;
-                const span = Math.max(0.001, hi - lo);
-
-                for (let gy = 0; gy < rows; gy++) for (let gx = 0; gx < cols; gx++) {
-                    let L = Math.min(1, Math.max(0, (lum[gy * cols + gx] - lo) / span));
-                    L = Math.pow(L, 0.72);                  // lift midtones toward the highlights
-                    const d = 1 - L;                        // darkness → stamp coverage
-                    if (d < 0.12) continue;                 // leave the highlights blank
-                    const size = cell * (0.2 + 1.25 * d);   // darker → bigger stamp (overfills when black)
-                    const cx = gx * cell + cell / 2, cy = gy * cell + cell / 2;
-                    if (logo) ctx.drawImage(logo, cx - size / 2, cy - size / 2, size, size);
-                    else { ctx.fillStyle = text; ctx.beginPath(); ctx.arc(cx, cy, size * 0.4, 0, 6.2832); ctx.fill(); }
+                const img = ctx.getImageData(0, 0, w, h), d = img.data;
+                const g = new Float32Array(w * h);
+                for (let i = 0; i < w * h; i++) {
+                    // luminance, nudged for a touch more contrast
+                    let v = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]) / 255;
+                    g[i] = Math.min(1, Math.max(0, (v - 0.5) * 1.15 + 0.5));
                 }
+                // Floyd–Steinberg error diffusion to 1 bit.
+                for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+                    const i = y * w + x, old = g[i], nv = old < 0.5 ? 0 : 1, err = old - nv;
+                    g[i] = nv;
+                    if (x + 1 < w) g[i + 1] += err * 7 / 16;
+                    if (y + 1 < h) {
+                        if (x > 0) g[i + w - 1] += err * 3 / 16;
+                        g[i + w] += err * 5 / 16;
+                        if (x + 1 < w) g[i + w + 1] += err * 1 / 16;
+                    }
+                }
+                for (let i = 0; i < w * h; i++) {
+                    const c = g[i] >= 0.5 ? paper : ink, k = i * 4;
+                    d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
+                }
+                ctx.putImageData(img, 0, 0);
             };
+
+            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
             (async () => {
-                const logo = await loadLogo();
-                let photos = [];
-                try { photos = await (await fetch("/screensaver/photos.json")).json(); } catch (_) {}
-                if (!photos.length) { ctx.fillStyle = bg; ctx.fillRect(0, 0, innerWidth, innerHeight); return; }
+                let data = { photos: [], articles: {} };
+                try { data = await (await fetch("/screensaver/photos.json")).json(); } catch (_) {}
+                const photos = data.photos || [];
+                if (!photos.length) { ctx.fillStyle = paperC; ctx.fillRect(0, 0, innerWidth, innerHeight); return; }
 
                 const shuffle = photos.slice().sort(() => Math.random() - 0.5);
                 let idx = 0;
                 const show = async () => {
                     const p = shuffle[idx % shuffle.length];
-                    try { draw(await loadImage(p.src), logo); } catch (_) {}
+                    const art = (data.articles && data.articles[p.slug]) || {};
+                    try { dither(await loadImage(p.src)); } catch (_) { return; }
+                    capEl.textContent = "";
+                    const ex = (art.excerpts && art.excerpts.length) ? pick(art.excerpts) : "";
+                    if (ex) {
+                        const bq = document.createElement("blockquote"); bq.textContent = ex; capEl.appendChild(bq);
+                        if (art.title) { const fc = document.createElement("figcaption"); fc.textContent = "— " + art.title; capEl.appendChild(fc); }
+                        capEl.style.display = "";
+                    } else { capEl.style.display = "none"; }
                 };
                 await show();
-                // On a motion-ok screen, drift through the gallery; otherwise hold one.
-                if (!reduce) setInterval(() => { idx++; show(); }, 11000);
+                // Drift through the gallery on a motion-ok screen; otherwise hold one.
+                if (!reduce) setInterval(() => { idx++; show(); }, 12000);
                 addEventListener("resize", show);
             })();
         }
