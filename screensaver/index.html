@@ -14,13 +14,13 @@
             font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color); opacity: 0.5;
             letter-spacing: 1px; user-select: none; }
 
-        /* --- LCD: 25 logo.canvas windows bouncing around (kept compact/square) --- */
+        /* --- LCD: 25 logo.canvas windows bouncing around. These are the real
+               logo.canvas window (same markup + classes), so the shared
+               .window / .title-bar / .logo-image-container rules style them
+               identically — including the ShZh mark in the theme's text colour.
+               .ss-logo only takes over positioning for the bounce. --- */
         #lcd-field { position: fixed; inset: 0; }
-        .ss-logo { position: fixed; top: 0; left: 0; width: 88px; will-change: transform; }
-        .ss-logo .title-bar { height: 18px; font-size: 9px; padding: 0 4px; }
-        .ss-logo .title-bar .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .ss-logo-body { padding: 7px; display: flex; justify-content: center; }
-        .ss-logo-body img { width: 58px; height: 58px; }
+        .ss-logo { position: fixed; top: 0; left: 0; margin: 0; will-change: transform; }
 
         /* --- E-INK: a random photo from a photo article, redrawn as a halftone
                mosaic built out of the ShZh logo (ink on background). --- */
@@ -47,22 +47,13 @@
         const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         if (!eink) {
-            // 25 mini logo.canvas windows caroming off the walls and each other.
+            // 25 real logo.canvas windows caroming off the walls and each other.
+            // We inline the ShZh SVG (exactly like settings.js injectSVG does on the
+            // hub) so the shared `.logo-image-container svg path` rule tints it to the
+            // theme's text colour — an <img> can't be themed and renders black.
             const field = document.getElementById("lcd-field"), N = 25, items = [];
-            for (let i = 0; i < N; i++) {
-                const el = document.createElement("div");
-                el.className = "window ss-logo";
-                el.innerHTML = '<div class="title-bar"><span class="title">❈ logo.canvas</span></div><div class="ss-logo-body"><img src="/logo/shzh.svg" alt=""></div>';
-                field.appendChild(el);
-                const w = el.offsetWidth, h = el.offsetHeight;
-                const sp = reduce ? 0 : 2.4;
-                items.push({ el, w, h,
-                    x: Math.random() * Math.max(1, innerWidth - w),
-                    y: Math.random() * Math.max(1, innerHeight - h),
-                    vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6 });
-                el.style.transform = "translate(" + items[i].x + "px," + items[i].y + "px)";
-            }
-            if (!reduce) (function step() {
+
+            function step() {
                 for (const it of items) {
                     it.x += it.vx; it.y += it.vy;
                     if (it.x <= 0) { it.x = 0; it.vx = Math.abs(it.vx); } else if (it.x + it.w >= innerWidth) { it.x = innerWidth - it.w; it.vx = -Math.abs(it.vx); }
@@ -77,7 +68,29 @@
                 }
                 for (const it of items) it.el.style.transform = "translate(" + it.x.toFixed(1) + "px," + it.y.toFixed(1) + "px)";
                 requestAnimationFrame(step);
-            })();
+            }
+
+            const build = (mark) => {
+                for (let i = 0; i < N; i++) {
+                    const el = document.createElement("div");
+                    el.className = "window ss-logo";
+                    el.innerHTML = '<div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>'
+                        + '<div class="content logo-image-container">' + mark + '</div>';
+                    field.appendChild(el);
+                    const w = el.offsetWidth, h = el.offsetHeight;
+                    const sp = reduce ? 0 : 2.4;
+                    items.push({ el, w, h,
+                        x: Math.random() * Math.max(1, innerWidth - w),
+                        y: Math.random() * Math.max(1, innerHeight - h),
+                        vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6 });
+                    el.style.transform = "translate(" + items[i].x + "px," + items[i].y + "px)";
+                }
+                if (!reduce) requestAnimationFrame(step);
+            };
+
+            fetch("/logo/shzh.svg").then((r) => r.text())
+                .then((svg) => build(svg))
+                .catch(() => build('<img src="/logo/shzh.svg" alt="">'));
         } else {
             // A random photo from a photo article, redrawn as a halftone mosaic of
             // ShZh logos: each cell stamps the logo, sized by how dark the photo is
