@@ -93,7 +93,13 @@
     // load event so it never competes with rendering the page.
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => { /* offline support is optional */ });
+            // updateViaCache:'none' — never serve /sw.js itself from the HTTP
+            // cache (GitHub Pages sets max-age=600 on it), so a new worker
+            // version is picked up on the very next visit instead of up to 10
+            // minutes later. Paired with the no-store navigation fetch in sw.js,
+            // this makes stale pages after a deploy essentially impossible.
+            navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+                .catch(() => { /* offline support is optional */ });
         });
     }
 })();

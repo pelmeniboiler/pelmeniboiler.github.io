@@ -29,6 +29,11 @@
 
         body.mode-lcd #poster { display: none; }
         body.mode-eink #lcd-field { display: none; }
+        /* In LCD mode the exit prompt is a real window the logos bounce off, so
+           the floating overlay is only used for the e-ink poster. */
+        body.mode-lcd #hint { display: none; }
+        .ss-exit .content { padding: 12px 16px; max-width: 180px; text-align: center;
+            font-family: var(--font-body, serif); color: var(--text-color); line-height: 1.3; }
     </style>
 </head>
 <body>
@@ -53,37 +58,69 @@
             // theme's text colour — an <img> can't be themed and renders black.
             const field = document.getElementById("lcd-field"), N = 25, items = [];
 
+            const place = (el) => {
+                field.appendChild(el);
+                el.style.transform = "translate(" + el._x + "px," + el._y + "px)";
+            };
+
             function step() {
                 for (const it of items) {
+                    if (it.fixed) continue;               // the exit window is an immovable obstacle
                     it.x += it.vx; it.y += it.vy;
                     if (it.x <= 0) { it.x = 0; it.vx = Math.abs(it.vx); } else if (it.x + it.w >= innerWidth) { it.x = innerWidth - it.w; it.vx = -Math.abs(it.vx); }
                     if (it.y <= 0) { it.y = 0; it.vy = Math.abs(it.vy); } else if (it.y + it.h >= innerHeight) { it.y = innerHeight - it.h; it.vy = -Math.abs(it.vy); }
                 }
-                for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+                for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) {
                     const a = items[i], b = items[j];
+                    if (a.fixed && b.fixed) continue;
                     if (a.x >= b.x + b.w || a.x + a.w <= b.x || a.y >= b.y + b.h || a.y + a.h <= b.y) continue;
                     const ox = Math.min(a.x + a.w - b.x, b.x + b.w - a.x), oy = Math.min(a.y + a.h - b.y, b.y + b.h - a.y);
-                    if (ox < oy) { const t = a.vx; a.vx = b.vx; b.vx = t; const s = a.x < b.x ? 1 : -1; a.x -= s * ox / 2; b.x += s * ox / 2; }
-                    else { const t = a.vy; a.vy = b.vy; b.vy = t; const s = a.y < b.y ? 1 : -1; a.y -= s * oy / 2; b.y += s * oy / 2; }
+                    if (ox < oy) {
+                        const s = a.x < b.x ? 1 : -1;
+                        if (a.fixed) { b.vx = s < 0 ? Math.abs(b.vx) : -Math.abs(b.vx); b.x += s * ox; }
+                        else if (b.fixed) { a.vx = s < 0 ? -Math.abs(a.vx) : Math.abs(a.vx); a.x -= s * ox; }
+                        else { const t = a.vx; a.vx = b.vx; b.vx = t; a.x -= s * ox / 2; b.x += s * ox / 2; }
+                    } else {
+                        const s = a.y < b.y ? 1 : -1;
+                        if (a.fixed) { b.vy = s < 0 ? Math.abs(b.vy) : -Math.abs(b.vy); b.y += s * oy; }
+                        else if (b.fixed) { a.vy = s < 0 ? -Math.abs(a.vy) : Math.abs(a.vy); a.y -= s * oy; }
+                        else { const t = a.vy; a.vy = b.vy; b.vy = t; a.y -= s * oy / 2; b.y += s * oy / 2; }
+                    }
                 }
-                for (const it of items) it.el.style.transform = "translate(" + it.x.toFixed(1) + "px," + it.y.toFixed(1) + "px)";
+                for (const it of items) if (!it.fixed) it.el.style.transform = "translate(" + it.x.toFixed(1) + "px," + it.y.toFixed(1) + "px)";
                 requestAnimationFrame(step);
             }
 
+            // The exit prompt: a real window, parked in the middle, that the logos
+            // carom off of (immovable obstacle) instead of a floating overlay.
+            const makeExit = () => {
+                const el = document.createElement("div");
+                el.className = "window ss-exit";
+                el.innerHTML = '<div class="title-bar"><span class="title">◈ exit.screensaver</span> <button class="close-btn">&times;</button></div>'
+                    + '<div class="content">click or press any key to exit</div>';
+                el._x = 0; el._y = 0; place(el);
+                const w = el.offsetWidth, h = el.offsetHeight;
+                const x = (innerWidth - w) / 2, y = (innerHeight - h) / 2;
+                el.style.transform = "translate(" + x + "px," + y + "px)";
+                items.push({ el, w, h, x, y, vx: 0, vy: 0, fixed: true });
+            };
+
             const build = (mark) => {
+                makeExit();
                 for (let i = 0; i < N; i++) {
                     const el = document.createElement("div");
                     el.className = "window ss-logo";
                     el.innerHTML = '<div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>'
                         + '<div class="content logo-image-container">' + mark + '</div>';
-                    field.appendChild(el);
+                    el._x = 0; el._y = 0; place(el);
                     const w = el.offsetWidth, h = el.offsetHeight;
                     const sp = reduce ? 0 : 2.4;
-                    items.push({ el, w, h,
+                    const it = { el, w, h,
                         x: Math.random() * Math.max(1, innerWidth - w),
                         y: Math.random() * Math.max(1, innerHeight - h),
-                        vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6 });
-                    el.style.transform = "translate(" + items[i].x + "px," + items[i].y + "px)";
+                        vx: (Math.random() * 2 - 1) * sp || 1.6, vy: (Math.random() * 2 - 1) * sp || 1.6, fixed: false };
+                    items.push(it);
+                    el.style.transform = "translate(" + it.x + "px," + it.y + "px)";
                 }
                 if (!reduce) requestAnimationFrame(step);
             };
@@ -138,7 +175,7 @@
 
             const draw = (im, logo) => {
                 const w = cv.width = innerWidth, h = cv.height = innerHeight;
-                const cell = Math.max(16, Math.round(Math.min(w, h) / 28)); // ~28 logos on the short edge
+                const cell = Math.max(9, Math.round(Math.min(w, h) / 52)); // fine grid: small stamps, more visible halftone
                 const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
                 ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
                 const lum = sampleGrid(im, cols, rows);
