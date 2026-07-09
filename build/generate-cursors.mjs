@@ -88,6 +88,7 @@ async function main() {
         [':root.win98-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.glass-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.y2k-mode', '--theme-text-color', '--theme-bg-color'],
+        [':root.wordart-mode', '--theme-text-color', '--theme-bg-color'],
     ];
 
     const blocks = [];
