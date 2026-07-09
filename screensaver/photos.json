@@ -549,5 +549,37 @@
         ]
       }
     }
+  },
+  "ui": {
+    "en": {
+      "logo": "<span class=\"symbol\">❈</span> logo.canvas",
+      "exitTitle": "◈ exit.screensaver",
+      "exitHint": "click or press any key to exit"
+    },
+    "he": {
+      "logo": "<span class=\"symbol\">❈</span> לוגו.canvas",
+      "exitTitle": "◈ יציאה.screensaver",
+      "exitHint": "לחצו או הקישו על מקש כלשהו ליציאה"
+    },
+    "ru": {
+      "logo": "<span class=\"symbol\">❈</span> лого.canvas",
+      "exitTitle": "◈ выход.screensaver",
+      "exitHint": "щёлкните или нажмите любую клавишу для выхода"
+    },
+    "ja": {
+      "logo": "<span class=\"symbol\">❈</span> ロゴ.canvas",
+      "exitTitle": "◈ 終了.screensaver",
+      "exitHint": "クリックまたは任意のキーで終了"
+    },
+    "de": {
+      "logo": "<span class=\"symbol\">❈</span> logo.canvas",
+      "exitTitle": "◈ beenden.screensaver",
+      "exitHint": "klicken oder eine Taste drücken zum Beenden"
+    },
+    "gt": {
+      "logo": "<span class=\"symbol\">❈</span> .canvas",
+      "exitTitle": "",
+      "exitHint": ""
+    }
   }
 }

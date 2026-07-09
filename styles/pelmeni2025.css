@@ -123,6 +123,11 @@
 :root.zikit-mode {
     --bg-color: var(--theme-bg-color, #E9E5DD); --win-bg-color: var(--theme-bg-color, #E9E5DD); --text-color: var(--theme-text-color, #2B2A27); --border-color: var(--theme-border-color, #8C7B63); --inv-bg-color: var(--theme-border-color, #8C7B63); --inv-text-color: var(--theme-bg-color, #E9E5DD); --link-hover-bg: var(--theme-accent-color, #B5893F); --link-hover-color: var(--theme-bg-color, #E9E5DD);
 }
+/* Plastilin (пластилин — "plasticine"): soft pastel claymorphism, puffy 3D. */
+:root.plastilin-mode {
+    --theme-bg-color: #E7E4F4; --theme-text-color: #3B3563; --theme-border-color: #9C8FD6; --theme-accent-color: #8577D3;
+    --bg-color: var(--theme-bg-color); --win-bg-color: #EEEBF8; --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-accent-color); --inv-text-color: #F4F2FB; --link-hover-bg: var(--theme-accent-color); --link-hover-color: #F4F2FB;
+}
 
 /* --- BASE & MODE STYLES --- */
 body {
@@ -845,6 +850,57 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     backdrop-filter: blur(16px) saturate(180%);
 }
 
+/* --- PLASTILIN THEME: claymorphism ---
+   Soft, opaque, inflated "clay" surfaces: no hard borders, big rounded corners,
+   a large soft outer drop-shadow (to float) plus two inset shadows — a dark one
+   at the bottom-right and a bright one up top — for that squishy, tactile 3D
+   look. Buttons get the same treatment, and pressed/active ones invert to look
+   pushed in. */
+:root.plastilin-mode .window {
+    border: none; border-radius: 26px; overflow: hidden;
+    box-shadow:
+        -16px 18px 44px 0 color-mix(in srgb, var(--text-color) 30%, transparent),
+        inset 10px -10px 18px 0 color-mix(in srgb, var(--text-color) 20%, transparent),
+        inset 0 13px 28px 0 rgba(255, 255, 255, 0.85);
+}
+:root.plastilin-mode .title-bar {
+    border: none;
+    box-shadow: inset 0 9px 14px 0 rgba(255, 255, 255, 0.30),
+                inset 6px -9px 14px 0 color-mix(in srgb, #000 26%, transparent);
+}
+:root.plastilin-mode .close-btn,
+:root.plastilin-mode .filter-btn,
+:root.plastilin-mode .normal-btn,
+:root.plastilin-mode .rss-btn,
+:root.plastilin-mode .share-btn,
+:root.plastilin-mode .custom-dropdown-toggle {
+    border: none; border-radius: 14px;
+    background-color: var(--win-bg-color); color: var(--text-color);
+    box-shadow:
+        -4px 5px 11px 0 color-mix(in srgb, var(--text-color) 26%, transparent),
+        inset 3px -3px 6px 0 color-mix(in srgb, var(--text-color) 16%, transparent),
+        inset 0 4px 8px 0 rgba(255, 255, 255, 0.85);
+}
+:root.plastilin-mode .close-btn { border-radius: 50%; }
+:root.plastilin-mode .filter-btn.active,
+:root.plastilin-mode .close-btn:active,
+:root.plastilin-mode .filter-btn:active,
+:root.plastilin-mode .normal-btn:active {
+    background-color: var(--accent-color, var(--theme-accent-color)); color: var(--inv-text-color);
+    box-shadow:
+        inset -4px 5px 10px 0 color-mix(in srgb, var(--text-color) 34%, transparent),
+        inset 0 -3px 7px 0 rgba(255, 255, 255, 0.45);
+}
+/* Puffy program.launcher tray + start menu to match. */
+:root.plastilin-mode #tray,
+:root.plastilin-mode .start-menu {
+    border: none; border-radius: 22px;
+    box-shadow:
+        -12px 14px 34px 0 color-mix(in srgb, var(--text-color) 28%, transparent),
+        inset 8px -8px 14px 0 color-mix(in srgb, var(--text-color) 16%, transparent),
+        inset 0 10px 22px 0 rgba(255, 255, 255, 0.8);
+}
+
 /* --- NOTIFY BELL (installed-app only; injected by notify-bell.js) --- */
 .notify-dropdown { min-width: 180px; padding: 6px 10px; }
 .notify-row { display: block; padding: 3px 0; cursor: var(--cur-pointer); white-space: nowrap; }
@@ -966,6 +1022,13 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     --cur-text: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%23DEEBF5'%20stroke-width%3D'3.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%2317303F'%20stroke-width%3D'1.5'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, text;
     --cur-move: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M12%2C2%20l3%2C3%20h-2%20v5%20h5%20v-2%20l3%2C3%20l-3%2C3%20v-2%20h-5%20v5%20h2%20l-3%2C3%20l-3%2C-3%20h2%20v-5%20h-5%20v2%20l-3%2C-3%20l3%2C-3%20v2%20h5%20v-5%20h-2%20z'%20fill%3D'%2317303F'%20stroke%3D'%23DEEBF5'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, move;
     --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M2%2C1%20L2%2C13%20L5.5%2C10%20L8%2C15%20L9.8%2C14.2%20L7.3%2C9.3%20L11.5%2C9.2%20Z'%20fill%3D'%2317303F'%20stroke%3D'%23DEEBF5'%20stroke-width%3D'1'%20stroke-linejoin%3D'round'%2F%3E%3Crect%20x%3D'13'%20y%3D'13'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23DEEBF5'%20stroke%3D'%2317303F'%20stroke-width%3D'1.3'%2F%3E%3Crect%20x%3D'11'%20y%3D'11'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23DEEBF5'%20stroke%3D'%2317303F'%20stroke-width%3D'1.3'%2F%3E%3C%2Fsvg%3E") 2 1, copy;
+}
+:root.plastilin-mode {
+    --cur-default: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M3%2C2%20L3%2C20%20L8%2C15.5%20L11.5%2C22.5%20L14.3%2C21.2%20L10.9%2C14.6%20L17%2C14.5%20Z'%20fill%3D'%233B3563'%20stroke%3D'%23E7E4F4'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 3 2, auto;
+    --cur-pointer: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'32'%20viewBox%3D'176%20188%20572%20752'%3E%3Cpath%20d%3D'm690.8%20603.9l-49%20201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.52-43.12%2046.7-43.12%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66%20259.38c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.53-43.12%2046.71-43.12%2026.18%200%2046.53%2023.84%2046.53%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65%2056.38c-26.18%200-48.35-15.73-48.35-35.42%200-19.7%2022.9-46.47%2049.08-46.47%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.09%2038.35-47.27%2038.35zm47.35-39.38v262.49l-96.17-0.41c0%200-4.28-260.97-0.71-262.06zm29.75%2085.54c-21.22%200-37.27-17.94-37.27-36.48%200-18.54%2016.64-40.57%2037.86-40.57%2021.22%200%2037.73%2022.43%2037.73%2040.97%200%2018.53-17.09%2036.08-38.32%2036.08zm38.38-37.05l-62.02%20249.27h-76l62.02-249.27zm-60%20239v91h-290v-91zm-353.17-232.19c-24.83%2012.77-52.91%204.34-62.53-14.34-9.61-18.69-1.57-50.92%2023.27-63.69%2024.83-12.78%2055.78-0.09%2065.39%2018.59%209.61%2018.69-1.3%2046.66-26.13%2059.44zm25.7-60.45l128.06%20249-88.93%2045.73-128.06-248.99z'%20fill%3D'%23E7E4F4'%20stroke%3D'%23E7E4F4'%20stroke-width%3D'58'%20stroke-linejoin%3D'round'%2F%3E%3Cpath%20d%3D'm690.8%20603.9l-49%20201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.52-43.12%2046.7-43.12%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66%20259.38c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.53-43.12%2046.71-43.12%2026.18%200%2046.53%2023.84%2046.53%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65%2056.38c-26.18%200-48.35-15.73-48.35-35.42%200-19.7%2022.9-46.47%2049.08-46.47%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.09%2038.35-47.27%2038.35zm47.35-39.38v262.49l-96.17-0.41c0%200-4.28-260.97-0.71-262.06zm29.75%2085.54c-21.22%200-37.27-17.94-37.27-36.48%200-18.54%2016.64-40.57%2037.86-40.57%2021.22%200%2037.73%2022.43%2037.73%2040.97%200%2018.53-17.09%2036.08-38.32%2036.08zm38.38-37.05l-62.02%20249.27h-76l62.02-249.27zm-60%20239v91h-290v-91zm-353.17-232.19c-24.83%2012.77-52.91%204.34-62.53-14.34-9.61-18.69-1.57-50.92%2023.27-63.69%2024.83-12.78%2055.78-0.09%2065.39%2018.59%209.61%2018.69-1.3%2046.66-26.13%2059.44zm25.7-60.45l128.06%20249-88.93%2045.73-128.06-248.99z'%20fill%3D'%233B3563'%2F%3E%3C%2Fsvg%3E") 9 2, pointer;
+    --cur-text: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%23E7E4F4'%20stroke-width%3D'3.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%233B3563'%20stroke-width%3D'1.5'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, text;
+    --cur-move: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M12%2C2%20l3%2C3%20h-2%20v5%20h5%20v-2%20l3%2C3%20l-3%2C3%20v-2%20h-5%20v5%20h2%20l-3%2C3%20l-3%2C-3%20h2%20v-5%20h-5%20v2%20l-3%2C-3%20l3%2C-3%20v2%20h5%20v-5%20h-2%20z'%20fill%3D'%233B3563'%20stroke%3D'%23E7E4F4'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, move;
+    --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M2%2C1%20L2%2C13%20L5.5%2C10%20L8%2C15%20L9.8%2C14.2%20L7.3%2C9.3%20L11.5%2C9.2%20Z'%20fill%3D'%233B3563'%20stroke%3D'%23E7E4F4'%20stroke-width%3D'1'%20stroke-linejoin%3D'round'%2F%3E%3Crect%20x%3D'13'%20y%3D'13'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23E7E4F4'%20stroke%3D'%233B3563'%20stroke-width%3D'1.3'%2F%3E%3Crect%20x%3D'11'%20y%3D'11'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23E7E4F4'%20stroke%3D'%233B3563'%20stroke-width%3D'1.3'%2F%3E%3C%2Fsvg%3E") 2 1, copy;
 }
 html, body { cursor: var(--cur-default); }
 a, button, summary, label, select, [role="button"],

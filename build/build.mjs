@@ -199,9 +199,22 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
             } catch { /* referenced file missing — skip */ }
         }
     }
+    // Per-language UI strings for the LCD (motion) screensaver's windows, pulled
+    // straight from the shared localization so the standalone page (no runtime
+    // translator) can still show them in the visitor's language.
+    const g = (localizationData && localizationData.global) || {};
+    const ui = {};
+    for (const lang of Object.keys(g)) {
+        ui[lang] = {
+            logo: g[lang]?.win_logo_title || '',
+            exitTitle: g[lang]?.ss_exit_title || '',
+            exitHint: g[lang]?.ss_exit_hint || '',
+        };
+    }
+
     const outDir = path.join(rootDir, 'screensaver');
     await fs.mkdir(outDir, { recursive: true });
-    await fs.writeFile(path.join(outDir, 'photos.json'), JSON.stringify({ photos, articles }, null, 2));
+    await fs.writeFile(path.join(outDir, 'photos.json'), JSON.stringify({ photos, articles, ui }, null, 2));
     console.log(`  → wrote ${photos.length} screensaver photos + excerpts from ${photoPosts.length} photo article(s).`);
 }
 
