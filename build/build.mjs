@@ -123,25 +123,49 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
 // the e-ink screensaver reads: it picks one at random and re-draws it as a halftone
 // mosaic built out of the ShZh logo. We keep only reasonably large images (real
 // photos, not tiny inline crops/icons) so the mosaic has something to work with.
-async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir) {
+async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir, localizationData) {
     const photoPosts = manifestItems.filter((p) => (p.keywords || []).includes('Photos'));
     const stripTags = (s) => s.replace(/<[^>]+>/g, '');
-    const decode = (s) => s.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>').replace(/&#39;|&rsquo;|&apos;/g, "'").replace(/&quot;|&ldquo;|&rdquo;/g, '"')
-        .replace(/&mdash;/g, '—').replace(/&rarr;/g, '→');
-    const clean = (s) => decode(stripTags(s)).replace(/\s+/g, ' ').trim();
+    const decode = (s) => s
+        .replace(/&nbsp;|&emsp;|&ensp;|&thinsp;/g, ' ')
+        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/&#39;|&rsquo;|&lsquo;|&apos;/g, "'").replace(/&quot;|&ldquo;|&rdquo;/g, '"')
+        .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–').replace(/&rarr;/g, '→').replace(/&hellip;/g, '…')
+        .replace(/&#(\d+);/g, (_m, n) => String.fromCodePoint(+n))
+        .replace(/&[a-z]+;/gi, ' ');
+    // Also drop Unicode bidi/formatting marks so RTL snippets don't carry stray control chars.
+    const clean = (s) => decode(stripTags(s)).replace(/[​-‏‪-‮⁦-⁩]/g, '').replace(/\s+/g, ' ').trim();
+    const cleanTitle = (s) => clean(s).replace(/^[^\p{L}\p{N}]+/u, '').trim();
+    // Reject snippets that are really filenames, URLs, or audio/asset captions.
+    const isJunk = (s) => /https?:|[_/\\]|\.(ogg|mp3|png|jpe?g|svg|gif|webp|html)\b|[♩♪♫♬]/i.test(s);
 
-    // Pull short human-readable snippets from an article: figure captions first
-    // (most photo-relevant), then sentences from body paragraphs. Filtered to a
-    // legible length and capped, so the e-ink screensaver can show a random one.
-    const excerptsFrom = (html) => {
+    // Pull short human-readable snippets from a language's localized article
+    // strings: whole short paragraphs, or sentences split out of longer ones
+    // (handling Latin/CJK terminators). Filtered to a legible length and capped.
+    const excerptsFromLoc = (loc) => {
+        const out = [];
+        for (const val of Object.values(loc || {})) {
+            if (typeof val !== 'string') continue;
+            const c = clean(val);
+            if (!c || isJunk(c)) continue;
+            if (c.length >= 25 && c.length <= 220) { out.push(c); continue; }
+            for (const sent of c.split(/(?<=[.!?。！？])/)) {
+                const s = sent.trim();
+                if (s.length >= 25 && s.length <= 220 && !isJunk(s)) out.push(s);
+            }
+        }
+        return [...new Set(out)].slice(0, 40);
+    };
+    // English fallback straight from the article HTML (captions + sentences), in
+    // case a localization source is sparse.
+    const excerptsFromHtml = (html) => {
         const out = [];
         for (const m of html.matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/gi)) {
-            const t = clean(m[1]); if (t.length >= 12 && t.length <= 220) out.push(t);
+            const t = clean(m[1]); if (t.length >= 12 && t.length <= 220 && !isJunk(t)) out.push(t);
         }
         for (const m of html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)) {
             for (const sent of clean(m[1]).split(/(?<=[.!?])\s+/)) {
-                if (sent.length >= 30 && sent.length <= 220) out.push(sent);
+                if (sent.length >= 30 && sent.length <= 220 && !isJunk(sent)) out.push(sent);
             }
         }
         return [...new Set(out)].slice(0, 40);
@@ -154,10 +178,17 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir)
         let html;
         try { html = await fs.readFile(path.join(blogDir, post.filename), 'utf8'); } catch { continue; }
         const slug = post.slug;
-        // Drop any leading symbol/emoji glyph from the article title (some render
-        // as tofu in the screensaver's serif font) so the attribution reads clean.
-        const title = (post.title || slug).replace(/^[^\p{L}\p{N}]+/u, '').trim();
-        articles[slug] = { title, excerpts: excerptsFrom(html) };
+        const loc = (localizationData && localizationData[post.translationSource]) || {};
+        // Per-language title + excerpts, so the screensaver shows the caption in
+        // whatever language the visitor has selected (falling back to English).
+        const titles = {}, excerpts = {};
+        for (const lang of Object.keys(loc)) {
+            titles[lang] = cleanTitle(loc[lang]?.[post.titleKey] || post.title || slug);
+            excerpts[lang] = excerptsFromLoc(loc[lang]);
+        }
+        titles.en = titles.en || cleanTitle(post.title || slug);
+        if (!excerpts.en || !excerpts.en.length) excerpts.en = excerptsFromHtml(html);
+        articles[slug] = { titles, excerpts };
         for (const m of html.matchAll(/(?:src|href)="(\/photos\/[^"]+\.(?:png|jpe?g|webp))"/gi)) {
             const src = m[1];
             if (seen.has(src)) continue;
@@ -215,7 +246,7 @@ async function main() {
     await generateFolderIndexes(ROOT_DIR, manifestItems, localizationData);
 
     console.log('Generating e-ink screensaver photo manifest...');
-    await generatePhotoScreensaverManifest(manifestItems, BLOG_DIR, ROOT_DIR);
+    await generatePhotoScreensaverManifest(manifestItems, BLOG_DIR, ROOT_DIR, localizationData);
 
     console.log('Determining languages...');
     const allLanguages = new Set();
