@@ -103,4 +103,22 @@
                 .catch(() => { /* offline support is optional */ });
         });
     }
+
+    // The Liquid Glass theme's real refraction needs an SVG displacement filter
+    // present in the document (CSS `backdrop-filter: url(#…)` references it). Inject
+    // it once, hidden, on every page. Inert unless the theme references it.
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('pb-glass-defs')) return;
+        const holder = document.createElement('div');
+        holder.id = 'pb-glass-defs';
+        holder.setAttribute('aria-hidden', 'true');
+        holder.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none';
+        holder.innerHTML =
+            '<svg><filter id="pb-liquid-glass" x="-25%" y="-25%" width="150%" height="150%">'
+            + '<feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="42" result="n"/>'
+            + '<feGaussianBlur in="n" stdDeviation="1.1" result="b"/>'
+            + '<feDisplacementMap in="SourceGraphic" in2="b" scale="60" xChannelSelector="R" yChannelSelector="G"/>'
+            + '</filter></svg>';
+        document.body.appendChild(holder);
+    });
 })();
