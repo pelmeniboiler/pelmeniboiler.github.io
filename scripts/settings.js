@@ -248,7 +248,8 @@ function setupSettings() {
     const galleryToggle = getElement('gallery-toggle');
     const GALLERY_KEY = 'pelmeniboiler-gallery';
     let galleryBox = null, galleryLayers = [], galleryActive = 0,
-        galleryPhotos = [], galleryIdx = 0, galleryTimer = null, galleryLoading = null;
+        galleryPhotos = [], galleryIdx = 0, galleryTimer = null, galleryLoading = null,
+        galleryCurrentSrc = null;
 
     const galleryRGB = (s) => (s.match(/\d+/g) || [0, 0, 0]).map(Number).slice(0, 3);
     // Dither one image to the theme's ink/paper and return it as a data URL.
@@ -282,6 +283,9 @@ function setupSettings() {
             nl.style.opacity = '1';
             galleryLayers[galleryActive].style.opacity = '0';
             galleryActive ^= 1;
+            galleryCurrentSrc = p.src;
+            // If Zikit is riding along, retint the UI to this photo's key colours.
+            if (docEl.classList.contains('zikit-mode')) deriveZikitPalette(p.src);
         };
         img.src = p.src;
     }
@@ -341,6 +345,81 @@ function setupSettings() {
         if (body.classList.contains('gallery-mode')) galleryRender();
     });
 
+    // --- Zikit theme: derive a palette from a gallery photo's key colours. ---
+    const rgbToHsl = (r, g, b) => {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+        let h = 0, s = 0;
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+            h /= 6;
+        }
+        return [h * 360, s, l];
+    };
+    const hsl = (h, s, l) => `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+
+    // Sample a downscaled image, find its dominant vibrant colour + average
+    // lightness, and compose a readable {bg, text, border, accent} palette that
+    // leans light or dark to match the photo.
+    function paletteFromImage(img) {
+        const n = 28, cv = document.createElement('canvas'); cv.width = n; cv.height = n;
+        const ctx = cv.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, n, n);
+        const d = ctx.getImageData(0, 0, n, n).data;
+        let sr = 0, sg = 0, sb = 0, cnt = 0; const buckets = {};
+        for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            sr += r; sg += g; sb += b; cnt++;
+            const key = `${r >> 5}_${g >> 5}_${b >> 5}`;
+            const bk = buckets[key] || (buckets[key] = { n: 0, r: 0, g: 0, b: 0 });
+            bk.n++; bk.r += r; bk.g += g; bk.b += b;
+        }
+        let dom = [30, 0.3, 0.5], score = -1;
+        for (const k in buckets) {
+            const bk = buckets[k], r = bk.r / bk.n, g = bk.g / bk.n, b = bk.b / bk.n;
+            const [h, s, l] = rgbToHsl(r, g, b);
+            const sc = bk.n * (0.2 + s) * (l > 0.12 && l < 0.9 ? 1 : 0.3);
+            if (sc > score) { score = sc; dom = [h, s, l]; }
+        }
+        const [, , avgL] = rgbToHsl(sr / cnt, sg / cnt, sb / cnt);
+        const dh = dom[0], sat = Math.min(0.6, Math.max(0.16, dom[1]));
+        if (avgL < 0.5) {
+            return { bg: hsl(dh, sat * 0.55, 0.14), text: hsl(dh, 0.22, 0.9),
+                border: hsl(dh, Math.max(0.4, sat), 0.62), accent: hsl((dh + 32) % 360, Math.max(0.5, sat), 0.6) };
+        }
+        return { bg: hsl(dh, sat * 0.5, 0.92), text: hsl(dh, 0.35, 0.16),
+            border: hsl(dh, Math.max(0.4, sat), 0.42), accent: hsl((dh + 32) % 360, Math.max(0.5, sat), 0.45) };
+    }
+    async function deriveZikitPalette(src) {
+        if (!galleryPhotos.length) {
+            if (!galleryLoading) {
+                galleryLoading = fetch('/screensaver/photos.json').then((r) => r.json())
+                    .then((d) => { galleryPhotos = (d.photos || []).slice().sort(() => Math.random() - 0.5); })
+                    .catch(() => { galleryPhotos = []; });
+            }
+            await galleryLoading;
+        }
+        // Prefer the photo the gallery is currently showing, so the theme matches
+        // what's on screen; otherwise sample a random one from the set.
+        const source = src
+            || (body.classList.contains('gallery-mode') && galleryCurrentSrc)
+            || (galleryPhotos.length ? galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)].src : null);
+        if (!source) return; // nothing to sample → keep the neutral fallback
+        const img = new Image();
+        img.onload = () => {
+            const pal = paletteFromImage(img);
+            docEl.style.setProperty('--theme-bg-color', pal.bg);
+            docEl.style.setProperty('--theme-text-color', pal.text);
+            docEl.style.setProperty('--theme-border-color', pal.border);
+            docEl.style.setProperty('--theme-accent-color', pal.accent);
+            updateFavicon();
+            if (docEl.classList.contains('eink-mode') && body.classList.contains('gallery-mode')) galleryRender();
+        };
+        img.src = source;
+    }
+
     /**
      * Applies a specific theme to the page.
      * @param {string} theme - The name of the theme to apply (e.g., 'dark', 'funky').
@@ -372,13 +451,17 @@ function setupSettings() {
             docEl.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
             docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
+        } else if (theme === 'zikit') {
+            // Zikit derives its palette from a gallery photo's key colours (async).
+            deriveZikitPalette();
+            localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         } else {
             // Clear any inline styles from the funky theme when switching to another theme.
             docEl.style.removeProperty('--theme-bg-color');
             docEl.style.removeProperty('--theme-text-color');
             docEl.style.removeProperty('--theme-border-color');
             docEl.style.removeProperty('--theme-accent-color');
-            
+
             // If the new theme is a color theme, save it as the last used one.
             if (theme !== 'light' && theme !== 'dark') {
                 localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
@@ -548,9 +631,10 @@ function setupSettings() {
             const radioToCheck = document.querySelector(`input[name="theme"][value="${themeValue}"]`);
             if(radioToCheck) radioToCheck.checked = true;
 
-            // Re-apply funky theme if it was the last one to get random colors.
-            if (themeValue === 'funky') {
-                applyTheme('funky');
+            // Re-apply funky/zikit on load so they regenerate their dynamic palette
+            // (funky = random, zikit = sampled from a gallery photo).
+            if (themeValue === 'funky' || themeValue === 'zikit') {
+                applyTheme(themeValue);
             }
         }
         

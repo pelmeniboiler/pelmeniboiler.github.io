@@ -117,6 +117,12 @@
 :root.funky-mode {
     --bg-color: var(--theme-bg-color, #b1de75); --win-bg-color: var(--theme-bg-color, #b1de75); --text-color: var(--theme-text-color, #b000b5); --border-color: var(--theme-border-color, #eb01a5); --inv-bg-color: var(--theme-border-color, #eb01a5); --inv-text-color: var(--theme-bg-color, #b1de75); --link-hover-bg: var(--theme-accent-color, #fa6607); --link-hover-color: var(--theme-bg-color, #b1de75);
 }
+/* Zikit (זיקית — "chameleon"): palette derived at runtime from the key colours of
+   a gallery photo (settings.js). The fallbacks below are a neutral resting state
+   used before/without a sampled image. */
+:root.zikit-mode {
+    --bg-color: var(--theme-bg-color, #E9E5DD); --win-bg-color: var(--theme-bg-color, #E9E5DD); --text-color: var(--theme-text-color, #2B2A27); --border-color: var(--theme-border-color, #8C7B63); --inv-bg-color: var(--theme-border-color, #8C7B63); --inv-text-color: var(--theme-bg-color, #E9E5DD); --link-hover-bg: var(--theme-accent-color, #B5893F); --link-hover-color: var(--theme-bg-color, #E9E5DD);
+}
 
 /* --- BASE & MODE STYLES --- */
 body {
