@@ -84,6 +84,7 @@ async function main() {
         [':root.rindswurst-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.tapuz-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.moroz-mode', '--theme-text-color', '--theme-bg-color'],
+        [':root.plastilin-mode', '--theme-text-color', '--theme-bg-color'],
     ];
 
     const blocks = [];
