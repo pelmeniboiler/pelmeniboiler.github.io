@@ -85,6 +85,7 @@ async function main() {
         [':root.tapuz-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.moroz-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.plastilin-mode', '--theme-text-color', '--theme-bg-color'],
+        [':root.win98-mode', '--theme-text-color', '--theme-bg-color'],
     ];
 
     const blocks = [];
