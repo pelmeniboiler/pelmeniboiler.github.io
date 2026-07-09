@@ -345,6 +345,34 @@ function setupSettings() {
         if (body.classList.contains('gallery-mode')) galleryRender();
     });
 
+    // --- Dynamic cursors: the baked --cur-* URIs (build/generate-cursors.mjs) are
+    // per static theme; funky and zikit compute their colours at runtime, so we
+    // regenerate the same cursor set live and set --cur-* inline on <html>. ---
+    const CURSOR_HAND = "m690.8 603.9l-49 201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18 0-45.98-19.07-45.98-38.77 0-19.7 20.52-43.12 46.7-43.12 26.18 0 46.54 23.84 46.54 43.54 0 19.7-21.08 38.35-47.26 38.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66 259.38c-26.18 0-45.98-19.07-45.98-38.77 0-19.7 20.53-43.12 46.71-43.12 26.18 0 46.53 23.84 46.53 43.54 0 19.7-21.08 38.35-47.26 38.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65 56.38c-26.18 0-48.35-15.73-48.35-35.42 0-19.7 22.9-46.47 49.08-46.47 26.18 0 46.54 23.84 46.54 43.54 0 19.7-21.09 38.35-47.27 38.35zm47.35-39.38v262.49l-96.17-0.41c0 0-4.28-260.97-0.71-262.06zm29.75 85.54c-21.22 0-37.27-17.94-37.27-36.48 0-18.54 16.64-40.57 37.86-40.57 21.22 0 37.73 22.43 37.73 40.97 0 18.53-17.09 36.08-38.32 36.08zm38.38-37.05l-62.02 249.27h-76l62.02-249.27zm-60 239v91h-290v-91zm-353.17-232.19c-24.83 12.77-52.91 4.34-62.53-14.34-9.61-18.69-1.57-50.92 23.27-63.69 24.83-12.78 55.78-0.09 65.39 18.59 9.61 18.69-1.3 46.66-26.13 59.44zm25.7-60.45l128.06 249-88.93 45.73-128.06-248.99z";
+    const CURSOR_SHAPES = {
+        default: { hot: [3, 2], fallback: 'auto', svg: (k, h) =>
+            `<path d='M3,2 L3,20 L8,15.5 L11.5,22.5 L14.3,21.2 L10.9,14.6 L17,14.5 Z' fill='${k}' stroke='${h}' stroke-width='1.1' stroke-linejoin='round'/>` },
+        pointer: { hot: [9, 2], fallback: 'pointer', vb: '176 188 572 752', w: 24, h: 32, svg: (k, h) =>
+            `<path d='${CURSOR_HAND}' fill='${h}' stroke='${h}' stroke-width='58' stroke-linejoin='round'/><path d='${CURSOR_HAND}' fill='${k}'/>` },
+        text: { hot: [12, 12], fallback: 'text', svg: (k, h) =>
+            `<path d='M8,3 H16 M8,21 H16 M12,3 V21' stroke='${h}' stroke-width='3.4' fill='none' stroke-linecap='round'/><path d='M8,3 H16 M8,21 H16 M12,3 V21' stroke='${k}' stroke-width='1.5' fill='none' stroke-linecap='round'/>` },
+        move: { hot: [12, 12], fallback: 'move', svg: (k, h) =>
+            `<path d='M12,2 l3,3 h-2 v5 h5 v-2 l3,3 l-3,3 v-2 h-5 v5 h2 l-3,3 l-3,-3 h2 v-5 h-5 v2 l-3,-3 l3,-3 v2 h5 v-5 h-2 z' fill='${k}' stroke='${h}' stroke-width='1.1' stroke-linejoin='round'/>` },
+        copy: { hot: [2, 1], fallback: 'copy', svg: (k, h) =>
+            `<path d='M2,1 L2,13 L5.5,10 L8,15 L9.8,14.2 L7.3,9.3 L11.5,9.2 Z' fill='${k}' stroke='${h}' stroke-width='1' stroke-linejoin='round'/><rect x='13' y='13' width='8' height='9' rx='1.3' fill='${h}' stroke='${k}' stroke-width='1.3'/><rect x='11' y='11' width='8' height='9' rx='1.3' fill='${h}' stroke='${k}' stroke-width='1.3'/>` },
+    };
+    const cursorURI = (name, ink, halo) => {
+        const s = CURSOR_SHAPES[name], vb = s.vb || '0 0 24 24', w = s.w || 24, h = s.h || 24;
+        const doc = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='${vb}'>${s.svg(ink, halo)}</svg>`;
+        return `url("data:image/svg+xml,${encodeURIComponent(doc)}") ${s.hot[0]} ${s.hot[1]}, ${s.fallback}`;
+    };
+    const applyDynamicCursors = (ink, halo) => {
+        for (const name of Object.keys(CURSOR_SHAPES)) docEl.style.setProperty(`--cur-${name}`, cursorURI(name, ink, halo));
+    };
+    const clearDynamicCursors = () => {
+        for (const name of Object.keys(CURSOR_SHAPES)) docEl.style.removeProperty(`--cur-${name}`);
+    };
+
     // --- Zikit theme: derive a palette from a gallery photo's key colours. ---
     const rgbToHsl = (r, g, b) => {
         r /= 255; g /= 255; b /= 255;
@@ -414,6 +442,7 @@ function setupSettings() {
             docEl.style.setProperty('--theme-text-color', pal.text);
             docEl.style.setProperty('--theme-border-color', pal.border);
             docEl.style.setProperty('--theme-accent-color', pal.accent);
+            applyDynamicCursors(pal.text, pal.bg);
             updateFavicon();
             if (docEl.classList.contains('eink-mode') && body.classList.contains('gallery-mode')) galleryRender();
         };
@@ -450,17 +479,19 @@ function setupSettings() {
             docEl.style.setProperty('--theme-text-color', `hsl(${baseHue}, 15%, ${textLightness}%)`);
             docEl.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
             docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
+            applyDynamicCursors(`hsl(${baseHue}, 15%, ${textLightness}%)`, `hsl(${baseHue}, 50%, ${bgLightness}%)`);
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         } else if (theme === 'zikit') {
             // Zikit derives its palette from a gallery photo's key colours (async).
             deriveZikitPalette();
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         } else {
-            // Clear any inline styles from the funky theme when switching to another theme.
+            // Clear any inline styles from the funky/zikit themes when switching away.
             docEl.style.removeProperty('--theme-bg-color');
             docEl.style.removeProperty('--theme-text-color');
             docEl.style.removeProperty('--theme-border-color');
             docEl.style.removeProperty('--theme-accent-color');
+            clearDynamicCursors(); // fall back to the theme's baked --cur-* set
 
             // If the new theme is a color theme, save it as the last used one.
             if (theme !== 'light' && theme !== 'dark') {

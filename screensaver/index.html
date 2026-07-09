@@ -167,6 +167,11 @@
             };
 
             const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            // Show the caption in the visitor's chosen language (falling back to English).
+            const lang = localStorage.getItem("pelmeniboiler-lang") || document.documentElement.lang || "en";
+            const forLang = (byLang) => (byLang && (byLang[lang] || byLang.en)) || null;
+            if (lang === "he") capEl.dir = "rtl";
+            if (lang === "gt") capEl.style.fontFamily = "'FairfaxHD', var(--font-body, serif)";
 
             (async () => {
                 let data = { photos: [], articles: {} };
@@ -181,10 +186,12 @@
                     const art = (data.articles && data.articles[p.slug]) || {};
                     try { dither(await loadImage(p.src)); } catch (_) { return; }
                     capEl.textContent = "";
-                    const ex = (art.excerpts && art.excerpts.length) ? pick(art.excerpts) : "";
+                    const exs = forLang(art.excerpts) || [];
+                    const title = forLang(art.titles);
+                    const ex = exs.length ? pick(exs) : "";
                     if (ex) {
                         const bq = document.createElement("blockquote"); bq.textContent = ex; capEl.appendChild(bq);
-                        if (art.title) { const fc = document.createElement("figcaption"); fc.textContent = "— " + art.title; capEl.appendChild(fc); }
+                        if (title) { const fc = document.createElement("figcaption"); fc.textContent = "— " + title; capEl.appendChild(fc); }
                         capEl.style.display = "";
                     } else { capEl.style.display = "none"; }
                 };

@@ -825,14 +825,14 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
    so every window reads like a pane of frosted glass. Shows off best over the
    gallery background or a stack of overlapping windows. */
 :root.kfor-mode .window {
-    background-color: color-mix(in srgb, var(--win-bg-color) 66%, transparent);
+    background-color: color-mix(in srgb, var(--win-bg-color) 48%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
     box-shadow: 0 8px 30px color-mix(in srgb, var(--border-color) 38%, transparent),
                 inset 0 1px 0 color-mix(in srgb, #ffffff 55%, transparent);
 }
 :root.kfor-mode .title-bar {
-    background-color: color-mix(in srgb, var(--inv-bg-color) 80%, transparent);
+    background-color: color-mix(in srgb, var(--inv-bg-color) 62%, transparent);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 }
@@ -840,7 +840,7 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 :root.kfor-mode .custom-dropdown-menu,
 :root.kfor-mode .rss-dropdown-content,
 :root.kfor-mode .settings-window .settings-nav {
-    background-color: color-mix(in srgb, var(--win-bg-color) 72%, transparent);
+    background-color: color-mix(in srgb, var(--win-bg-color) 56%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
 }
