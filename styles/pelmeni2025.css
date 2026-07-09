@@ -900,6 +900,20 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
         inset 8px -8px 14px 0 color-mix(in srgb, var(--text-color) 16%, transparent),
         inset 0 10px 22px 0 rgba(255, 255, 255, 0.8);
 }
+/* Keep content clear of the big rounded corners so nothing clips or crowds. */
+:root.plastilin-mode .content { padding: 20px 24px; }
+:root.plastilin-mode .title-bar { padding: 0 16px; height: 34px; }
+:root.plastilin-mode .title { padding-inline: 2px; }
+/* Each title-bar symbol becomes a little round clay badge. */
+:root.plastilin-mode .title-bar .symbol {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.7em; height: 1.7em; border-radius: 50%; margin-inline-end: 6px;
+    background-color: var(--win-bg-color); color: var(--text-color); font-size: 0.82em;
+    box-shadow:
+        -2px 2px 5px 0 color-mix(in srgb, #000 26%, transparent),
+        inset 2px -2px 4px 0 color-mix(in srgb, #000 20%, transparent),
+        inset 0 2px 4px 0 rgba(255, 255, 255, 0.85);
+}
 
 /* --- NOTIFY BELL (installed-app only; injected by notify-bell.js) --- */
 .notify-dropdown { min-width: 180px; padding: 6px 10px; }
