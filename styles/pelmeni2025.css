@@ -1022,6 +1022,8 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 :root.glass-mode .title { color: var(--text-color); }
+/* Curved corners eat the very edge, so pad the title bar in from the sides. */
+:root.glass-mode .title-bar, :root.y2k-mode .title-bar { padding-inline: 18px; }
 :root.glass-mode .close-btn,
 :root.glass-mode .filter-btn,
 :root.glass-mode .normal-btn,
