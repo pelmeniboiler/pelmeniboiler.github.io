@@ -2,6 +2,8 @@
   "en": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> music.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> logo.canvas",
+    "ss_exit_title": "◈ exit.screensaver",
+    "ss_exit_hint": "click or press any key to exit",
     "win_about_title": "<span class=\"symbol\">ℹ</span> user.about",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> cool.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> system.settings",
@@ -51,6 +53,8 @@
   "he": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> מוזיקה.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> לוגו.canvas",
+    "ss_exit_title": "◈ יציאה.screensaver",
+    "ss_exit_hint": "לחצו או הקישו על מקש כלשהו ליציאה",
     "win_about_title": "<span class=\"symbol\">ℹ</span> אודות.user",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> אישורים.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> הגדרות.settings",
@@ -99,6 +103,8 @@
   "ru": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> музыка.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> лого.canvas",
+    "ss_exit_title": "◈ выход.screensaver",
+    "ss_exit_hint": "щёлкните или нажмите любую клавишу для выхода",
     "win_about_title": "<span class=\"symbol\">ℹ</span> о.user",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> сертификаты.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> настройки.settings",
@@ -147,6 +153,8 @@
   "ja": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> 音楽.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> ロゴ.canvas",
+    "ss_exit_title": "◈ 終了.screensaver",
+    "ss_exit_hint": "クリックまたは任意のキーで終了",
     "win_about_title": "<span class=\"symbol\">ℹ</span> ユーザー.user",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> 賞状.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> システム設定.system",
@@ -195,6 +203,8 @@
   "de": {
     "win_music_title": "<span class=\"symbol\">𝄆</span> musik.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> logo.canvas",
+    "ss_exit_title": "◈ beenden.screensaver",
+    "ss_exit_hint": "klicken oder eine Taste drücken zum Beenden",
     "win_about_title": "<span class=\"symbol\">ℹ</span> benutzer.user",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> zertifikate.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> einstellungen.system",

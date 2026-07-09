@@ -52,6 +52,10 @@
         const eink = document.documentElement.classList.contains("eink-mode");
         document.body.classList.add(eink ? "mode-eink" : "mode-lcd");
         const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        // Everything on this standalone page follows the visitor's saved language
+        // (there's no runtime translator here), falling back to English.
+        const lang = localStorage.getItem("pelmeniboiler-lang") || document.documentElement.lang || "en";
+        const forLang = (byLang) => (byLang && (byLang[lang] || byLang.en)) || null;
 
         if (!eink) {
             // logo.canvas windows caroming off the walls and each other, plus the
@@ -94,19 +98,25 @@
                 el.style.transform = "translate(" + it.x + "px," + it.y + "px)";
             };
 
-            const build = (mark) => {
-                spawn("ss-exit", '<div class="title-bar"><span class="title">◈ exit.screensaver</span> <button class="close-btn">&times;</button></div>'
-                    + '<div class="content">click or press any key to exit</div>');
+            const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const build = (mark, ui) => {
+                const rtl = lang === "he" ? ' dir="rtl"' : '';
+                const logoTitle = ui.logo || '<span class="symbol">❈</span> logo.canvas';
+                const exitTitle = esc(ui.exitTitle || "◈ exit.screensaver");
+                const exitHint = esc(ui.exitHint || "click or press any key to exit");
+                spawn("ss-exit", '<div class="title-bar"><span class="title">' + exitTitle + '</span> <button class="close-btn">&times;</button></div>'
+                    + '<div class="content"' + rtl + '>' + exitHint + '</div>');
                 for (let i = 0; i < N; i++) {
-                    spawn("ss-logo", '<div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>'
+                    spawn("ss-logo", '<div class="title-bar"><span class="title">' + logoTitle + '</span> <button class="close-btn">&times;</button></div>'
                         + '<div class="content logo-image-container">' + mark + '</div>');
                 }
                 if (!reduce) requestAnimationFrame(step);
             };
 
-            fetch("/logo/shzh.svg").then((r) => r.text())
-                .then((svg) => build(svg))
-                .catch(() => build('<img src="/logo/shzh.svg" alt="">'));
+            Promise.all([
+                fetch("/logo/shzh.svg").then((r) => r.text()).catch(() => '<img src="/logo/shzh.svg" alt="">'),
+                fetch("/screensaver/photos.json").then((r) => r.json()).catch(() => ({})),
+            ]).then(([mark, data]) => build(mark, forLang(data.ui) || {}));
         } else {
             // A random photo, full-screen Floyd–Steinberg dithered to the theme's
             // ink/paper, with a random excerpt from its article and a bg-colour
@@ -168,8 +178,6 @@
 
             const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
             // Show the caption in the visitor's chosen language (falling back to English).
-            const lang = localStorage.getItem("pelmeniboiler-lang") || document.documentElement.lang || "en";
-            const forLang = (byLang) => (byLang && (byLang[lang] || byLang.en)) || null;
             if (lang === "he") capEl.dir = "rtl";
             if (lang === "gt") capEl.style.fontFamily = "'FairfaxHD', var(--font-body, serif)";
 
