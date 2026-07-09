@@ -134,8 +134,9 @@ body {
     font-family: var(--font-body);
     margin: 0; padding: 0; line-height: 1.5;
     transition: background-color 0.3s ease, color 0.3s ease;
-    padding-bottom: 40px; 
+    padding-bottom: 40px;
     overflow: hidden;
+
     color: var(--text-color); 
     background-color: var(--bg-color);
 }
@@ -378,6 +379,9 @@ body.gallery-mode #gallery-bg { display: block; }
     background-size: cover; background-position: center; transition: opacity 1.4s ease; }
 /* E-ink gallery is a single dithered still — no cross-fade, crisp dither dots. */
 body.eink-mode #gallery-bg .gallery-layer { transition: none; image-rendering: pixelated; }
+/* E-ink must never animate a colour → snap instantly, no fade through the old
+   theme's colours (which would otherwise tint the gallery dither on entry). */
+body.eink-mode, body.eink-mode * { transition: none !important; }
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em 0; padding: 0; font-weight: bold; }
 p { font-size: 14px; margin-bottom: 0.8em; }
 .content { padding: 10px; overflow-y: auto; max-height: 350px; flex-grow: 1; min-height: 0; }
