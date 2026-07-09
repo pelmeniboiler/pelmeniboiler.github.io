@@ -13,6 +13,12 @@
     const THEME_KEY = 'pelmeniboiler-theme';
     const MODE_KEY = 'pelmeniboiler-mode';
 
+    // The frost theme was renamed kfor → moroz; migrate any saved selection.
+    try {
+        if (localStorage.getItem(THEME_KEY) === 'kfor') localStorage.setItem(THEME_KEY, 'moroz');
+        if (localStorage.getItem('pelmeniboiler-last-color-theme') === 'kfor') localStorage.setItem('pelmeniboiler-last-color-theme', 'moroz');
+    } catch (_) { /* storage unavailable */ }
+
     try {
         // Retrieve the saved theme and mode from localStorage.
         const savedTheme = localStorage.getItem(THEME_KEY);
