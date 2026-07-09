@@ -136,6 +136,12 @@
     --font-body: Tahoma, Verdana, Geneva, 'MS Sans Serif', sans-serif;
     --bg-color: #008080; --win-bg-color: #C0C0C0; --text-color: #000000; --border-color: #808080; --inv-bg-color: #000080; --inv-text-color: #FFFFFF; --link-hover-bg: #000080; --link-hover-color: #FFFFFF;
 }
+/* Glass: liquid-glass — translucent panes that refract what's behind. Best over
+   gallery mode or a stack of overlapping windows. */
+:root.glass-mode {
+    --theme-bg-color: #E8EFF6; --theme-text-color: #14212E; --theme-border-color: #FFFFFF; --theme-accent-color: #4A78B0;
+    --bg-color: #7C99B5; --win-bg-color: #EAF1F8; --text-color: #14212E; --border-color: #FFFFFF; --inv-bg-color: #FFFFFF; --inv-text-color: #14212E; --link-hover-bg: var(--theme-accent-color); --link-hover-color: #FFFFFF;
+}
 
 /* --- BASE & MODE STYLES --- */
 body {
@@ -977,6 +983,54 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
 }
 
+/* --- GLASS THEME: liquid glass ---
+   Translucent, blurred panes with a bright bevelled rim. The frosted blur is the
+   reliable base everywhere; where the browser supports an SVG filter as a
+   backdrop-filter, we also refract (warp) the backdrop for the real liquid-glass
+   ripple. Shows best over gallery mode / overlapping windows. */
+:root.glass-mode .window,
+:root.glass-mode .start-menu,
+:root.glass-mode .custom-dropdown-menu,
+:root.glass-mode .rss-dropdown-content,
+:root.glass-mode #tray {
+    border: none; border-radius: 26px; overflow: hidden;
+    background-color: color-mix(in srgb, var(--win-bg-color) 30%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    box-shadow:
+        inset 2px 2px 0 -1px rgba(255, 255, 255, 0.85),
+        inset -1.5px -1.5px 0 -1px rgba(255, 255, 255, 0.35),
+        inset 0 0 8px 1px rgba(255, 255, 255, 0.55),
+        0 16px 46px rgba(18, 30, 44, 0.34);
+}
+@supports (backdrop-filter: url("#pb-liquid-glass")) or (-webkit-backdrop-filter: url("#pb-liquid-glass")) {
+    :root.glass-mode .window,
+    :root.glass-mode .start-menu,
+    :root.glass-mode #tray {
+        -webkit-backdrop-filter: url("#pb-liquid-glass") blur(2px) saturate(160%);
+        backdrop-filter: url("#pb-liquid-glass") blur(2px) saturate(160%);
+    }
+}
+:root.glass-mode .title-bar {
+    border: none; color: var(--text-color);
+    background-color: color-mix(in srgb, #ffffff 26%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+:root.glass-mode .title { color: var(--text-color); }
+:root.glass-mode .close-btn,
+:root.glass-mode .filter-btn,
+:root.glass-mode .normal-btn,
+:root.glass-mode .rss-btn,
+:root.glass-mode .custom-dropdown-toggle {
+    border: none; border-radius: 999px; color: var(--text-color);
+    background-color: color-mix(in srgb, #ffffff 22%, transparent);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    box-shadow: inset 1.5px 1.5px 0 -1px rgba(255, 255, 255, 0.8), inset 0 0 3px 1px rgba(255, 255, 255, 0.5);
+}
+:root.glass-mode .filter-btn.active {
+    background-color: color-mix(in srgb, var(--theme-accent-color) 55%, transparent); color: #fff;
+}
+
 /* --- NOTIFY BELL (installed-app only; injected by notify-bell.js) --- */
 .notify-dropdown { min-width: 180px; padding: 6px 10px; }
 .notify-row { display: block; padding: 3px 0; cursor: var(--cur-pointer); white-space: nowrap; }
@@ -1112,6 +1166,13 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
     --cur-text: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%23C0C0C0'%20stroke-width%3D'3.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%23000000'%20stroke-width%3D'1.5'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, text;
     --cur-move: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M12%2C2%20l3%2C3%20h-2%20v5%20h5%20v-2%20l3%2C3%20l-3%2C3%20v-2%20h-5%20v5%20h2%20l-3%2C3%20l-3%2C-3%20h2%20v-5%20h-5%20v2%20l-3%2C-3%20l3%2C-3%20v2%20h5%20v-5%20h-2%20z'%20fill%3D'%23000000'%20stroke%3D'%23C0C0C0'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, move;
     --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M2%2C1%20L2%2C13%20L5.5%2C10%20L8%2C15%20L9.8%2C14.2%20L7.3%2C9.3%20L11.5%2C9.2%20Z'%20fill%3D'%23000000'%20stroke%3D'%23C0C0C0'%20stroke-width%3D'1'%20stroke-linejoin%3D'round'%2F%3E%3Crect%20x%3D'13'%20y%3D'13'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23C0C0C0'%20stroke%3D'%23000000'%20stroke-width%3D'1.3'%2F%3E%3Crect%20x%3D'11'%20y%3D'11'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23C0C0C0'%20stroke%3D'%23000000'%20stroke-width%3D'1.3'%2F%3E%3C%2Fsvg%3E") 2 1, copy;
+}
+:root.glass-mode {
+    --cur-default: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M3%2C2%20L3%2C20%20L8%2C15.5%20L11.5%2C22.5%20L14.3%2C21.2%20L10.9%2C14.6%20L17%2C14.5%20Z'%20fill%3D'%2314212E'%20stroke%3D'%23E8EFF6'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 3 2, auto;
+    --cur-pointer: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'32'%20viewBox%3D'176%20188%20572%20752'%3E%3Cpath%20d%3D'm690.8%20603.9l-49%20201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.52-43.12%2046.7-43.12%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66%20259.38c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.53-43.12%2046.71-43.12%2026.18%200%2046.53%2023.84%2046.53%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65%2056.38c-26.18%200-48.35-15.73-48.35-35.42%200-19.7%2022.9-46.47%2049.08-46.47%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.09%2038.35-47.27%2038.35zm47.35-39.38v262.49l-96.17-0.41c0%200-4.28-260.97-0.71-262.06zm29.75%2085.54c-21.22%200-37.27-17.94-37.27-36.48%200-18.54%2016.64-40.57%2037.86-40.57%2021.22%200%2037.73%2022.43%2037.73%2040.97%200%2018.53-17.09%2036.08-38.32%2036.08zm38.38-37.05l-62.02%20249.27h-76l62.02-249.27zm-60%20239v91h-290v-91zm-353.17-232.19c-24.83%2012.77-52.91%204.34-62.53-14.34-9.61-18.69-1.57-50.92%2023.27-63.69%2024.83-12.78%2055.78-0.09%2065.39%2018.59%209.61%2018.69-1.3%2046.66-26.13%2059.44zm25.7-60.45l128.06%20249-88.93%2045.73-128.06-248.99z'%20fill%3D'%23E8EFF6'%20stroke%3D'%23E8EFF6'%20stroke-width%3D'58'%20stroke-linejoin%3D'round'%2F%3E%3Cpath%20d%3D'm690.8%20603.9l-49%20201.1h-288.8v-265h93.29zm-291.27-287.01c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.52-43.12%2046.7-43.12%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.75v-262.49zm45.66%20259.38c-26.18%200-45.98-19.07-45.98-38.77%200-19.7%2020.53-43.12%2046.71-43.12%2026.18%200%2046.53%2023.84%2046.53%2043.54%200%2019.7-21.08%2038.35-47.26%2038.35zm47.34-39.38v262.49h-93.74v-262.49zm46.65%2056.38c-26.18%200-48.35-15.73-48.35-35.42%200-19.7%2022.9-46.47%2049.08-46.47%2026.18%200%2046.54%2023.84%2046.54%2043.54%200%2019.7-21.09%2038.35-47.27%2038.35zm47.35-39.38v262.49l-96.17-0.41c0%200-4.28-260.97-0.71-262.06zm29.75%2085.54c-21.22%200-37.27-17.94-37.27-36.48%200-18.54%2016.64-40.57%2037.86-40.57%2021.22%200%2037.73%2022.43%2037.73%2040.97%200%2018.53-17.09%2036.08-38.32%2036.08zm38.38-37.05l-62.02%20249.27h-76l62.02-249.27zm-60%20239v91h-290v-91zm-353.17-232.19c-24.83%2012.77-52.91%204.34-62.53-14.34-9.61-18.69-1.57-50.92%2023.27-63.69%2024.83-12.78%2055.78-0.09%2065.39%2018.59%209.61%2018.69-1.3%2046.66-26.13%2059.44zm25.7-60.45l128.06%20249-88.93%2045.73-128.06-248.99z'%20fill%3D'%2314212E'%2F%3E%3C%2Fsvg%3E") 9 2, pointer;
+    --cur-text: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%23E8EFF6'%20stroke-width%3D'3.4'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3Cpath%20d%3D'M8%2C3%20H16%20M8%2C21%20H16%20M12%2C3%20V21'%20stroke%3D'%2314212E'%20stroke-width%3D'1.5'%20fill%3D'none'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, text;
+    --cur-move: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M12%2C2%20l3%2C3%20h-2%20v5%20h5%20v-2%20l3%2C3%20l-3%2C3%20v-2%20h-5%20v5%20h2%20l-3%2C3%20l-3%2C-3%20h2%20v-5%20h-5%20v2%20l-3%2C-3%20l3%2C-3%20v2%20h5%20v-5%20h-2%20z'%20fill%3D'%2314212E'%20stroke%3D'%23E8EFF6'%20stroke-width%3D'1.1'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") 12 12, move;
+    --cur-copy: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M2%2C1%20L2%2C13%20L5.5%2C10%20L8%2C15%20L9.8%2C14.2%20L7.3%2C9.3%20L11.5%2C9.2%20Z'%20fill%3D'%2314212E'%20stroke%3D'%23E8EFF6'%20stroke-width%3D'1'%20stroke-linejoin%3D'round'%2F%3E%3Crect%20x%3D'13'%20y%3D'13'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23E8EFF6'%20stroke%3D'%2314212E'%20stroke-width%3D'1.3'%2F%3E%3Crect%20x%3D'11'%20y%3D'11'%20width%3D'8'%20height%3D'9'%20rx%3D'1.3'%20fill%3D'%23E8EFF6'%20stroke%3D'%2314212E'%20stroke-width%3D'1.3'%2F%3E%3C%2Fsvg%3E") 2 1, copy;
 }
 html, body { cursor: var(--cur-default); }
 a, button, summary, label, select, [role="button"],
