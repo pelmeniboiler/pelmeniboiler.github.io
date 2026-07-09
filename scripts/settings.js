@@ -252,10 +252,21 @@ function setupSettings() {
         galleryCurrentSrc = null;
 
     const galleryRGB = (s) => (s.match(/\d+/g) || [0, 0, 0]).map(Number).slice(0, 3);
+    // Read the theme's *target* ink/paper via a throwaway element, so a running
+    // background-color/color transition can't hand us a mid-fade (tinted) colour
+    // — that was what let the previous theme's colours bleed into the e-ink dither.
+    function themeInkPaper() {
+        const probe = document.createElement('span');
+        probe.style.cssText = 'position:absolute;left:-9999px;visibility:hidden;transition:none;color:var(--text-color);background-color:var(--bg-color)';
+        body.appendChild(probe);
+        const pcs = getComputedStyle(probe);
+        const ink = galleryRGB(pcs.color), paper = galleryRGB(pcs.backgroundColor);
+        probe.remove();
+        return { ink, paper };
+    }
     // Dither one image to the theme's ink/paper and return it as a data URL.
     function galleryDither(img) {
-        const cs = getComputedStyle(body);
-        const ink = galleryRGB(cs.color), paper = galleryRGB(cs.backgroundColor);
+        const { ink, paper } = themeInkPaper();
         const w = window.innerWidth, h = window.innerHeight;
         const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
         const ctx = cv.getContext('2d', { willReadFrequently: true });
@@ -294,6 +305,9 @@ function setupSettings() {
         clearInterval(galleryTimer); galleryTimer = null;
         if (!galleryPhotos.length) return;
         if (docEl.classList.contains('eink-mode')) {
+            // Blank the layers first so no leftover colour photo flashes while the
+            // dithered still is being computed; #gallery-bg's own bg (paper) shows.
+            galleryLayers.forEach((l) => { l.style.opacity = '0'; l.style.backgroundImage = 'none'; });
             // One random photo, dithered, no motion, no colour.
             const p = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
             const img = new Image();
