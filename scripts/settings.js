@@ -347,8 +347,8 @@ function setupSettings() {
      */
     function applyTheme(theme) {
         // Helper to get all theme-related classes from an element's class list.
-        const themeClassesToRemove = (target) => 
-            [...target.classList].filter(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode'].includes(c));
+        const themeClassesToRemove = (target) =>
+            [...target.classList].filter(c => c.endsWith('-mode') && !['eink-mode', 'lcd-mode', 'gallery-mode'].includes(c));
 
         // **FIX:** Remove old theme classes from both <html> and <body>.
         docEl.classList.remove(...themeClassesToRemove(docEl));
@@ -402,6 +402,10 @@ function setupSettings() {
 
         // Call the new function to update the favicon after the theme has been applied.
         updateFavicon();
+
+        // Keep the e-ink gallery still in sync with the theme's ink/paper (it's a
+        // one-off dither, so it must be re-rendered when the palette changes).
+        if (docEl.classList.contains('eink-mode') && body.classList.contains('gallery-mode')) galleryRender();
     }
 
     if (themeRadios.length > 0) {
@@ -409,17 +413,6 @@ function setupSettings() {
             radio.addEventListener('change', (e) => {
                 if(e.target.checked) applyTheme(e.target.value);
             });
-        });
-    }
-
-    // Easter egg: triple-click the Funky preset to toggle a "liquid glass" look.
-    // (A click event's `detail` is the consecutive-click count, so 3 == triple.)
-    const funkyLabel = document.querySelector('input[name="theme"][value="funky"]')?.closest('.radio-label');
-    if (funkyLabel) {
-        funkyLabel.addEventListener('click', (e) => {
-            if (e.detail !== 3) return;
-            const on = document.documentElement.classList.toggle('liquid-glass');
-            try { localStorage.setItem('pelmeniboiler-liquid-glass', on ? '1' : '0'); } catch (_) { /* ignore */ }
         });
     }
 

@@ -83,6 +83,7 @@ async function main() {
         [':root.akai-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.rindswurst-mode', '--theme-text-color', '--theme-bg-color'],
         [':root.tapuz-mode', '--theme-text-color', '--theme-bg-color'],
+        [':root.kfor-mode', '--theme-text-color', '--theme-bg-color'],
     ];
 
     const blocks = [];

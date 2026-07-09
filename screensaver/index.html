@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="/styles/pelmeni2025.css">
     <style>
         html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg-color); cursor: none; }
-        #hint { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 99;
-            font-family: var(--font-body, serif); font-size: 12px; color: var(--text-color);
-            letter-spacing: 1px; user-select: none; }
 
         /* --- LCD: logo.canvas windows bouncing around (the count scales with the
                screen so small screens get fewer). They're the real logo.canvas
@@ -39,9 +36,6 @@
 
         body.mode-lcd #poster { display: none; }
         body.mode-eink #lcd-field { display: none; }
-        /* The exit prompt is a bouncing window in LCD mode, so the floating overlay
-           only appears on the e-ink poster. */
-        body.mode-lcd #hint { display: none; }
     </style>
 </head>
 <body>
@@ -52,8 +46,6 @@
         <figure id="ss-caption"></figure>
         <div id="ss-mark"></div>
     </div>
-
-    <div id="hint">click or press any key to exit</div>
 
     <script>
     (function () {
@@ -196,9 +188,9 @@
                         capEl.style.display = "";
                     } else { capEl.style.display = "none"; }
                 };
+                // The e-ink poster is a single still — one photo, no cycling. It only
+                // re-renders to re-fit the dither if the window is resized.
                 await show();
-                // Drift through the gallery on a motion-ok screen; otherwise hold one.
-                if (!reduce) setInterval(() => { idx++; show(); }, 12000);
                 addEventListener("resize", show);
             })();
         }

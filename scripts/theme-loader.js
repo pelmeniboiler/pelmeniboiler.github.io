@@ -38,11 +38,6 @@
         // Apply correct classes to the <html> element immediately.
         docEl.classList.add(correctThemeClass, correctModeClass);
 
-        // Restore the "liquid glass" easter-egg look if it was toggled on.
-        if (localStorage.getItem('pelmeniboiler-liquid-glass') === '1') {
-            docEl.classList.add('liquid-glass');
-        }
-
         // Point the PWA manifest at the current theme's variant so an install
         // picks up a matching icon + colours. (Installed apps keep the icon
         // they were installed with — the platform offers no way to change it
