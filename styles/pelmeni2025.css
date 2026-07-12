@@ -133,7 +133,7 @@
    the actual desktop --bg-color is teal.) */
 :root.win98-mode {
     --theme-bg-color: #C0C0C0; --theme-text-color: #000000; --theme-border-color: #808080; --theme-accent-color: #000080;
-    --font-body: Tahoma, Verdana, Geneva, 'MS Sans Serif', sans-serif;
+    --font-body: Tahoma, Verdana, Geneva, 'MS Sans Serif', sans-serif, 'FairfaxHD';
     --bg-color: #008080; --win-bg-color: #C0C0C0; --text-color: #000000; --border-color: #808080; --inv-bg-color: #000080; --inv-text-color: #FFFFFF; --link-hover-bg: #000080; --link-hover-color: #FFFFFF;
 }
 /* Glass: liquid-glass — translucent panes that refract what's behind. Best over
@@ -151,7 +151,7 @@
    text, garish window borders. Abandon all taste. */
 :root.wordart-mode {
     --theme-bg-color: #14B8C4; --theme-text-color: #2A0A4A; --theme-border-color: #8E44AD; --theme-accent-color: #FFE400;
-    --font-body: 'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive;
+    --font-body: 'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive, 'FairfaxHD';
     --bg-color: #14B8C4; --win-bg-color: #FFFFFF; --text-color: #2A0A4A; --border-color: #8E44AD; --inv-bg-color: #8E44AD; --inv-text-color: #FFE400; --link-hover-bg: #FFE400; --link-hover-color: #C0392B;
 }
 
@@ -1110,7 +1110,7 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 :root.wordart-mode h1, :root.wordart-mode h2, :root.wordart-mode h3,
 :root.wordart-mode .blog-post h3 a,
 :root.wordart-mode .welcome-text-lcd, :root.wordart-mode .welcome-text-eink b {
-    font-family: Impact, 'Haettenschweiler', 'Arial Narrow Bold', 'Franklin Gothic Bold', sans-serif;
+    font-family: Impact, 'Haettenschweiler', 'Arial Narrow Bold', 'Franklin Gothic Bold', sans-serif, 'FairfaxHD';
     font-weight: 900; letter-spacing: 1px;
     background: linear-gradient(92deg, #ff2d55, #ff9500, #ffcc00, #34c759, #00c7ff, #af52de, #ff2d55);
     -webkit-background-clip: text; background-clip: text;
