@@ -568,12 +568,20 @@ textarea::-webkit-scrollbar-thumb {
     }
     .window {
         position: relative;
-        width: auto;
+        /* !important so windows with an inline width (settings, folder indexes)
+           still stretch full-width instead of staying half-off the screen. */
+        width: auto !important;
+        max-width: none !important;
+        box-sizing: border-box;
         left: 0 !important;
         top: 0 !important;
         margin: 10px;
         z-index: auto !important;
     }
+    /* Long single-line content (e.g. the about name) must wrap on a phone rather
+       than force a sideways scroll. */
+    .window .content { overflow-x: hidden; }
+    #about-window .content h2 { white-space: normal; overflow-wrap: break-word; }
     .title-bar { cursor: var(--cur-default); }
     .start-menu {
         width: 100%;
