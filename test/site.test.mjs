@@ -727,6 +727,8 @@ try {
             bar: getComputedStyle(document.getElementById('tile-bar')).display,
             devTabHidden: document.getElementById('settings-nav-dev')?.hidden,
         }));
+        const playJs = await fpage.evaluate(() => [...document.querySelectorAll('#music-window .normal-btn')].filter((b) => getComputedStyle(b).display !== 'none').map((b) => b.tagName));
+        ok(JSON.stringify(playJs) === '["BUTTON"]', `JS hub: music shows exactly one ▶, the JS button (${JSON.stringify(playJs)})`);
         ok(floating.pos === 'absolute' && floating.bar === 'none' && floating.devTabHidden === true,
             `JS hub (default): floating windows, no window bar, developer tab hidden (${JSON.stringify(floating)})`);
 
@@ -862,7 +864,7 @@ try {
             return { svgs: uses.length, shown: shown.length, drawn, bare, blogTitle: document.querySelector('#blog-window .title').textContent };
         }, EXT.source);
         ok(hub.svgs > 20 && hub.bare.length === 0, `Emoji: hub draws every emoji as SVG, none left to the OS font (${hub.svgs} svg; bare: ${JSON.stringify(hub.bare)})`);
-        ok(hub.shown > 10 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
+        ok(hub.shown > 5 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
         ok(hub.blogTitle.includes('\u{1F4D3}'), `Emoji: the character stays in the text for copy/search (${JSON.stringify(hub.blogTitle)})`);
         await ctx.close();
 

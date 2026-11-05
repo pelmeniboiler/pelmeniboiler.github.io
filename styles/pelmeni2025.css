@@ -1175,7 +1175,8 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 #tile-bar { display: none; }
 
 /* Things that only make sense with or without JS. */
-.nojs-only { display: none; }
+/* !important: a.normal-btn below sets display too, and must not un-hide these with JS on. */
+html.js .nojs-only { display: none !important; }
 html:not(.js) .nojs-only { display: inline-block; }
 html:not(.js) .close-btn { display: none; }
 html:not(.js) .tray, html:not(.js) .start-menu { display: none; } /* baked chrome that needs JS to do anything */
