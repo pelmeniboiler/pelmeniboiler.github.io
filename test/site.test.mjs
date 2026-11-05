@@ -283,8 +283,12 @@ try {
             await cache.put('/notify-seen', new Response(JSON.stringify(removed)));
             const reg = await navigator.serviceWorker.ready;
             reg.active.postMessage({ type: 'check-new-posts' });
-            await new Promise((r) => setTimeout(r, 1200));
-            const after = await (await cache.match('/notify-seen')).json();
+            // Poll rather than sleep a fixed 1.2 s: CI runners are slower than a laptop.
+            let after = removed;
+            for (let i = 0; i < 50 && after.length !== seen.length; i++) {
+                await new Promise((r) => setTimeout(r, 200));
+                after = await (await cache.match('/notify-seen')).json();
+            }
             return { before: seen.length, mid: removed.length, after: after.length };
         });
         ok(recheck.after === recheck.before, `Bell: worker detects new posts and re-baselines (${JSON.stringify(recheck)})`);
@@ -577,6 +581,25 @@ try {
         ok(fontUrls.length > 0 && fontUrls.every((u) => u.endsWith('.woff2')),
             `Fonts: browsers fetch WOFF2, never TTF (${fontUrls.map((u) => u.split('/').pop()).join(', ')})`);
         ok(r.ink > 200 && r.colour === 0, `Fonts: Twemoji renders monochrome (ink=${r.ink}, colour=${r.colour})`);
+        await ctx.close();
+    }
+
+    // ============ LEGACY ROOT URLS + HUB HEAD ============
+    {
+        const ctx = await browser.newContext({ javaScriptEnabled: false });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/dixie_and_vegas.html`, { waitUntil: 'load' });
+        await page.waitForURL('**/blog/dixie_and_vegas/en/', { timeout: 5000 }).catch(() => {});
+        ok(page.url().endsWith('/blog/dixie_and_vegas/en/'), `Legacy /dixie_and_vegas.html redirects without JS (got ${page.url()})`);
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        const head = await page.evaluate(() => ({
+            charsetFirst: document.head.firstElementChild?.getAttribute('charset')?.toLowerCase() === 'utf-8',
+            desc: !!document.querySelector('meta[name="description"]')?.content,
+            og: document.querySelector('meta[property="og:image"]')?.content || '',
+            audioInBody: !!document.querySelector('body audio#audio') && !document.querySelector('head audio'),
+        }));
+        ok(head.charsetFirst && head.desc && /\.png$/.test(head.og) && head.audioInBody,
+            `Hub head: charset first, description, PNG og:image, <audio> in body (${JSON.stringify(head)})`);
         await ctx.close();
     }
 

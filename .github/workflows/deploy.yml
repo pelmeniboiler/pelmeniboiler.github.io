@@ -12,6 +12,9 @@ name: Build and deploy site
 on:
   push:
     branches: [main]
+  # Pull requests run the test job only (build/deploy are skipped below), so a
+  # PR shows a green/red check before it ever reaches the live site.
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -20,9 +23,10 @@ permissions:
   id-token: write
 
 # Allow one concurrent deployment; don't cancel an in-progress one.
+# PR runs get their own group so they never queue behind (or block) a deploy.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # Browser smoke tests (informational — does not block deploys; flip the deploy
@@ -43,10 +47,13 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Build site
         run: npm run build
+      - name: Check internal links
+        run: npm run check:links
       - name: Run browser tests
         run: npm test
 
   build:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -70,6 +77,10 @@ jobs:
       - name: Build site (manifest, feeds, per-language pages, sitemap)
         run: npm run build
 
+      # Blocks the deploy: a broken internal link never reaches the live site.
+      - name: Check internal links
+        run: npm run check:links
+
       - name: Drop build-only dependencies from the artifact
         run: rm -rf node_modules
 
@@ -82,6 +93,7 @@ jobs:
           path: .
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
