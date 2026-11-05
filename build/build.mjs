@@ -13,6 +13,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
+import { processImages, pictureize } from './images.mjs';
 
 const ROOT_DIR = process.cwd();
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
@@ -28,7 +29,7 @@ const SITE_URL = 'https://pelmeniboiler.github.io/';
  */
 async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
     const SKIP = new Set(['node_modules', '.git', '.github', 'build', 'test', 'scripts',
-        'styles', 'localization', 'logo', 'rss', 'modules', 'inprogress']);
+        'styles', 'localization', 'logo', 'rss', 'modules', 'inprogress', 'img']);
     const stripHtml = (s) => s.replace(/<[^>]+>/g, '').trim();
     const titleOf = async (fp, fallback) => {
         try {
@@ -235,6 +236,9 @@ async function main() {
     const processedPosts = await processAllPosts(blogPostPaths);
     const assetVersion = await computeAssetVersion(ROOT_DIR);
 
+    console.log('Encoding photos (AVIF/WebP + pre-dithered e-ink)...');
+    const imageManifest = await processImages(ROOT_DIR);
+
     console.log('Generating blog manifest...');
     const manifestItems = await generateBlogManifest(processedPosts, localizationData, BLOG_DIR);
 
@@ -249,7 +253,7 @@ async function main() {
 
     console.log('Generating per-language article pages...');
     const { builtUrls: pageUrls, zineArticles } =
-        await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion);
+        await generateLanguagePages(processedPosts, localizationData, BLOG_DIR, assetVersion, imageManifest);
 
     console.log('Generating zines...');
     await generateZines(zineArticles, ROOT_DIR, assetVersion);
@@ -666,7 +670,7 @@ function bakeFragment(fragmentHtml, lang, lookup) {
  * crawlers and no-JS clients get real content. Returns the list of built page
  * URLs (root-relative) for the sitemap.
  */
-async function generateLanguagePages(processedPosts, localizationData, blogDir, assetVersion) {
+async function generateLanguagePages(processedPosts, localizationData, blogDir, assetVersion, imageManifest = {}) {
     const globalData = localizationData.global || {};
     const builtUrls = [];
     const zineArticles = []; // per-language article content, reused by the zine
@@ -713,6 +717,13 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
                 const val = lookup(lang, el.getAttribute('data-title-key'));
                 if (val != null) el.setAttribute('title', stripHtml(val));
             });
+            doc.querySelectorAll('[data-alt-key]').forEach((el) => {
+                const val = lookup(lang, el.getAttribute('data-alt-key'));
+                if (val != null) el.setAttribute('alt', stripHtml(val));
+            });
+
+            // Photos -> <picture> (AVIF/WebP, intrinsic size, lazy, e-ink variant).
+            pictureize(doc, imageManifest);
 
             // Language + direction.
             root.setAttribute('lang', lang);

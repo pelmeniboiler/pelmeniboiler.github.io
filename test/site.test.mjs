@@ -157,10 +157,10 @@ try {
                 const [r, g, b] = [d[i], d[i + 1], d[i + 2]];
                 if ((r === g && g === b) && (r < 8 || r > 247)) bw++; else other++;
             }
-            return { bw, other, src: img.src.slice(0, 22) };
+            return { bw, other, src: img.currentSrc || img.src };
         });
-        ok(dither && dither.src.startsWith('data:image/png') && dither.bw > dither.other * 20,
-            `E-ink: images truly 1-bit dithered (bw=${dither?.bw}, other=${dither?.other})`);
+        ok(dither && /\/img\/photos\/.+-eink\.png$/.test(dither.src) && dither.bw > dither.other * 20,
+            `E-ink: photos use the build-time 1-bit dither (bw=${dither?.bw}, other=${dither?.other}, src=${dither?.src.split('/').pop()})`);
         await ctx.close();
     }
 
@@ -582,6 +582,53 @@ try {
             `Fonts: browsers fetch WOFF2, never TTF (${fontUrls.map((u) => u.split('/').pop()).join(', ')})`);
         ok(r.ink > 200 && r.colour === 0, `Fonts: Twemoji renders monochrome (ink=${r.ink}, colour=${r.colour})`);
         await ctx.close();
+    }
+
+    // ============ IMAGES: <picture>, modern formats, sizes, e-ink never fetches originals ============
+    {
+        const fetched = async (mode) => {
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+            await ctx.addInitScript((m) => localStorage.setItem('pelmeniboiler-mode', m), mode);
+            const page = await ctx.newPage();
+            const urls = [];
+            page.on('request', (r) => { if (r.resourceType() === 'image') urls.push(decodeURI(new URL(r.url()).pathname)); });
+            await page.goto(`${BASE}/blog/elizabeth_park/en/`, { waitUntil: 'load' });
+            await page.waitForTimeout(800);
+            const info = await page.evaluate(() => {
+                const imgs = [...document.querySelectorAll('article.content img[src^="/photos/"]')];
+                return {
+                    total: imgs.length,
+                    inPicture: imgs.filter((i) => i.parentElement.tagName === 'PICTURE').length,
+                    sized: imgs.filter((i) => i.getAttribute('width') && i.getAttribute('height')).length,
+                    lazy: imgs.filter((i) => i.loading === 'lazy').length,
+                    first: imgs[0]?.currentSrc || '',
+                };
+            });
+            await ctx.close();
+            return { urls, info };
+        };
+        const lcd = await fetched('lcd');
+        ok(lcd.info.total > 10 && lcd.info.inPicture === lcd.info.total && lcd.info.sized === lcd.info.total,
+            `Images: every photo is a sized <picture> (${JSON.stringify(lcd.info)})`);
+        ok(lcd.info.lazy === lcd.info.total - 1, `Images: all but the first photo lazy-load (${lcd.info.lazy}/${lcd.info.total})`);
+        ok(/\.avif$/.test(lcd.info.first) && !lcd.urls.some((u) => u.startsWith('/photos/')),
+            `Images: LCD mode loads AVIF and never the original PNGs (first=${lcd.info.first.split('/').pop()})`);
+        // Alt text: every article image in every built language page has some.
+        const missing = [];
+        for (const dir of await fs.readdir(path.join(ROOT, 'blog'), { withFileTypes: true })) {
+            if (!dir.isDirectory()) continue;
+            for (const lang of await fs.readdir(path.join(ROOT, 'blog', dir.name)).catch(() => [])) {
+                const html = await fs.readFile(path.join(ROOT, 'blog', dir.name, lang, 'index.html'), 'utf8').catch(() => '');
+                for (const m of html.matchAll(/<img\b[^>]*>/g)) {
+                    if (!/\balt="[^"]+"/.test(m[0]) && /\/photos\//.test(m[0])) missing.push(`${dir.name}/${lang}`);
+                }
+            }
+        }
+        ok(missing.length === 0, `Images: every article photo has alt text in every language page (${missing.length} missing${missing.length ? ': ' + [...new Set(missing)].join(', ') : ''})`);
+
+        const eink = await fetched('eink');
+        ok(eink.urls.some((u) => u.endsWith('-eink.png')) && !eink.urls.some((u) => u.startsWith('/photos/')),
+            `Images: e-ink mode loads pre-dithered files, never the original PNGs (${eink.urls.filter((u) => u.startsWith('/photos/')).length} originals)`);
     }
 
     // ============ LEGACY ROOT URLS + HUB HEAD ============

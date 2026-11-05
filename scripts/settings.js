@@ -580,6 +580,12 @@ function setupSettings() {
             const key = elem.getAttribute('data-title-key');
             if (translations[lang] && translations[lang][key]) elem.title = translations[lang][key];
         });
+        // ...and data-alt-key for image alt text.
+        document.querySelectorAll('[data-alt-key]').forEach(elem => {
+            const key = elem.getAttribute('data-alt-key');
+            const val = (translations[lang] && translations[lang][key]) || (translations.en && translations.en[key]);
+            if (val) elem.alt = val.replace(/<[^>]*>/g, '');
+        });
 
         // Set the language and direction on the root element for CSS and accessibility.
         document.documentElement.lang = lang;

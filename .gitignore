@@ -13,3 +13,6 @@ blog/*/
 /rss/
 /blog/blog-manifest.json
 /zine/
+
+# Generated photo variants (AVIF/WebP/e-ink; `npm run images`, cached in CI)
+/img/

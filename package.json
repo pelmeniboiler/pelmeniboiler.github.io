@@ -13,11 +13,13 @@
     "tl:stamp": "node build/tl.mjs stamp",
     "icons": "node build/generate-icons.mjs",
     "fonts": "python3 build/fonts.py",
+    "images": "node -e \"import('./build/images.mjs').then((m) => m.processImages(process.cwd()))\"",
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs"
   },
   "dependencies": {
-    "jsdom": "^24.0.0"
+    "jsdom": "^24.0.0",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "playwright": "^1.49.0"
