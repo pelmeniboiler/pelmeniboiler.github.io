@@ -392,8 +392,19 @@ function buildBlogListMarkup(manifestItems, localizationData) {
     const keywords = [...new Set(manifestItems.flatMap((p) => p.keywords || []))];
     const filterBtn = (kw, icon, active) =>
         `<button class="filter-btn${active ? ' active' : ''}" data-keyword="${kw}"><span class="symbol">${icon}</span> ${kw}</button>`;
+    // No-JS twin of the buttons: radio + label pairs and one :has() rule per
+    // keyword (styles/pelmeni2025.css shows these only under html:not(.js)).
+    const slugKw = (kw) => kw.replace(/[^A-Za-z0-9_-]/g, '_');
+    const filterRadio = (kw, icon, checked) =>
+        `<input type="radio" class="bf-radio" name="blog-filter" id="bf-${slugKw(kw)}"${checked ? ' checked' : ''}>` +
+        `<label class="filter-btn filter-label" for="bf-${slugKw(kw)}"><span class="symbol">${icon}</span> ${kw}</label>`;
+    const noJsRules = keywords.map((kw) =>
+        `html:not(.js) .window:has(#bf-${slugKw(kw)}:checked) .blog-post:not([data-keywords*="${kw}"]){display:none}`).join('\n');
     const filtersHtml = [filterBtn('All', '✧', true),
-        ...keywords.map((kw) => filterBtn(kw, KEYWORD_ICONS[kw] || '◆', false))].join('');
+        ...keywords.map((kw) => filterBtn(kw, KEYWORD_ICONS[kw] || '◆', false)),
+        filterRadio('All', '✧', true),
+        ...keywords.map((kw) => filterRadio(kw, KEYWORD_ICONS[kw] || '◆', false)),
+        `<style>\n${noJsRules}\n</style>`].join('');
 
     const postsHtml = manifestItems.map((p) => {
         const langs = (p.languages || []).join(',');
@@ -422,10 +433,15 @@ const RSS_DROPDOWN_HTML = `<div class="rss-dropdown-container">
                     <a href="https://pelmeniboiler.github.io/rss/he/feed.xml" target="_blank" rel="noopener noreferrer">עברית</a>
                     <a href="https://pelmeniboiler.github.io/rss/ja/feed.xml" target="_blank" rel="noopener noreferrer">日本語</a>
                     <a href="https://pelmeniboiler.github.io/rss/de/feed.xml" target="_blank" rel="noopener noreferrer">Deutsch</a>
-                    <a href="https://pelmeniboiler.github.io/rss/gt/feed.xml" target="_blank" rel="noopener noreferrer"></a>
+                    <a href="https://pelmeniboiler.github.io/rss/gt/feed.xml" target="_blank" rel="noopener noreferrer"></a>
                     <a href="https://pelmeniboiler.github.io/rss/ru/feed.xml" target="_blank" rel="noopener noreferrer">Русский</a>
                 </div>
             </div>`;
+
+// Native-script language names, read off the RSS dropdown so the Graflect
+// (private-use) glyphs live in one place.
+const LANG_NAMES = Object.fromEntries(
+    [...RSS_DROPDOWN_HTML.matchAll(/rss\/([a-z]+)\/feed\.xml"[^>]*>([^<]*)</g)].map((m) => [m[1], m[2]]));
 
 // Human-facing dates: Anno Mundi (Hebrew calendar) by default, Japanese era for
 // ja. Machine dates (RSS/JSON-LD/manifest) stay ISO/RFC — this is display only.
@@ -724,6 +740,14 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
 
             // Photos -> <picture> (AVIF/WebP, intrinsic size, lazy, e-ink variant).
             pictureize(doc, imageManifest);
+
+            // Plain language links for readers without JS (the settings switcher
+            // needs it). Hidden under html.js by the stylesheet.
+            const navContent = doc.querySelector('#nav-window .content');
+            if (navContent && langs.length > 1) {
+                const links = langs.map((l) => `<a href="/blog/${slug}/${l}/"${l === 'gt' ? '' : ` hreflang="${l}" lang="${l}"`}${l === lang ? ' aria-current="page"' : ''}>${LANG_NAMES[l] || l}</a>`).join('');
+                navContent.insertAdjacentHTML('beforeend', `\n<nav class="lang-links" aria-label="Languages">${links}</nav>\n`);
+            }
 
             // Language + direction.
             root.setAttribute('lang', lang);

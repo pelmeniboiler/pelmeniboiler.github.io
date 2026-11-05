@@ -631,6 +631,114 @@ try {
             `Images: e-ink mode loads pre-dithered files, never the original PNGs (${eink.urls.filter((u) => u.startsWith('/photos/')).length} originals)`);
     }
 
+    // ============ TILED DESKTOP: no-JS tmux layout + JS "tiled windows" setting ============
+    {
+        const PANES = ['welcome-window', 'blog-window', 'app-library', 'music-window', 'logo-window', 'about-window'];
+        const layout = (page) => page.evaluate((ids) => {
+            const vw = innerWidth, vh = innerHeight;
+            const rects = ids.map((id) => {
+                const el = document.getElementById(id);
+                const r = el.getBoundingClientRect();
+                return { id, shown: getComputedStyle(el).display !== 'none', l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width };
+            });
+            let overlaps = 0;
+            const shown = rects.filter((r) => r.shown);
+            for (let i = 0; i < shown.length; i++) for (let j = i + 1; j < shown.length; j++) {
+                const a = shown[i], b = shown[j];
+                if (a.l < b.r - 1 && b.l < a.r - 1 && a.t < b.b - 1 && b.t < a.b - 1) overlaps++;
+            }
+            const bar = document.getElementById('tmux-bar');
+            return {
+                shown: shown.length, overlaps,
+                inView: shown.every((r) => r.l >= 0 && r.r <= vw + 1 && r.b <= vh + 1),
+                hScroll: document.documentElement.scrollWidth > vw + 1,
+                bar: getComputedStyle(bar).display !== 'none' ? bar.querySelectorAll('a').length : 0,
+                closeBtns: [...document.querySelectorAll('#desktop > .window .close-btn')].filter((b) => getComputedStyle(b).display !== 'none').length,
+                rects: Object.fromEntries(rects.map((r) => [r.id, r])),
+            };
+        }, PANES);
+
+        // No JS, wide: six panes in a grid, nothing overlapping, all on screen.
+        const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        let L = await layout(page);
+        ok(L.shown === 6 && L.overlaps === 0 && L.inView, `No-JS hub: 6 tiled panes, no overlap, all on screen (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, inView: L.inView })})`);
+        ok(L.bar === 7 && L.closeBtns === 0, `No-JS hub: tmux status bar (7 links), no dead close buttons (bar=${L.bar}, close=${L.closeBtns})`);
+        const audio = await page.evaluate(() => getComputedStyle(document.getElementById('audio')).display !== 'none');
+        ok(audio, 'No-JS hub: native audio controls stand in for the ▶ button');
+
+        // Status bar zooms a pane via :target.
+        await page.click('#tmux-bar a[href="#blog-window"]');
+        L = await layout(page);
+        ok(L.shown === 1 && L.rects['blog-window'].w > 1200, `No-JS hub: status-bar entry zooms its pane (shown=${L.shown}, width=${Math.round(L.rects['blog-window'].w)})`);
+        await page.click('#tmux-bar .tmux-session');
+        L = await layout(page);
+        ok(L.shown === 6, `No-JS hub: [session] un-zooms (shown=${L.shown})`);
+
+        // CSS-only blog filter.
+        await page.click('label[for="bf-Photos"]');
+        const vis = await page.evaluate(() => [...document.querySelectorAll('#blog-posts-list .blog-post')]
+            .filter((p) => getComputedStyle(p).display !== 'none').map((p) => p.dataset.keywords));
+        ok(vis.length > 0 && vis.every((k) => k.includes('Photos')), `No-JS hub: Photos filter shows only photo posts (${vis.length})`);
+        await ctx.close();
+
+        // No JS, phone: panes stack, no sideways scroll.
+        const pctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+        const ppage = await pctx.newPage();
+        await ppage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        L = await layout(ppage);
+        ok(L.overlaps === 0 && !L.hScroll, `No-JS phone: panes stack without overlap or sideways scroll (${JSON.stringify({ overlaps: L.overlaps, hScroll: L.hScroll })})`);
+        await pctx.close();
+
+        // No JS, article: plain language links, current one marked.
+        const actx = await browser.newContext({ javaScriptEnabled: false });
+        const apage = await actx.newPage();
+        await apage.goto(`${BASE}/blog/sunshine/he/`, { waitUntil: 'load' });
+        const langs = await apage.evaluate(() => {
+            const nav = document.querySelector('.lang-links');
+            return nav && getComputedStyle(nav).display !== 'none'
+                ? { n: nav.querySelectorAll('a').length, cur: nav.querySelector('[aria-current]')?.getAttribute('href') } : null;
+        });
+        ok(langs && langs.n >= 6 && langs.cur === '/blog/sunshine/he/', `No-JS article: language links visible, current marked (${JSON.stringify(langs)})`);
+        await actx.close();
+
+        // JS on, default: still the floating desktop, no status bar.
+        const fctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        const fpage = await fctx.newPage();
+        await fpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await fpage.waitForTimeout(800);
+        const floating = await fpage.evaluate(() => ({
+            pos: getComputedStyle(document.getElementById('blog-window')).position,
+            bar: getComputedStyle(document.getElementById('tmux-bar')).display,
+            toggle: !!document.getElementById('tiling-toggle'),
+        }));
+        ok(floating.pos === 'absolute' && floating.bar === 'none' && floating.toggle,
+            `JS hub (default): floating windows, no status bar, tiling toggle in settings (${JSON.stringify(floating)})`);
+        await fctx.close();
+
+        // JS on + tiled windows: grid, dragging disabled, Ctrl-b z zooms.
+        const tctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        await tctx.addInitScript(() => localStorage.setItem('pelmeniboiler-tiling', '1'));
+        const tpage = await tctx.newPage();
+        await tpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await tpage.waitForTimeout(800);
+        L = await layout(tpage);
+        ok(L.shown === 6 && L.overlaps === 0 && L.inView && L.bar === 7, `JS tiled: 6 panes, no overlap, status bar (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, bar: L.bar })})`);
+        const before = L.rects['about-window'];
+        const tb = await tpage.locator('#about-window .title-bar').boundingBox();
+        await tpage.mouse.move(tb.x + 20, tb.y + 10); await tpage.mouse.down();
+        await tpage.mouse.move(tb.x - 200, tb.y - 200, { steps: 5 }); await tpage.mouse.up();
+        L = await layout(tpage);
+        ok(Math.abs(L.rects['about-window'].l - before.l) < 1 && Math.abs(L.rects['about-window'].t - before.t) < 1, 'JS tiled: title-bar drag does not move panes');
+        await tpage.click('#blog-window .content');
+        await tpage.keyboard.press('Control+b'); await tpage.keyboard.press('z');
+        await tpage.waitForTimeout(200);
+        L = await layout(tpage);
+        ok(L.shown === 1 && L.rects['blog-window'].shown, `JS tiled: Ctrl-b z zooms the focused pane (shown=${L.shown})`);
+        await tctx.close();
+    }
+
     // ============ LEGACY ROOT URLS + HUB HEAD ============
     {
         const ctx = await browser.newContext({ javaScriptEnabled: false });
