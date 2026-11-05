@@ -739,6 +739,59 @@ try {
         await tctx.close();
     }
 
+    // ============ WINDOW MANAGER: pointer drag, clamp, raise, persistence, a11y ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForTimeout(800);
+        const box = (id) => page.evaluate((i) => {
+            const el = document.getElementById(i); const r = el.getBoundingClientRect();
+            return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), z: +getComputedStyle(el).zIndex || 0, shown: getComputedStyle(el).display !== 'none' };
+        }, id);
+        const drag = async (id, dx, dy) => {
+            const tb = await page.locator(`#${id} .title-bar .title`).boundingBox();
+            await page.mouse.move(tb.x + 10, tb.y + 8); await page.mouse.down();
+            await page.mouse.move(tb.x + 10 + dx, tb.y + 8 + dy, { steps: 6 }); await page.mouse.up();
+        };
+
+        const a0 = await box('about-window');
+        await drag('about-window', 120, -60);
+        const a1 = await box('about-window');
+        ok(Math.abs(a1.x - a0.x - 120) <= 2 && Math.abs(a1.y - a0.y + 60) <= 2, `WM: pointer drag moves a window (${a0.x},${a0.y} → ${a1.x},${a1.y})`);
+
+        await drag('about-window', -3000, -3000);
+        const a2 = await box('about-window');
+        ok(a2.y >= 0 && a2.x + a2.w >= 80, `WM: dragging off-screen is clamped (title bar stays reachable: x=${a2.x}, y=${a2.y})`);
+
+        const before = await box('logo-window');
+        await page.click('#logo-window .content');
+        const after = await box('logo-window');
+        const maxZ = await page.evaluate(() => Math.max(...[...document.querySelectorAll('#desktop > .window')].map((w) => +getComputedStyle(w).zIndex || 0)));
+        ok(after.z === maxZ && after.z > before.z, `WM: clicking inside a window raises it (z ${before.z} → ${after.z}, max ${maxZ})`);
+
+        await page.click('#music-window .close-btn');
+        await page.reload({ waitUntil: 'load' });
+        await page.waitForTimeout(800);
+        const a3 = await box('about-window');
+        const music = await box('music-window');
+        const trayHasMusic = await page.evaluate(() => [...document.querySelectorAll('#tray-icons .tray-icon')].some((b) => /music/.test(b.title)));
+        ok(Math.abs(a3.x - a2.x) <= 2 && Math.abs(a3.y - a2.y) <= 2 && !music.shown && trayHasMusic,
+            `WM: positions and closed windows survive a reload (about ${a3.x},${a3.y}; music closed=${!music.shown}, in tray=${trayHasMusic})`);
+
+        const a11y = await page.evaluate(() => {
+            const wins = [...document.querySelectorAll('#desktop > .window:not(.init-closed)')];
+            return {
+                named: wins.filter((w) => w.getAttribute('role') === 'region' && document.getElementById(w.getAttribute('aria-labelledby'))?.textContent.trim()).length,
+                total: wins.length,
+                closeLabelled: [...document.querySelectorAll('.close-btn')].every((b) => b.getAttribute('aria-label')),
+                iconsHidden: [...document.querySelectorAll('.title .symbol')].every((s) => s.getAttribute('aria-hidden') === 'true'),
+            };
+        });
+        ok(a11y.named === a11y.total && a11y.closeLabelled && a11y.iconsHidden, `WM: windows are named regions, close buttons labelled, title icons hidden from screen readers (${JSON.stringify(a11y)})`);
+        await ctx.close();
+    }
+
     // ============ LEGACY ROOT URLS + HUB HEAD ============
     {
         const ctx = await browser.newContext({ javaScriptEnabled: false });
