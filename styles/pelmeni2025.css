@@ -1,48 +1,48 @@
 @font-face {
   font-family: 'FairfaxHD';
-  src: url('fonts/FairfaxHD.ttf') format('truetype');
+  src: url('fonts/FairfaxHD.woff2') format('woff2'), url('fonts/FairfaxHD.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'Selyodka';
-  src: url('fonts/Selyodka_Proportional.ttf') format('truetype');
+  src: url('fonts/Selyodka_Proportional.woff2') format('woff2'), url('fonts/Selyodka_Proportional.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'SymbolaNoRI';
-  src: url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
+  src: url('fonts/Symbola-ModifiedNoRI.woff2') format('woff2'), url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'Garamond';
-  src: url('fonts/EBGaramond.ttf') format('truetype');
+  src: url('fonts/EBGaramond.woff2') format('woff2'), url('fonts/EBGaramond.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'FrankRuhl';
-  src: url('fonts/FrankRuhl.ttf') format('truetype');
+  src: url('fonts/FrankRuhl.woff2') format('woff2'), url('fonts/FrankRuhl.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'Noto EmojiNoRI';
-  src: url('fonts/NotoEmoji-Regular-NoRI.ttf') format('truetype');
+  src: url('fonts/NotoEmoji-Regular-NoRI.woff2') format('woff2'), url('fonts/NotoEmoji-Regular-NoRI.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
   font-family: 'Android EmojiNoRI';
-  src: url('fonts/AndroidEmojiNoRI.ttf') format('truetype');
+  src: url('fonts/AndroidEmojiNoRI.woff2') format('woff2'), url('fonts/AndroidEmojiNoRI.ttf') format('truetype');
   font-display: swap;
 }
 @font-face {
-  font-family: 'TwitterBWEmoji.ttf';
-  src: url('fonts/TwitterColorEmoji-SVGinOT.ttf') format('truetype');
+  /* Monochrome Twemoji: colour SVG layer stripped by build/fonts.py */
+  font-family: 'TwitterBWEmoji';
+  src: url('fonts/TwitterBWEmoji.woff2') format('woff2');
   font-display: swap;
 }
 /* --- THEME DEFINITIONS --- */
 :root {
   --font-body: 'FrankRuhl', Garamond, serif, FairfaxHD;
-  /* **MODIFIED** Updated the font stack to use the new unique font name. */
-  --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android Emoji', 'TwitterBWEmoji.ttf';
+  --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android EmojiNoRI', 'TwitterBWEmoji';
 
   --bg-color: #ffffff; 
   --text-color: #000000; 

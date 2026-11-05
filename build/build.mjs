@@ -107,6 +107,11 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
             for (const f of entries.filter((e) => e.isFile() && e.name.endsWith('.html') && e.name !== 'index.html')) {
                 items.push({ icon: '🖹', label: await titleOf(path.join(dir, f.name), f.name), href: `/${[...parts, f.name].join('/')}` });
             }
+            // Photo folders hold only images; list them so the folder URL isn't a 404.
+            for (const f of entries.filter((e) => e.isFile() && /\.(png|jpe?g|gif|svg)$/i.test(e.name))) {
+                items.push({ icon: '🖻', label: f.name, href: `/${[...parts, f.name].join('/')}` });
+            }
+            for (const i of items) i.href = i.href.split('/').map(encodeURIComponent).join('/');
             if (!items.length) { if (existing) await fs.unlink(idxPath); return; } // nothing to list
             bodyInner = `<ul class="app-list">\n${items.map((i) => `                <li><a href="${i.href}"><span class="symbol">${i.icon}</span> ${i.label}</a></li>`).join('\n')}\n            </ul>`;
             width = 440;
@@ -460,7 +465,8 @@ const INVALID_HREFLANG = new Set(['gt']);
 const RTL_LANGS = new Set(['he', 'ar', 'fa', 'ur']);
 // OpenGraph wants ll_CC locales. gt has no real locale, so it's omitted.
 const OG_LOCALE = { en: 'en_US', ja: 'ja_JP', he: 'he_IL', de: 'de_DE', ru: 'ru_RU' };
-const DEFAULT_OG_IMAGE = `${SITE_URL}logo/shzh.svg`;
+// PNG, not SVG: link-preview crawlers (Discord, iMessage, Slack) skip SVG images.
+const DEFAULT_OG_IMAGE = `${SITE_URL}logo/icons/light-512.png`;
 
 const jsonLdEscape = (s) => String(s).replace(/</g, '\\u003c'); // safe inside <script>
 const attrEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

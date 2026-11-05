@@ -4,7 +4,7 @@
 // with the same content hash used for ?v= asset cache-busting, so every deploy
 // that changes an asset also retires the old cache.
 
-const VERSION = 'f16d8d2c';
+const VERSION = 'f14b8737';
 const CACHE = `pelmeniboiler-${VERSION}`;
 
 // The minimal shell needed to render pages offline. Everything else (articles,
@@ -88,12 +88,17 @@ async function checkForNewPosts() {
         .filter((p) => prefs.all || (p.keywords || []).some((k) => prefs.keywords.includes(k)));
 
     for (const post of fresh.slice(0, 3)) { // cap a burst of posts at 3 notes
-        await self.registration.showNotification(post.title, {
-            body: post.description || 'New post on Pelmeniboiler',
-            icon: '/logo/icon-192.png',
-            tag: `pelmeniboiler-${post.slug}`,
-            data: { url: `/blog/${post.slug}/en/` },
-        });
+        try {
+            await self.registration.showNotification(post.title, {
+                body: post.description || 'New post on Pelmeniboiler',
+                icon: '/logo/icon-192.png',
+                tag: `pelmeniboiler-${post.slug}`,
+                data: { url: `/blog/${post.slug}/en/` },
+            });
+        } catch {
+            // Permission revoked or no notification support: still advance the
+            // baseline below, or every wake would retry the same posts forever.
+        }
     }
     await writeMeta('/notify-seen', current);
 }
