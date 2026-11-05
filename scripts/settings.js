@@ -354,6 +354,17 @@ function setupSettings() {
             if (galleryToggle.checked) galleryStart(); else galleryStop();
         });
     }
+    // --- Tiled windows (tmux): the grid is applied by theme-loader.js before
+    // first paint, so flipping it just saves the choice and reloads.
+    const tilingToggle = getElement('tiling-toggle');
+    if (tilingToggle) {
+        tilingToggle.checked = document.documentElement.classList.contains('tiling');
+        tilingToggle.addEventListener('change', () => {
+            try { localStorage.setItem('pelmeniboiler-tiling', tilingToggle.checked ? '1' : '0'); } catch (_) { /* storage unavailable */ }
+            location.reload();
+        });
+    }
+
     // Re-render (colour slideshow ↔ dithered still) whenever the display mode flips.
     document.addEventListener('einkmodechange', () => {
         if (body.classList.contains('gallery-mode')) galleryRender();

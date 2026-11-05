@@ -5,7 +5,7 @@
     <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
-    <script src="/scripts/theme-loader.js?v=587cfe58"></script>
+    <script src="/scripts/theme-loader.js?v=cc6be92a"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="index">
     <meta name="eink-compatibility" content="optimized"> 
@@ -18,7 +18,7 @@
     <meta property="og:description" content="Wendy Shoshana Zhulkovsky's site: photo posts, keyboards, Graflect tools, and other projects.">
     <meta property="og:url" content="https://pelmeniboiler.github.io/">
     <meta property="og:image" content="https://pelmeniboiler.github.io/logo/icons/light-512.png">
-    <link rel="stylesheet" href="styles/pelmeni2025.css?v=587cfe58">
+    <link rel="stylesheet" href="styles/pelmeni2025.css?v=cc6be92a">
     <!-- RSS Links for RSS Readers-->
     <link rel="alternate" type="application/rss+xml" title="English RSS Feed" href="https://pelmeniboiler.github.io/rss/en/feed.xml">
     <link rel="alternate" type="application/rss+xml" title="Japanese RSS Feed" href="https://pelmeniboiler.github.io/rss/ja/feed.xml">
@@ -32,10 +32,10 @@
         .logo-image-container img { width: 100px; height: 100px; object-fit: contain; }
     </style>
 </head>
-<body class="eink-mode light-mode">
+<body id="desktop" class="eink-mode light-mode">
 
     <!-- Window Content -->
-    <div class="window" style="top: 2%; left: 2%; z-index: 4;">
+    <div id="welcome-window" class="window" style="top: 2%; left: 2%; z-index: 4;">
         <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
         <div class="content">
             <h1 data-key="welcome_h1">Welcome to my page!</h1>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="window" style="top: 12%; left: 40%; z-index: 2;">
+    <div id="blog-window" class="window" style="top: 12%; left: 40%; z-index: 2;">
         <div class="title-bar">
             <span class="title" data-key="win_blog_title"><span class="symbol">📓</span> blog.posts</span>
             <!-- NEW: RSS Dropdown button and content -->
@@ -65,7 +65,13 @@
             <button class="close-btn">&times;</button>
         </div>
         <div class="content">
-            <div id="blog-filter-container"><!--FILTERS:START--><button class="filter-btn active" data-keyword="All"><span class="symbol">✧</span> All</button><button class="filter-btn" data-keyword="Meta"><span class="symbol">♻</span> Meta</button><button class="filter-btn" data-keyword="Language"><span class="symbol">▤</span> Language</button><button class="filter-btn" data-keyword="Photos"><span class="symbol">🖻</span> Photos</button><button class="filter-btn" data-keyword="Projects"><span class="symbol">🗀</span> Projects</button><button class="filter-btn" data-keyword="Keyboards"><span class="symbol">⌨</span> Keyboards</button><!--FILTERS:END--></div>
+            <div id="blog-filter-container"><!--FILTERS:START--><button class="filter-btn active" data-keyword="All"><span class="symbol">✧</span> All</button><button class="filter-btn" data-keyword="Meta"><span class="symbol">♻</span> Meta</button><button class="filter-btn" data-keyword="Language"><span class="symbol">▤</span> Language</button><button class="filter-btn" data-keyword="Photos"><span class="symbol">🖻</span> Photos</button><button class="filter-btn" data-keyword="Projects"><span class="symbol">🗀</span> Projects</button><button class="filter-btn" data-keyword="Keyboards"><span class="symbol">⌨</span> Keyboards</button><input type="radio" class="bf-radio" name="blog-filter" id="bf-All" checked><label class="filter-btn filter-label" for="bf-All"><span class="symbol">✧</span> All</label><input type="radio" class="bf-radio" name="blog-filter" id="bf-Meta"><label class="filter-btn filter-label" for="bf-Meta"><span class="symbol">♻</span> Meta</label><input type="radio" class="bf-radio" name="blog-filter" id="bf-Language"><label class="filter-btn filter-label" for="bf-Language"><span class="symbol">▤</span> Language</label><input type="radio" class="bf-radio" name="blog-filter" id="bf-Photos"><label class="filter-btn filter-label" for="bf-Photos"><span class="symbol">🖻</span> Photos</label><input type="radio" class="bf-radio" name="blog-filter" id="bf-Projects"><label class="filter-btn filter-label" for="bf-Projects"><span class="symbol">🗀</span> Projects</label><input type="radio" class="bf-radio" name="blog-filter" id="bf-Keyboards"><label class="filter-btn filter-label" for="bf-Keyboards"><span class="symbol">⌨</span> Keyboards</label><style>
+html:not(.js) .window:has(#bf-Meta:checked) .blog-post:not([data-keywords*="Meta"]){display:none}
+html:not(.js) .window:has(#bf-Language:checked) .blog-post:not([data-keywords*="Language"]){display:none}
+html:not(.js) .window:has(#bf-Photos:checked) .blog-post:not([data-keywords*="Photos"]){display:none}
+html:not(.js) .window:has(#bf-Projects:checked) .blog-post:not([data-keywords*="Projects"]){display:none}
+html:not(.js) .window:has(#bf-Keyboards:checked) .blog-post:not([data-keywords*="Keyboards"]){display:none}
+</style><!--FILTERS:END--></div>
             <div id="blog-posts-list"><!--POSTS:START-->
 <article class="blog-post" data-keywords="Meta,Language">
   <h3><a href="/blog/this-blog-now-supports-your-language/en/" data-key="lang_title" data-slug="this-blog-now-supports-your-language" data-langs="en,he,ru,de,ja,gt">This Blog Now Supports Your Language</a></h3>
@@ -133,17 +139,17 @@
 <!--APPS:END-->
         </div>
     </div>
-    <div class="window" style="top: 58%; left: 69%; z-index: 1;">
+    <div id="music-window" class="window" style="top: 58%; left: 69%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_music_title">𝄆 music.ogg</span><button class="close-btn">&times;</button></div>
         <div id="music-play-btn" class="music-content">
-            <audio id="audio" src="sounds/telstar.ogg" preload="none"></audio>
+            <audio id="audio" src="sounds/telstar.ogg" preload="none" controls></audio>
             <h3>♩ Telstar ♪♩</h3>
             <button class="normal-btn" onclick="playAudio()" data-key="music_play_btn">▶</button>
             <h4 data-key="music_h4">Composed by Joe Meek, Performed by The Tornados.</h4>
             <h5 data-key="music_h5">Piano arrangement by André Wils,<br>adapted by me for a calmer rendition.</h5>
         </div>
     </div>
-    <div class="window" style="top: 45.5%; left: 30.3%; z-index: 1;">
+    <div id="logo-window" class="window" style="top: 45.5%; left: 30.3%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>
         <div class="content logo-image-container"><img id="logo-img" src="logo/shzh.svg" alt="Logo"></div>
     </div>
@@ -154,13 +160,25 @@
             <p data-key="about_p">Interlinked interdisciplinary intermediate internetter interested in interacting with the intersection of interface, intercommunication, and intermedia.</p>
         </div>
     </div>
+    <!-- tmux-style status bar: shown when the desktop is tiled (no JavaScript,
+         or the "tiled windows" setting). Each entry zooms its pane via :target;
+         the session name un-zooms. -->
+    <nav id="tmux-bar" aria-label="Windows">
+        <a class="tmux-session" href="#desktop">[pelmeni]</a>
+        <a href="#welcome-window"><span class="tmux-n">0:</span><span data-key="win_welcome_title">ש hello.welcome</span></a>
+        <a href="#blog-window"><span class="tmux-n">1:</span><span data-key="win_blog_title"><span class="symbol">📓</span> blog.posts</span></a>
+        <a href="#app-library"><span class="tmux-n">2:</span><span data-key="win_applib_title"><span class="symbol">🗀</span> app.library</span></a>
+        <a href="#music-window"><span class="tmux-n">3:</span><span data-key="win_music_title">𝄆 music.ogg</span></a>
+        <a href="#logo-window"><span class="tmux-n">4:</span><span data-key="win_logo_title">❈ logo.canvas</span></a>
+        <a href="#about-window"><span class="tmux-n">5:</span><span data-key="win_about_title">ℹ user.about</span></a>
+    </nav>
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
 
-    <script src="scripts/blog-loader.js?v=587cfe58" defer></script>
-    <script src="scripts/module-loader.js?v=587cfe58" defer></script>
-    <script src="scripts/notify-bell.js?v=587cfe58" defer></script>
-    <script src="scripts/logo-pong.js?v=587cfe58" defer></script>
+    <script src="scripts/blog-loader.js?v=cc6be92a" defer></script>
+    <script src="scripts/module-loader.js?v=cc6be92a" defer></script>
+    <script src="scripts/notify-bell.js?v=cc6be92a" defer></script>
+    <script src="scripts/logo-pong.js?v=cc6be92a" defer></script>
     
 </body>
 </html>
