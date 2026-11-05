@@ -8,6 +8,7 @@
     "build": "node build/build.mjs",
     "test": "node test/site.test.mjs",
     "lint:gt": "node build/validate-gt.mjs",
+    "check:links": "node build/check-links.mjs",
     "tl:status": "node build/tl.mjs status",
     "tl:stamp": "node build/tl.mjs stamp",
     "icons": "node build/generate-icons.mjs",

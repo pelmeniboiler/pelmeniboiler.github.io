@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
+    <meta charset="UTF-8">
     <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
     <script src="/scripts/theme-loader.js?v=f14b8737"></script>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="index">
     <meta name="eink-compatibility" content="optimized"> 
     <title>Pelmeniboiler</title>
+    <meta name="description" content="Wendy Shoshana Zhulkovsky's site: photo posts, keyboards, Graflect tools, and other projects. Interlinked interdisciplinary intermediate internetter.">
+    <link rel="canonical" href="https://pelmeniboiler.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pelmeniboiler">
+    <meta property="og:title" content="Pelmeniboiler">
+    <meta property="og:description" content="Wendy Shoshana Zhulkovsky's site: photo posts, keyboards, Graflect tools, and other projects.">
+    <meta property="og:url" content="https://pelmeniboiler.github.io/">
+    <meta property="og:image" content="https://pelmeniboiler.github.io/logo/icons/light-512.png">
     <link rel="stylesheet" href="styles/pelmeni2025.css?v=f14b8737">
     <!-- RSS Links for RSS Readers-->
     <link rel="alternate" type="application/rss+xml" title="English RSS Feed" href="https://pelmeniboiler.github.io/rss/en/feed.xml">
@@ -23,7 +31,6 @@
         .logo-image-container { text-align: center; padding: 10px; }
         .logo-image-container img { width: 100px; height: 100px; object-fit: contain; }
     </style>
-    <audio id="audio" src="sounds/telstar.ogg"></audio> 
 </head>
 <body class="eink-mode light-mode">
 
@@ -81,7 +88,7 @@
 <article class="blog-post" data-keywords="Photos">
   <h3><a href="/blog/elizabeth_park/en/" data-key="ep_h1" data-slug="elizabeth_park" data-langs="en,he,ru,de,ja,gt">Elizabeth Park Rose Garden, Hartford, Connecticut<br>| Nikon D3, 105mm f/2.8 FX AF MICRO-NIKKOR</a></h3>
   <p class="post-date" data-date="2024-02-03T10:00:00.000Z">24 Shevat 5784</p>
-  <p data-key="ep_p1">When I got back to Connecticut I went to a cool garden with my friend Julia. I used same camera-lens combo I started using in<a href="https://pelmeniboiler.github.io/dixie_and_vegas.html"> Utah</a>. I think was a good choice for the flowers and bugs, but next time I do stuff like this I'll borrow my dad's <a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> with a more landscape-oriented lens to get more of the garden layout because it's really cool. There were a lot of waterfowl as well, I wish I had managed to get sharper pictures of them.<br>I think I should look into using flickr to host these and embed them here instead of compressing them so much. There's so much detail lost...</p>
+  <p data-key="ep_p1">When I got back to Connecticut I went to a cool garden with my friend Julia. I used same camera-lens combo I started using in<a href="/blog/dixie_and_vegas/en/"> Utah</a>. I think was a good choice for the flowers and bugs, but next time I do stuff like this I'll borrow my dad's <a href="https://www.kenrockwell.com/nikon/d610.htm">D610</a> with a more landscape-oriented lens to get more of the garden layout because it's really cool. There were a lot of waterfowl as well, I wish I had managed to get sharper pictures of them.<br>I think I should look into using flickr to host these and embed them here instead of compressing them so much. There's so much detail lost...</p>
   <p><i><a href="/blog/elizabeth_park/en/" data-slug="elizabeth_park" data-langs="en,he,ru,de,ja,gt">read more &rarr;</a></i></p>
 </article>
 <article class="blog-post" data-keywords="Photos">
@@ -129,6 +136,7 @@
     <div class="window" style="top: 58%; left: 69%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_music_title">𝄆 music.ogg</span><button class="close-btn">&times;</button></div>
         <div id="music-play-btn" class="music-content">
+            <audio id="audio" src="sounds/telstar.ogg" preload="none"></audio>
             <h3>♩ Telstar ♪♩</h3>
             <button class="normal-btn" onclick="playAudio()" data-key="music_play_btn">▶</button>
             <h4 data-key="music_h4">Composed by Joe Meek, Performed by The Tornados.</h4>

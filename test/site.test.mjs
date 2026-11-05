@@ -580,6 +580,25 @@ try {
         await ctx.close();
     }
 
+    // ============ LEGACY ROOT URLS + HUB HEAD ============
+    {
+        const ctx = await browser.newContext({ javaScriptEnabled: false });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/dixie_and_vegas.html`, { waitUntil: 'load' });
+        await page.waitForURL('**/blog/dixie_and_vegas/en/', { timeout: 5000 }).catch(() => {});
+        ok(page.url().endsWith('/blog/dixie_and_vegas/en/'), `Legacy /dixie_and_vegas.html redirects without JS (got ${page.url()})`);
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        const head = await page.evaluate(() => ({
+            charsetFirst: document.head.firstElementChild?.getAttribute('charset')?.toLowerCase() === 'utf-8',
+            desc: !!document.querySelector('meta[name="description"]')?.content,
+            og: document.querySelector('meta[property="og:image"]')?.content || '',
+            audioInBody: !!document.querySelector('body audio#audio') && !document.querySelector('head audio'),
+        }));
+        ok(head.charsetFirst && head.desc && /\.png$/.test(head.og) && head.audioInBody,
+            `Hub head: charset first, description, PNG og:image, <audio> in body (${JSON.stringify(head)})`);
+        await ctx.close();
+    }
+
     // ============ OFFLINE PWA ============
     {
         const ctx = await browser.newContext();
