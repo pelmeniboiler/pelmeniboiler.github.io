@@ -541,6 +541,45 @@ try {
         await ctx.close();
     }
 
+    // ============ FONTS: every face loads, WOFF2 only, emoji monochrome ============
+    {
+        const ctx = await browser.newContext();
+        const page = await ctx.newPage();
+        const fontUrls = [];
+        page.on('request', (r) => { if (r.resourceType() === 'font') fontUrls.push(r.url()); });
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        const r = await page.evaluate(async () => {
+            const faces = [...document.fonts];
+            await Promise.all(faces.map((f) => f.load().catch(() => {})));
+            const declared = new Set(faces.map((f) => f.family.replace(/["']/g, '')));
+            const stack = getComputedStyle(document.documentElement).getPropertyValue('--font-emoji');
+            const named = [...stack.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+            const c = document.createElement('canvas'); c.width = c.height = 80;
+            const g = c.getContext('2d');
+            g.fillStyle = '#fff'; g.fillRect(0, 0, 80, 80);
+            g.font = '64px TwitterBWEmoji'; g.fillStyle = '#000'; g.textBaseline = 'top';
+            g.fillText('\u{1F339}', 4, 4); // rose: red + green in the colour font
+            const d = g.getImageData(0, 0, 80, 80).data;
+            let ink = 0, colour = 0;
+            for (let i = 0; i < d.length; i += 4) {
+                const [R, G, B] = [d[i], d[i + 1], d[i + 2]];
+                if (R < 200) ink++;
+                if (Math.max(R, G, B) - Math.min(R, G, B) > 40) colour++;
+            }
+            return {
+                failed: faces.filter((f) => f.status !== 'loaded').map((f) => f.family),
+                undeclared: named.filter((n) => !declared.has(n)),
+                ink, colour,
+            };
+        });
+        ok(r.failed.length === 0, `Fonts: every @font-face loads (failed: ${JSON.stringify(r.failed)})`);
+        ok(r.undeclared.length === 0, `Fonts: every --font-emoji name is a declared face (undeclared: ${JSON.stringify(r.undeclared)})`);
+        ok(fontUrls.length > 0 && fontUrls.every((u) => u.endsWith('.woff2')),
+            `Fonts: browsers fetch WOFF2, never TTF (${fontUrls.map((u) => u.split('/').pop()).join(', ')})`);
+        ok(r.ink > 200 && r.colour === 0, `Fonts: Twemoji renders monochrome (ink=${r.ink}, colour=${r.colour})`);
+        await ctx.close();
+    }
+
     // ============ OFFLINE PWA ============
     {
         const ctx = await browser.newContext();
