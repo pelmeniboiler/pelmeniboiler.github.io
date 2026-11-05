@@ -19,6 +19,8 @@ function setupStartMenu() {
     let highestZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--z-window-active')) || 10;
 
     const isMobile = () => window.innerWidth <= 768;
+    // Tiled (tmux) desktop: CSS grid owns layout, so no placement or dragging.
+    const isTiled = () => document.documentElement.classList.contains('tiling') && !!document.getElementById('desktop');
 
     // --- Tray (wide screens) ---
     // Windows that STARTED open dock to the tray as icons when closed;
@@ -95,7 +97,17 @@ function setupStartMenu() {
     let trayResizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(trayResizeTimer);
-        trayResizeTimer = setTimeout(() => updateWindowList(lastTranslations, lastLang), 200);
+        trayResizeTimer = setTimeout(() => {
+            updateWindowList(lastTranslations, lastLang);
+            // Pull any window the resize left off-screen back into view.
+            if (!isMobile() && !isTiled()) {
+                windows.forEach((w) => {
+                    if (!w.style.left || getComputedStyle(w).display === 'none') return;
+                    const p = clampPosition(w, parseFloat(w.style.left), parseFloat(w.style.top));
+                    w.style.left = `${p.x}px`; w.style.top = `${p.y}px`;
+                });
+            }
+        }, 200);
     });
 
     // --- Function Definitions ---
@@ -116,6 +128,7 @@ function setupStartMenu() {
         toList.forEach((closedItemWindow) => {
             const listItem = document.createElement('li');
             listItem.setAttribute('tabindex', '0');
+            listItem.setAttribute('role', 'button');
             const titleElement = closedItemWindow.querySelector('.title');
 
             const titleKey = titleElement ? titleElement.getAttribute('data-key') : null;
@@ -135,7 +148,7 @@ function setupStartMenu() {
 
             listItem.addEventListener('click', openHandler);
             listItem.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' || e.key === ' ') {
                     openHandler(e);
                 }
             });
@@ -164,6 +177,7 @@ function setupStartMenu() {
 
         closedWindows = closedWindows.filter((win) => win !== windowToOpen);
         updateWindowList(translations, lang);
+        saveLayout();
     }
 
     function closeWindow(windowToClose, translations, lang) {
@@ -180,6 +194,7 @@ function setupStartMenu() {
             closedWindows.push(windowToClose);
         }
         updateWindowList(translations, lang);
+        saveLayout();
     }
 
     /**
@@ -239,30 +254,155 @@ function setupStartMenu() {
                 newBtn.addEventListener('click', () => closeWindow(window, translations, lang));
             }
 
-            if (!isMobile() && titleBar) {
-                let offsetX = 0, offsetY = 0;
-
-                titleBar.onmousedown = (e) => {
+            if (!isMobile() && !isTiled() && titleBar) {
+                // Pointer events: mouse, pen and touch (large tablets) alike.
+                // Handlers are assigned as properties so re-initialising is idempotent.
+                titleBar.style.touchAction = 'none';
+                titleBar.onpointerdown = (e) => {
+                    if (e.button !== 0 || e.target.closest('button, a, input, select, .rss-dropdown-container')) return;
                     e.preventDefault();
-                    highestZIndex++;
-                    window.style.zIndex = highestZIndex;
+                    raise(window);
                     const rect = window.getBoundingClientRect();
-                    offsetX = e.clientX - rect.left;
-                    offsetY = e.clientY - rect.top;
-                    document.onmousemove = elementDrag;
-                    document.onmouseup = closeDragElement;
+                    const offX = e.clientX - rect.left, offY = e.clientY - rect.top;
+                    try { titleBar.setPointerCapture(e.pointerId); } catch (_) { /* synthetic event */ }
+                    titleBar.onpointermove = (ev) => {
+                        const p = clampPosition(window, ev.clientX - offX, ev.clientY - offY);
+                        window.style.left = `${p.x}px`;
+                        window.style.top = `${p.y}px`;
+                    };
+                    titleBar.onpointerup = titleBar.onpointercancel = () => {
+                        titleBar.onpointermove = titleBar.onpointerup = titleBar.onpointercancel = null;
+                        saveLayout();
+                    };
                 };
-
-                function elementDrag(e) {
-                    window.style.left = (e.clientX - offsetX) + "px";
-                    window.style.top = (e.clientY - offsetY) + "px";
-                }
-
-                function closeDragElement() {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                }
             }
+
+            // Any click or focus inside a window brings it to the front.
+            window.addEventListener('pointerdown', () => raise(window), true);
+            window.addEventListener('focusin', () => raise(window));
+        });
+    }
+
+    // --- Window manager helpers -------------------------------------------
+
+    function raise(win) {
+        if (isMobile() || isTiled()) return;
+        if (String(win.style.zIndex) === String(highestZIndex)) return;
+        highestZIndex++;
+        win.style.zIndex = highestZIndex;
+    }
+
+    /** Keep at least 80px of a window and its whole title bar on screen. */
+    function clampPosition(win, x, y) {
+        const vw = document.documentElement.clientWidth;
+        const vh = document.documentElement.clientHeight;
+        const w = win.offsetWidth;
+        const barH = win.querySelector('.title-bar')?.offsetHeight || 32;
+        return {
+            x: Math.round(Math.min(Math.max(x, 80 - w), vw - 80)),
+            y: Math.round(Math.min(Math.max(y, 0), vh - barH)),
+        };
+    }
+
+    // Positions and closed windows persist per page (localStorage; the reset
+    // button in settings clears every pelmeniboiler-* key).
+    const LAYOUT_KEY = `pelmeniboiler-layout:${location.pathname}`;
+    function loadLayout() {
+        try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (_) { return {}; }
+    }
+    function saveLayout() {
+        if (isMobile() || isTiled()) return;
+        const pos = {};
+        windows.forEach((w) => {
+            if (w.id && w.style.left && w.style.top && getComputedStyle(w).display !== 'none') {
+                pos[w.id] = [parseFloat(w.style.left), parseFloat(w.style.top)];
+            }
+        });
+        const closed = closedWindows.filter((w) => w.id && w.dataset.startedOpen === '1').map((w) => w.id);
+        try { localStorage.setItem(LAYOUT_KEY, JSON.stringify({ pos, closed })); } catch (_) { /* storage unavailable */ }
+    }
+    function applySavedLayout() {
+        const { pos = {}, closed = [] } = loadLayout();
+        windows.forEach((w) => {
+            if (!w.id) return;
+            if (closed.includes(w.id) && w.dataset.startedOpen === '1') {
+                w.style.display = 'none';
+                if (!closedWindows.includes(w)) closedWindows.push(w);
+            } else if (pos[w.id]) {
+                const p = clampPosition(w, pos[w.id][0], pos[w.id][1]);
+                w.style.left = `${p.x}px`;
+                w.style.top = `${p.y}px`;
+            }
+        });
+    }
+
+    /** Accessible names and roles; decorative icon glyphs hidden from screen readers. */
+    function labelWindows() {
+        windows.forEach((w, i) => {
+            const title = w.querySelector('.title-bar .title');
+            if (title) {
+                if (!title.id) title.id = `${w.id || `window-${i}`}-title`;
+                w.setAttribute('role', 'region');
+                w.setAttribute('aria-labelledby', title.id);
+            }
+            const close = w.querySelector('.close-btn');
+            if (close && !close.hasAttribute('aria-label')) close.setAttribute('aria-label', 'Close');
+        });
+        document.querySelectorAll('.title .symbol, .filter-btn .symbol, .app-list .symbol, .app-folder summary .symbol, #tmux-bar .symbol')
+            .forEach((sym) => sym.setAttribute('aria-hidden', 'true'));
+    }
+
+    /**
+     * tmux keys for the tiled desktop: Ctrl-b, then
+     *   0-5 jump to pane · n/→/↓ next · p/←/↑ previous · z zoom/unzoom.
+     */
+    function setupTmuxKeys() {
+        if (!isTiled() || document.body.dataset.tmuxKeys) return;
+        document.body.dataset.tmuxKeys = '1';
+        const panes = () => [...document.querySelectorAll('#tmux-bar a[href^="#"]:not(.tmux-session)')]
+            .map((a) => document.querySelector(a.getAttribute('href')))
+            .filter((w) => w && getComputedStyle(w).display !== 'none');
+        const focusPane = (w) => {
+            if (!w) return;
+            const target = w.querySelector('.content, .music-content') || w;
+            if (!target.hasAttribute('tabindex')) target.tabIndex = -1;
+            target.focus();
+        };
+        // The "current" pane: the one holding focus, else the one last clicked.
+        let lastPane = null;
+        document.addEventListener('pointerdown', (e) => {
+            lastPane = e.target.closest?.('#desktop > .window') || lastPane;
+        });
+        let armed = false, timer = null;
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && !e.altKey && !e.metaKey && e.key.toLowerCase() === 'b') {
+                e.preventDefault();
+                armed = true;
+                clearTimeout(timer);
+                timer = setTimeout(() => { armed = false; }, 2000);
+                return;
+            }
+            if (!armed) return;
+            armed = false;
+            const list = panes();
+            if (!list.length) return;
+            let cur = list.findIndex((w) => w.contains(document.activeElement));
+            if (cur < 0) cur = list.indexOf(lastPane);
+            if (/^[0-9]$/.test(e.key)) {
+                const all = [...document.querySelectorAll('#tmux-bar a[href^="#"]:not(.tmux-session)')];
+                focusPane(document.querySelector(all[+e.key]?.getAttribute('href') || '#none'));
+            } else if (e.key === 'z') {
+                const w = list[Math.max(cur, 0)];
+                location.hash = location.hash === `#${w.id}` ? '#desktop' : `#${w.id}`;
+                focusPane(w);
+            } else if (['n', 'ArrowRight', 'ArrowDown'].includes(e.key)) {
+                focusPane(list[(cur + 1) % list.length]);
+            } else if (['p', 'ArrowLeft', 'ArrowUp'].includes(e.key)) {
+                focusPane(list[(cur - 1 + list.length) % list.length]);
+            } else {
+                return;
+            }
+            e.preventDefault();
         });
     }
 
@@ -283,7 +423,7 @@ function setupStartMenu() {
             }
         });
 
-        if (!isMobile()) {
+        if (!isMobile() && !isTiled()) {
             const openWindows = Array.from(windows).filter(win => !closedWindows.includes(win));
             const placedRects = [];
             const margin = 15;
@@ -333,7 +473,10 @@ function setupStartMenu() {
             });
         }
 
+        if (!isMobile() && !isTiled()) applySavedLayout();
+        labelWindows();
         setupWindowInteractions(translations, lang);
+        setupTmuxKeys();
         setupMobileMenu();
         setupMobileNav();
         updateWindowList(translations, lang);

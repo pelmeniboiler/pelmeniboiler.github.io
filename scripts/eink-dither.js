@@ -5,6 +5,11 @@
 // diffusion, and swapped in. Originals are kept so switching back to LCD is
 // lossless. Pure vanilla, no dependencies; if anything fails (e.g. a tainted
 // canvas), the image is left alone and the CSS filter fallback still applies.
+//
+// Photos are now dithered at BUILD time (build/images.mjs) and carry the result
+// in data-eink-src; for those we just swap the file in (and park the <picture>
+// AVIF/WebP sources so they don't win over it). The canvas path below remains
+// for any other raster image that has no pre-built variant.
 
 (function () {
     const DITHERED = 'dithered';
@@ -16,8 +21,23 @@
         return true;
     }
 
+    function pictureSources(img) {
+        const pic = img.parentElement;
+        return pic && pic.tagName === 'PICTURE' ? pic.querySelectorAll('source') : [];
+    }
+
+    function usePrebuilt(img) {
+        if (!img.dataset.origSrc) img.dataset.origSrc = img.getAttribute('src');
+        pictureSources(img).forEach((s) => {
+            if (s.hasAttribute('srcset')) { s.dataset.srcset = s.getAttribute('srcset'); s.removeAttribute('srcset'); }
+        });
+        img.src = img.dataset.einkSrc;
+        img.classList.add(DITHERED);
+    }
+
     function ditherImage(img) {
         if (img.classList.contains(DITHERED) || !isRaster(img)) return;
+        if (img.dataset.einkSrc) { usePrebuilt(img); return; }
         if (!img.complete || !img.naturalWidth) {
             img.addEventListener('load', () => scheduleRun(), { once: true });
             return;
@@ -68,6 +88,9 @@
     }
 
     function restoreImage(img) {
+        pictureSources(img).forEach((s) => {
+            if (s.dataset.srcset) { s.setAttribute('srcset', s.dataset.srcset); delete s.dataset.srcset; }
+        });
         if (img.dataset.origSrc) {
             img.src = img.dataset.origSrc;
             delete img.dataset.origSrc;

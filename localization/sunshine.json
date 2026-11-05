@@ -1,5 +1,13 @@
 {
   "en": {
+    "sunshine_alt_cardboard_4": "Loose white keycaps laid out in a trial arrangement on a sheet of cardboard.",
+    "sunshine_alt_very_last": "Diagram of the final split layout: two column-staggered halves with angled thumb keys and long palm bars below.",
+    "sunshine_alt_cardboard_5": "A cardboard plate with square switch holes cut in the split, column-staggered layout.",
+    "sunshine_alt_pcb4": "The bare green PCB, with a gold \"sunshine! (Test Type 000)\" label and the controller footprint.",
+    "sunshine_alt_pcb2": "PCB silkscreen text: \"This is a prototype board developed to test hypothetical ergonomic improvements for human-machine interfaces.\"",
+    "sunshine_alt_pcb3": "Angled view of the unpopulated PCB showing switch holes and traces.",
+    "sunshine_alt_pcb5": "Close-up of the PCB's switch footprints and solder pads.",
+    "sunshine_alt_pcb6": "Silkscreen drawing on the PCB of a grinning cartoon person with curly hair giving a thumbs-up over a keyboard.",
     "sunshine_title": "sunshine",
     "sunwin_gallerynav_title": "◈ article.nav",
     "sun_win_gallery_title": "▤ sunshine.article",
