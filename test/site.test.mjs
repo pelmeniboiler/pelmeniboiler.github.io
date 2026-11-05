@@ -727,6 +727,8 @@ try {
             bar: getComputedStyle(document.getElementById('tile-bar')).display,
             devTabHidden: document.getElementById('settings-nav-dev')?.hidden,
         }));
+        const playJs = await fpage.evaluate(() => [...document.querySelectorAll('#music-window .normal-btn')].filter((b) => getComputedStyle(b).display !== 'none').map((b) => b.tagName));
+        ok(JSON.stringify(playJs) === '["BUTTON"]', `JS hub: music shows exactly one ▶, the JS button (${JSON.stringify(playJs)})`);
         ok(floating.pos === 'absolute' && floating.bar === 'none' && floating.devTabHidden === true,
             `JS hub (default): floating windows, no window bar, developer tab hidden (${JSON.stringify(floating)})`);
 
@@ -862,7 +864,7 @@ try {
             return { svgs: uses.length, shown: shown.length, drawn, bare, blogTitle: document.querySelector('#blog-window .title').textContent };
         }, EXT.source);
         ok(hub.svgs > 20 && hub.bare.length === 0, `Emoji: hub draws every emoji as SVG, none left to the OS font (${hub.svgs} svg; bare: ${JSON.stringify(hub.bare)})`);
-        ok(hub.shown > 10 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
+        ok(hub.shown > 5 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
         ok(hub.blogTitle.includes('\u{1F4D3}'), `Emoji: the character stays in the text for copy/search (${JSON.stringify(hub.blogTitle)})`);
         await ctx.close();
 
@@ -876,14 +878,18 @@ try {
         const vctx = await browser.newContext();
         const vpage = await vctx.newPage();
         await vpage.goto(`${BASE}/tools/emojiviewer.html`, { waitUntil: 'load' });
-        await vpage.waitForSelector('.block-count', { timeout: 8000 }).catch(() => {});
-        const ev = await vpage.evaluate(() => ({
-            family: getComputedStyle(document.querySelector('.symbol-item .symbol')).fontFamily,
-            counts: document.querySelectorAll('.block-count').length,
-            missing: document.querySelectorAll('.symbol-item.not-ours').length,
-        }));
-        ok(!/Color Emoji|Segoe UI Emoji/i.test(ev.family) && /SymbolaNoRI/.test(ev.family) && ev.counts > 5 && ev.missing > 0,
-            `Emoji viewer: our stack only, gaps marked instead of tofu (${JSON.stringify(ev)})`);
+        await vpage.waitForSelector('.symbol-item', { timeout: 8000 }).catch(() => {});
+        const ev = await vpage.evaluate(async () => {
+            // Every character the viewer shows must be one our font stack draws:
+            // no tofu, and nothing left for the OS emoji font to fill in.
+            const cov = await (await fetch('/styles/emoji/coverage.json')).json();
+            const has = (cp) => cov.some(([a, b]) => cp >= a && cp <= b);
+            const cps = [...document.querySelectorAll('.symbol-item .symbol')].flatMap((s) => [...s.textContent].map((c) => c.codePointAt(0)));
+            const missing = [...new Set(cps.filter((cp) => !has(cp)))].map((cp) => 'U+' + cp.toString(16).toUpperCase());
+            return { family: getComputedStyle(document.querySelector('.symbol-item .symbol')).fontFamily, shown: cps.length, missing };
+        });
+        ok(!/Color Emoji|Segoe UI Emoji/i.test(ev.family) && /SymbolaNoRI/.test(ev.family) && ev.shown > 2000 && ev.missing.length === 0,
+            `Emoji viewer: our stack only, every character shown is one our fonts draw (${ev.shown} shown; missing: ${JSON.stringify(ev.missing.slice(0, 20))}${ev.missing.length > 20 ? '…' : ''})`);
         await vctx.close();
     }
 

@@ -19,3 +19,6 @@ blog/*/
 
 # Generated emoji sprite/map/coverage (build/emoji.mjs)
 /styles/emoji/
+
+# Gap-filler font sources (build/fonts.py downloads them; only subsets are committed)
+/styles/fonts/_sources/
