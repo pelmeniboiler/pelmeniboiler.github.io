@@ -18,6 +18,7 @@
     "tl:auto": "node build/tl-auto.mjs"
   },
   "dependencies": {
+    "fontkit": "^2.0.4",
     "jsdom": "^24.0.0",
     "sharp": "^0.35.5"
   },

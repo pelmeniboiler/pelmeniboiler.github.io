@@ -835,6 +835,58 @@ try {
         await ctx.close();
     }
 
+    // ============ EMOJI: our glyphs as SVG, never the OS colour font ============
+    {
+        const EXT = /\p{Extended_Pictographic}/u;
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        await ctx.addInitScript(() => localStorage.setItem('pelmeniboiler-mode', 'lcd'));
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForFunction(() => document.documentElement.classList.contains('emoji-svg'), null, { timeout: 8000 }).catch(() => {});
+        await page.waitForTimeout(600);
+        const hub = await page.evaluate((src) => {
+            const ext = new RegExp(src, 'u');
+            const skip = (el) => el.closest('script,style,textarea,input,option,title,code,pre,svg,noscript,.emoji-t,.no-emoji');
+            const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const bare = [];
+            while (w.nextNode()) {
+                const n = w.currentNode;
+                if (!ext.test(n.data) || skip(n.parentElement)) continue;
+                const t = n.data.replace(/[©®™]/g, '');
+                if (ext.test(t) && n.parentElement.getClientRects().length) bare.push(t.trim().slice(0, 12));
+            }
+            const uses = [...document.querySelectorAll('.emoji > svg')];
+            // Only glyphs actually on screen (closed windows and folders measure 0).
+            const shown = uses.filter((s) => s.getClientRects().length && s.getBoundingClientRect().width > 0);
+            const drawn = shown.filter((s) => { try { return s.querySelector('use').getBBox().width > 0; } catch { return false; } }).length;
+            return { svgs: uses.length, shown: shown.length, drawn, bare, blogTitle: document.querySelector('#blog-window .title').textContent };
+        }, EXT.source);
+        ok(hub.svgs > 20 && hub.bare.length === 0, `Emoji: hub draws every emoji as SVG, none left to the OS font (${hub.svgs} svg; bare: ${JSON.stringify(hub.bare)})`);
+        ok(hub.shown > 10 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
+        ok(hub.blogTitle.includes('\u{1F4D3}'), `Emoji: the character stays in the text for copy/search (${JSON.stringify(hub.blogTitle)})`);
+        await ctx.close();
+
+        const nctx = await browser.newContext({ javaScriptEnabled: false });
+        const npage = await nctx.newPage();
+        await npage.goto(`${BASE}/blog/sunshine/en/`, { waitUntil: 'load' });
+        const art = await npage.evaluate(() => document.querySelectorAll('.emoji > svg use[href*="/styles/emoji/sprite.svg"]').length);
+        ok(art > 5, `Emoji: built pages arrive with SVG emoji for no-JS readers (${art})`);
+        await nctx.close();
+
+        const vctx = await browser.newContext();
+        const vpage = await vctx.newPage();
+        await vpage.goto(`${BASE}/tools/emojiviewer.html`, { waitUntil: 'load' });
+        await vpage.waitForSelector('.block-count', { timeout: 8000 }).catch(() => {});
+        const ev = await vpage.evaluate(() => ({
+            family: getComputedStyle(document.querySelector('.symbol-item .symbol')).fontFamily,
+            counts: document.querySelectorAll('.block-count').length,
+            missing: document.querySelectorAll('.symbol-item.not-ours').length,
+        }));
+        ok(!/Color Emoji|Segoe UI Emoji/i.test(ev.family) && /SymbolaNoRI/.test(ev.family) && ev.counts > 5 && ev.missing > 0,
+            `Emoji viewer: our stack only, gaps marked instead of tofu (${JSON.stringify(ev)})`);
+        await vctx.close();
+    }
+
     // ============ LEGACY ROOT URLS + HUB HEAD ============
     {
         const ctx = await browser.newContext({ javaScriptEnabled: false });

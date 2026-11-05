@@ -38,9 +38,11 @@
         body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
         body { color: var(--text-color); }
         .symbol {
-            /* Updated font stack to prioritize Noto EmojiNoRI (monochrome) */
-            font-family: 'Symbola', 'Noto EmojiNoRI', 'Segoe UI Emoji', 'Apple Color Emoji', AndroidEmoji;
-            font-weight: normal; /* Resetting weight to normal for monochrome font */
+            /* The site's own monochrome stack (Symbola → Noto Emoji → Android
+               Emoji → Twemoji B&W), never the OS colour emoji fonts. */
+            font-family: var(--font-emoji);
+            font-variant-emoji: text;
+            font-weight: normal;
         }
         .window {
             position: absolute;
@@ -108,6 +110,10 @@
             font-size: 2.5rem; /* Larger emoji */
             line-height: 1.2;
         }
+        /* Codepoints none of our fonts draw: shown as a gap, not as tofu or an OS glyph. */
+        .symbol-item.not-ours { cursor: default; background: none; border-style: dashed; opacity: 0.45; }
+        .symbol-item.not-ours .symbol { font-size: 0.8rem; line-height: 3rem; font-family: inherit; }
+        .block-count { font-size: 0.85rem; color: #777; margin: -0.5rem 0 1rem; }
         .symbol-item code {
             font-size: 0.75rem;
             color: #888;
@@ -148,7 +154,19 @@
 
     <script>
         // Wait for the document to be fully loaded before running the script
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Which codepoints our font stack can draw (written by build/emoji.mjs).
+            let coverage = null;
+            try { coverage = await (await fetch('/styles/emoji/coverage.json')).json(); } catch (_) { /* show everything */ }
+            const ours = (cp) => {
+                if (!coverage) return true;
+                let lo = 0, hi = coverage.length - 1;
+                while (lo <= hi) {
+                    const mid = (lo + hi) >> 1, [a, b] = coverage[mid];
+                    if (cp < a) hi = mid - 1; else if (cp > b) lo = mid + 1; else return true;
+                }
+                return false;
+            };
 
             // List of ISO 3166-1 alpha-2 country codes for generating flags
             const countryCodes = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW'];
@@ -219,19 +237,19 @@
                 gridDiv.className = 'symbol-grid';
 
                 // Helper function to create a symbol item
-                function createSymbolItem(char, codeText) {
+                function createSymbolItem(char, codeText, missing = false) {
                     const itemDiv = document.createElement('div');
-                    itemDiv.className = 'symbol-item';
-                    itemDiv.title = `Click to copy ${char}`;
+                    itemDiv.className = missing ? 'symbol-item not-ours' : 'symbol-item';
+                    itemDiv.title = missing ? `${codeText}: not in our fonts` : `Click to copy ${char}`;
 
                     const symbolSpan = document.createElement('span');
                     symbolSpan.className = 'symbol';
-                    symbolSpan.textContent = char;
+                    symbolSpan.textContent = missing ? 'not ours' : char;
 
                     const codeTag = document.createElement('code');
                     codeTag.textContent = codeText;
                     
-                    itemDiv.addEventListener('click', () => copyToClipboard(char));
+                    if (!missing) itemDiv.addEventListener('click', () => copyToClipboard(char));
                     
                     itemDiv.appendChild(symbolSpan);
                     itemDiv.appendChild(codeTag);
@@ -255,11 +273,20 @@
                     });
                 } else {
                     // Loop through the codepoint range for standard blocks
+                    // Unassigned codepoints are skipped; ones our fonts lack are marked.
+                    let total = 0, drawn = 0;
                     for (let i = block.start; i <= block.end; i++) {
                         const char = String.fromCodePoint(i);
+                        if (/\p{Cn}/u.test(char)) continue;
                         const codePoint = `U+${i.toString(16).toUpperCase().padStart(4, '0')}`;
-                        createSymbolItem(char, codePoint);
+                        const have = ours(i);
+                        total++; if (have) drawn++;
+                        createSymbolItem(char, codePoint, !have);
                     }
+                    const count = document.createElement('p');
+                    count.className = 'block-count';
+                    count.textContent = `${drawn} of ${total} drawn by our fonts`;
+                    blockDiv.appendChild(count);
                 }
 
                 blockDiv.appendChild(gridDiv);

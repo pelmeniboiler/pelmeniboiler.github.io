@@ -199,7 +199,14 @@ body.eink-mode .symbol {
     font-weight: normal;
     display: inline-block; /* Ensures proper rendering */
     /* Default emoji style is now plain, allowing theme-specific overrides above. */
+    font-variant-emoji: text; /* where supported: ask for text glyphs, not the OS colour set */
 }
+/* Emoji drawn from our own fonts as inline SVG (build/emoji.mjs + scripts/emoji.js),
+   so the OS colour emoji font never gets a say. The character itself stays in
+   the DOM, clipped from view, for copy, search and screen readers. */
+.emoji { position: relative; white-space: nowrap; }
+.emoji > svg { fill: currentColor; overflow: visible; }
+.emoji-t { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .logo-image-container svg, .start-button svg {
     object-fit: contain;
 }
