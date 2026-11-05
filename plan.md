@@ -80,12 +80,10 @@ place of execution.
 
 - **Hub is still runtime-hydrated.** Baking its English content was deferred on
   purpose (it stays a single page with in-place language switching).
-- **Accessibility / no-JS layout.** Article content + chrome are already baked, so
-  no-JS readers get real text. Outstanding: make the windowed desktop a
-  progressive enhancement — fall back to a clean linear "stacked divs" document
-  when JS is off (the mobile CSS already stacks windows; gate the floating/
-  absolute layout on a `.js` flag), and offer the language switcher as plain
-  links. Feasible; not yet done.
+- ~~**Accessibility / no-JS layout.**~~ Done (2026-11): `theme-loader.js` sets
+  `html.js`; without it the hub is a tmux-style grid of panes with a status bar
+  (`:target` zoom), filters are radio/`:has()`, articles carry plain language
+  links, and the same tiling is a JS-side setting ("Tiled windows").
 - **MTPE translation tooling.** The current localization workflow is manual,
   glossary-driven, multi-pass MTPE with an LLM. Candidate build-tool support:
   a jargon **glossary file**, an incremental "translate only English keys that

@@ -25,6 +25,7 @@
     "theme_title": "Display Theme",
     "theme_eink_label": "E-Ink Mode",
     "theme_gallery_label": "Gallery Background",
+    "theme_tiling_label": "Tiled windows (tmux)",
     "theme_light_label": "Light",
     "theme_dark_label": "Dark",
     "theme_funky_label": "Funky",

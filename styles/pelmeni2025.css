@@ -1155,6 +1155,95 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 .notify-row input { margin-inline-end: 6px; }
 .notify-master { border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 4px; font-weight: bold; }
 
+/* --- TILED DESKTOP (tmux) ---------------------------------------------------
+   The floating window manager is a JavaScript enhancement. Without JS
+   (html:not(.js)), or with system.settings → "Tiled windows" (html.tiling),
+   the hub renders as tmux-style panes: one viewport-high grid, each pane
+   scrolling on its own, and a status bar whose entries zoom a pane via
+   :target (the [session] name un-zooms). Pure CSS; works on old engines
+   that can't run the desktop scripts. */
+#tmux-bar { display: none; }
+.tmux-n { opacity: 0.7; margin-inline-end: 2px; }
+
+/* Things that only make sense with or without JS. */
+html:not(.js) .close-btn { display: none; }
+html:not(.js) .tray, html:not(.js) .start-menu { display: none; } /* baked chrome that needs JS to do anything */
+html.js #music-window #audio { display: none; }
+html:not(.js) #music-window .normal-btn { display: none; }
+html:not(.js) #music-window #audio { display: block; width: 100%; margin: 6px 0; }
+html:not(.js) .rss-dropdown-container:hover .rss-dropdown-content,
+html:not(.js) .rss-dropdown-container:focus-within .rss-dropdown-content { display: block; }
+
+/* Blog filters without JS: radio + label pairs (baked by the build) and a
+   generated :has() rule per keyword. With JS the real buttons take over. */
+.bf-radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.filter-label { display: none; }
+html:not(.js) .filter-label { display: inline-block; margin: 0 4px 4px 0; }
+html:not(.js) button.filter-btn { display: none; }
+html:not(.js) .bf-radio:checked + .filter-label { background-color: var(--text-color); color: var(--win-bg-color); font-weight: bold; }
+html:not(.js) .bf-radio:focus-visible + .filter-label { outline: 2px solid var(--text-color); outline-offset: 2px; }
+
+/* Article language links for no-JS readers (the switcher in settings needs JS). */
+.lang-links { display: none; }
+html:not(.js) .lang-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--border-color); }
+.lang-links a[aria-current] { font-weight: bold; text-decoration: none; }
+
+/* The status bar: no-JS at any width; with JS only on wide screens (phones keep the start menu). */
+html:not(.js) #tmux-bar,
+html.tiling #tmux-bar {
+    display: flex; align-items: stretch;
+    position: fixed; left: 0; right: 0; bottom: 0; height: 28px; z-index: var(--z-dropdown);
+    overflow-x: auto; white-space: nowrap;
+    background-color: var(--text-color); color: var(--win-bg-color);
+    font-family: var(--font-emoji), var(--font-body); font-size: 14px;
+}
+#tmux-bar a { display: flex; align-items: center; padding: 0 10px; color: inherit; text-decoration: none; }
+#tmux-bar a:hover, #tmux-bar a:focus-visible { background-color: var(--win-bg-color); color: var(--text-color); outline: none; }
+#tmux-bar .tmux-session { font-weight: bold; }
+/* tmux marks the current window with '*'. */
+#desktop:has(#welcome-window:target) #tmux-bar a[href="#welcome-window"]::after,
+#desktop:has(#blog-window:target) #tmux-bar a[href="#blog-window"]::after,
+#desktop:has(#app-library:target) #tmux-bar a[href="#app-library"]::after,
+#desktop:has(#music-window:target) #tmux-bar a[href="#music-window"]::after,
+#desktop:has(#logo-window:target) #tmux-bar a[href="#logo-window"]::after,
+#desktop:has(#about-window:target) #tmux-bar a[href="#about-window"]::after { content: '*'; }
+html:not(.js) body#desktop { padding-bottom: 34px; }
+
+@media screen and (min-width: 769px) {
+    html.tiling #tmux-bar { right: 300px; } /* leave the tray its corner */
+    html:not(.js) body#desktop,
+    html.tiling body#desktop {
+        display: grid; box-sizing: border-box; height: 100vh; margin: 0; overflow: hidden;
+        padding: 6px 6px 34px; gap: 6px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: minmax(0, 1fr);
+        grid-auto-flow: row dense;
+    }
+    html:not(.js) #desktop > .window:not(.init-closed),
+    html.tiling #desktop > .window:not(.init-closed) {
+        position: static !important; inset: auto !important;
+        width: auto !important; max-width: none !important; height: auto !important; max-height: none !important;
+        margin: 0 !important; z-index: auto !important; visibility: visible !important;
+        min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+    }
+    html:not(.js) #desktop > .window > :is(.content, .music-content),
+    html.tiling #desktop > .window > :is(.content, .music-content) { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
+    html:not(.js) #blog-window, html.tiling #blog-window { grid-column: span 2; grid-row: span 2; }
+    /* Module placeholders stay empty without JS; keep them out of the grid. */
+    html:not(.js) #desktop > [id$="-placeholder"],
+    html.tiling #desktop > [id$="-placeholder"]:empty { display: none; }
+    /* Zoom: a targeted pane takes the whole grid. */
+    html:not(.js) #desktop:has(> .window:target) > .window:not(:target),
+    html.tiling #desktop:has(> .window:target) > .window:not(:target) { display: none !important; }
+    html:not(.js) #desktop > .window:target,
+    html.tiling #desktop > .window:target { grid-column: 1 / -1; grid-row: auto; }
+    html.tiling .title-bar { cursor: var(--cur-default); }
+}
+@media screen and (max-width: 768px) {
+    html.tiling #tmux-bar { display: none; }
+    html:not(.js) #desktop:has(> .window:target) > .window:not(:target) { display: none; }
+}
+
 /* --- REDUCED MOTION: honour the OS "reduce motion" setting --- */
 @media (prefers-reduced-motion: reduce) {
     body { transition: none; }

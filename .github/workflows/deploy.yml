@@ -45,6 +45,12 @@ jobs:
         run: npm ci
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
+      - name: Restore encoded photos (AVIF/WebP/e-ink) from cache
+        uses: actions/cache@v4
+        with:
+          path: img
+          key: img-${{ hashFiles('photos/**', 'build/images.mjs') }}
+          restore-keys: img-
       - name: Build site
         run: npm run build
       - name: Check internal links
@@ -73,6 +79,13 @@ jobs:
 
       - name: Translation staleness report (informational)
         run: npm run tl:status || true
+
+      - name: Restore encoded photos (AVIF/WebP/e-ink) from cache
+        uses: actions/cache@v4
+        with:
+          path: img
+          key: img-${{ hashFiles('photos/**', 'build/images.mjs') }}
+          restore-keys: img-
 
       - name: Build site (manifest, feeds, per-language pages, sitemap)
         run: npm run build

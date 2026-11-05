@@ -354,6 +354,17 @@ function setupSettings() {
             if (galleryToggle.checked) galleryStart(); else galleryStop();
         });
     }
+    // --- Tiled windows (tmux): the grid is applied by theme-loader.js before
+    // first paint, so flipping it just saves the choice and reloads.
+    const tilingToggle = getElement('tiling-toggle');
+    if (tilingToggle) {
+        tilingToggle.checked = document.documentElement.classList.contains('tiling');
+        tilingToggle.addEventListener('change', () => {
+            try { localStorage.setItem('pelmeniboiler-tiling', tilingToggle.checked ? '1' : '0'); } catch (_) { /* storage unavailable */ }
+            location.reload();
+        });
+    }
+
     // Re-render (colour slideshow ↔ dithered still) whenever the display mode flips.
     document.addEventListener('einkmodechange', () => {
         if (body.classList.contains('gallery-mode')) galleryRender();
@@ -579,6 +590,12 @@ function setupSettings() {
         document.querySelectorAll('[data-title-key]').forEach(elem => {
             const key = elem.getAttribute('data-title-key');
             if (translations[lang] && translations[lang][key]) elem.title = translations[lang][key];
+        });
+        // ...and data-alt-key for image alt text.
+        document.querySelectorAll('[data-alt-key]').forEach(elem => {
+            const key = elem.getAttribute('data-alt-key');
+            const val = (translations[lang] && translations[lang][key]) || (translations.en && translations.en[key]);
+            if (val) elem.alt = val.replace(/<[^>]*>/g, '');
         });
 
         // Set the language and direction on the root element for CSS and accessibility.
