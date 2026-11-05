@@ -283,8 +283,12 @@ try {
             await cache.put('/notify-seen', new Response(JSON.stringify(removed)));
             const reg = await navigator.serviceWorker.ready;
             reg.active.postMessage({ type: 'check-new-posts' });
-            await new Promise((r) => setTimeout(r, 1200));
-            const after = await (await cache.match('/notify-seen')).json();
+            // Poll rather than sleep a fixed 1.2 s: CI runners are slower than a laptop.
+            let after = removed;
+            for (let i = 0; i < 50 && after.length !== seen.length; i++) {
+                await new Promise((r) => setTimeout(r, 200));
+                after = await (await cache.match('/notify-seen')).json();
+            }
             return { before: seen.length, mid: removed.length, after: after.length };
         });
         ok(recheck.after === recheck.before, `Bell: worker detects new posts and re-baselines (${JSON.stringify(recheck)})`);
