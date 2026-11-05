@@ -1155,22 +1155,27 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 .notify-row input { margin-inline-end: 6px; }
 .notify-master { border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 4px; font-weight: bold; }
 
-/* --- TILED DESKTOP (tmux) ---------------------------------------------------
+/* --- TILED DESKTOP (no JavaScript) -------------------------------------------
    The floating window manager is a JavaScript enhancement. Without JS
-   (html:not(.js)), or with system.settings → "Tiled windows" (html.tiling),
-   the hub renders as tmux-style panes: one viewport-high grid, each pane
-   scrolling on its own, and a status bar whose entries zoom a pane via
-   :target (the [session] name un-zooms). Pure CSS; works on old engines
-   that can't run the desktop scripts. */
-#tmux-bar { display: none; }
-.tmux-n { opacity: 0.7; margin-inline-end: 2px; }
+   (html:not(.js)) the hub renders as tiles instead: one viewport-high grid
+   whose areas are sized to their content (the blog takes the flexible space,
+   the logo and music panes hug what they hold), each pane scrolling on its
+   own, plus a window bar whose entries zoom a pane via :target.
+   html.dev-tiles shows the same layout with JS on, for testing only: it's
+   switched from the hidden developer tab (triple-click the tray's settings
+   button). Selectors are spelled out for both cases rather than :is(): this
+   layout exists for old engines, and one unknown selector drops a whole rule. */
+#tile-bar { display: none; }
 
 /* Things that only make sense with or without JS. */
+.nojs-only { display: none; }
+html:not(.js) .nojs-only { display: inline-block; }
 html:not(.js) .close-btn { display: none; }
 html:not(.js) .tray, html:not(.js) .start-menu { display: none; } /* baked chrome that needs JS to do anything */
-html.js #music-window #audio { display: none; }
-html:not(.js) #music-window .normal-btn { display: none; }
-html:not(.js) #music-window #audio { display: block; width: 100%; margin: 6px 0; }
+/* Music: the native <audio> player can't be styled, so without JS the ▶ is a
+   link that plays the file in its own tab — same button, same look. */
+html:not(.js) #music-window button.normal-btn { display: none; }
+a.normal-btn { display: inline-block; text-decoration: none; }
 html:not(.js) .rss-dropdown-container:hover .rss-dropdown-content,
 html:not(.js) .rss-dropdown-container:focus-within .rss-dropdown-content { display: block; }
 
@@ -1188,59 +1193,116 @@ html:not(.js) .bf-radio:focus-visible + .filter-label { outline: 2px solid var(-
 html:not(.js) .lang-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--border-color); }
 .lang-links a[aria-current] { font-weight: bold; text-decoration: none; }
 
-/* The status bar: no-JS at any width; with JS only on wide screens (phones keep the start menu). */
-html:not(.js) #tmux-bar,
-html.tiling #tmux-bar {
+/* The window bar. */
+html:not(.js) #tile-bar,
+html.dev-tiles #tile-bar {
     display: flex; align-items: stretch;
-    position: fixed; left: 0; right: 0; bottom: 0; height: 28px; z-index: var(--z-dropdown);
+    position: fixed; left: 0; right: 0; bottom: 0; height: 30px; z-index: var(--z-dropdown);
     overflow-x: auto; white-space: nowrap;
-    background-color: var(--text-color); color: var(--win-bg-color);
-    font-family: var(--font-emoji), var(--font-body); font-size: 14px;
+    background-color: var(--win-bg-color); color: var(--text-color);
+    border-top: 2px solid var(--border-color);
+    font-family: var(--font-body); font-size: 14px;
 }
-#tmux-bar a { display: flex; align-items: center; padding: 0 10px; color: inherit; text-decoration: none; }
-#tmux-bar a:hover, #tmux-bar a:focus-visible { background-color: var(--win-bg-color); color: var(--text-color); outline: none; }
-#tmux-bar .tmux-session { font-weight: bold; }
-/* tmux marks the current window with '*'. */
-#desktop:has(#welcome-window:target) #tmux-bar a[href="#welcome-window"]::after,
-#desktop:has(#blog-window:target) #tmux-bar a[href="#blog-window"]::after,
-#desktop:has(#app-library:target) #tmux-bar a[href="#app-library"]::after,
-#desktop:has(#music-window:target) #tmux-bar a[href="#music-window"]::after,
-#desktop:has(#logo-window:target) #tmux-bar a[href="#logo-window"]::after,
-#desktop:has(#about-window:target) #tmux-bar a[href="#about-window"]::after { content: '*'; }
-html:not(.js) body#desktop { padding-bottom: 34px; }
+#tile-bar a { display: flex; align-items: center; gap: 4px; padding: 0 12px; color: inherit; text-decoration: none; border-inline-end: 1px solid var(--border-color); }
+#tile-bar a:hover, #tile-bar a:focus-visible { background-color: var(--text-color); color: var(--win-bg-color); outline: none; }
+#tile-bar .tile-all { font-weight: bold; }
+/* The zoomed pane's entry is shown pressed. */
+#desktop:has(#welcome-window:target) #tile-bar a[href="#welcome-window"],
+#desktop:has(#blog-window:target) #tile-bar a[href="#blog-window"],
+#desktop:has(#app-library:target) #tile-bar a[href="#app-library"],
+#desktop:has(#music-window:target) #tile-bar a[href="#music-window"],
+#desktop:has(#logo-window:target) #tile-bar a[href="#logo-window"],
+#desktop:has(#about-window:target) #tile-bar a[href="#about-window"] { background-color: var(--text-color); color: var(--win-bg-color); font-weight: bold; }
+html:not(.js) body#desktop { padding-bottom: 36px; }
 
 @media screen and (min-width: 769px) {
-    html.tiling #tmux-bar { right: 300px; } /* leave the tray its corner */
+    html.dev-tiles #tile-bar { right: 300px; } /* leave the tray its corner */
+    /* Three columns from a wrapping flex column, arranged with `order` so the
+       DOM (and with it the floating layout and phone stacking) is untouched:
+         left:   welcome, about
+         middle: blog (full height, which is what forces the column breaks)
+         right:  app library, logo, music
+       Each pane takes its content's height; only the last pane in a column
+       stretches into what's left, and anything too tall scrolls inside. */
     html:not(.js) body#desktop,
-    html.tiling body#desktop {
-        display: grid; box-sizing: border-box; height: 100vh; margin: 0; overflow: hidden;
-        padding: 6px 6px 34px; gap: 6px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        grid-auto-rows: minmax(0, 1fr);
-        grid-auto-flow: row dense;
+    html.dev-tiles body#desktop {
+        display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start;
+        box-sizing: border-box; height: 100vh; margin: 0; overflow: hidden;
+        padding: 6px 6px 38px; gap: 6px;
     }
     html:not(.js) #desktop > .window:not(.init-closed),
-    html.tiling #desktop > .window:not(.init-closed) {
+    html.dev-tiles #desktop > .window:not(.init-closed) {
         position: static !important; inset: auto !important;
         width: auto !important; max-width: none !important; height: auto !important; max-height: none !important;
         margin: 0 !important; z-index: auto !important; visibility: visible !important;
         min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+        flex: 0 1 auto; box-sizing: border-box;
     }
-    html:not(.js) #desktop > .window > :is(.content, .music-content),
-    html.tiling #desktop > .window > :is(.content, .music-content) { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
-    html:not(.js) #blog-window, html.tiling #blog-window { grid-column: span 2; grid-row: span 2; }
-    /* Module placeholders stay empty without JS; keep them out of the grid. */
+    html:not(.js) #desktop > .window > .content,
+    html.dev-tiles #desktop > .window > .content,
+    html:not(.js) #desktop > .window > .music-content,
+    html.dev-tiles #desktop > .window > .music-content,
+    html:not(.js) #desktop > .window > .settings-container,
+    html.dev-tiles #desktop > .window > .settings-container { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
+    /* Column widths (the 6px gaps come out of each). */
+    html:not(.js) #desktop > #welcome-window,
+    html.dev-tiles #desktop > #welcome-window,
+    html:not(.js) #desktop > #about-window,
+    html.dev-tiles #desktop > #about-window { width: calc(26% - 4px) !important; }
+    html:not(.js) #desktop > #blog-window,
+    html.dev-tiles #desktop > #blog-window { width: calc(46% - 4px) !important; }
+    html:not(.js) #desktop > #app-library,
+    html.dev-tiles #desktop > #app-library,
+    html:not(.js) #desktop > #logo-window,
+    html.dev-tiles #desktop > #logo-window,
+    html:not(.js) #desktop > #music-window,
+    html.dev-tiles #desktop > #music-window { width: calc(28% - 4px) !important; }
+    /* Order and fit. Caps keep a column's panes from overflowing into a
+       fourth column on short screens; their content scrolls instead. */
+    html:not(.js) #desktop > #welcome-window,
+    html.dev-tiles #desktop > #welcome-window { order: 1; max-height: 58% !important; }
+    html:not(.js) #desktop > #about-window,
+    html.dev-tiles #desktop > #about-window { order: 2; flex-grow: 1; }
+    html:not(.js) #desktop > #blog-window,
+    html.dev-tiles #desktop > #blog-window { order: 3; flex: 0 0 100%; }
+    html:not(.js) #desktop > #app-library,
+    html.dev-tiles #desktop > #app-library { order: 4; max-height: 42% !important; }
+    html:not(.js) #desktop > #logo-window,
+    html.dev-tiles #desktop > #logo-window { order: 5; }
+    html:not(.js) #desktop > #music-window,
+    html.dev-tiles #desktop > #music-window { order: 6; flex-grow: 1; }
+    html:not(.js) #desktop > #about-window h2,
+    html.dev-tiles #desktop > #about-window h2 { white-space: normal; overflow-wrap: anywhere; }
+    /* Floating, the about window sizes itself to the name (max-content); as a tile it takes the column. */
+    html:not(.js) #desktop > #about-window > .content,
+    html.dev-tiles #desktop > #about-window > .content { width: auto; max-width: none; }
+    /* The logo pane hugs the logo. */
+    html:not(.js) #desktop > #logo-window > .content,
+    html.dev-tiles #desktop > #logo-window > .content { flex: 0 0 auto; padding: 2px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+    html:not(.js) #desktop > #logo-window > .content > img,
+    html.dev-tiles #desktop > #logo-window > .content > img,
+    html:not(.js) #desktop > #logo-window > .content > svg,
+    html.dev-tiles #desktop > #logo-window > .content > svg { height: 120px; width: auto; max-width: 100%; }
+    /* Extra windows (settings, clock; developer preview only) dock along the
+       bottom at a real height instead of squeezing into a column. */
+    html.dev-tiles #desktop > .window:not(.init-closed):not(#welcome-window):not(#about-window):not(#blog-window):not(#app-library):not(#logo-window):not(#music-window) {
+        position: fixed !important; left: 6px !important; right: 6px !important; bottom: 38px !important; top: auto !important;
+        z-index: var(--z-window-active) !important;
+    }
+    html.dev-tiles #desktop > #settings-main-window { height: clamp(340px, 50vh, 540px) !important; }
+    /* Module placeholders stay empty without JS; keep them out of the layout. */
     html:not(.js) #desktop > [id$="-placeholder"],
-    html.tiling #desktop > [id$="-placeholder"]:empty { display: none; }
-    /* Zoom: a targeted pane takes the whole grid. */
+    html.dev-tiles #desktop > [id$="-placeholder"]:empty { display: none; }
+    /* Zoom: a targeted pane takes the whole desktop. */
     html:not(.js) #desktop:has(> .window:target) > .window:not(:target),
-    html.tiling #desktop:has(> .window:target) > .window:not(:target) { display: none !important; }
-    html:not(.js) #desktop > .window:target,
-    html.tiling #desktop > .window:target { grid-column: 1 / -1; grid-row: auto; }
-    html.tiling .title-bar { cursor: var(--cur-default); }
+    html.dev-tiles #desktop:has(> .window:target) > .window:not(:target) { display: none !important; }
+    /* #desktop#desktop: doubled id so this outranks the per-pane width rules. */
+    html:not(.js) #desktop#desktop > .window:target,
+    html.dev-tiles #desktop#desktop > .window:target { width: 100% !important; flex: 0 0 100% !important; max-height: none !important; }
+    html.dev-tiles .title-bar { cursor: var(--cur-default); }
 }
 @media screen and (max-width: 768px) {
-    html.tiling #tmux-bar { display: none; }
+    html.dev-tiles #tile-bar { display: none; }
     html:not(.js) #desktop:has(> .window:target) > .window:not(:target) { display: none; }
 }
 

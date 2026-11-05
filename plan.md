@@ -81,9 +81,10 @@ place of execution.
 - **Hub is still runtime-hydrated.** Baking its English content was deferred on
   purpose (it stays a single page with in-place language switching).
 - ~~**Accessibility / no-JS layout.**~~ Done (2026-11): `theme-loader.js` sets
-  `html.js`; without it the hub is a tmux-style grid of panes with a status bar
-  (`:target` zoom), filters are radio/`:has()`, articles carry plain language
-  links, and the same tiling is a JS-side setting ("Tiled windows").
+  `html.js`; without it the hub is tiled (content-sized panes in three columns,
+  a window bar with `:target` zoom), filters are radio/`:has()`, articles carry
+  plain language links. Visitors with JS never see the tiles; the developer tab
+  (triple-click the tray ⚙) previews them.
 - **MTPE translation tooling.** The current localization workflow is manual,
   glossary-driven, multi-pass MTPE with an LLM. Candidate build-tool support:
   a jargon **glossary file**, an incremental "translate only English keys that

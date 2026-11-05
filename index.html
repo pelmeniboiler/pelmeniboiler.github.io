@@ -5,7 +5,7 @@
     <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
-    <script src="/scripts/theme-loader.js?v=cc6be92a"></script>
+    <script src="/scripts/theme-loader.js?v=291a8eb1"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="translation-source" content="index">
     <meta name="eink-compatibility" content="optimized"> 
@@ -18,7 +18,7 @@
     <meta property="og:description" content="Wendy Shoshana Zhulkovsky's site: photo posts, keyboards, Graflect tools, and other projects.">
     <meta property="og:url" content="https://pelmeniboiler.github.io/">
     <meta property="og:image" content="https://pelmeniboiler.github.io/logo/icons/light-512.png">
-    <link rel="stylesheet" href="styles/pelmeni2025.css?v=cc6be92a">
+    <link rel="stylesheet" href="styles/pelmeni2025.css?v=291a8eb1">
     <!-- RSS Links for RSS Readers-->
     <link rel="alternate" type="application/rss+xml" title="English RSS Feed" href="https://pelmeniboiler.github.io/rss/en/feed.xml">
     <link rel="alternate" type="application/rss+xml" title="Japanese RSS Feed" href="https://pelmeniboiler.github.io/rss/ja/feed.xml">
@@ -142,9 +142,10 @@ html:not(.js) .window:has(#bf-Keyboards:checked) .blog-post:not([data-keywords*=
     <div id="music-window" class="window" style="top: 58%; left: 69%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_music_title">𝄆 music.ogg</span><button class="close-btn">&times;</button></div>
         <div id="music-play-btn" class="music-content">
-            <audio id="audio" src="sounds/telstar.ogg" preload="none" controls></audio>
+            <audio id="audio" src="sounds/telstar.ogg" preload="none"></audio>
             <h3>♩ Telstar ♪♩</h3>
             <button class="normal-btn" onclick="playAudio()" data-key="music_play_btn">▶</button>
+            <a class="normal-btn nojs-only" href="sounds/telstar.ogg" target="_blank" rel="noopener" title="Play (opens in a new tab)">▶</a>
             <h4 data-key="music_h4">Composed by Joe Meek, Performed by The Tornados.</h4>
             <h5 data-key="music_h5">Piano arrangement by André Wils,<br>adapted by me for a calmer rendition.</h5>
         </div>
@@ -160,25 +161,24 @@ html:not(.js) .window:has(#bf-Keyboards:checked) .blog-post:not([data-keywords*=
             <p data-key="about_p">Interlinked interdisciplinary intermediate internetter interested in interacting with the intersection of interface, intercommunication, and intermedia.</p>
         </div>
     </div>
-    <!-- tmux-style status bar: shown when the desktop is tiled (no JavaScript,
-         or the "tiled windows" setting). Each entry zooms its pane via :target;
-         the session name un-zooms. -->
-    <nav id="tmux-bar" aria-label="Windows">
-        <a class="tmux-session" href="#desktop">[pelmeni]</a>
-        <a href="#welcome-window"><span class="tmux-n">0:</span><span data-key="win_welcome_title">ש hello.welcome</span></a>
-        <a href="#blog-window"><span class="tmux-n">1:</span><span data-key="win_blog_title"><span class="symbol">📓</span> blog.posts</span></a>
-        <a href="#app-library"><span class="tmux-n">2:</span><span data-key="win_applib_title"><span class="symbol">🗀</span> app.library</span></a>
-        <a href="#music-window"><span class="tmux-n">3:</span><span data-key="win_music_title">𝄆 music.ogg</span></a>
-        <a href="#logo-window"><span class="tmux-n">4:</span><span data-key="win_logo_title">❈ logo.canvas</span></a>
-        <a href="#about-window"><span class="tmux-n">5:</span><span data-key="win_about_title">ℹ user.about</span></a>
+    <!-- Window bar for the tiled (no-JavaScript) layout: each entry zooms its
+         pane via :target; the first entry shows all panes again. -->
+    <nav id="tile-bar" aria-label="Windows">
+        <a class="tile-all" href="#desktop" title="all windows"><span class="symbol">▦</span></a>
+        <a href="#welcome-window"><span data-key="win_welcome_title">ש hello.welcome</span></a>
+        <a href="#blog-window"><span data-key="win_blog_title"><span class="symbol">📓</span> blog.posts</span></a>
+        <a href="#app-library"><span data-key="win_applib_title"><span class="symbol">🗀</span> app.library</span></a>
+        <a href="#music-window"><span data-key="win_music_title">𝄆 music.ogg</span></a>
+        <a href="#logo-window"><span data-key="win_logo_title">❈ logo.canvas</span></a>
+        <a href="#about-window"><span data-key="win_about_title">ℹ user.about</span></a>
     </nav>
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
 
-    <script src="scripts/blog-loader.js?v=cc6be92a" defer></script>
-    <script src="scripts/module-loader.js?v=cc6be92a" defer></script>
-    <script src="scripts/notify-bell.js?v=cc6be92a" defer></script>
-    <script src="scripts/logo-pong.js?v=cc6be92a" defer></script>
+    <script src="scripts/blog-loader.js?v=291a8eb1" defer></script>
+    <script src="scripts/module-loader.js?v=291a8eb1" defer></script>
+    <script src="scripts/notify-bell.js?v=291a8eb1" defer></script>
+    <script src="scripts/logo-pong.js?v=291a8eb1" defer></script>
     
 </body>
 </html>

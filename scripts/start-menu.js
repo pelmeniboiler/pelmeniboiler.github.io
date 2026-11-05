@@ -19,8 +19,9 @@ function setupStartMenu() {
     let highestZIndex = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--z-window-active')) || 10;
 
     const isMobile = () => window.innerWidth <= 768;
-    // Tiled (tmux) desktop: CSS grid owns layout, so no placement or dragging.
-    const isTiled = () => document.documentElement.classList.contains('tiling') && !!document.getElementById('desktop');
+    // Tiled desktop (developer preview of the no-JS layout): CSS grid owns
+    // layout, so no placement or dragging.
+    const isTiled = () => document.documentElement.classList.contains('dev-tiles') && !!document.getElementById('desktop');
 
     // --- Tray (wide screens) ---
     // Windows that STARTED open dock to the tray as icons when closed;
@@ -89,9 +90,11 @@ function setupStartMenu() {
     document.addEventListener('translationsReady', updateTrayClock);
 
     // Pinned tray settings button (the tray is the launcher on wide screens).
-    document.getElementById('tray-settings')?.addEventListener('click', () => {
+    // A triple-click also reveals the hidden developer tab.
+    document.getElementById('tray-settings')?.addEventListener('click', (e) => {
         const settingsWin = document.getElementById('settings-main-window');
         if (settingsWin) openWindow(settingsWin, lastTranslations, lastLang);
+        if (e.detail === 3) document.dispatchEvent(new CustomEvent('pelmeniboiler:devtab'));
     });
 
     let trayResizeTimer;
@@ -348,62 +351,8 @@ function setupStartMenu() {
             const close = w.querySelector('.close-btn');
             if (close && !close.hasAttribute('aria-label')) close.setAttribute('aria-label', 'Close');
         });
-        document.querySelectorAll('.title .symbol, .filter-btn .symbol, .app-list .symbol, .app-folder summary .symbol, #tmux-bar .symbol')
+        document.querySelectorAll('.title .symbol, .filter-btn .symbol, .app-list .symbol, .app-folder summary .symbol, #tile-bar .symbol')
             .forEach((sym) => sym.setAttribute('aria-hidden', 'true'));
-    }
-
-    /**
-     * tmux keys for the tiled desktop: Ctrl-b, then
-     *   0-5 jump to pane · n/→/↓ next · p/←/↑ previous · z zoom/unzoom.
-     */
-    function setupTmuxKeys() {
-        if (!isTiled() || document.body.dataset.tmuxKeys) return;
-        document.body.dataset.tmuxKeys = '1';
-        const panes = () => [...document.querySelectorAll('#tmux-bar a[href^="#"]:not(.tmux-session)')]
-            .map((a) => document.querySelector(a.getAttribute('href')))
-            .filter((w) => w && getComputedStyle(w).display !== 'none');
-        const focusPane = (w) => {
-            if (!w) return;
-            const target = w.querySelector('.content, .music-content') || w;
-            if (!target.hasAttribute('tabindex')) target.tabIndex = -1;
-            target.focus();
-        };
-        // The "current" pane: the one holding focus, else the one last clicked.
-        let lastPane = null;
-        document.addEventListener('pointerdown', (e) => {
-            lastPane = e.target.closest?.('#desktop > .window') || lastPane;
-        });
-        let armed = false, timer = null;
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && !e.altKey && !e.metaKey && e.key.toLowerCase() === 'b') {
-                e.preventDefault();
-                armed = true;
-                clearTimeout(timer);
-                timer = setTimeout(() => { armed = false; }, 2000);
-                return;
-            }
-            if (!armed) return;
-            armed = false;
-            const list = panes();
-            if (!list.length) return;
-            let cur = list.findIndex((w) => w.contains(document.activeElement));
-            if (cur < 0) cur = list.indexOf(lastPane);
-            if (/^[0-9]$/.test(e.key)) {
-                const all = [...document.querySelectorAll('#tmux-bar a[href^="#"]:not(.tmux-session)')];
-                focusPane(document.querySelector(all[+e.key]?.getAttribute('href') || '#none'));
-            } else if (e.key === 'z') {
-                const w = list[Math.max(cur, 0)];
-                location.hash = location.hash === `#${w.id}` ? '#desktop' : `#${w.id}`;
-                focusPane(w);
-            } else if (['n', 'ArrowRight', 'ArrowDown'].includes(e.key)) {
-                focusPane(list[(cur + 1) % list.length]);
-            } else if (['p', 'ArrowLeft', 'ArrowUp'].includes(e.key)) {
-                focusPane(list[(cur - 1 + list.length) % list.length]);
-            } else {
-                return;
-            }
-            e.preventDefault();
-        });
     }
 
     function setupMobileMenu() {
@@ -476,7 +425,6 @@ function setupStartMenu() {
         if (!isMobile() && !isTiled()) applySavedLayout();
         labelWindows();
         setupWindowInteractions(translations, lang);
-        setupTmuxKeys();
         setupMobileMenu();
         setupMobileNav();
         updateWindowList(translations, lang);
