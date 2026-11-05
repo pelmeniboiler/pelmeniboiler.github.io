@@ -354,15 +354,38 @@ function setupSettings() {
             if (galleryToggle.checked) galleryStart(); else galleryStop();
         });
     }
-    // --- Tiled windows (tmux): the grid is applied by theme-loader.js before
-    // first paint, so flipping it just saves the choice and reloads.
-    const tilingToggle = getElement('tiling-toggle');
-    if (tilingToggle) {
-        tilingToggle.checked = document.documentElement.classList.contains('tiling');
-        tilingToggle.addEventListener('change', () => {
-            try { localStorage.setItem('pelmeniboiler-tiling', tilingToggle.checked ? '1' : '0'); } catch (_) { /* storage unavailable */ }
+    // --- Hidden developer tab: triple-click the tray's settings button. ---
+    const DEV_TILES_KEY = 'pelmeniboiler-dev-tiles';
+    function showDevTab(activate) {
+        const nav = getElement('settings-nav-dev');
+        if (!nav) return;
+        nav.hidden = false;
+        if (activate) nav.click();
+    }
+    // Keep the tab visible while the preview is on, so it can be switched off.
+    if (document.documentElement.classList.contains('dev-tiles')) showDevTab(false);
+    document.addEventListener('pelmeniboiler:devtab', () => showDevTab(true));
+    const devTilesToggle = getElement('dev-tiles-toggle');
+    if (devTilesToggle) {
+        devTilesToggle.checked = document.documentElement.classList.contains('dev-tiles');
+        devTilesToggle.addEventListener('change', () => {
+            try {
+                if (devTilesToggle.checked) localStorage.setItem(DEV_TILES_KEY, '1');
+                else localStorage.removeItem(DEV_TILES_KEY);
+            } catch (_) { /* storage unavailable */ }
             location.reload();
         });
+    }
+    getElement('dev-forget-layout-btn')?.addEventListener('click', () => {
+        try {
+            Object.keys(localStorage).filter((k) => k.startsWith('pelmeniboiler-layout:')).forEach((k) => localStorage.removeItem(k));
+        } catch (_) { /* storage unavailable */ }
+        location.reload();
+    });
+    const devInfo = getElement('dev-build-info');
+    if (devInfo) {
+        const v = document.querySelector('link[href*="pelmeni2025.css"]')?.getAttribute('href')?.split('v=')[1] || 'unversioned';
+        devInfo.textContent = `assets ${v} · ${window.innerWidth}×${window.innerHeight} @${window.devicePixelRatio}x`;
     }
 
     // Re-render (colour slideshow ↔ dithered still) whenever the display mode flips.
@@ -692,6 +715,9 @@ function setupSettings() {
             const themeValue = currentThemeClass.replace('-mode', '');
             const radioToCheck = document.querySelector(`input[name="theme"][value="${themeValue}"]`);
             if(radioToCheck) radioToCheck.checked = true;
+            // Open the theme folder that holds the current theme.
+            const folder = radioToCheck?.closest('details.theme-folder');
+            if (folder) folder.open = true;
 
             // Re-apply funky/zikit on load so they regenerate their dynamic palette
             // (funky = random, zikit = sampled from a gallery photo).

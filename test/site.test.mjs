@@ -631,7 +631,7 @@ try {
             `Images: e-ink mode loads pre-dithered files, never the original PNGs (${eink.urls.filter((u) => u.startsWith('/photos/')).length} originals)`);
     }
 
-    // ============ TILED DESKTOP: no-JS tmux layout + JS "tiled windows" setting ============
+    // ============ TILED DESKTOP: no-JS layout + hidden developer preview ============
     {
         const PANES = ['welcome-window', 'blog-window', 'app-library', 'music-window', 'logo-window', 'about-window'];
         const layout = (page) => page.evaluate((ids) => {
@@ -647,14 +647,19 @@ try {
                 const a = shown[i], b = shown[j];
                 if (a.l < b.r - 1 && b.l < a.r - 1 && a.t < b.b - 1 && b.t < a.b - 1) overlaps++;
             }
-            const bar = document.getElementById('tmux-bar');
+            const bar = document.getElementById('tile-bar');
             return {
                 shown: shown.length, overlaps,
                 inView: shown.every((r) => r.l >= 0 && r.r <= vw + 1 && r.b <= vh + 1),
                 hScroll: document.documentElement.scrollWidth > vw + 1,
                 bar: getComputedStyle(bar).display !== 'none' ? bar.querySelectorAll('a').length : 0,
                 closeBtns: [...document.querySelectorAll('#desktop > .window .close-btn')].filter((b) => getComputedStyle(b).display !== 'none').length,
-                rects: Object.fromEntries(rects.map((r) => [r.id, r])),
+                rects: Object.fromEntries(rects.map((r) => [r.id, { ...r, h: r.b - r.t }])),
+                logo: (() => {
+                    const c = document.querySelector('#logo-window > .content'), i = c.querySelector('img, svg');
+                    const cr = c.getBoundingClientRect(), ir = i.getBoundingClientRect();
+                    return { slackX: Math.round(cr.width - ir.width), slackY: Math.round(cr.height - ir.height) };
+                })(),
             };
         }, PANES);
 
@@ -664,17 +669,26 @@ try {
         await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         let L = await layout(page);
         ok(L.shown === 6 && L.overlaps === 0 && L.inView, `No-JS hub: 6 tiled panes, no overlap, all on screen (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, inView: L.inView })})`);
-        ok(L.bar === 7 && L.closeBtns === 0, `No-JS hub: tmux status bar (7 links), no dead close buttons (bar=${L.bar}, close=${L.closeBtns})`);
-        const audio = await page.evaluate(() => getComputedStyle(document.getElementById('audio')).display !== 'none');
-        ok(audio, 'No-JS hub: native audio controls stand in for the ▶ button');
+        ok(L.bar === 7 && L.closeBtns === 0, `No-JS hub: window bar (7 links), no dead close buttons (bar=${L.bar}, close=${L.closeBtns})`);
+        // Content-aware sizing: the blog gets the most room; logo and music hug their content.
+        const R = L.rects;
+        ok(R['blog-window'].w * R['blog-window'].h > Math.max(...PANES.filter((p) => p !== 'blog-window').map((p) => R[p].w * R[p].h)) * 1.5,
+            `No-JS hub: blog pane is clearly the largest (${Math.round(R['blog-window'].w)}×${Math.round(R['blog-window'].h)})`);
+        ok(L.logo.slackX < 24 || L.logo.slackY < 24, `No-JS hub: logo pane hugs the logo (slack ${L.logo.slackX}×${L.logo.slackY}px)`);
+        const music = await page.evaluate(() => {
+            const a = document.querySelector('#music-window a.normal-btn'), b = document.querySelector('#music-window button.normal-btn');
+            return { link: a && getComputedStyle(a).display !== 'none' ? a.getAttribute('href') : null, button: getComputedStyle(b).display, controls: document.getElementById('audio').controls };
+        });
+        ok(music.link === 'sounds/telstar.ogg' && music.button === 'none' && !music.controls,
+            `No-JS hub: ▶ is a styled link to the track, no unstyled native player (${JSON.stringify(music)})`);
 
         // Status bar zooms a pane via :target.
-        await page.click('#tmux-bar a[href="#blog-window"]');
+        await page.click('#tile-bar a[href="#blog-window"]');
         L = await layout(page);
-        ok(L.shown === 1 && L.rects['blog-window'].w > 1200, `No-JS hub: status-bar entry zooms its pane (shown=${L.shown}, width=${Math.round(L.rects['blog-window'].w)})`);
-        await page.click('#tmux-bar .tmux-session');
+        ok(L.shown === 1 && L.rects['blog-window'].w > 1200, `No-JS hub: window-bar entry zooms its pane (shown=${L.shown}, width=${Math.round(L.rects['blog-window'].w)})`);
+        await page.click('#tile-bar .tile-all');
         L = await layout(page);
-        ok(L.shown === 6, `No-JS hub: [session] un-zooms (shown=${L.shown})`);
+        ok(L.shown === 6, `No-JS hub: ▦ shows all panes again (shown=${L.shown})`);
 
         // CSS-only blog filter.
         await page.click('label[for="bf-Photos"]');
@@ -703,39 +717,68 @@ try {
         ok(langs && langs.n >= 6 && langs.cur === '/blog/sunshine/he/', `No-JS article: language links visible, current marked (${JSON.stringify(langs)})`);
         await actx.close();
 
-        // JS on, default: still the floating desktop, no status bar.
+        // JS on, default: floating desktop, no window bar, no visible tiles option.
         const fctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const fpage = await fctx.newPage();
         await fpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         await fpage.waitForTimeout(800);
         const floating = await fpage.evaluate(() => ({
             pos: getComputedStyle(document.getElementById('blog-window')).position,
-            bar: getComputedStyle(document.getElementById('tmux-bar')).display,
-            toggle: !!document.getElementById('tiling-toggle'),
+            bar: getComputedStyle(document.getElementById('tile-bar')).display,
+            devTabHidden: document.getElementById('settings-nav-dev')?.hidden,
         }));
-        ok(floating.pos === 'absolute' && floating.bar === 'none' && floating.toggle,
-            `JS hub (default): floating windows, no status bar, tiling toggle in settings (${JSON.stringify(floating)})`);
+        ok(floating.pos === 'absolute' && floating.bar === 'none' && floating.devTabHidden === true,
+            `JS hub (default): floating windows, no window bar, developer tab hidden (${JSON.stringify(floating)})`);
+
+        // Triple-clicking the tray's ⚙ opens settings on the developer tab.
+        await fpage.click('#tray-settings', { clickCount: 3 });
+        await fpage.waitForTimeout(200);
+        const dev = await fpage.evaluate(() => ({
+            tab: !document.getElementById('settings-nav-dev').hidden,
+            page: document.getElementById('settings-page-dev').classList.contains('active'),
+            toggle: !!document.getElementById('dev-tiles-toggle'),
+        }));
+        ok(dev.tab && dev.page && dev.toggle, `Settings: triple-click ⚙ reveals the developer tab (${JSON.stringify(dev)})`);
         await fctx.close();
 
-        // JS on + tiled windows: grid, dragging disabled, Ctrl-b z zooms.
+        // Themes are foldered; the folder holding the current theme opens.
+        const thctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        await thctx.addInitScript(() => { localStorage.setItem('pelmeniboiler-mode', 'lcd'); localStorage.setItem('pelmeniboiler-theme', 'akai'); });
+        const thpage = await thctx.newPage();
+        await thpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await thpage.waitForTimeout(800);
+        const folders = await thpage.evaluate(() => {
+            const f = [...document.querySelectorAll('#theme-setting-group details.theme-folder')];
+            const vals = (d) => [...d.querySelectorAll('input[name="theme"]')].map((i) => i.value);
+            const top = [...document.querySelectorAll('#theme-setting-group > label input[name="theme"]')].map((i) => i.value);
+            return { top, colors: vals(f[0]), silly: vals(f[1]), open: f.map((d) => d.open) };
+        });
+        ok(JSON.stringify(folders.top) === '["light","dark","funky","zikit"]' && folders.colors.includes('akai') && folders.silly.includes('wordart')
+            && folders.open[0] === true && folders.open[1] === false,
+            `Settings: themes foldered (Zikit beside Funky), current theme's folder open (${JSON.stringify(folders)})`);
+        await thctx.close();
+
+        // Developer preview on: same tiles with JS, dragging disabled, settings gets a tall row.
         const tctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-        await tctx.addInitScript(() => localStorage.setItem('pelmeniboiler-tiling', '1'));
+        await tctx.addInitScript(() => localStorage.setItem('pelmeniboiler-dev-tiles', '1'));
         const tpage = await tctx.newPage();
         await tpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         await tpage.waitForTimeout(800);
         L = await layout(tpage);
-        ok(L.shown === 6 && L.overlaps === 0 && L.inView && L.bar === 7, `JS tiled: 6 panes, no overlap, status bar (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, bar: L.bar })})`);
+        ok(L.shown === 6 && L.overlaps === 0 && L.inView && L.bar === 7, `Dev tiles: 6 panes, no overlap, window bar (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, bar: L.bar })})`);
         const before = L.rects['about-window'];
         const tb = await tpage.locator('#about-window .title-bar').boundingBox();
         await tpage.mouse.move(tb.x + 20, tb.y + 10); await tpage.mouse.down();
         await tpage.mouse.move(tb.x - 200, tb.y - 200, { steps: 5 }); await tpage.mouse.up();
         L = await layout(tpage);
-        ok(Math.abs(L.rects['about-window'].l - before.l) < 1 && Math.abs(L.rects['about-window'].t - before.t) < 1, 'JS tiled: title-bar drag does not move panes');
-        await tpage.click('#blog-window .content');
-        await tpage.keyboard.press('Control+b'); await tpage.keyboard.press('z');
+        ok(Math.abs(L.rects['about-window'].l - before.l) < 1 && Math.abs(L.rects['about-window'].t - before.t) < 1, 'Dev tiles: title-bar drag does not move panes');
+        await tpage.click('#tray-settings');
         await tpage.waitForTimeout(200);
-        L = await layout(tpage);
-        ok(L.shown === 1 && L.rects['blog-window'].shown, `JS tiled: Ctrl-b z zooms the focused pane (shown=${L.shown})`);
+        const st = await tpage.evaluate(() => {
+            const r = document.getElementById('settings-main-window').getBoundingClientRect();
+            return { h: Math.round(r.height), w: Math.round(r.width), devTab: !document.getElementById('settings-nav-dev').hidden };
+        });
+        ok(st.h >= 320 && st.w > 1000 && st.devTab, `Dev tiles: settings opens as a tall full-width pane, dev tab stays visible (${JSON.stringify(st)})`);
         await tctx.close();
     }
 
@@ -790,6 +833,58 @@ try {
         });
         ok(a11y.named === a11y.total && a11y.closeLabelled && a11y.iconsHidden, `WM: windows are named regions, close buttons labelled, title icons hidden from screen readers (${JSON.stringify(a11y)})`);
         await ctx.close();
+    }
+
+    // ============ EMOJI: our glyphs as SVG, never the OS colour font ============
+    {
+        const EXT = /\p{Extended_Pictographic}/u;
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+        await ctx.addInitScript(() => localStorage.setItem('pelmeniboiler-mode', 'lcd'));
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        await page.waitForFunction(() => document.documentElement.classList.contains('emoji-svg'), null, { timeout: 8000 }).catch(() => {});
+        await page.waitForTimeout(600);
+        const hub = await page.evaluate((src) => {
+            const ext = new RegExp(src, 'u');
+            const skip = (el) => el.closest('script,style,textarea,input,option,title,code,pre,svg,noscript,.emoji-t,.no-emoji');
+            const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const bare = [];
+            while (w.nextNode()) {
+                const n = w.currentNode;
+                if (!ext.test(n.data) || skip(n.parentElement)) continue;
+                const t = n.data.replace(/[©®™]/g, '');
+                if (ext.test(t) && n.parentElement.getClientRects().length) bare.push(t.trim().slice(0, 12));
+            }
+            const uses = [...document.querySelectorAll('.emoji > svg')];
+            // Only glyphs actually on screen (closed windows and folders measure 0).
+            const shown = uses.filter((s) => s.getClientRects().length && s.getBoundingClientRect().width > 0);
+            const drawn = shown.filter((s) => { try { return s.querySelector('use').getBBox().width > 0; } catch { return false; } }).length;
+            return { svgs: uses.length, shown: shown.length, drawn, bare, blogTitle: document.querySelector('#blog-window .title').textContent };
+        }, EXT.source);
+        ok(hub.svgs > 20 && hub.bare.length === 0, `Emoji: hub draws every emoji as SVG, none left to the OS font (${hub.svgs} svg; bare: ${JSON.stringify(hub.bare)})`);
+        ok(hub.shown > 10 && hub.drawn === hub.shown, `Emoji: every on-screen SVG glyph resolves in the sprite (${hub.drawn}/${hub.shown})`);
+        ok(hub.blogTitle.includes('\u{1F4D3}'), `Emoji: the character stays in the text for copy/search (${JSON.stringify(hub.blogTitle)})`);
+        await ctx.close();
+
+        const nctx = await browser.newContext({ javaScriptEnabled: false });
+        const npage = await nctx.newPage();
+        await npage.goto(`${BASE}/blog/sunshine/en/`, { waitUntil: 'load' });
+        const art = await npage.evaluate(() => document.querySelectorAll('.emoji > svg use[href*="/styles/emoji/sprite.svg"]').length);
+        ok(art > 5, `Emoji: built pages arrive with SVG emoji for no-JS readers (${art})`);
+        await nctx.close();
+
+        const vctx = await browser.newContext();
+        const vpage = await vctx.newPage();
+        await vpage.goto(`${BASE}/tools/emojiviewer.html`, { waitUntil: 'load' });
+        await vpage.waitForSelector('.block-count', { timeout: 8000 }).catch(() => {});
+        const ev = await vpage.evaluate(() => ({
+            family: getComputedStyle(document.querySelector('.symbol-item .symbol')).fontFamily,
+            counts: document.querySelectorAll('.block-count').length,
+            missing: document.querySelectorAll('.symbol-item.not-ours').length,
+        }));
+        ok(!/Color Emoji|Segoe UI Emoji/i.test(ev.family) && /SymbolaNoRI/.test(ev.family) && ev.counts > 5 && ev.missing > 0,
+            `Emoji viewer: our stack only, gaps marked instead of tofu (${JSON.stringify(ev)})`);
+        await vctx.close();
     }
 
     // ============ LEGACY ROOT URLS + HUB HEAD ============

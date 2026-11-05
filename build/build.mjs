@@ -14,6 +14,17 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { processImages, pictureize } from './images.mjs';
+import { buildEmoji, emojifyDocument } from './emoji.mjs';
+
+// Set once per build by main(): our emoji glyphs as an SVG sprite + map.
+let EMOJI_MAP = null;
+/** Swap emoji in an HTML document or fragment string for our SVG glyphs. */
+function emojifyHtml(html, { fragment = false } = {}) {
+    if (!EMOJI_MAP) return html;
+    const dom = new JSDOM(fragment ? `<!DOCTYPE html><body>${html}</body>` : html);
+    emojifyDocument(dom.window.document, EMOJI_MAP);
+    return fragment ? dom.window.document.body.innerHTML : dom.serialize();
+}
 
 const ROOT_DIR = process.cwd();
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
@@ -118,7 +129,7 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
             width = 440;
         }
 
-        await fs.writeFile(idxPath, page({ parts, titleText, icon, width, bodyInner, titleBarExtra, extraScripts }));
+        await fs.writeFile(idxPath, emojifyHtml(page({ parts, titleText, icon, width, bodyInner, titleBarExtra, extraScripts })));
         made++;
     }
     await walk(rootDir, []);
@@ -235,6 +246,9 @@ async function main() {
 
     const processedPosts = await processAllPosts(blogPostPaths);
     const assetVersion = await computeAssetVersion(ROOT_DIR);
+
+    console.log('Extracting emoji glyphs from our fonts...');
+    EMOJI_MAP = await buildEmoji(ROOT_DIR);
 
     console.log('Encoding photos (AVIF/WebP + pre-dithered e-ink)...');
     const imageManifest = await processImages(ROOT_DIR);
@@ -470,8 +484,8 @@ async function bakeBlogList(manifestItems, localizationData, rootDir) {
 
     const { filtersHtml, postsHtml, keywordCount } = buildBlogListMarkup(manifestItems, localizationData);
 
-    html = html.replace(/(<!--FILTERS:START-->)[\s\S]*?(<!--FILTERS:END-->)/, (_m, a, b) => a + filtersHtml + b);
-    html = html.replace(/(<!--POSTS:START-->)[\s\S]*?(<!--POSTS:END-->)/, (_m, a, b) => `${a}\n${postsHtml}\n${b}`);
+    html = html.replace(/(<!--FILTERS:START-->)[\s\S]*?(<!--FILTERS:END-->)/, (_m, a, b) => a + emojifyHtml(filtersHtml, { fragment: true }) + b);
+    html = html.replace(/(<!--POSTS:START-->)[\s\S]*?(<!--POSTS:END-->)/, (_m, a, b) => `${a}\n${emojifyHtml(postsHtml, { fragment: true })}\n${b}`);
     await fs.writeFile(hubPath, html);
     console.log(`  → baked ${manifestItems.length} blog cards + ${keywordCount} filters into the hub.`);
 }
@@ -852,6 +866,9 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
                 doc.head.insertAdjacentHTML('beforeend', '\n    <meta name="runtime-modules" content="true">\n');
             }
 
+            // Our emoji as SVG, so no-JS readers never get the OS colour font.
+            emojifyDocument(doc, EMOJI_MAP);
+
             const outDir = path.join(blogDir, slug, lang);
             await fs.mkdir(outDir, { recursive: true });
             await fs.writeFile(path.join(outDir, 'index.html'), versionAssets(dom.serialize(), assetVersion));
@@ -924,7 +941,7 @@ ${bodies}
 
         const outDir = path.join(rootDir, 'zine', lang);
         await fs.mkdir(outDir, { recursive: true });
-        await fs.writeFile(path.join(outDir, 'index.html'), html);
+        await fs.writeFile(path.join(outDir, 'index.html'), emojifyHtml(html));
     }
     console.log(`  → built ${Object.keys(byLang).length} zines.`);
 }

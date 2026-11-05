@@ -11,6 +11,8 @@
                 <li data-target="language" class="active" data-key="settings_nav_lang">Language</li>
                 <li data-target="theme" data-key="settings_nav_theme">Appearance</li>
                 <li data-target="info" data-key="settings_nav_info">Information</li>
+                <!-- Hidden developer tab: revealed by triple-clicking the tray's ⚙ button. -->
+                <li data-target="dev" id="settings-nav-dev" hidden>developer</li>
             </ul>
         </nav>
         <main class="settings-content">
@@ -44,31 +46,43 @@
                     <input type="checkbox" id="gallery-toggle" class="checkbox">
                     <label for="gallery-toggle" data-key="theme_gallery_label">Gallery Background</label>
                 </div>
-                <div class="setting-group-inline">
-                    <input type="checkbox" id="tiling-toggle" class="checkbox">
-                    <label for="tiling-toggle" data-key="theme_tiling_label">Tiled windows (tmux)</label>
-                </div>
                 <hr class="setting-divider">
                 <div class="setting-group" id="theme-setting-group">
                     <label class="radio-label"><input type="radio" name="theme" value="light"><span class="symbol">☼</span> <span data-key="theme_light_label">Light</span></label>
                     <label class="radio-label"><input type="radio" name="theme" value="dark"><span class="symbol">☾</span> <span data-key="theme_dark_label">Dark</span></label>
                     <hr class="setting-divider">
                     <label class="radio-label color-theme"><input type="radio" name="theme" value="funky"><span class="symbol">🕺</span> <span data-key="theme_funky_label">Funky</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="champagne"><span class="symbol">🥂</span> <span data-key="theme_champagne_label">Champagne</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="bubblegum"><span class="symbol">🍬</span> <span data-key="theme_bubblegum_label">Bubblegum</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="techelet"><span class="symbol">🌊</span> <span data-key="theme_techelet_label">Techelet</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="zelyonny"><span class="symbol">🌲</span> <span data-key="theme_zelyonny_label">Zelyonny</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="akai"><span class="symbol">👹</span> <span data-key="theme_akai_label">Akai</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="rindswurst"><span class="symbol">🥩</span> <span data-key="theme_rindswurst_label">Rindswurst</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="tapuz"><span class="symbol">🍊</span> <span data-key="theme_tapuz_label">Tapuz</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="moroz"><span class="symbol">❄</span> <span data-key="theme_moroz_label">Moroz</span></label>
                     <label class="radio-label color-theme"><input type="radio" name="theme" value="zikit"><span class="symbol">🦎</span> <span data-key="theme_zikit_label">Zikit</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="plastilin"><span class="symbol">🫧</span> <span data-key="theme_plastilin_label">Plastilin</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="win98"><span class="symbol">🪟</span> <span data-key="theme_win98_label">Windows 98</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="glass"><span class="symbol">🫧</span> <span data-key="theme_glass_label">Liquid Glass</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="y2k"><span class="symbol">💿</span> <span data-key="theme_y2k_label">Y2K</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="wordart"><span class="symbol">🌈</span> <span data-key="theme_wordart_label">WordArt</span></label>
+                    <details class="app-folder theme-folder"><summary><span class="symbol">🗀</span> <span data-key="theme_folder_colors">colors</span></summary>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="champagne"><span class="symbol">🥂</span> <span data-key="theme_champagne_label">Champagne</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="bubblegum"><span class="symbol">🍬</span> <span data-key="theme_bubblegum_label">Bubblegum</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="techelet"><span class="symbol">🌊</span> <span data-key="theme_techelet_label">Techelet</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="zelyonny"><span class="symbol">🌲</span> <span data-key="theme_zelyonny_label">Zelyonny</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="akai"><span class="symbol">👹</span> <span data-key="theme_akai_label">Akai</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="rindswurst"><span class="symbol">🥩</span> <span data-key="theme_rindswurst_label">Rindswurst</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="tapuz"><span class="symbol">🍊</span> <span data-key="theme_tapuz_label">Tapuz</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="moroz"><span class="symbol">❄</span> <span data-key="theme_moroz_label">Moroz</span></label>
+                    </details>
+                    <details class="app-folder theme-folder"><summary><span class="symbol">🗀</span> <span data-key="theme_folder_silly">silly</span></summary>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="plastilin"><span class="symbol">🫧</span> <span data-key="theme_plastilin_label">Plastilin</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="win98"><span class="symbol">🪟</span> <span data-key="theme_win98_label">Windows 98</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="glass"><span class="symbol">🫧</span> <span data-key="theme_glass_label">Liquid Glass</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="y2k"><span class="symbol">💿</span> <span data-key="theme_y2k_label">Y2K</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="wordart"><span class="symbol">🌈</span> <span data-key="theme_wordart_label">WordArt</span></label>
+                    </details>
                 </div>
+            </div>
+
+            <!-- Developer Page (hidden; triple-click the tray's settings button) -->
+            <div id="settings-page-dev" class="settings-page">
+                <h3>developer</h3>
+                <div class="setting-group-inline">
+                    <input type="checkbox" id="dev-tiles-toggle" class="checkbox">
+                    <label for="dev-tiles-toggle">Preview the no-JS tiled layout</label>
+                </div>
+                <p class="dev-note">Visitors only ever get the tiles with JavaScript off. This preview is saved in this browser until you turn it off.</p>
+                <button id="dev-forget-layout-btn" class="normal-btn"><span class="symbol">⟲</span> forget.window.positions</button>
+                <p class="dev-note" id="dev-build-info"></p>
             </div>
 
             <!-- Information Page -->

@@ -64,7 +64,7 @@ async function checkUrl(raw, fromFile, fromUrl) {
     if (!target) { broken.push([fromFile, raw, 'no such file']); return; }
     const frag = decodeURIComponent(url.hash.slice(1));
     // Fragments starting with ":~:" are text fragments; others must be real anchors.
-    if (frag && !frag.startsWith(':~:') && target.endsWith('.html') && !(await idsOf(target)).has(frag)) {
+    if (frag && !frag.startsWith(':~:') && /\.(html|svg)$/.test(target) && !(await idsOf(target)).has(frag)) {
         broken.push([fromFile, raw, `no #${frag} on page`]);
     }
 }
@@ -76,7 +76,7 @@ let count = 0;
 for (const file of files.filter((f) => f.endsWith('.html'))) {
     const urlPath = '/' + rel(file).split(path.sep).join('/');
     const doc = new JSDOM(await fs.readFile(file, 'utf8')).window.document;
-    for (const el of doc.querySelectorAll('a[href], link[href], script[src], img[src], audio[src], source[src], iframe[src], video[src]')) {
+    for (const el of doc.querySelectorAll('a[href], link[href], script[src], img[src], audio[src], source[src], iframe[src], video[src], use[href]')) {
         const v = el.getAttribute('href') ?? el.getAttribute('src');
         if (el.tagName === 'A' && v.startsWith('#') && v.length === 1) continue;
         count++;

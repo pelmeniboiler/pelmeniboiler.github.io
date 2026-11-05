@@ -12,14 +12,16 @@
     // Define the keys used for storing settings in localStorage.
     const THEME_KEY = 'pelmeniboiler-theme';
     const MODE_KEY = 'pelmeniboiler-mode';
-    const TILING_KEY = 'pelmeniboiler-tiling';
+    const DEV_TILES_KEY = 'pelmeniboiler-dev-tiles';
 
     // Progressive enhancement flag. The floating window manager only applies
-    // under html.js; without JavaScript the desktop renders as tmux-style tiles.
-    // html.tiling opts back into the tiles with JS on (system.settings toggle).
+    // under html.js; without JavaScript the hub renders as tiles instead.
+    // html.dev-tiles previews that tiled layout with JS on, for testing; it is
+    // switched from the hidden developer tab (triple-click the tray's settings
+    // button) and isn't offered to visitors.
     document.documentElement.classList.add('js');
     try {
-        if (localStorage.getItem(TILING_KEY) === '1') document.documentElement.classList.add('tiling');
+        if (localStorage.getItem(DEV_TILES_KEY) === '1') document.documentElement.classList.add('dev-tiles');
     } catch (_) { /* storage unavailable */ }
 
     // The frost theme was renamed kfor → moroz; migrate any saved selection.

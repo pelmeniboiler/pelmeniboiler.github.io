@@ -16,3 +16,6 @@ blog/*/
 
 # Generated photo variants (AVIF/WebP/e-ink; `npm run images`, cached in CI)
 /img/
+
+# Generated emoji sprite/map/coverage (build/emoji.mjs)
+/styles/emoji/
