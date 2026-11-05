@@ -31,6 +31,11 @@ export const STACK = [
     'NotoEmoji-Regular-NoRI.ttf',
     'AndroidEmojiNoRI.ttf',
     'TwitterBWEmoji.woff2',
+    // Gap fillers: subset to only what the fonts above lack (build/fonts.py).
+    'NotoSansSymbols2-Gaps.woff2',
+    'NotoSansMath-Gaps.woff2',
+    'Unifont-Gaps.woff2',
+    'UnifontUpper-Gaps.woff2',
 ];
 const OUT_DIR = 'styles/emoji';
 const SCAN_EXT = /\.(html|json|js|mjs)$/;

@@ -37,6 +37,25 @@ SOURCES = [
     "AndroidEmojiNoRI.ttf",
 ]
 TWEMOJI_COLOUR = "TwitterColorEmoji-SVGinOT.ttf"
+
+# Gap fillers, appended to the end of --font-emoji. Each is subset to ONLY the
+# codepoints nothing earlier in the stack draws, so glyphs the site already
+# shows keep their look and the files stay small. All are SIL OFL 1.1
+# (styles/fonts/OFL-Noto.txt, OFL-Unifont.txt), which allows subsetting.
+# Sources are downloaded on demand into styles/fonts/_sources/ (gitignored);
+# only the subsets are committed.
+EMOJI_STACK = ["Symbola-ModifiedNoRI.ttf", "NotoEmoji-Regular-NoRI.ttf", "AndroidEmojiNoRI.ttf", "TwitterBWEmoji.woff2"]
+SYMBOL_RANGES = [(0x2000, 0x2BFF), (0x1F000, 0x1FBFF)]
+NOTO = "https://raw.githubusercontent.com/notofonts/notofonts.github.io/main/fonts"
+UNIFONT = "https://unifoundry.com/pub/unifont/unifont-17.0.05/font-builds"
+GAP_FILLERS = [
+    # source file, download URL, output
+    ("NotoSansSymbols2-Regular.ttf", f"{NOTO}/NotoSansSymbols2/unhinted/ttf/NotoSansSymbols2-Regular.ttf", "NotoSansSymbols2-Gaps.woff2"),
+    ("NotoSansMath-Regular.ttf", f"{NOTO}/NotoSansMath/unhinted/ttf/NotoSansMath-Regular.ttf", "NotoSansMath-Gaps.woff2"),
+    # GNU Unifont: the only monochrome font with Unicode 16's new symbols so far.
+    ("unifont-17.0.05.otf", f"{UNIFONT}/unifont-17.0.05.otf", "Unifont-Gaps.woff2"),
+    ("unifont_upper-17.0.05.otf", f"{UNIFONT}/unifont_upper-17.0.05.otf", "UnifontUpper-Gaps.woff2"),
+]
 TWEMOJI_BW = "TwitterBWEmoji.woff2"
 
 
@@ -60,6 +79,32 @@ def main() -> None:
     elif not (FONTS / TWEMOJI_BW).exists():
         sys.exit(f"Missing both {TWEMOJI_COLOUR} and {TWEMOJI_BW}")
 
+    from fontTools import subset
+    import urllib.request
+    sources = FONTS / "_sources"
+    sources.mkdir(exist_ok=True)
+    covered = set()
+    for name in EMOJI_STACK:
+        covered |= set(TTFont(FONTS / name).getBestCmap())
+    for src, url, out in GAP_FILLERS:
+        path = sources / src
+        if not path.exists():
+            print(f"  downloading {src} ...")
+            urllib.request.urlretrieve(url, path)
+        cmap = TTFont(path).getBestCmap()
+        want = sorted(cp for cp in cmap if cp not in covered and any(a <= cp <= b for a, b in SYMBOL_RANGES))
+        opts = subset.Options()
+        opts.flavor = "woff2"
+        opts.layout_features = ["*"]
+        opts.name_IDs = ["*"]  # keep the copyright/licence records
+        font = TTFont(path)
+        sub = subset.Subsetter(options=opts)
+        sub.populate(unicodes=want)
+        sub.subset(font)
+        font.flavor = "woff2"
+        font.save(FONTS / out)
+        covered |= set(want)
+        print(f"  {out:34} {(FONTS / out).stat().st_size / 1e3:6.1f} KB  ({len(want)} gap glyphs)")
 
 if __name__ == "__main__":
     main()

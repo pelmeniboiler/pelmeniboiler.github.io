@@ -34,6 +34,29 @@
   font-display: swap;
 }
 @font-face {
+  /* Noto Sans Symbols 2 (SIL OFL), subset to what the stack above lacks */
+  font-family: 'Noto Sans Symbols 2 Gaps';
+  src: url('fonts/NotoSansSymbols2-Gaps.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  /* Noto Sans Math (SIL OFL), subset likewise */
+  font-family: 'Noto Sans Math Gaps';
+  src: url('fonts/NotoSansMath-Gaps.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  /* GNU Unifont (SIL OFL), subset likewise: Unicode 16 symbols nothing else has yet */
+  font-family: 'Unifont Gaps';
+  src: url('fonts/Unifont-Gaps.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unifont Upper Gaps';
+  src: url('fonts/UnifontUpper-Gaps.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
   /* Monochrome Twemoji: colour SVG layer stripped by build/fonts.py */
   font-family: 'TwitterBWEmoji';
   src: url('fonts/TwitterBWEmoji.woff2') format('woff2');
@@ -42,7 +65,8 @@
 /* --- THEME DEFINITIONS --- */
 :root {
   --font-body: 'FrankRuhl', Garamond, serif, FairfaxHD;
-  --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android EmojiNoRI', 'TwitterBWEmoji';
+  /* The 'Gaps' faces (Noto, Unifont) only hold codepoints nothing earlier draws (build/fonts.py). */
+  --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android EmojiNoRI', 'TwitterBWEmoji', 'Noto Sans Symbols 2 Gaps', 'Noto Sans Math Gaps', 'Unifont Gaps', 'Unifont Upper Gaps';
 
   --bg-color: #ffffff; 
   --text-color: #000000; 
