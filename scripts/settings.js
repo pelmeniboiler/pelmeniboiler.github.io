@@ -167,12 +167,18 @@ function setupSettings() {
     // Setup navigation tabs within the settings window
     if (settingsNavItems.length > 0) {
         settingsNavItems.forEach(item => {
+            // Tabs are <li role="tab" tabindex="0"> (build/aria.mjs): make them
+            // work from the keyboard, and keep aria-selected in step with .active.
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+            });
             item.addEventListener('click', () => {
                 const targetId = `settings-page-${item.dataset.target}`;
                 // Deactivate current tab and page
                 document.querySelectorAll('.settings-page.active, .settings-nav li.active').forEach(activeEl => {
                     activeEl.classList.remove('active');
                 });
+                settingsNavItems.forEach((tab) => tab.setAttribute('aria-selected', String(tab === item)));
                 // Activate new tab and page
                 const targetPage = getElement(targetId);
                 if (targetPage) targetPage.classList.add('active');
@@ -629,6 +635,7 @@ function setupSettings() {
         if (langDropdownValue && langDropdownMenu) {
             const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${lang}"]`);
             if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
+            langDropdownMenu.querySelectorAll('.custom-dropdown-item').forEach((it) => it.setAttribute('aria-selected', String(it === selectedItem)));
         }
 
         // Save language choice and dispatch an event for other scripts to use the loaded translations.
@@ -738,6 +745,7 @@ function setupSettings() {
             if (langDropdownValue && langDropdownMenu) {
                 const selectedItem = langDropdownMenu.querySelector(`.custom-dropdown-item[data-value="${builtLang}"]`);
                 if (selectedItem) langDropdownValue.textContent = selectedItem.textContent;
+                langDropdownMenu.querySelectorAll('.custom-dropdown-item').forEach((it) => it.setAttribute('aria-selected', String(it === selectedItem)));
             }
             window.translationsData = { translations: {}, lang: builtLang };
             document.dispatchEvent(new CustomEvent('translationsReady', { detail: { translations: {}, lang: builtLang } }));
@@ -756,15 +764,23 @@ function setupSettings() {
     
     // Setup the language dropdown interactivity.
     if (langDropdown) {
+        // One place opens/closes the menu so aria-expanded can never drift.
+        const setLangMenuOpen = (open) => {
+            langDropdownMenu.classList.toggle('show', open);
+            langDropdownToggle.setAttribute('aria-expanded', String(open));
+        };
         langDropdownToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            langDropdownMenu.classList.toggle('show');
+            setLangMenuOpen(!langDropdownMenu.classList.contains('show'));
+        });
+        langDropdownToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') setLangMenuOpen(false);
         });
         langDropdownItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const lang = item.dataset.value;
-                langDropdownMenu.classList.remove('show');
+                setLangMenuOpen(false);
                 if (pageBase) {
                     // Built per-language page: navigate to the sibling-language
                     // page. If this post isn't translated into `lang`, fall back
@@ -781,9 +797,7 @@ function setupSettings() {
             });
         });
         window.addEventListener('click', () => {
-            if (langDropdownMenu.classList.contains('show')) {
-                langDropdownMenu.classList.remove('show');
-            }
+            if (langDropdownMenu.classList.contains('show')) setLangMenuOpen(false);
         });
     }
 

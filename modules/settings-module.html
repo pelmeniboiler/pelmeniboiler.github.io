@@ -1,42 +1,42 @@
 <!-- /modules/settings-module.html -->
 <!-- This file contains only the HTML for the unified settings window. -->
-<div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: var(--z-window-active);">
+<div id="settings-main-window" class="window settings-window init-closed" style="top: 25%; left: 25%; width: 50%; max-width: 600px; height: 400px; z-index: var(--z-window-active);" aria-labelledby="settings-main-window-title" role="region">
     <div class="title-bar">
-        <span class="title" data-key="win_settings_title">🛠 system.settings</span>
-        <button class="close-btn">&times;</button>
+        <span class="title" data-key="win_settings_title" id="settings-main-window-title">🛠 system.settings</span>
+        <button class="close-btn" aria-label="Close">&times;</button>
     </div>
     <div class="settings-container">
         <nav class="settings-nav">
-            <ul>
-                <li data-target="language" class="active" data-key="settings_nav_lang">Language</li>
-                <li data-target="theme" data-key="settings_nav_theme">Appearance</li>
-                <li data-target="info" data-key="settings_nav_info">Information</li>
+            <ul role="tablist">
+                <li data-target="language" class="active" data-key="settings_nav_lang" role="tab" tabindex="0" aria-selected="true" id="settings-tab-language" aria-controls="settings-page-language">Language</li>
+                <li data-target="theme" data-key="settings_nav_theme" role="tab" tabindex="0" aria-selected="false" id="settings-tab-theme" aria-controls="settings-page-theme">Appearance</li>
+                <li data-target="info" data-key="settings_nav_info" role="tab" tabindex="0" aria-selected="false" id="settings-tab-info" aria-controls="settings-page-info">Information</li>
                 <!-- Hidden developer tab: revealed by triple-clicking the tray's ⚙ button. -->
-                <li data-target="dev" id="settings-nav-dev" hidden>developer</li>
+                <li data-target="dev" id="settings-nav-dev" hidden role="tab" tabindex="0" aria-selected="false" aria-controls="settings-page-dev">developer</li>
             </ul>
         </nav>
         <main class="settings-content">
             <!-- Language Page -->
-            <div id="settings-page-language" class="settings-page active">
+            <div id="settings-page-language" class="settings-page active" role="tabpanel" aria-labelledby="settings-tab-language">
                 <h3 data-key="lang_select_label">Select Language</h3>
                 <div id="language-select-custom" class="custom-dropdown">
-                    <button class="custom-dropdown-toggle" type="button">
+                    <button class="custom-dropdown-toggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-select-custom-menu">
                         <span id="language-select-value">English</span>
-                        <span class="custom-dropdown-arrow">▼</span>
+                        <span class="custom-dropdown-arrow" aria-hidden="true">▼</span>
                     </button>
-                    <div class="custom-dropdown-menu">
-                        <a href="#" class="custom-dropdown-item" data-value="en">English</a>
-                        <a href="#" class="custom-dropdown-item" data-value="he">עברית (Hebrew)</a>
-                        <a href="#" class="custom-dropdown-item" data-value="ru">Русский (Russian)</a>
-                        <a href="#" class="custom-dropdown-item" data-value="de">Deutsch (German)</a>
-                        <a href="#" class="custom-dropdown-item" data-value="ja">日本語 (Japanese)</a>
-                        <a href="#" class="custom-dropdown-item" data-value="gt"> (English)</a>
+                    <div class="custom-dropdown-menu" id="language-select-custom-menu" role="listbox">
+                        <a href="#" class="custom-dropdown-item" data-value="en" role="option">English</a>
+                        <a href="#" class="custom-dropdown-item" data-value="he" role="option">עברית (Hebrew)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="ru" role="option">Русский (Russian)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="de" role="option">Deutsch (German)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="ja" role="option">日本語 (Japanese)</a>
+                        <a href="#" class="custom-dropdown-item" data-value="gt" role="option"> (English)</a>
                     </div>
                 </div>
             </div>
 
             <!-- Appearance Page -->
-            <div id="settings-page-theme" class="settings-page">
+            <div id="settings-page-theme" class="settings-page" role="tabpanel" aria-labelledby="settings-tab-theme">
                 <h3 data-key="theme_title">Display Theme</h3>
                 <div class="setting-group-inline">
                     <input type="checkbox" id="eink-toggle" class="checkbox">
@@ -48,45 +48,45 @@
                 </div>
                 <hr class="setting-divider">
                 <div class="setting-group" id="theme-setting-group">
-                    <label class="radio-label"><input type="radio" name="theme" value="light"><span class="symbol">☼</span> <span data-key="theme_light_label">Light</span></label>
-                    <label class="radio-label"><input type="radio" name="theme" value="dark"><span class="symbol">☾</span> <span data-key="theme_dark_label">Dark</span></label>
+                    <label class="radio-label"><input type="radio" name="theme" value="light"><span class="symbol" aria-hidden="true">☼</span> <span data-key="theme_light_label">Light</span></label>
+                    <label class="radio-label"><input type="radio" name="theme" value="dark"><span class="symbol" aria-hidden="true">☾</span> <span data-key="theme_dark_label">Dark</span></label>
                     <hr class="setting-divider">
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="funky"><span class="symbol">🕺</span> <span data-key="theme_funky_label">Funky</span></label>
-                    <label class="radio-label color-theme"><input type="radio" name="theme" value="zikit"><span class="symbol">🦎</span> <span data-key="theme_zikit_label">Zikit</span></label>
-                    <details class="app-folder theme-folder"><summary><span class="symbol">🗀</span> <span data-key="theme_folder_colors">colors</span></summary>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="champagne"><span class="symbol">🥂</span> <span data-key="theme_champagne_label">Champagne</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="bubblegum"><span class="symbol">🍬</span> <span data-key="theme_bubblegum_label">Bubblegum</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="techelet"><span class="symbol">🌊</span> <span data-key="theme_techelet_label">Techelet</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="zelyonny"><span class="symbol">🌲</span> <span data-key="theme_zelyonny_label">Zelyonny</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="akai"><span class="symbol">👹</span> <span data-key="theme_akai_label">Akai</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="rindswurst"><span class="symbol">🥩</span> <span data-key="theme_rindswurst_label">Rindswurst</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="tapuz"><span class="symbol">🍊</span> <span data-key="theme_tapuz_label">Tapuz</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="moroz"><span class="symbol">❄</span> <span data-key="theme_moroz_label">Moroz</span></label>
+                    <label class="radio-label color-theme"><input type="radio" name="theme" value="funky"><span class="symbol" aria-hidden="true">🕺</span> <span data-key="theme_funky_label">Funky</span></label>
+                    <label class="radio-label color-theme"><input type="radio" name="theme" value="zikit"><span class="symbol" aria-hidden="true">🦎</span> <span data-key="theme_zikit_label">Zikit</span></label>
+                    <details class="app-folder theme-folder"><summary><span class="symbol" aria-hidden="true">🗀</span> <span data-key="theme_folder_colors">colors</span></summary>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="champagne"><span class="symbol" aria-hidden="true">🥂</span> <span data-key="theme_champagne_label">Champagne</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="bubblegum"><span class="symbol" aria-hidden="true">🍬</span> <span data-key="theme_bubblegum_label">Bubblegum</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="techelet"><span class="symbol" aria-hidden="true">🌊</span> <span data-key="theme_techelet_label">Techelet</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="zelyonny"><span class="symbol" aria-hidden="true">🌲</span> <span data-key="theme_zelyonny_label">Zelyonny</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="akai"><span class="symbol" aria-hidden="true">👹</span> <span data-key="theme_akai_label">Akai</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="rindswurst"><span class="symbol" aria-hidden="true">🥩</span> <span data-key="theme_rindswurst_label">Rindswurst</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="tapuz"><span class="symbol" aria-hidden="true">🍊</span> <span data-key="theme_tapuz_label">Tapuz</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="moroz"><span class="symbol" aria-hidden="true">❄</span> <span data-key="theme_moroz_label">Moroz</span></label>
                     </details>
-                    <details class="app-folder theme-folder"><summary><span class="symbol">🗀</span> <span data-key="theme_folder_silly">silly</span></summary>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="plastilin"><span class="symbol">🫧</span> <span data-key="theme_plastilin_label">Plastilin</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="win98"><span class="symbol">🪟</span> <span data-key="theme_win98_label">Windows 98</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="glass"><span class="symbol">🫧</span> <span data-key="theme_glass_label">Liquid Glass</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="y2k"><span class="symbol">💿</span> <span data-key="theme_y2k_label">Y2K</span></label>
-                        <label class="radio-label color-theme"><input type="radio" name="theme" value="wordart"><span class="symbol">🌈</span> <span data-key="theme_wordart_label">WordArt</span></label>
+                    <details class="app-folder theme-folder"><summary><span class="symbol" aria-hidden="true">🗀</span> <span data-key="theme_folder_silly">silly</span></summary>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="plastilin"><span class="symbol" aria-hidden="true">🫧</span> <span data-key="theme_plastilin_label">Plastilin</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="win98"><span class="symbol" aria-hidden="true">🪟</span> <span data-key="theme_win98_label">Windows 98</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="glass"><span class="symbol" aria-hidden="true">🫧</span> <span data-key="theme_glass_label">Liquid Glass</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="y2k"><span class="symbol" aria-hidden="true">💿</span> <span data-key="theme_y2k_label">Y2K</span></label>
+                        <label class="radio-label color-theme"><input type="radio" name="theme" value="wordart"><span class="symbol" aria-hidden="true">🌈</span> <span data-key="theme_wordart_label">WordArt</span></label>
                     </details>
                 </div>
             </div>
 
             <!-- Developer Page (hidden; triple-click the tray's settings button) -->
-            <div id="settings-page-dev" class="settings-page">
+            <div id="settings-page-dev" class="settings-page" role="tabpanel" aria-labelledby="settings-nav-dev">
                 <h3>developer</h3>
                 <div class="setting-group-inline">
                     <input type="checkbox" id="dev-tiles-toggle" class="checkbox">
                     <label for="dev-tiles-toggle">Preview the no-JS tiled layout</label>
                 </div>
                 <p class="dev-note">Visitors only ever get the tiles with JavaScript off. This preview is saved in this browser until you turn it off.</p>
-                <button id="dev-forget-layout-btn" class="normal-btn"><span class="symbol">⟲</span> forget.window.positions</button>
+                <button id="dev-forget-layout-btn" class="normal-btn"><span class="symbol" aria-hidden="true">⟲</span> forget.window.positions</button>
                 <p class="dev-note" id="dev-build-info"></p>
             </div>
 
             <!-- Information Page -->
-            <div id="settings-page-info" class="settings-page">
+            <div id="settings-page-info" class="settings-page" role="tabpanel" aria-labelledby="settings-tab-info">
                 <h3 data-key="info_title">Copyright & Licensing</h3>
                 <p data-key="info_p1">All photographic works...</p>
                 <p data-key="info_p2">Reproduction, distribution...</p>
@@ -94,7 +94,7 @@
                 <p data-key="info_p4">Font...</p>
                 <hr class="setting-divider">
                 <button id="reset-site-btn" class="normal-btn" title="Clear saved settings, offline cache, and service worker, then reload. Use if the site gets stuck.">
-                    <span class="symbol">⟲</span> reset.everything
+                    <span class="symbol" aria-hidden="true">⟲</span> reset.everything
                 </button>
             </div>
         </main>

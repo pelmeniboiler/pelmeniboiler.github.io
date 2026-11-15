@@ -15,14 +15,15 @@ import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { processImages, pictureize } from './images.mjs';
 import { buildEmoji, emojifyDocument } from './emoji.mjs';
+import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 
 // Set once per build by main(): our emoji glyphs as an SVG sprite + map.
 let EMOJI_MAP = null;
 /** Swap emoji in an HTML document or fragment string for our SVG glyphs. */
 function emojifyHtml(html, { fragment = false } = {}) {
-    if (!EMOJI_MAP) return html;
     const dom = new JSDOM(fragment ? `<!DOCTYPE html><body>${html}</body>` : html);
     emojifyDocument(dom.window.document, EMOJI_MAP);
+    ariaDocument(dom.window.document);
     return fragment ? dom.window.document.body.innerHTML : dom.serialize();
 }
 
@@ -261,6 +262,9 @@ async function main() {
 
     console.log('Baking app library into the hub...');
     await bakeAppLibrary(ROOT_DIR, manifestItems);
+
+    console.log('Stamping ARIA onto hand-written pages and modules...');
+    await ariaSourceFiles(ROOT_DIR);
 
     await versionHubAssets(ROOT_DIR, assetVersion);
     await stampServiceWorker(ROOT_DIR, assetVersion);
@@ -868,6 +872,8 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
 
             // Our emoji as SVG, so no-JS readers never get the OS colour font.
             emojifyDocument(doc, EMOJI_MAP);
+            // Roles, names and states for the window chrome (build/aria.mjs).
+            ariaDocument(doc);
 
             const outDir = path.join(blogDir, slug, lang);
             await fs.mkdir(outDir, { recursive: true });
