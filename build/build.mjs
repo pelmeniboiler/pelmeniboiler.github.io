@@ -28,6 +28,7 @@ function emojifyHtml(html, { fragment = false } = {}) {
 }
 
 const ROOT_DIR = process.cwd();
+const RELEASE = !!process.env.CI || process.argv.includes('--release');
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
 const LOCALIZATION_DIR = path.join(ROOT_DIR, 'localization');
 const RSS_OUTPUT_DIR = path.join(ROOT_DIR, 'rss');
@@ -265,8 +266,13 @@ async function main() {
     console.log('Baking app library into the hub...');
     await bakeAppLibrary(ROOT_DIR, manifestItems);
 
-    console.log('Inlining emoji in hand-written pages and modules...');
-    await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
+    // Hand-written pages get their emoji inlined only for a release: in CI
+    // (what is deployed) or with --release. A plain local build leaves the
+    // sources as written; scripts/emoji.js draws their emoji in the browser.
+    if (RELEASE) {
+        console.log('Inlining emoji in hand-written pages and modules...');
+        await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
+    }
 
     console.log('Stamping ARIA onto hand-written pages and modules...');
     await ariaSourceFiles(ROOT_DIR);

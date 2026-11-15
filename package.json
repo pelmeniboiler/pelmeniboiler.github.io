@@ -16,7 +16,9 @@
     "images": "node -e \"import('./build/images.mjs').then((m) => m.processImages(process.cwd()))\"",
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs",
-    "aria": "node -e \"import('./build/aria.mjs').then((m) => m.ariaSourceFiles(process.cwd()))\""
+    "aria": "node -e \"import('./build/aria.mjs').then((m) => m.ariaSourceFiles(process.cwd()))\"",
+    "build:release": "node build/build.mjs --release",
+    "emoji:unbake": "node -e \"import('./build/emoji.mjs').then((m) => m.unemojifySourceFiles(process.cwd()))\""
   },
   "dependencies": {
     "fontkit": "^2.0.4",
