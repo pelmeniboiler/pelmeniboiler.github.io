@@ -240,12 +240,11 @@ body.eink-mode .symbol {
    so the OS colour emoji font never gets a say. The character itself stays in
    the DOM, clipped from view, for copy, search and screen readers. */
 /* html.emoji-pending (set by module-loader.js, lifted by emoji.js once it has
-   its map, a few ms later): symbols that scripts insert as plain text are held
-   back — not shown, and not allowed to reach the emoji fonts — so nothing
-   flashes and nothing big is downloaded. Emoji already drawn as SVG stay
-   visible. If the map can't load the hold is lifted and the fonts take over. */
-html.emoji-pending .symbol { font-family: sans-serif; visibility: hidden; }
-html.emoji-pending .symbol .emoji { visibility: visible; }
+   its map, a few ms later): symbols that scripts insert as plain text are kept
+   away from the emoji fonts, so nothing big is downloaded just to draw a glyph
+   that is about to become SVG. Nothing is hidden — letters used as icons (ש)
+   and already-drawn SVG show at once. */
+html.emoji-pending .symbol { font-family: sans-serif; }
 .emoji { position: relative; white-space: nowrap; }
 .emoji > svg { fill: currentColor; overflow: visible; }
 /* font-family: the hidden character must NOT inherit the emoji stack from

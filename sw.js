@@ -4,7 +4,7 @@
 // with the same content hash used for ?v= asset cache-busting, so every deploy
 // that changes an asset also retires the old cache.
 
-const VERSION = 'a2e8cca3';
+const VERSION = 'bee7afeb';
 const CACHE = `pelmeniboiler-${VERSION}`;
 
 // The minimal shell needed to render pages offline. Everything else (articles,
@@ -154,8 +154,13 @@ self.addEventListener('fetch', (event) => {
     // Assets: cache-first (they carry ?v= content hashes, so a stale hit is
     // impossible across deploys — a new page references new URLs). ignoreSearch
     // lets a precached bare URL satisfy its ?v= variant and vice versa.
+    // Exception: the emoji sprite and map. A page from a newer deploy may ask
+    // this (older) worker for a newer sprite; answering with the cached old
+    // one would leave every newly added emoji blank until the worker updates.
+    // Those two are matched by their exact URL, ?v= included.
+    const exact = url.pathname.startsWith('/styles/emoji/');
     event.respondWith(
-        caches.match(req, { ignoreSearch: true }).then((hit) => {
+        caches.match(req, { ignoreSearch: !exact }).then((hit) => {
             if (hit) return hit;
             return fetch(req).then((res) => {
                 if (res.ok) {

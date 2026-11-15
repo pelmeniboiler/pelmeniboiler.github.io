@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // case it never runs.
     document.documentElement.classList.add('emoji-pending');
     setTimeout(() => document.documentElement.classList.remove('emoji-pending'), 4000);
+    // emoji.js starts now, on its own — not queued behind the modules and the
+    // other scripts — so that hold lasts as short a time as possible. It
+    // watches the DOM, so everything injected later is still converted.
+    {
+        const s = document.createElement('script');
+        s.src = '/scripts/emoji.js';
+        s.onerror = () => document.documentElement.classList.remove('emoji-pending');
+        document.head.appendChild(s);
+    }
 
     // Defines which modules to load and where to put them.
     const modules = [
@@ -29,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '/scripts/start-menu.js',
         '/scripts/share.js',
         '/scripts/eink-dither.js',
-        '/scripts/zman-clock.js',
-        '/scripts/emoji.js'
+        '/scripts/zman-clock.js'
     ];
 
     /**
