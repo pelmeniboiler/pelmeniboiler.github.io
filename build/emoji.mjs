@@ -20,7 +20,7 @@
 //      styles/emoji/stack.json lists them per font, in stack order, for the
 //      emoji viewer (tools/emojiviewer.html).
 //   5. emojifySourceFiles() swaps emoji in the hand-written pages and modules
-//      too, in place, so no page ever paints an emoji as text and the emoji
+//      too (in the staged copy under /_site, never in the sources), so no page ever paints an emoji as text and the emoji
 //      FONTS are never downloaded just to draw an icon.
 //
 // Outputs are generated (gitignored); `npm run build` writes them.
@@ -49,7 +49,7 @@ export const STACK = [
 ];
 const OUT_DIR = 'styles/emoji';
 const SCAN_EXT = /\.(html|json|js|mjs)$/;
-const SKIP_DIRS = new Set(['node_modules', '.git', '.github', 'img', 'test', 'emoji', 'fonts', 'photos', 'sounds']);
+const SKIP_DIRS = new Set(['_site', 'node_modules', '.git', '.github', 'img', 'test', 'emoji', 'fonts', 'photos', 'sounds']);
 
 // Besides Unicode's own emoji we also take every other symbol from U+2190 up
 // (arrows, geometric shapes, dingbats, music, 🗀 🖻 🙾 …: categories So and Sm).
@@ -80,12 +80,12 @@ const compactPath = (d) => d
     .replace(/ ?([MLQCZ]) ?/g, '$1')
     .replace(/ -/g, '-');
 
-export async function buildEmoji(rootDir, { log = console.log } = {}) {
+export async function buildEmoji(rootDir, { log = console.log, scanRoot = rootDir } = {}) {
     const fonts = STACK.map((f) => fontkit.openSync(path.join(rootDir, 'styles/fonts', f)));
 
     // 1. Collect sequences used anywhere in the site's sources.
     const keys = new Set();
-    for (const file of await walk(rootDir)) {
+    for (const file of await walk(scanRoot)) {
         const text = await fs.readFile(file, 'utf8');
         for (const m of text.matchAll(EMOJI_RE)) {
             const key = keyOf(m[0]);
@@ -237,7 +237,7 @@ export function emojiElement(doc, sprite, [id, w, h, va], text) {
     return wrap;
 }
 
-// --- Hand-written sources, patched in place --------------------------------
+// --- Hand-written pages (the staged copy in /_site) ------------------------
 
 const escText = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const emojiHtml = (sprite, [id, w, h, va], text) =>
@@ -306,30 +306,6 @@ export async function emojifySourceFiles(rootDir, map, { log = console.log } = {
             files += 1;
         }
     }
-    log(`  → ${files ? `inlined emoji in ${files} source file(s)` : 'sources already up to date'}.`);
-    return files;
-}
-
-// The reverse, for a working tree: put the plain characters back in the
-// hand-written sources (`npm run emoji:unbake`). Inlining only needs to exist
-// in what is deployed; the sources stay readable.
-const BAKED_RE = /<span class="emoji"><svg [^>]*><use [^>]*><\/use><\/svg><span class="emoji-t">([^<]*)<\/span><\/span>/g;
-
-export async function unemojifySourceFiles(rootDir, { log = console.log } = {}) {
-    let files = 0;
-    for (const dir of SOURCE_DIRS) {
-        let names;
-        try { names = await fs.readdir(path.join(rootDir, dir)); } catch { continue; }
-        for (const name of names.filter((n) => n.endsWith('.html')).sort()) {
-            const file = path.join(rootDir, dir, name);
-            const src = await fs.readFile(file, 'utf8');
-            if (src.includes('FOLDER-INDEX')) continue;
-            const out = src.replace(BAKED_RE, '$1');
-            if (out === src) continue;
-            await fs.writeFile(file, out);
-            files += 1;
-        }
-    }
-    log(`  → restored plain emoji in ${files} source file(s).`);
+    log(`  → ${files ? `inlined emoji in ${files} hand-written page(s)` : 'nothing to inline'}.`);
     return files;
 }

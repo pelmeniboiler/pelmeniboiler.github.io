@@ -27,8 +27,43 @@ function emojifyHtml(html, { fragment = false } = {}) {
     return fragment ? dom.window.document.body.innerHTML : dom.serialize();
 }
 
-const ROOT_DIR = process.cwd();
-const RELEASE = !!process.env.CI || process.argv.includes('--release');
+// Sources are read from the repository; everything the build produces goes to
+// OUT_DIR (/_site, gitignored). The build never writes to a source file: it
+// first stages a copy of the sources there, then every step below works on
+// that copy. /_site is what gets tested, link-checked and deployed.
+const SRC_DIR = process.cwd();
+const OUT_DIR = path.join(SRC_DIR, '_site');
+const ROOT_DIR = OUT_DIR;
+
+// Not part of the site: tooling, repo metadata, notes.
+const NOT_SITE = new Set(['_site', 'node_modules', 'build', 'test', 'package.json', 'package-lock.json',
+    'LICENSE', 'plan.md', 'graflect-plan.md', 'README.md', 'CLAUDE.md']);
+// Output of older in-place builds that may still be lying around in a working
+// tree. Never copy it: the build regenerates all of it in /_site.
+const STALE_OUTPUT = [/^sitemap\.xml$/, /^rss$/, /^zine$/, /^img$/, /^styles\/emoji$/, /^blog\/blog-manifest\.json$/,
+    /^blog\/[^/]+$/ /* per-language page folders; real posts are blog/<name>.html */];
+// Kept between builds: encoded photos are slow to make and cached by content hash.
+const KEEP_IN_OUT = new Set(['img']);
+
+async function stageSources() {
+    await fs.mkdir(OUT_DIR, { recursive: true });
+    for (const name of await fs.readdir(OUT_DIR)) {
+        if (!KEEP_IN_OUT.has(name)) await fs.rm(path.join(OUT_DIR, name), { recursive: true, force: true });
+    }
+    for (const ent of await fs.readdir(SRC_DIR, { withFileTypes: true })) {
+        if (ent.name.startsWith('.') || NOT_SITE.has(ent.name)) continue;
+        await fs.cp(path.join(SRC_DIR, ent.name), path.join(OUT_DIR, ent.name), {
+            recursive: true,
+            filter: async (src) => {
+                const rel = path.relative(SRC_DIR, src).split(path.sep).join('/');
+                if (path.basename(src).startsWith('.')) return false;
+                if (!STALE_OUTPUT.some((re) => re.test(rel))) return true;
+                // blog/<name>.html is a post; blog/<name>/ is stale output.
+                return rel.startsWith('blog/') && rel !== 'blog/blog-manifest.json' && !(await fs.stat(src)).isDirectory();
+            },
+        });
+    }
+}
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
 const LOCALIZATION_DIR = path.join(ROOT_DIR, 'localization');
 const RSS_OUTPUT_DIR = path.join(ROOT_DIR, 'rss');
@@ -238,6 +273,9 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
 }
 
 async function main() {
+    console.log('Staging sources into /_site...');
+    await stageSources();
+
     await fs.mkdir(RSS_OUTPUT_DIR, { recursive: true });
 
     console.log('Loading files...');
@@ -248,7 +286,8 @@ async function main() {
 
     const processedPosts = await processAllPosts(blogPostPaths);
     console.log('Extracting emoji glyphs from our fonts...');
-    EMOJI_MAP = await buildEmoji(ROOT_DIR);
+    // Scan the SOURCES for emoji (incl. the icons named in build/*.mjs).
+    EMOJI_MAP = await buildEmoji(ROOT_DIR, { scanRoot: SRC_DIR });
 
     // After the sprite is written: its content is part of the version, so a
     // new emoji retires the old cached sprite + map like any other asset.
@@ -266,13 +305,8 @@ async function main() {
     console.log('Baking app library into the hub...');
     await bakeAppLibrary(ROOT_DIR, manifestItems);
 
-    // Hand-written pages get their emoji inlined only for a release: in CI
-    // (what is deployed) or with --release. A plain local build leaves the
-    // sources as written; scripts/emoji.js draws their emoji in the browser.
-    if (RELEASE) {
-        console.log('Inlining emoji in hand-written pages and modules...');
-        await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
-    }
+    console.log('Inlining emoji in hand-written pages and modules...');
+    await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
 
     console.log('Stamping ARIA onto hand-written pages and modules...');
     await ariaSourceFiles(ROOT_DIR);

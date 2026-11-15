@@ -13,7 +13,8 @@ import http from 'node:http';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const ROOT = process.cwd();
+// Tests run against the built site (npm run build), not the sources.
+const ROOT = path.join(process.cwd(), '_site');
 const PORT = 8123;
 const BASE = `http://localhost:${PORT}`;
 

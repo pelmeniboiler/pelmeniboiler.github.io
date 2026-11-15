@@ -1,6 +1,6 @@
 // build/aria.mjs — accessibility attributes, stamped at build time.
 //
-//   npm run aria          (also runs as part of `npm run build`)
+//   Runs as part of `npm run build`, on the output in /_site.
 //
 // The site's chrome is hand-written <div>s dressed up as a desktop: windows,
 // title bars, a custom dropdown, tab-like settings nav, toggle-like filter
@@ -195,6 +195,6 @@ export async function ariaSourceFiles(rootDir, { log = console.log } = {}) {
             added += res.added;
         }
     }
-    log(`  → ${added ? `added ARIA to ${added} element(s) in ${files} source file(s)` : 'sources already up to date'}.`);
+    log(`  → ${added ? `added ARIA to ${added} element(s) in ${files} hand-written page(s)` : 'nothing to add'}.`);
     return { files, added };
 }
