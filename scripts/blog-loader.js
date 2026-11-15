@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // --- Title and Date elements (unchanged) ---
             const titleElement = document.createElement('h3');
+            titleElement.setAttribute('aria-level', '2'); // follows the page's h1; see build.mjs
             const linkElement = document.createElement('a');
             const href = postUrl(post, currentLang());
             linkElement.href = href;

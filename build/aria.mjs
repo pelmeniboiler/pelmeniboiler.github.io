@@ -9,6 +9,7 @@
 // page (and forget it on the next one), the rules live here, once:
 //
 //   .window                → role="region", labelled by its title bar text
+//   the content window     → role="main" (one per page)
 //   .close-btn             → aria-label="Close" (otherwise read as "times")
 //   .symbol beside a label → aria-hidden (decoration; the label says it all)
 //   symbol in a titled span → role="img", named by that title
@@ -67,6 +68,17 @@ export function ariaDocument(doc) {
         if (titleId) set(win, 'aria-labelledby', titleId);
         // <nav class="window"> etc. already have a landmark role of their own.
         if (titleId && /^(DIV|SECTION)$/.test(win.tagName)) set(win, 'role', 'region');
+    }
+
+    // One main landmark per page: the window that holds the content people came
+    // for (the post list on the hub, the article elsewhere).
+    // (The settings window's inner <main> is layout, not the page's main.)
+    for (const m of root.querySelectorAll('.settings-window main')) set(m, 'role', 'none');
+    if (!root.querySelector('main:not([role="none"]), [role="main"]')) {
+        const mainWin = [...root.querySelectorAll('.window')].find((w) => w.querySelector('#blog-posts-list, article'));
+        if (mainWin && mainWin.getAttribute('role') === 'region') mainWin.setAttribute('role', 'main');
+        else if (mainWin) set(mainWin, 'role', 'main');
+        if (mainWin && changes.has(mainWin)) changes.set(mainWin, changes.get(mainWin).map(([n, v]) => (n === 'role' ? [n, 'main'] : [n, v])));
     }
 
     // "×" is announced as "times" / "multiplication sign".

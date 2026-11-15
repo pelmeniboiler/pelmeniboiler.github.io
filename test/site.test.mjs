@@ -929,6 +929,25 @@ try {
         }
     }
 
+    // ============ THE HUB TRAVELS LIGHT ============
+    // Pre-rendered in English with its chrome baked in: an English visitor
+    // fetches no translations, no modules, and only the one text font. The
+    // gallery background uses the encoded photos, never the originals.
+    {
+        const ctx = await browser.newContext({ serviceWorkers: 'block' });
+        const page = await ctx.newPage();
+        const hits = [];
+        page.on('request', (r) => { const u = new URL(r.url()).pathname; if (/^\/(localization|modules)\/|Garamond|Fairfax/.test(u)) hits.push(u); });
+        await page.goto(`${BASE}/`, { waitUntil: 'load' });
+        await page.waitForTimeout(2500);
+        const hub = await page.evaluate(() => ({ tray: !!document.getElementById('tray'), settings: !!document.getElementById('settings-main-window'), main: document.querySelectorAll('[role="main"], main:not([role="none"])').length }));
+        ok(hits.length === 0 && hub.tray && hub.settings, `Hub: chrome is baked in and nothing extra is fetched (${hits.join(', ') || 'none'}; ${JSON.stringify(hub)})`);
+        ok(hub.main === 1, `Hub: exactly one main landmark (${hub.main})`);
+        const photos = (await (await fetch(`${BASE}/screensaver/photos.json`)).json()).photos;
+        ok(photos.length > 10 && photos.every((p) => /^\/img\/.*\.webp$/.test(p.src) && p.full), `Gallery/screensaver: every photo is served as an encoded WebP (${photos.length} photos)`);
+        await ctx.close();
+    }
+
     // ============ LEGACY ROOT URLS + HUB HEAD ============
     {
         const ctx = await browser.newContext({ javaScriptEnabled: false });
