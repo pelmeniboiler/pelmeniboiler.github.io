@@ -38,8 +38,13 @@ function setupStartMenu() {
 
     function windowIcon(win) {
         const titleEl = win.querySelector('.title-bar .title');
-        const sym = titleEl?.querySelector('.symbol')?.textContent?.trim();
-        if (sym) return sym;
+        // Returns HTML. Reuse the title's already-drawn SVG emoji where there is
+        // one: re-inserting the bare character would paint it as text for a
+        // moment (and make the browser fetch an emoji font to do it).
+        const symEl = titleEl?.querySelector('.symbol');
+        if (symEl?.textContent?.trim()) return symEl.innerHTML;
+        const first = titleEl?.firstChild;
+        if (first?.nodeType === Node.ELEMENT_NODE && first.classList.contains('emoji')) return first.outerHTML;
         const text = titleEl?.textContent?.trim() || '❒';
         return [...text][0];
     }
@@ -139,7 +144,11 @@ function setupStartMenu() {
                 translations[lang][titleKey] :
                 (titleElement ? titleElement.textContent.trim() : 'Untitled Window');
 
-            listItem.innerHTML = titleText;
+            // Same reuse as the tray: when the title bar already shows this
+            // exact text with its emoji drawn as SVG, copy that markup.
+            const plain = (html) => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent.trim(); };
+            const drawn = titleElement && titleElement.querySelector('.emoji') && plain(titleText) === titleElement.textContent.trim();
+            listItem.innerHTML = drawn ? titleElement.innerHTML : titleText;
 
             const openHandler = (e) => {
                 e.preventDefault();

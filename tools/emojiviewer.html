@@ -12,135 +12,105 @@
 
     
     <style>
-        :root {
-            --sb-track-color: var(--win-bg-color, #ffffff);
-            --sb-thumb-background-color: var(--win-bg-color, #ffffff);
-            --sb-thumb-border-color: var(--border-color, #000000);
-            --sb-size: 16px;
-            --funky-bg-color: #b1de75;
-            --funky-text-color: #b000b5;
-            --funky-border-color: #eb01a5;
-            --funky-accent-color: #fa6607;
-        }
+        /* Site rules apply here too: only the theme's background and text
+           colours, square corners, no shadows, no greys. */
         body {
-            font-family: 'Times New Roman', Times, serif, FairfaxHD;
+            font-family: var(--font-body);
             margin: 0;
-            padding: 0;
+            padding: 0 0 40px;
             line-height: 1.5;
-            transition: background-color 0.3s, color 0.3s;
-            padding-bottom: 40px;
-            /* Changed overflow to auto to allow scrolling */
-            overflow: auto; 
+            overflow: auto;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
-        body.eink-mode { background-color: var(--bg-color); }
-        body.light-mode { --bg-color: #ffffff; --text-color: #000000; --border-color: #000000; --inv-bg-color: #000000; --inv-text-color: #ffffff; --win-bg-color: #ffffff; }
-        body.dark-mode { --bg-color: #000000; --text-color: #ffffff; --border-color: #ffffff; --inv-bg-color: #ffffff; --inv-text-color: #000000; --win-bg-color: #000000; }
-        body.funky-mode { --bg-color: var(--funky-bg-color); --text-color: var(--funky-text-color); --border-color: var(--funky-border-color); --inv-bg-color: var(--funky-border-color); --inv-text-color: var(--funky-bg-color); --win-bg-color: var(--funky-bg-color); }
-        body { color: var(--text-color); }
-        .symbol {
-            /* The site's own monochrome stack (Symbola → Noto Emoji → Android
-               Emoji → Twemoji B&W), never the OS colour emoji fonts. */
-            font-family: var(--font-emoji);
-            font-variant-emoji: text;
-            font-weight: normal;
-        }
-        .window {
-            position: absolute;
-            background-color: var(--win-bg-color);
-            border: 2px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-        /* --- End of user CSS, with minor modifications --- */
-        
-        /* --- Custom Styles for this page --- */
-        body.light-mode {
-             background-color: #f4f4f9;
-             color: #333;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-        }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 1rem; }
         h1 {
             text-align: center;
-            border-bottom: 2px solid #ccc;
+            border-bottom: 2px solid var(--text-color);
             padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-            font-family: 'Selyodka', 'Times New Roman', serif;
+            margin-bottom: 1rem;
+            font-family: 'Selyodka', var(--font-body);
         }
+        .viewer-note { text-align: center; margin: 0 auto 2rem; max-width: 60ch; }
         .unicode-block {
             margin-bottom: 3rem;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            background-color: var(--win-bg-color);
+            border: 2px solid var(--text-color);
             padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
         .unicode-block h2 {
             margin-top: 0;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eee;
-            color: #555;
+            border-bottom: 1px solid var(--text-color);
         }
         .symbol-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
             gap: 1rem;
         }
+        /* One character: the fonts that lost on the left, the winner big. */
         .symbol-item {
+            display: grid;
+            grid-template-columns: 1.4rem 1fr;
+            grid-template-areas: "stack glyph" "code code";
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border: 1px solid var(--text-color);
+            background-color: var(--win-bg-color);
+            color: var(--text-color);
+            cursor: var(--cur-pointer, pointer);
+            font: inherit;
+        }
+        .symbol-item:hover, .symbol-item:focus-visible {
+            background-color: var(--text-color);
+            color: var(--win-bg-color);
+            outline: none;
+        }
+        .symbol-item .glyph {
+            grid-area: glyph;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            text-align: center;
+            font-variant-emoji: text;
+        }
+        /* The rest of the stack for this character, in stack order: the font
+           nearest the top is the next one in line after the winner. */
+        .symbol-item .stack {
+            grid-area: stack;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 0.5rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            background-color: #fafafa;
-        }
-        .symbol-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-            border-color: #007bff;
-        }
-        .symbol-item .symbol {
-            font-size: 2.5rem; /* Larger emoji */
-            line-height: 1.2;
+            gap: 1px;
+            font-size: 0.8rem;
+            line-height: 1.1;
+            font-variant-emoji: text;
         }
         .symbol-item code {
+            grid-area: code;
+            justify-self: center;
             font-size: 0.75rem;
-            color: #888;
-            margin-top: 0.25rem;
-            background-color: #eee;
-            padding: 2px 4px;
-            border-radius: 3px;
+            border: 1px solid currentColor;
+            padding: 0 4px;
         }
         #copy-notification {
             position: fixed;
-            bottom: -100px; /* Initially hidden */
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 1rem;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            padding: 8px 20px;
             z-index: 1000;
-            transition: bottom 0.5s ease-in-out;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        #copy-notification.show {
-            bottom: 30px; /* Slide in from bottom */
-        }
+        #copy-notification:not(.show) { display: none; }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
     <div class="container">
-        <h1>Unicode Symbol & Emoji Viewer</h1>
+        <h1>Unicode Symbol &amp; Emoji Viewer</h1>
+        <p class="viewer-note">The big glyph is the one the site draws: the first font in its emoji stack that has the character. The small ones on the left are the same character in the fonts further down the stack. Hover for the font names; click to copy.</p>
         <div id="symbol-container">
             <!-- Unicode blocks will be generated here by JavaScript -->
         </div>
@@ -176,17 +146,13 @@
             const mainContainer = document.getElementById('symbol-container');
             const notification = document.getElementById('copy-notification');
 
-            // Function to show the "Copied!" notification
             let notificationTimeout;
             function showNotification() {
                 if (notificationTimeout) clearTimeout(notificationTimeout);
                 notification.classList.add('show');
-                notificationTimeout = setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 2000);
+                notificationTimeout = setTimeout(() => notification.classList.remove('show'), 2000);
             }
 
-            // Function to copy text to clipboard
             function copyToClipboard(text) {
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
@@ -194,81 +160,105 @@
                 textarea.style.opacity = '0';
                 document.body.appendChild(textarea);
                 textarea.select();
-                try {
-                    document.execCommand('copy');
-                    showNotification();
-                } catch (err) {
-                    console.error('Failed to copy text: ', err);
-                }
+                try { document.execCommand('copy'); showNotification(); }
+                catch (err) { console.error('Failed to copy text: ', err); }
                 document.body.removeChild(textarea);
             }
-            
-            // Loop through each defined block and generate the HTML
-            unicodeBlocks.forEach(block => {
-                const blockDiv = document.createElement('div');
-                blockDiv.className = 'unicode-block';
 
-                const blockTitle = document.createElement('h2');
-                // Adjust title based on block type
-                if (block.type === 'flags') {
-                    blockTitle.textContent = block.name;
-                } else {
-                    blockTitle.textContent = `${block.name} (U+${block.start.toString(16).toUpperCase()} - U+${block.end.toString(16).toUpperCase()})`;
+            // Is codepoint cp inside the sorted [start, end] ranges?
+            function inRanges(ranges, cp) {
+                let lo = 0, hi = ranges.length - 1;
+                while (lo <= hi) {
+                    const mid = (lo + hi) >> 1;
+                    if (cp < ranges[mid][0]) hi = mid - 1;
+                    else if (cp > ranges[mid][1]) lo = mid + 1;
+                    else return true;
                 }
-                blockDiv.appendChild(blockTitle);
+                return false;
+            }
 
-                const gridDiv = document.createElement('div');
-                gridDiv.className = 'symbol-grid';
+            // stack: [{family, name, ranges}] in priority order, written by
+            // build/emoji.mjs. Without it (not built yet) every character is
+            // simply drawn by the whole stack, with no layers shown.
+            function render(stack) {
+                const emojiStack = getComputedStyle(document.documentElement).getPropertyValue('--font-emoji');
 
-                // Helper function to create a symbol item
-                function createSymbolItem(char, codeText) {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'symbol-item';
-                    itemDiv.title = `Click to copy ${char}`;
+                function createSymbolItem(grid, char, codeText, fonts) {
+                    const item = document.createElement('button');
+                    item.type = 'button';
+                    item.className = 'symbol-item';
 
-                    const symbolSpan = document.createElement('span');
-                    symbolSpan.className = 'symbol';
-                    symbolSpan.textContent = char;
+                    const layers = document.createElement('span');
+                    layers.className = 'stack';
+                    const glyph = document.createElement('span');
+                    glyph.className = 'glyph';
+                    glyph.textContent = char;
+
+                    if (fonts && fonts.length) {
+                        const [winner, ...rest] = fonts;
+                        glyph.style.fontFamily = `'${winner.family}'`;
+                        for (const f of rest) {
+                            const mini = document.createElement('span');
+                            mini.style.fontFamily = `'${f.family}'`;
+                            mini.textContent = char;
+                            mini.title = f.name;
+                            layers.appendChild(mini);
+                        }
+                        item.title = `${codeText}: drawn by ${winner.name}` + (rest.length ? `; also in ${rest.map((f) => f.name).join(', ')}` : '') + '. Click to copy.';
+                    } else {
+                        glyph.style.fontFamily = emojiStack;
+                        item.title = `${codeText}. Click to copy.`;
+                    }
 
                     const codeTag = document.createElement('code');
                     codeTag.textContent = codeText;
-                    
-                    itemDiv.addEventListener('click', () => copyToClipboard(char));
-                    
-                    itemDiv.appendChild(symbolSpan);
-                    itemDiv.appendChild(codeTag);
-                    gridDiv.appendChild(itemDiv);
+
+                    item.addEventListener('click', () => copyToClipboard(char));
+                    item.append(layers, glyph, codeTag);
+                    grid.appendChild(item);
                 }
 
-                // Check if the block is for flags and process it differently
-                if (block.type === 'flags') {
-                    block.codes.forEach(countryCode => {
-                        // A flag emoji is created by converting each letter of a country code
-                        // to a "Regional Indicator Symbol" codepoint.
-                        // 'A' (U+0041) becomes Regional Indicator Symbol Letter A (U+1F1E6).
-                        const regionalIndicatorA = 0x1F1E6;
-                        const charCodeA = 'A'.charCodeAt(0);
-                        
-                        const codePoint1 = regionalIndicatorA + countryCode.charCodeAt(0) - charCodeA;
-                        const codePoint2 = regionalIndicatorA + countryCode.charCodeAt(1) - charCodeA;
+                unicodeBlocks.forEach((block) => {
+                    const blockDiv = document.createElement('div');
+                    blockDiv.className = 'unicode-block';
+                    const blockTitle = document.createElement('h2');
+                    blockTitle.textContent = block.type === 'flags'
+                        ? block.name
+                        : `${block.name} (U+${block.start.toString(16).toUpperCase()} - U+${block.end.toString(16).toUpperCase()})`;
+                    blockDiv.appendChild(blockTitle);
 
-                        const flagEmoji = String.fromCodePoint(codePoint1, codePoint2);
-                        createSymbolItem(flagEmoji, countryCode);
-                    });
-                } else {
-                    // Loop through the codepoint range for standard blocks
-                    // Unassigned codepoints aren't characters at all, so they're skipped.
-                    for (let i = block.start; i <= block.end; i++) {
-                        const char = String.fromCodePoint(i);
-                        if (/\p{Cn}/u.test(char)) continue;
-                        const codePoint = `U+${i.toString(16).toUpperCase().padStart(4, '0')}`;
-                        createSymbolItem(char, codePoint);
+                    const gridDiv = document.createElement('div');
+                    gridDiv.className = 'symbol-grid';
+
+                    if (block.type === 'flags') {
+                        // A flag is two Regional Indicator letters that a font
+                        // joins into one glyph; which fonts do that isn't in
+                        // the per-codepoint data, so flags show no layers.
+                        block.codes.forEach((countryCode) => {
+                            const A = 0x1F1E6, a = 'A'.charCodeAt(0);
+                            const flag = String.fromCodePoint(A + countryCode.charCodeAt(0) - a, A + countryCode.charCodeAt(1) - a);
+                            createSymbolItem(gridDiv, flag, countryCode, null);
+                        });
+                    } else {
+                        for (let i = block.start; i <= block.end; i++) {
+                            const char = String.fromCodePoint(i);
+                            if (/\p{Cn}/u.test(char)) continue; // unassigned
+                            const fonts = stack ? stack.filter((f) => inRanges(f.ranges, i)) : null;
+                            if (stack && !fonts.length) continue; // nothing in our stack draws it
+                            createSymbolItem(gridDiv, char, `U+${i.toString(16).toUpperCase().padStart(4, '0')}`, fonts);
+                        }
                     }
-                }
 
-                blockDiv.appendChild(gridDiv);
-                mainContainer.appendChild(blockDiv);
-            });
+                    if (!gridDiv.children.length) return;
+                    blockDiv.appendChild(gridDiv);
+                    mainContainer.appendChild(blockDiv);
+                });
+            }
+
+            fetch('/styles/emoji/stack.json')
+                .then((res) => (res.ok ? res.json() : null))
+                .catch(() => null)
+                .then(render);
         });
     </script>
 

@@ -9,7 +9,7 @@
 // screen readers and textContent. Build-generated pages already arrive
 // converted, so no-JS readers get the same glyphs.
 (function () {
-    const RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*/gu;
+    const RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}][\uFE0E\uFE0F]?/gu;
     // Non-global twin for quick tests: a /g regex's lastIndex would make the
     // following matchAll() start after the first emoji.
     const HAS = new RegExp(RE.source, 'u');
@@ -79,9 +79,14 @@
     async function start() {
         try {
             const res = await fetch('/styles/emoji/map.json', { cache: 'no-cache' });
-            if (!res.ok) return;
+            if (!res.ok) throw new Error(res.status);
             map = await res.json();
-        } catch (_) { return; } // offline without a cached map: text emoji it is
+        } catch (_) {
+            // Offline without a cached map: text emoji it is. Lift the CSS
+            // hold on symbols so the emoji fonts draw them.
+            document.documentElement.classList.remove('emoji-pending');
+            return;
+        }
         convert(document.body);
         // Translations, the blog list, the tray etc. rewrite content later.
         let pending = new Set();
@@ -93,7 +98,11 @@
             }
             queueMicrotask(flush);
         }).observe(document.body, { childList: true, subtree: true, characterData: true });
+        // Synchronous entry point for scripts that insert text and want it
+        // drawn before the next layout (the observer above runs a tick later).
+        window.pbEmoji = { convert };
         document.documentElement.classList.add('emoji-svg');
+        document.documentElement.classList.remove('emoji-pending');
     }
     if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();

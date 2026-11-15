@@ -88,7 +88,7 @@
 <div class="forge">
 
     <div class="window pane-intro">
-        <div class="title-bar"><span class="title">🖋 sofrut.scribe</span></div>
+        <div class="title-bar"><span class="title"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:1.021em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e1f58b"></use></svg><span class="emoji-t">🖋</span></span> sofrut.scribe</span></div>
         <div class="content">
             <p class="note">Scaffold a new blog post: fill this in, generate the <code>.html</code> skeleton and
             the English <code>.json</code>, drop them in <code>/blog/</code> and <code>/localization/</code>, then
@@ -157,7 +157,7 @@
             <code>![alt](/photos/x.png)</code>, anything else = paragraph.</p>
             <textarea class="body" id="body" placeholder="## Background&#10;&#10;This is the first paragraph...&#10;&#10;### A detail&#10;&#10;More text.&#10;&#10;> A pull-aside / note.&#10;&#10;![a diagram](/photos/example.png)"></textarea>
             <div class="bar">
-                <button class="normal-btn" id="generate">⚙ Generate files</button>
+                <button class="normal-btn" id="generate"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.93em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2699"></use></svg><span class="emoji-t">⚙</span></span> Generate files</button>
                 <span class="note" id="stats"></span>
             </div>
             <div class="field">
@@ -177,16 +177,16 @@
                 <label>blog/<span id="out-html-name">&lt;slug&gt;.html</span></label>
                 <textarea class="out" id="out-html" readonly></textarea>
                 <div class="bar">
-                    <button class="normal-btn" data-copy="out-html">⎘ copy</button>
-                    <button class="normal-btn" data-download="html">⬇ download</button>
+                    <button class="normal-btn" data-copy="out-html"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.859em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2398"></use></svg><span class="emoji-t">⎘</span></span> copy</button>
+                    <button class="normal-btn" data-download="html"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.61em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2b07"></use></svg><span class="emoji-t">⬇</span></span> download</button>
                 </div>
             </div>
             <div class="field">
                 <label>localization/<span id="out-json-name">&lt;prefix&gt;.json</span></label>
                 <textarea class="out" id="out-json" readonly></textarea>
                 <div class="bar">
-                    <button class="normal-btn" data-copy="out-json">⎘ copy</button>
-                    <button class="normal-btn" data-download="json">⬇ download</button>
+                    <button class="normal-btn" data-copy="out-json"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.859em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2398"></use></svg><span class="emoji-t">⎘</span></span> copy</button>
+                    <button class="normal-btn" data-download="json"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.61em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2b07"></use></svg><span class="emoji-t">⬇</span></span> download</button>
                 </div>
             </div>
         </div>
@@ -218,17 +218,17 @@
                 <label for="concept-term">Connect a concept <small>(Wikidata — the term each language actually uses; click a result to add it)</small></label>
                 <div class="bar">
                     <input type="text" id="concept-term" placeholder="e.g. featural writing system" style="max-width: 300px;">
-                    <button class="normal-btn" id="concept-lookup">🔎 look up</button>
+                    <button class="normal-btn" id="concept-lookup"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:1.019em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e1f50e"></use></svg><span class="emoji-t">🔎</span></span> look up</button>
                 </div>
                 <div id="concept-result" class="note"></div>
             </div>
-            <div class="bar"><button class="normal-btn" id="mk-prompt">✎ Generate prompt</button></div>
+            <div class="bar"><button class="normal-btn" id="mk-prompt"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.938em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e270e"></use></svg><span class="emoji-t">✎</span></span> Generate prompt</button></div>
             <textarea class="out" id="prompt-out" readonly></textarea>
-            <div class="bar"><button class="normal-btn" data-copy="prompt-out">⎘ copy prompt</button></div>
+            <div class="bar"><button class="normal-btn" data-copy="prompt-out"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.859em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2398"></use></svg><span class="emoji-t">⎘</span></span> copy prompt</button></div>
 
             <h2 class="sec">validate returned JSON</h2>
             <textarea class="out" id="paste-in" placeholder='Paste the model output here, e.g. { "he": { "...": "..." } }'></textarea>
-            <div class="bar"><button class="normal-btn" id="validate">✔ Validate</button></div>
+            <div class="bar"><button class="normal-btn" id="validate"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.873em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2714"></use></svg><span class="emoji-t">✔</span></span> Validate</button></div>
             <div class="report" id="report" style="display:none;"></div>
         </div>
     </div>
@@ -250,11 +250,11 @@
             </div>
             <div id="edit-table"></div>
             <div class="bar">
-                <button class="normal-btn" id="edit-regen">⚙ Regenerate JSON</button>
-                <button class="normal-btn" id="edit-stale-prompt">✎ Prompt for stale + missing</button>
+                <button class="normal-btn" id="edit-regen"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.93em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2699"></use></svg><span class="emoji-t">⚙</span></span> Regenerate JSON</button>
+                <button class="normal-btn" id="edit-stale-prompt"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.938em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e270e"></use></svg><span class="emoji-t">✎</span></span> Prompt for stale + missing</button>
             </div>
             <textarea class="out" id="edit-out" readonly></textarea>
-            <div class="bar"><button class="normal-btn" data-copy="edit-out">⎘ copy</button></div>
+            <div class="bar"><button class="normal-btn" data-copy="edit-out"><span class="emoji"><svg aria-hidden="true" focusable="false" style="width:0.859em;height:1em;vertical-align:-0.216em"><use href="/styles/emoji/sprite.svg?v=d08c70d8#e2398"></use></svg><span class="emoji-t">⎘</span></span> copy</button></div>
         </div>
     </div>
 

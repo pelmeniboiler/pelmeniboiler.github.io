@@ -4,6 +4,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Module Loader: DOMContentLoaded event fired. Starting module loading process.");
 
+    // Hold back symbols that scripts insert as plain text until emoji.js (the
+    // last script loaded below) can draw them as SVG — see .emoji-pending in
+    // the stylesheet. emoji.js lifts the hold; the timer is a safety net in
+    // case it never runs.
+    document.documentElement.classList.add('emoji-pending');
+    setTimeout(() => document.documentElement.classList.remove('emoji-pending'), 4000);
+
     // Defines which modules to load and where to put them.
     const modules = [
         { id: 'settings-module-placeholder', path: '/modules/settings-module.html' },

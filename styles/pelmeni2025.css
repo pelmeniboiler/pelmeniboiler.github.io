@@ -12,6 +12,7 @@
   font-family: 'SymbolaNoRI';
   src: url('fonts/Symbola-ModifiedNoRI.woff2') format('woff2'), url('fonts/Symbola-ModifiedNoRI.ttf') format('truetype');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   font-family: 'Garamond';
@@ -27,44 +28,54 @@
   font-family: 'Noto EmojiNoRI';
   src: url('fonts/NotoEmoji-Regular-NoRI.woff2') format('woff2'), url('fonts/NotoEmoji-Regular-NoRI.ttf') format('truetype');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   font-family: 'Android EmojiNoRI';
   src: url('fonts/AndroidEmojiNoRI.woff2') format('woff2'), url('fonts/AndroidEmojiNoRI.ttf') format('truetype');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   /* Noto Sans Symbols 2 (SIL OFL), subset to what the stack above lacks */
   font-family: 'Noto Sans Symbols 2 Gaps';
   src: url('fonts/NotoSansSymbols2-Gaps.woff2') format('woff2');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   /* Noto Sans Math (SIL OFL), subset likewise */
   font-family: 'Noto Sans Math Gaps';
   src: url('fonts/NotoSansMath-Gaps.woff2') format('woff2');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   /* GNU Unifont (SIL OFL), subset likewise: Unicode 16 symbols nothing else has yet */
   font-family: 'Unifont Gaps';
   src: url('fonts/Unifont-Gaps.woff2') format('woff2');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   font-family: 'Unifont Upper Gaps';
   src: url('fonts/UnifontUpper-Gaps.woff2') format('woff2');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 @font-face {
   /* Monochrome Twemoji: colour SVG layer stripped by build/fonts.py */
   font-family: 'TwitterBWEmoji';
   src: url('fonts/TwitterBWEmoji.woff2') format('woff2');
   font-display: swap;
+  unicode-range: U+A9, U+AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2190-2BFF, U+3030, U+303D, U+3297, U+3299, U+FE0E-FE0F, U+1D100-1D1FF, U+1F000-1FBFF, U+E0020-E007F;
 }
 /* --- THEME DEFINITIONS --- */
 :root {
   --font-body: 'FrankRuhl', Garamond, serif, FairfaxHD;
+  /* Every face in this stack is limited (unicode-range) to the symbol and emoji blocks:
+     a space or a letter inside .symbol must never trigger a multi-megabyte
+     emoji font download. */
   /* The 'Gaps' faces (Noto, Unifont) only hold codepoints nothing earlier draws (build/fonts.py). */
   --font-emoji: 'SymbolaNoRI', 'Noto EmojiNoRI', 'Android EmojiNoRI', 'TwitterBWEmoji', 'Noto Sans Symbols 2 Gaps', 'Noto Sans Math Gaps', 'Unifont Gaps', 'Unifont Upper Gaps';
 
@@ -228,9 +239,19 @@ body.eink-mode .symbol {
 /* Emoji drawn from our own fonts as inline SVG (build/emoji.mjs + scripts/emoji.js),
    so the OS colour emoji font never gets a say. The character itself stays in
    the DOM, clipped from view, for copy, search and screen readers. */
+/* html.emoji-pending (set by module-loader.js, lifted by emoji.js once it has
+   its map, a few ms later): symbols that scripts insert as plain text are held
+   back — not shown, and not allowed to reach the emoji fonts — so nothing
+   flashes and nothing big is downloaded. Emoji already drawn as SVG stay
+   visible. If the map can't load the hold is lifted and the fonts take over. */
+html.emoji-pending .symbol { font-family: sans-serif; visibility: hidden; }
+html.emoji-pending .symbol .emoji { visibility: visible; }
 .emoji { position: relative; white-space: nowrap; }
 .emoji > svg { fill: currentColor; overflow: visible; }
-.emoji-t { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* font-family: the hidden character must NOT inherit the emoji stack from
+   .symbol, or the browser downloads megabytes of emoji fonts to draw a
+   glyph nobody sees. */
+.emoji-t { font-family: sans-serif; position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .logo-image-container svg, .start-button svg {
     object-fit: contain;
 }
@@ -374,7 +395,7 @@ body.eink-mode .symbol {
 .app-folder { margin: 6px 0 6px 8px; }
 .app-folder summary { cursor: var(--cur-pointer); font-weight: bold; }
 .app-folder .app-list { padding-inline-start: 20px; }
-.window-list li { padding: 5px 8px 5px 2em; border-bottom: 1px solid var(--border-color); color: var(--text-color); background-color: var(--win-bg-color); font-family: var(--font-emoji), var(--font-body); }
+.window-list li { padding: 5px 8px 5px 2em; border-bottom: 1px solid var(--border-color); color: var(--text-color); background-color: var(--win-bg-color); font-family: var(--font-body), var(--font-emoji); }
 .window-list li:last-child { border-bottom: none; }
 .settings-window { min-width: 500px; }
 .settings-container { display: flex; flex-grow: 1; min-height: 0; }
