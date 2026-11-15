@@ -540,7 +540,8 @@ a:hover, a:active, a:focus-visible {
 
 .close-btn, .normal-btn, .window-list li, .settings-nav li { cursor: var(--cur-pointer); }
 
-.close-btn { color: var(--inv-text-color); background: transparent; border: none; font-size: 20px; font-weight: bold; padding: 0 4px; }
+.close-btn { color: var(--inv-text-color); background: transparent; border: none; font-size: 20px; font-weight: bold; padding: 0 4px; min-width: 24px; min-height: 24px; }
+.rss-btn { min-width: 24px; min-height: 24px; }
 .close-btn:hover, .close-btn:active, .close-btn:focus-visible {
     outline: none;
     background-color: var(--inv-text-color);
@@ -1246,6 +1247,9 @@ html:not(.js) .rss-dropdown-container:focus-within .rss-dropdown-content { displ
    generated :has() rule per keyword. With JS the real buttons take over. */
 .bf-radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
 .filter-label { display: none; }
+/* With JS the real buttons take over; a hidden-but-present radio whose label
+   is display:none is an unlabelled control to assistive tech. */
+html.js .bf-radio { display: none; }
 html:not(.js) .filter-label { display: inline-block; margin: 0 4px 4px 0; }
 html:not(.js) button.filter-btn { display: none; }
 html:not(.js) .bf-radio:checked + .filter-label { background-color: var(--text-color); color: var(--win-bg-color); font-weight: bold; }

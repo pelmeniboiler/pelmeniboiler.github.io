@@ -177,7 +177,7 @@ async function generateFolderIndexes(rootDir, manifestItems, localizationData) {
 // the e-ink screensaver reads: it picks one at random and re-draws it as a halftone
 // mosaic built out of the ShZh logo. We keep only reasonably large images (real
 // photos, not tiny inline crops/icons) so the mosaic has something to work with.
-async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir, localizationData) {
+async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir, localizationData, imageManifest = {}) {
     const photoPosts = manifestItems.filter((p) => (p.keywords || []).includes('Photos'));
     const stripTags = (s) => s.replace(/<[^>]+>/g, '');
     const decode = (s) => s
@@ -249,7 +249,14 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
             seen.add(src);
             try {
                 const { size } = await fs.stat(path.join(rootDir, src.replace(/^\//, '')));
-                if (size >= 250_000) photos.push({ src, slug });
+                if (size >= 250_000) {
+                    // Serve the encoded variant (WebP, widest: every browser that
+                    // runs this reads it), not the multi-megabyte original. The
+                    // original stays available as `full`.
+                    const enc = imageManifest[src] || imageManifest[encodeURI(src)];
+                    const small = enc && enc.webp.length ? enc.webp[enc.webp.length - 1][0] : src;
+                    photos.push({ src: small, full: src, slug });
+                }
             } catch { /* referenced file missing — skip */ }
         }
     }
@@ -305,6 +312,9 @@ async function main() {
     console.log('Baking app library into the hub...');
     await bakeAppLibrary(ROOT_DIR, manifestItems);
 
+    console.log('Baking the chrome and English text into the hub...');
+    await bakeHub(ROOT_DIR, localizationData, manifestItems);
+
     console.log('Inlining emoji in hand-written pages and modules...');
     await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
 
@@ -331,7 +341,7 @@ async function main() {
     await generateFolderIndexes(ROOT_DIR, manifestItems, localizationData);
 
     console.log('Generating e-ink screensaver photo manifest...');
-    await generatePhotoScreensaverManifest(manifestItems, BLOG_DIR, ROOT_DIR, localizationData);
+    await generatePhotoScreensaverManifest(manifestItems, BLOG_DIR, ROOT_DIR, localizationData, imageManifest);
 
     console.log('Determining languages...');
     const allLanguages = new Set();
@@ -347,6 +357,9 @@ async function main() {
         );
         if (success) generatedCount++;
     }
+
+    console.log('Inlining the theme loader into every page...');
+    await inlineThemeLoader(ROOT_DIR);
 
     console.log(`\n✅ Generated ${generatedCount} RSS feeds and blog-manifest.json.`);
 }
@@ -478,7 +491,7 @@ function buildBlogListMarkup(manifestItems, localizationData) {
         const date = formatDisplayDate(p.date, 'en'); // baked default (Anno Mundi); JS re-formats per language
         const kws = (p.keywords || []).join(',');
         return `<article class="blog-post" data-keywords="${kws}">
-  <h3><a href="${href}" data-key="${p.titleKey}" data-slug="${p.slug}" data-langs="${langs}">${title}</a></h3>
+  <h3 aria-level="2"><a href="${href}" data-key="${p.titleKey}" data-slug="${p.slug}" data-langs="${langs}">${title}</a></h3>
   <p class="post-date" data-date="${isoDate}">${date}</p>
   <p data-key="${p.descriptionKey}">${desc}</p>
   <p><i><a href="${href}" data-slug="${p.slug}" data-langs="${langs}">read more &rarr;</a></i></p>
@@ -730,6 +743,68 @@ function stripHtml(value) {
  * Bake translated text into an HTML fragment (a chrome module) for one language
  * and return the resulting HTML string, ready to replace a placeholder element.
  */
+/**
+ * theme-loader.js must run before first paint (it sets the theme classes), so
+ * as an external file it is a render-blocking request on every page. It is
+ * 3 KB: put it in the page instead. The file itself stays for anything that
+ * still references it.
+ */
+async function inlineThemeLoader(rootDir) {
+    const code = (await fs.readFile(path.join(rootDir, 'scripts/theme-loader.js'), 'utf-8')).replace(/<\/script/gi, '<\\/script');
+    const TAG = /<script\b[^>]*\bsrc="[^"]*\/?scripts\/theme-loader\.js[^"]*"[^>]*><\/script>/g;
+    let n = 0;
+    const walk = async (dir) => {
+        for (const ent of await fs.readdir(dir, { withFileTypes: true })) {
+            const full = path.join(dir, ent.name);
+            if (ent.isDirectory()) { if (ent.name !== 'img' && ent.name !== 'photos') await walk(full); continue; }
+            if (!ent.name.endsWith('.html')) continue;
+            const html = await fs.readFile(full, 'utf-8');
+            if (!TAG.test(html)) continue;
+            TAG.lastIndex = 0;
+            await fs.writeFile(full, html.replace(TAG, () => `<script>${code}</script>`));
+            n += 1;
+        }
+    };
+    await walk(rootDir);
+    console.log(`  → inlined into ${n} page(s).`);
+}
+
+/**
+ * Pre-render the hub the way article pages already are: put the settings,
+ * start-menu and share modules straight into the page (instead of three
+ * runtime fetches that make the tray pop in late) and fill every data-key
+ * with its English text. scripts/settings.js then has nothing to fetch for an
+ * English visitor; other languages still load their strings on demand.
+ */
+async function bakeHub(rootDir, localizationData, manifestItems) {
+    const hubPath = path.join(rootDir, 'index.html');
+    const dom = new JSDOM(await fs.readFile(hubPath, 'utf-8'));
+    const doc = dom.window.document;
+    // Same sources, same order, as the runtime merge in settings.js:
+    // global, the page's own file, then every post's file (for the blog list).
+    const pageSource = doc.querySelector('meta[name="translation-source"]')?.content;
+    const sources = ['global', pageSource, ...new Set(manifestItems.map((p) => p.translationSource).filter(Boolean))].filter(Boolean);
+    const en = {};
+    for (const s of sources) Object.assign(en, localizationData[s]?.en || {});
+    const lookup = (_lang, key) => en[key];
+
+    const modulesDir = path.join(rootDir, 'modules');
+    for (const [id, file] of [['settings-module-placeholder', 'settings-module.html'], ['start-menu-module-placeholder', 'start-menu-module.html'], ['share-module-placeholder', 'share-module.html']]) {
+        const ph = doc.getElementById(id);
+        if (ph) ph.outerHTML = bakeFragment(await fs.readFile(path.join(modulesDir, file), 'utf-8'), 'en', lookup);
+    }
+    doc.querySelectorAll('[data-key]').forEach((el) => {
+        const val = en[el.getAttribute('data-key')];
+        if (val != null) el.innerHTML = val;
+    });
+    doc.querySelectorAll('[data-title-key]').forEach((el) => {
+        const val = en[el.getAttribute('data-title-key')];
+        if (val != null) el.setAttribute('title', stripHtml(val));
+    });
+    doc.head.insertAdjacentHTML('beforeend', '    <meta name="baked-lang" content="en">\n');
+    await fs.writeFile(hubPath, dom.serialize());
+}
+
 function bakeFragment(fragmentHtml, lang, lookup) {
     const doc = new JSDOM(`<!DOCTYPE html><body>${fragmentHtml}</body>`).window.document;
     doc.querySelectorAll('[data-key]').forEach((el) => {

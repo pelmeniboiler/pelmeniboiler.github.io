@@ -9,7 +9,7 @@
 // screen readers and textContent. Build-generated pages already arrive
 // converted, so no-JS readers get the same glyphs.
 (function () {
-    const RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}][\uFE0E\uFE0F]?/gu;
+    const RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}\u2768-\u2775][\uFE0E\uFE0F]?/gu;
     // Non-global twin for quick tests: a /g regex's lastIndex would make the
     // following matchAll() start after the first emoji.
     const HAS = new RegExp(RE.source, 'u');

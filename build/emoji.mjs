@@ -52,11 +52,12 @@ const SCAN_EXT = /\.(html|json|js|mjs)$/;
 const SKIP_DIRS = new Set(['_site', 'node_modules', '.git', '.github', 'img', 'test', 'emoji', 'fonts', 'photos', 'sounds']);
 
 // Besides Unicode's own emoji we also take every other symbol from U+2190 up
-// (arrows, geometric shapes, dingbats, music, 🗀 🖻 🙾 …: categories So and Sm).
+// (arrows, geometric shapes, dingbats, music, 🗀 🖻 🙾 …: categories So and Sm,
+// plus the ornamental brackets ❨–❵, which Unicode files under punctuation).
 // The site uses those as icons just as much, and any one of them left as text
 // makes the browser download the whole emoji font stack to find its glyph.
 // One emoji "cluster": flag pair | keycap | pictograph (+VS) (+skin tone) (ZWJ pictograph…)*
-export const EMOJI_RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}][\uFE0E\uFE0F]?/gu;
+export const EMOJI_RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}\u2768-\u2775][\uFE0E\uFE0F]?/gu;
 // Pictographic by Unicode's reckoning, but plain typography on this site.
 const NOT_EMOJI = new Set(['©', '®', '™']);
 export const keyOf = (seq) => seq.replace(/[︎️]/g, '');

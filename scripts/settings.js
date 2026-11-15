@@ -18,6 +18,9 @@ function setupSettings() {
     // the language switcher navigates between sibling pages instead of swapping
     // text in place. The hub has none of these metas and keeps its old behavior.
     const builtLang = document.querySelector('meta[name="built-lang"]')?.content || null;
+    // The hub is pre-rendered in this language (build.mjs bakeHub); unlike
+    // builtLang it does not pin the language, it only says what is already there.
+    const bakedLang = document.querySelector('meta[name="baked-lang"]')?.content || null;
     const pageBase = document.querySelector('meta[name="page-base"]')?.content || null;
     const pageLangs = (document.querySelector('meta[name="page-langs"]')?.content || '')
         .split(',').map((s) => s.trim()).filter(Boolean);
@@ -765,7 +768,13 @@ function setupSettings() {
             // (the URL fixes the language); re-applying it to the already-baked
             // body/chrome is idempotent, while the injected demos get translated.
             const initialLang = builtLang || getInitialLanguage();
-            await loadAndSetLanguage(initialLang);
+            if (!builtLang && bakedLang && initialLang === bakedLang) {
+                // The hub already shows this language: nothing to fetch. (The
+                // strings load the first time another language is picked.)
+                applyTranslationsToPage({}, initialLang);
+            } else {
+                await loadAndSetLanguage(initialLang);
+            }
         }
 
         // Update the favicon on initial page load
