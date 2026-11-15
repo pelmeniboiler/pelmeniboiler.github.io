@@ -13,15 +13,15 @@
 
     <main class="window init-closed" style="min-width: 600px; max-width: 800px;">
         <div class="title-bar">
-            <span class="title" data-key="win_tools_title"><span class="symbol">🧰</span> graflect.translit</span>
-            <button class="close-btn">&times;</button>
+            <span class="title" data-key="win_tools_title"><span class="symbol" aria-hidden="true">🧰</span> graflect.translit</span>
+            <button class="close-btn" aria-label="Close">&times;</button>
         </div>
         <div class="content graflect-tool-content">
             <div class="tool-header">
                 <div class="active-dict-display">
                     <span data-key="active_dict_label">Active Dictionary:</span> <span id="active-dict-name"></span>
                 </div>
-                <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn"><span class="symbol">📖</span> Manage Dictionaries</button>
+                <button id="manage-dict-btn" class="normal-btn" data-key="manage_dict_btn"><span class="symbol" aria-hidden="true">📖</span> Manage Dictionaries</button>
             </div>
             <p class="tool-explanation" data-key="graflect_tool_explanation" style="font-size: 0.9em; opacity: 0.8; text-align: center; margin: -0.5em 0 0.5em 0;">
                 Use the "Manage Dictionaries" button to edit words and grapheme rules to match the transliteration to your own accent.
@@ -84,7 +84,7 @@
 
     <!-- Dictionary Editor Modal -->
     <div id="dictionary-editor-modal" class="ledger-modal-overlay hidden">
-         <div class="window">
+         <div class="window" aria-labelledby="dictionary-editor-title" role="region">
             <div class="title-bar">
                 <h2 id="dictionary-editor-title" class="title" data-key="win_edit_dict_title">Edit Dictionary</h2>
                 <button class="modal-close" id="close-editor-btn">&times;</button>
@@ -109,7 +109,7 @@
     
     <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="ledger-modal-overlay hidden">
-        <div class="window" style="max-width: 450px;">
+        <div class="window" style="max-width: 450px;" aria-labelledby="confirmation-title" role="region">
              <div class="title-bar">
                 <h3 id="confirmation-title" class="title">Confirmation</h3>
             </div>

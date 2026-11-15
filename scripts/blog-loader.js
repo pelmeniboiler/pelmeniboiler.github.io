@@ -176,8 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const allButton = document.createElement('button');
         allButton.className = 'filter-btn active';
-        allButton.innerHTML = `<span class="symbol">✧</span> All`;
+        allButton.innerHTML = `<span class="symbol" aria-hidden="true">✧</span> All`;
         allButton.dataset.keyword = 'All';
+        allButton.setAttribute('aria-pressed', 'true');
         filterContainer.appendChild(allButton);
 
         const keywordIconMap = {
@@ -187,8 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.className = 'filter-btn';
             const icon = keywordIconMap[keyword] || '◆';
-            button.innerHTML = `<span class="symbol">${icon}</span> ${keyword}`;
+            button.innerHTML = `<span class="symbol" aria-hidden="true">${icon}</span> ${keyword}`;
             button.dataset.keyword = keyword;
+            button.setAttribute('aria-pressed', 'false');
             filterContainer.appendChild(button);
         });
 
@@ -196,8 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const clickedButton = e.target.closest('.filter-btn');
             if (!clickedButton) return;
 
-            filterContainer.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            filterContainer.querySelectorAll('.filter-btn').forEach(btn => { btn.classList.remove('active'); btn.setAttribute('aria-pressed', 'false'); });
             clickedButton.classList.add('active');
+            clickedButton.setAttribute('aria-pressed', 'true');
 
             const selectedKeyword = clickedButton.dataset.keyword;
             const postsToRender = (selectedKeyword === 'All')
@@ -233,8 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
         filterContainer.addEventListener('click', (e) => {
             const btn = e.target.closest('.filter-btn');
             if (!btn) return;
-            filterContainer.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+            filterContainer.querySelectorAll('.filter-btn').forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
             btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
             const kw = btn.dataset.keyword;
             postsListContainer.querySelectorAll('.blog-post').forEach((card) => {
                 const kws = (card.dataset.keywords || '').split(',').filter(Boolean);

@@ -931,6 +931,49 @@ try {
         await ctx.close();
     }
 } finally {
+    // --- ARIA stamped by build/aria.mjs, kept live by the runtime ---
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/`, { waitUntil: 'load' });
+        await page.waitForSelector('#settings-main-window', { state: 'attached', timeout: 8000 });
+        const st = await page.evaluate(() => {
+            const wins = [...document.querySelectorAll('.window')];
+            const q = (s) => document.querySelector(s);
+            return {
+                unlabelled: wins.filter((w) => w.id && !document.getElementById(w.getAttribute('aria-labelledby') || '')).map((w) => w.id),
+                close: [...document.querySelectorAll('.close-btn')].every((b) => b.getAttribute('aria-label')),
+                tabs: document.querySelectorAll('.settings-nav [role="tab"][aria-controls]').length,
+                listbox: q('.custom-dropdown-menu')?.getAttribute('role'),
+                expanded: q('.custom-dropdown-toggle')?.getAttribute('aria-expanded'),
+                pressed: [...document.querySelectorAll('button.filter-btn')].map((b) => b.getAttribute('aria-pressed')).join(','),
+            };
+        });
+        ok(st.unlabelled.length === 0 && st.close, `ARIA: every window is labelled by its title and every close button is named (unlabelled: ${st.unlabelled.join(',') || 'none'})`);
+        ok(st.tabs >= 3 && st.listbox === 'listbox' && st.expanded === 'false', `ARIA: settings tabs + language listbox are stamped (${JSON.stringify(st)})`);
+        ok(/^true(,false)+$/.test(st.pressed), `ARIA: filter buttons carry aria-pressed (${st.pressed})`);
+
+        // Read the dropdown straight away: any later click on the page closes it.
+        const opened = await page.evaluate(() => {
+            const t = document.querySelector('.custom-dropdown-toggle');
+            t.click();
+            return t.getAttribute('aria-expanded');
+        });
+        await page.evaluate(() => {
+            document.querySelector('#settings-tab-theme').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            document.querySelectorAll('button.filter-btn')[1].click();
+        });
+        const live = await page.evaluate(() => ({
+            expanded: document.querySelector('.custom-dropdown-toggle').getAttribute('aria-expanded'),
+            tab: document.querySelector('#settings-tab-theme').getAttribute('aria-selected'),
+            panel: document.querySelector('#settings-page-theme').classList.contains('active'),
+            pressed: [...document.querySelectorAll('button.filter-btn')].map((b) => b.getAttribute('aria-pressed')).slice(0, 2).join(','),
+        }));
+        ok(opened === 'true' && live.expanded === 'false' && live.tab === 'true' && live.panel && live.pressed === 'false,true',
+            `ARIA: states follow the UI — dropdown, keyboard tab switch, filter toggle (${JSON.stringify(live)})`);
+        await ctx.close();
+    }
+
     await browser.close();
     server.close();
 }
