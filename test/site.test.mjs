@@ -938,12 +938,14 @@ try {
         const at = () => page.evaluate(() => document.activeElement?.closest('.window')?.id || null);
         const shown = (id) => page.evaluate((i) => getComputedStyle(document.getElementById(i)).display !== 'none', id);
 
-        await page.keyboard.press('F6');
+        await page.keyboard.press('w');
         const first = await at();
-        await page.keyboard.press('F6');
+        const inverted = await page.evaluate(() => { const b = document.activeElement, w = getComputedStyle(b.closest('.window')), cs = getComputedStyle(b); return cs.outlineStyle === 'none' && cs.backgroundColor !== getComputedStyle(document.querySelector('.window:not(:focus-within) > .title-bar')).backgroundColor; });
+        await page.keyboard.press('w');
         const second = await at();
-        await page.keyboard.press('Shift+F6');
-        ok(first && second && first !== second && (await at()) === first, `Keys: F6 / Shift+F6 walk the open windows (${first} → ${second} → back)`);
+        await page.keyboard.press('Shift+W');
+        ok(first && second && first !== second && (await at()) === first, `Keys: W / Shift+W walk the open windows (${first} → ${second} → back)`);
+        ok(inverted, 'Keys: the focused title bar inverts its colours instead of drawing an outline');
 
         const before = await page.evaluate(() => document.activeElement.closest('.window').getBoundingClientRect().left);
         await page.keyboard.press('ArrowRight');
@@ -973,8 +975,9 @@ try {
         const theme2 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
         await page.keyboard.press('t');
         const theme3 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
-        await page.keyboard.press('F6');
-        ok(theme2 === theme3 && (await at()) !== null, `Keys: letter keys can be switched off; F6 still works (${theme2} = ${theme3})`);
+        const here = await at();
+        await page.keyboard.press('w');
+        ok(theme2 === theme3 && (await at()) === here, `Keys: letter keys can be switched off (${theme2} = ${theme3}, focus stayed on ${here})`);
         await ctx.close();
     }
 
