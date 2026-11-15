@@ -2,7 +2,7 @@
   "name": "pelmeniboiler-site",
   "version": "0.1.0",
   "private": true,
-  "description": "Build tooling for the Pelmeniboiler static site (manifest, RSS feeds, Graflect validation).",
+  "description": "Build tooling for the Pelmeniboiler static site. Sources in the repo, built site in /_site.",
   "type": "module",
   "scripts": {
     "build": "node build/build.mjs",
@@ -13,12 +13,10 @@
     "tl:stamp": "node build/tl.mjs stamp",
     "icons": "node build/generate-icons.mjs",
     "fonts": "python3 build/fonts.py",
-    "images": "node -e \"import('./build/images.mjs').then((m) => m.processImages(process.cwd()))\"",
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs",
-    "aria": "node -e \"import('./build/aria.mjs').then((m) => m.ariaSourceFiles(process.cwd()))\"",
-    "build:release": "node build/build.mjs --release",
-    "emoji:unbake": "node -e \"import('./build/emoji.mjs').then((m) => m.unemojifySourceFiles(process.cwd()))\""
+    "preview": "python3 -m http.server 8000 --directory _site",
+    "clean": "rm -rf _site"
   },
   "dependencies": {
     "fontkit": "^2.0.4",

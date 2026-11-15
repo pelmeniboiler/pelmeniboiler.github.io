@@ -1,7 +1,8 @@
 name: Build and deploy site
 
-# Builds the site (manifest, RSS feeds, per-language article pages, sitemap)
-# and deploys it to GitHub Pages. This replaces the old manual "run the VS Code
+# Builds the site into /_site (manifest, RSS feeds, per-language article pages,
+# sitemap — the build never modifies a source file) and deploys that folder to
+# GitHub Pages. This replaces the old manual "run the VS Code
 # command" build — every push to main now rebuilds and redeploys automatically,
 # so generated output can never go stale again.
 #
@@ -48,11 +49,18 @@ jobs:
       - name: Restore encoded photos (AVIF/WebP/e-ink) from cache
         uses: actions/cache@v4
         with:
-          path: img
+          path: _site/img
           key: img-${{ hashFiles('photos/**', 'build/images.mjs') }}
           restore-keys: img-
       - name: Build site
         run: npm run build
+      # The build writes only to /_site. If it ever touches a source file again,
+      # fail here rather than let the sources drift.
+      - name: Sources untouched by the build
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "The build modified or created files outside /_site:"; git status --short; exit 1
+          fi
       - name: Check internal links
         run: npm run check:links
       - name: Run browser tests
@@ -83,19 +91,24 @@ jobs:
       - name: Restore encoded photos (AVIF/WebP/e-ink) from cache
         uses: actions/cache@v4
         with:
-          path: img
+          path: _site/img
           key: img-${{ hashFiles('photos/**', 'build/images.mjs') }}
           restore-keys: img-
 
       - name: Build site (manifest, feeds, per-language pages, sitemap)
         run: npm run build
 
+      # The build writes only to /_site. If it ever touches a source file again,
+      # fail here rather than let the sources drift.
+      - name: Sources untouched by the build
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "The build modified or created files outside /_site:"; git status --short; exit 1
+          fi
+
       # Blocks the deploy: a broken internal link never reaches the live site.
       - name: Check internal links
         run: npm run check:links
-
-      - name: Drop build-only dependencies from the artifact
-        run: rm -rf node_modules
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -103,7 +116,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
   deploy:
     if: github.event_name != 'pull_request'
