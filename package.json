@@ -12,7 +12,7 @@
     "tl:status": "node build/tl.mjs status",
     "tl:stamp": "node build/tl.mjs stamp",
     "icons": "node build/generate-icons.mjs",
-    "fonts": "python3 build/fonts.py",
+    "fonts": "python3 build/fonts.py && python3 build/font-slices.py",
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs",
     "preview": "python3 -m http.server 8000 --directory _site",

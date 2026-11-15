@@ -16,6 +16,9 @@
     const SKIP = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'OPTION', 'TITLE', 'CODE', 'PRE', 'svg', 'SVG', 'NOSCRIPT']);
     const SVG_NS = 'http://www.w3.org/2000/svg';
     let map = null;
+    // glyph id → sprite file already referenced by this page (build/emoji.mjs splitSprites).
+    const local = new Map();
+    const learn = () => document.querySelectorAll('.emoji use').forEach((u) => { const [file, id] = (u.getAttribute('href') || '').split('#'); if (id && !local.has(id)) local.set(id, file); });
 
     const keyOf = (s) => s.replace(/[︎️]/g, '');
     function glyphsFor(seq) {
@@ -35,7 +38,9 @@
         svg.setAttribute('focusable', 'false');
         svg.setAttribute('style', `width:${w}em;height:${h}em;vertical-align:${va}em`);
         const use = document.createElementNS(SVG_NS, 'use');
-        use.setAttribute('href', `${map.sprite}#${id}`);
+        // The page's own (small) sprite files if they already hold this glyph;
+        // the full sprite only for one that first turns up at runtime.
+        use.setAttribute('href', `${local.get(id) || map.sprite}#${id}`);
         svg.append(use);
         const t = document.createElement('span');
         t.className = 'emoji-t';
@@ -87,6 +92,7 @@
             document.documentElement.classList.remove('emoji-pending');
             return;
         }
+        learn();
         convert(document.body);
         // Translations, the blog list, the tray etc. rewrite content later.
         let pending = new Set();
