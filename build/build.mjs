@@ -14,7 +14,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { processImages, pictureize } from './images.mjs';
-import { buildEmoji, emojifyDocument, emojifySourceFiles } from './emoji.mjs';
+import { buildEmoji, emojifyDocument, emojifySourceFiles, splitSprites } from './emoji.mjs';
 import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 
 // Set once per build by main(): our emoji glyphs as an SVG sprite + map.
@@ -357,6 +357,9 @@ async function main() {
         );
         if (success) generatedCount++;
     }
+
+    console.log('Splitting the emoji sprite per page...');
+    await splitSprites(ROOT_DIR);
 
     console.log('Inlining the theme loader into every page...');
     await inlineThemeLoader(ROOT_DIR);

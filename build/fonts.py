@@ -26,12 +26,11 @@ except ImportError:
 
 FONTS = Path(__file__).resolve().parent.parent / "styles" / "fonts"
 
-# Every face declared in styles/pelmeni2025.css.
+# Every face declared in styles/pelmeni2025.css as a whole file. (FairfaxHD and
+# EBGaramond are cut into slices instead: build/font-slices.py.)
 SOURCES = [
-    "FairfaxHD.ttf",
     "Selyodka_Proportional.ttf",
     "Symbola-ModifiedNoRI.ttf",
-    "EBGaramond.ttf",
     "FrankRuhl.ttf",
     "NotoEmoji-Regular-NoRI.ttf",
     "AndroidEmojiNoRI.ttf",

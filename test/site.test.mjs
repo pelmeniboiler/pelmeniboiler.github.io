@@ -872,7 +872,7 @@ try {
         const nctx = await browser.newContext({ javaScriptEnabled: false });
         const npage = await nctx.newPage();
         await npage.goto(`${BASE}/blog/sunshine/en/`, { waitUntil: 'load' });
-        const art = await npage.evaluate(() => document.querySelectorAll('.emoji > svg use[href*="/styles/emoji/sprite.svg"]').length);
+        const art = await npage.evaluate(() => document.querySelectorAll('.emoji > svg use[href*="/styles/emoji/"]').length);
         ok(art > 5, `Emoji: built pages arrive with SVG emoji for no-JS readers (${art})`);
         await nctx.close();
 
@@ -979,6 +979,34 @@ try {
         await page.keyboard.press('w');
         ok(theme2 === theme3 && (await at()) === here, `Keys: letter keys can be switched off (${theme2} = ${theme3}, focus stayed on ${here})`);
         await ctx.close();
+    }
+
+    // ============ ONLY THE SLICES A PAGE NEEDS ============
+    // Garamond and FairfaxHD are cut into unicode-range slices, and the emoji
+    // sprite into a shared core plus a per-page set (build/font-slices.py,
+    // build/emoji.mjs splitSprites).
+    {
+        const load = async (url) => {
+            const ctx = await browser.newContext({ serviceWorkers: 'block' });
+            const page = await ctx.newPage();
+            const got = [];
+            page.on('request', (r) => { const u = new URL(r.url()).pathname; if (/\/fonts\/|\/styles\/emoji\/.*\.svg/.test(u)) got.push(u.split('/').pop()); });
+            await page.route(/youtube/, (r) => r.abort());
+            await page.goto(`${BASE}${url}`, { waitUntil: 'load' });
+            await page.waitForTimeout(2500);
+            const drawn = await page.evaluate(() => [...document.querySelectorAll('.emoji > svg')].filter((s) => s.getBoundingClientRect().width > 0).every((s) => { try { return s.querySelector('use').getBBox().width > 0; } catch { return false; } }));
+            await ctx.close();
+            return { got, drawn };
+        };
+        const gt = await load('/blog/dixie_and_vegas/gt/');
+        ok(gt.got.includes('FairfaxHD-graflect.woff2') && !gt.got.some((f) => /FairfaxHD-rest|EBGaramond/.test(f)),
+            `Fonts: a Graflect page fetches the Graflect slice, not the whole font (${gt.got.filter((f) => /woff2/.test(f)).join(', ')})`);
+        const ru = await load('/blog/elizabeth_park/ru/');
+        ok(ru.got.includes('EBGaramond-cyrillic.woff2') && !ru.got.some((f) => /EBGaramond-(latin|rest|greek)|FairfaxHD/.test(f)),
+            `Fonts: a Russian page fetches only the Cyrillic slice (${ru.got.filter((f) => /woff2/.test(f)).join(', ')})`);
+        const sprites = [...gt.got, ...ru.got].filter((f) => /\.svg$/.test(f));
+        ok(sprites.length > 0 && sprites.every((f) => /^(core|set)-[0-9a-f]{8}\.svg$/.test(f)) && gt.drawn && ru.drawn,
+            `Emoji: pages use the core + per-page sprites, never the full one, and every glyph draws (${[...new Set(sprites)].join(', ')})`);
     }
 
     // ============ THE HUB TRAVELS LIGHT ============

@@ -310,3 +310,61 @@ export async function emojifySourceFiles(rootDir, map, { log = console.log } = {
     log(`  → ${files ? `inlined emoji in ${files} hand-written page(s)` : 'nothing to inline'}.`);
     return files;
 }
+
+// --- Per-page sprites -------------------------------------------------------
+//
+// sprite.svg holds every glyph the whole site uses (≈170, ≈125 KB compressed);
+// a page draws a few dozen. So once all pages are built, each is pointed at
+// just what it needs, in two files:
+//
+//   core-<hash>.svg   glyphs on at least half the pages (the window chrome:
+//                     settings, tray, theme icons). One download, then cached
+//                     for every other page.
+//   set-<hash>.svg    the rest of what this page uses. Pages with the same
+//                     set (an article's language versions) share the file.
+//
+// The full sprite stays: scripts/emoji.js falls back to it for a glyph that
+// only turns up at runtime.
+export async function splitSprites(rootDir, { log = console.log } = {}) {
+    const dir = path.join(rootDir, OUT_DIR);
+    const full = await fs.readFile(path.join(dir, 'sprite.svg'), 'utf8');
+    const symbols = new Map([...full.matchAll(/<symbol id="([^"]+)"[\s\S]*?<\/symbol>/g)].map((m) => [m[1], m[0]]));
+    const REF = /\/styles\/emoji\/sprite\.svg(?:\?v=[0-9a-f]+)?#(e[0-9a-f-]+)/g;
+
+    const pages = [];
+    const walk = async (d) => {
+        for (const ent of await fs.readdir(d, { withFileTypes: true })) {
+            const p = path.join(d, ent.name);
+            if (ent.isDirectory()) { if (!['img', 'photos', 'styles', 'scripts', 'sounds', 'logo'].includes(ent.name)) await walk(p); continue; }
+            if (!ent.name.endsWith('.html')) continue;
+            const html = await fs.readFile(p, 'utf8');
+            const ids = new Set([...html.matchAll(REF)].map((m) => m[1]).filter((id) => symbols.has(id)));
+            if (ids.size) pages.push({ file: p, html, ids });
+        }
+    };
+    await walk(rootDir);
+    if (!pages.length) return;
+
+    const count = new Map();
+    for (const pg of pages) for (const id of pg.ids) count.set(id, (count.get(id) || 0) + 1);
+    const core = new Set([...count].filter(([, n]) => n * 2 >= pages.length).map(([id]) => id));
+
+    const written = new Map(); // file name → bytes
+    const write = async (prefix, ids) => {
+        const body = [...ids].sort().map((id) => symbols.get(id)).join('\n');
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg">\n${body}\n</svg>\n`;
+        const name = `${prefix}-${crypto.createHash('sha1').update(svg).digest('hex').slice(0, 8)}.svg`;
+        if (!written.has(name)) { await fs.writeFile(path.join(dir, name), svg); written.set(name, svg.length); }
+        return `/${OUT_DIR}/${name}`;
+    };
+    const coreUrl = core.size ? await write('core', core) : null;
+    for (const pg of pages) {
+        const extra = [...pg.ids].filter((id) => !core.has(id));
+        const setUrl = extra.length ? await write('set', extra) : null;
+        await fs.writeFile(pg.file, pg.html.replace(REF, (m, id) => (!symbols.has(id) ? m : `${core.has(id) ? coreUrl : setUrl}#${id}`)));
+    }
+    const kb = (n) => (n / 1024).toFixed(0);
+    const sets = [...written].filter(([n]) => n.startsWith('set-'));
+    log(`  → ${pages.length} pages: core sprite ${core.size} glyphs (${kb([...written].find(([n]) => n.startsWith('core-'))?.[1] || 0)} KB), ` +
+        `${sets.length} page set(s) averaging ${kb(sets.reduce((a, [, n]) => a + n, 0) / (sets.length || 1))} KB; full sprite ${kb(full.length)} KB.`);
+}
