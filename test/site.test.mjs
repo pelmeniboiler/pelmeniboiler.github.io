@@ -929,6 +929,55 @@ try {
         }
     }
 
+    // ============ KEYBOARD ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+        const page = await ctx.newPage();
+        await page.goto(`${BASE}/`, { waitUntil: 'load' });
+        await page.waitForFunction(() => document.querySelector('#blog-window > .title-bar')?.tabIndex === 0, null, { timeout: 8000 });
+        const at = () => page.evaluate(() => document.activeElement?.closest('.window')?.id || null);
+        const shown = (id) => page.evaluate((i) => getComputedStyle(document.getElementById(i)).display !== 'none', id);
+
+        await page.keyboard.press('F6');
+        const first = await at();
+        await page.keyboard.press('F6');
+        const second = await at();
+        await page.keyboard.press('Shift+F6');
+        ok(first && second && first !== second && (await at()) === first, `Keys: F6 / Shift+F6 walk the open windows (${first} → ${second} → back)`);
+
+        const before = await page.evaluate(() => document.activeElement.closest('.window').getBoundingClientRect().left);
+        await page.keyboard.press('ArrowRight');
+        await page.keyboard.press('Shift+ArrowRight');
+        const after = await page.evaluate(() => document.activeElement.closest('.window').getBoundingClientRect().left);
+        ok(Math.round(after - before) === 120, `Keys: arrows on a focused title bar move the window (${Math.round(after - before)}px)`);
+
+        await page.keyboard.press('Escape');
+        ok(!(await shown(first)) && (await at()) !== first && (await at()) !== null, `Keys: Esc closes the focused window and focus moves on (now ${await at()})`);
+
+        await page.keyboard.press('?');
+        const keysOpen = (await shown('keys-window')) && (await at()) === 'keys-window';
+        await page.keyboard.press('s');
+        const settingsOpen = (await shown('settings-main-window')) && (await at()) === 'settings-main-window';
+        ok(keysOpen && settingsOpen, `Keys: ? opens the key list and S opens settings, each taking focus (${keysOpen}, ${settingsOpen})`);
+
+        const theme0 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
+        await page.keyboard.press('t');
+        const theme1 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
+        await page.keyboard.press('e');
+        const eink = await page.evaluate(() => document.documentElement.classList.contains('eink-mode'));
+        await page.keyboard.press('e');
+        ok(theme0 !== theme1 && eink, `Keys: T steps the theme (${theme0} → ${theme1}) and E toggles e-ink (${eink})`);
+
+        // Off switch (WCAG 2.1.4) and never while typing.
+        await page.evaluate(() => document.getElementById('keys-toggle').click());
+        const theme2 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
+        await page.keyboard.press('t');
+        const theme3 = await page.evaluate(() => document.querySelector('input[name="theme"]:checked')?.value);
+        await page.keyboard.press('F6');
+        ok(theme2 === theme3 && (await at()) !== null, `Keys: letter keys can be switched off; F6 still works (${theme2} = ${theme3})`);
+        await ctx.close();
+    }
+
     // ============ THE HUB TRAVELS LIGHT ============
     // Pre-rendered in English with its chrome baked in: an English visitor
     // fetches no translations, no modules, and only the one text font. The
