@@ -884,13 +884,48 @@ try {
             // no tofu, and nothing left for the OS emoji font to fill in.
             const cov = await (await fetch('/styles/emoji/coverage.json')).json();
             const has = (cp) => cov.some(([a, b]) => cp >= a && cp <= b);
-            const cps = [...document.querySelectorAll('.symbol-item .symbol')].flatMap((s) => [...s.textContent].map((c) => c.codePointAt(0)));
+            const cps = [...document.querySelectorAll('.symbol-item .glyph')].flatMap((s) => [...s.textContent].map((c) => c.codePointAt(0)));
             const missing = [...new Set(cps.filter((cp) => !has(cp)))].map((cp) => 'U+' + cp.toString(16).toUpperCase());
-            return { family: getComputedStyle(document.querySelector('.symbol-item .symbol')).fontFamily, shown: cps.length, missing };
+            // Layers: the losers on the left must each be a different font from
+            // the winner, and the page may use only the theme's two colours.
+            const sample = [...document.querySelectorAll('.symbol-item')].find((i) => i.querySelectorAll('.stack span').length >= 2);
+            const fams = sample ? [sample.querySelector('.glyph'), ...sample.querySelectorAll('.stack span')].map((e) => getComputedStyle(e).fontFamily) : [];
+            const root = getComputedStyle(document.documentElement);
+            const probe = document.createElement('span'); document.body.append(probe);
+            const rgb = (v) => { probe.style.color = v; return getComputedStyle(probe).color; };
+            const allowed = new Set([rgb(root.getPropertyValue('--text-color')), rgb(root.getPropertyValue('--bg-color')), rgb(root.getPropertyValue('--win-bg-color')), 'rgba(0, 0, 0, 0)']);
+            probe.remove();
+            const offTheme = new Set();
+            for (const el of document.querySelectorAll('body, .container *')) {
+                const cs = getComputedStyle(el);
+                for (const v of [cs.color, cs.backgroundColor, cs.borderTopColor]) if (!allowed.has(v)) offTheme.add(v);
+                if (cs.boxShadow !== 'none' || parseFloat(cs.borderTopLeftRadius) > 0) offTheme.add('shadow/radius on ' + el.className);
+            }
+            return { family: getComputedStyle(document.querySelector('.symbol-item .glyph')).fontFamily, shown: cps.length, missing,
+                layers: document.querySelectorAll('.symbol-item .stack span').length, distinct: new Set(fams).size === fams.length && fams.length >= 3, offTheme: [...offTheme].slice(0, 5) };
         });
         ok(!/Color Emoji|Segoe UI Emoji/i.test(ev.family) && /SymbolaNoRI/.test(ev.family) && ev.shown > 2000 && ev.missing.length === 0,
             `Emoji viewer: our stack only, every character shown is one our fonts draw (${ev.shown} shown; missing: ${JSON.stringify(ev.missing.slice(0, 20))}${ev.missing.length > 20 ? '…' : ''})`);
+        ok(ev.layers > 1000 && ev.distinct, `Emoji viewer: each character shows the rest of the font stack beside the winner (${ev.layers} layers)`);
+        ok(ev.offTheme.length === 0, `Emoji viewer: theme colours only, no shadows or rounded corners (${JSON.stringify(ev.offTheme)})`);
         await vctx.close();
+    }
+
+    // ============ EMOJI FONTS STAY ON THE SHELF ============
+    // With every symbol drawn from the sprite, ordinary pages must never
+    // download an emoji font (they are megabytes each).
+    {
+        for (const url of ['/', '/blog/sunshine/en/']) {
+            const ctx = await browser.newContext({ serviceWorkers: 'block' });
+            const page = await ctx.newPage();
+            const fonts = [];
+            page.on('request', (r) => { if (/Symbola|Emoji|Gaps/.test(r.url())) fonts.push(r.url().split('/').pop()); });
+            await page.route(/youtube/, (r) => r.abort());
+            await page.goto(`${BASE}${url}`, { waitUntil: 'load' });
+            await page.waitForTimeout(2500);
+            ok(fonts.length === 0, `Emoji fonts: ${url} downloads none (${fonts.join(', ') || 'none'})`);
+            await ctx.close();
+        }
     }
 
     // ============ LEGACY ROOT URLS + HUB HEAD ============

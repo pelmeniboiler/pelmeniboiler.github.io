@@ -14,7 +14,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { processImages, pictureize } from './images.mjs';
-import { buildEmoji, emojifyDocument } from './emoji.mjs';
+import { buildEmoji, emojifyDocument, emojifySourceFiles } from './emoji.mjs';
 import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 
 // Set once per build by main(): our emoji glyphs as an SVG sprite + map.
@@ -246,10 +246,12 @@ async function main() {
     ]);
 
     const processedPosts = await processAllPosts(blogPostPaths);
-    const assetVersion = await computeAssetVersion(ROOT_DIR);
-
     console.log('Extracting emoji glyphs from our fonts...');
     EMOJI_MAP = await buildEmoji(ROOT_DIR);
+
+    // After the sprite is written: its content is part of the version, so a
+    // new emoji retires the old cached sprite + map like any other asset.
+    const assetVersion = await computeAssetVersion(ROOT_DIR);
 
     console.log('Encoding photos (AVIF/WebP + pre-dithered e-ink)...');
     const imageManifest = await processImages(ROOT_DIR);
@@ -262,6 +264,9 @@ async function main() {
 
     console.log('Baking app library into the hub...');
     await bakeAppLibrary(ROOT_DIR, manifestItems);
+
+    console.log('Inlining emoji in hand-written pages and modules...');
+    await emojifySourceFiles(ROOT_DIR, EMOJI_MAP);
 
     console.log('Stamping ARIA onto hand-written pages and modules...');
     await ariaSourceFiles(ROOT_DIR);
@@ -539,7 +544,7 @@ async function computeAssetVersion(rootDir) {
             for (const ent of await fs.readdir(dir, { withFileTypes: true })) {
                 const full = path.join(dir, ent.name);
                 if (ent.isDirectory()) await walk(full);
-                else if (/\.(css|js)$/.test(ent.name)) parts.push(await fs.readFile(full));
+                else if (/\.(css|js)$/.test(ent.name) || /^(sprite\.svg|map\.json)$/.test(ent.name)) parts.push(await fs.readFile(full));
             }
         };
         try { await walk(base); } catch { /* dir may not exist */ }

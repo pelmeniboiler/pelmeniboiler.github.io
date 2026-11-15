@@ -16,8 +16,12 @@
 //      sprite id and font metrics. scripts/emoji.js uses it at runtime (all
 //      pages with site chrome); emojifyDocument() below does the same to the
 //      generated pages at build time, so no-JS readers get it too.
-//   4. styles/emoji/coverage.json lists every codepoint our stack can draw,
-//      for the emoji viewer.
+//   4. styles/emoji/coverage.json lists every codepoint our stack can draw;
+//      styles/emoji/stack.json lists them per font, in stack order, for the
+//      emoji viewer (tools/emojiviewer.html).
+//   5. emojifySourceFiles() swaps emoji in the hand-written pages and modules
+//      too, in place, so no page ever paints an emoji as text and the emoji
+//      FONTS are never downloaded just to draw an icon.
 //
 // Outputs are generated (gitignored); `npm run build` writes them.
 
@@ -25,7 +29,13 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import * as fontkit from 'fontkit';
+import { JSDOM } from 'jsdom';
 
+// CSS family name of each STACK entry (styles/pelmeni2025.css, --font-emoji).
+export const FAMILIES = [
+    'SymbolaNoRI', 'Noto EmojiNoRI', 'Android EmojiNoRI', 'TwitterBWEmoji',
+    'Noto Sans Symbols 2 Gaps', 'Noto Sans Math Gaps', 'Unifont Gaps', 'Unifont Upper Gaps',
+];
 export const STACK = [
     'Symbola-ModifiedNoRI.ttf',
     'NotoEmoji-Regular-NoRI.ttf',
@@ -41,8 +51,12 @@ const OUT_DIR = 'styles/emoji';
 const SCAN_EXT = /\.(html|json|js|mjs)$/;
 const SKIP_DIRS = new Set(['node_modules', '.git', '.github', 'img', 'test', 'emoji', 'fonts', 'photos', 'sounds']);
 
+// Besides Unicode's own emoji we also take every other symbol from U+2190 up
+// (arrows, geometric shapes, dingbats, music, 🗀 🖻 🙾 …: categories So and Sm).
+// The site uses those as icons just as much, and any one of them left as text
+// makes the browser download the whole emoji font stack to find its glyph.
 // One emoji "cluster": flag pair | keycap | pictograph (+VS) (+skin tone) (ZWJ pictograph…)*
-export const EMOJI_RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*/gu;
+export const EMOJI_RE = /\p{RI}\p{RI}|[#*0-9]️?⃣|\p{Extended_Pictographic}[︎️]?\p{EMod}?(?:‍\p{Extended_Pictographic}[︎️]?\p{EMod}?)*|(?![\u0000-\u218F])[\p{So}\p{Sm}][\uFE0E\uFE0F]?/gu;
 // Pictographic by Unicode's reckoning, but plain typography on this site.
 const NOT_EMOJI = new Set(['©', '®', '™']);
 export const keyOf = (seq) => seq.replace(/[︎️]/g, '');
@@ -124,6 +138,24 @@ export async function buildEmoji(rootDir, { log = console.log } = {}) {
     }
     await fs.writeFile(path.join(rootDir, OUT_DIR, 'coverage.json'), JSON.stringify(ranges));
 
+    // 5. The stack itself, font by font (first = highest priority), for the
+    //    emoji viewer: it shows which fonts could draw a character and which
+    //    one wins.
+    const toRanges = (set) => {
+        const out = [];
+        for (const cp of [...set].sort((a, b) => a - b)) {
+            const last = out[out.length - 1];
+            if (last && cp === last[1] + 1) last[1] = cp; else out.push([cp, cp]);
+        }
+        return out;
+    };
+    const stack = fonts.map((f, i) => ({
+        family: FAMILIES[i],
+        name: STACK[i].replace(/\.(ttf|woff2)$/, ''),
+        ranges: toRanges(new Set(f.characterSet.filter((cp) => cp >= 0x2000 && f.glyphForCodePoint(cp).id !== 0))),
+    }));
+    await fs.writeFile(path.join(rootDir, OUT_DIR, 'stack.json'), JSON.stringify(stack));
+
     log(`  → ${Object.keys(glyphs).length} emoji as SVG (${(sprite.length / 1024).toFixed(0)} KB sprite)` +
         (missing.length ? `; not in our fonts, left as text: ${missing.join(' ')}` : ''));
     return map;
@@ -203,4 +235,76 @@ export function emojiElement(doc, sprite, [id, w, h, va], text) {
     t.textContent = text;
     wrap.append(svg, t);
     return wrap;
+}
+
+// --- Hand-written sources, patched in place --------------------------------
+
+const escText = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const emojiHtml = (sprite, [id, w, h, va], text) =>
+    `<span class="emoji"><svg aria-hidden="true" focusable="false" style="width:${w}em;height:${h}em;vertical-align:${va}em"><use href="${sprite}#${id}"></use></svg><span class="emoji-t">${escText(text)}</span></span>`;
+
+/**
+ * Like emojifyDocument(), but on an HTML source string, replacing only the
+ * text runs that hold emoji and leaving every other byte alone. Also points
+ * already-converted emoji at the current sprite version. Idempotent.
+ */
+export function emojifySource(html, map) {
+    const fresh = html.replace(/\/styles\/emoji\/sprite\.svg(?:\?v=[0-9a-f]+)?#/g, `${map.sprite}#`);
+    const dom = new JSDOM(fresh, { includeNodeLocations: true });
+    const doc = dom.window.document;
+    const win = dom.window;
+    if (!doc.body) return { html: fresh, added: 0 };
+    const test = new RegExp(EMOJI_RE.source, 'u');
+    const walker = doc.createTreeWalker(doc.body, win.NodeFilter.SHOW_TEXT);
+    const edits = [];
+    while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (!test.test(node.data)) continue;
+        let skip = false;
+        for (let el = node.parentElement; el; el = el.parentElement) {
+            if (SKIP_TAGS.has(el.tagName.toUpperCase()) || el.classList.contains('emoji') || el.classList.contains('no-emoji')) { skip = true; break; }
+        }
+        if (skip) continue;
+        const loc = dom.nodeLocation(node);
+        // Entities (&amp; …) make source offsets and text offsets disagree;
+        // leave such runs to scripts/emoji.js at runtime.
+        if (!loc || fresh.slice(loc.startOffset, loc.endOffset) !== node.data) continue;
+        const text = node.data;
+        let out = '';
+        let last = 0;
+        for (const m of text.matchAll(EMOJI_RE)) {
+            const parts = glyphsFor(m[0], map.glyphs);
+            if (!parts) continue;
+            out += text.slice(last, m.index);
+            for (const p of parts) out += typeof p === 'string' ? p : emojiHtml(map.sprite, p.g, p.text);
+            last = m.index + m[0].length;
+        }
+        if (last === 0) continue;
+        out += text.slice(last);
+        edits.push([loc.startOffset, loc.endOffset, out]);
+    }
+    edits.sort((a, b) => b[0] - a[0]);
+    let res = fresh;
+    for (const [s, e, t] of edits) res = res.slice(0, s) + t + res.slice(e);
+    return { html: res, added: edits.length };
+}
+
+const SOURCE_DIRS = ['.', 'modules', 'modules/blog/demos', 'tools', 'screensaver', 'inprogress'];
+
+export async function emojifySourceFiles(rootDir, map, { log = console.log } = {}) {
+    let files = 0;
+    for (const dir of SOURCE_DIRS) {
+        let names;
+        try { names = await fs.readdir(path.join(rootDir, dir)); } catch { continue; }
+        for (const name of names.filter((n) => n.endsWith('.html')).sort()) {
+            const file = path.join(rootDir, dir, name);
+            const src = await fs.readFile(file, 'utf8');
+            const res = emojifySource(src, map);
+            if (res.html === src) continue;
+            await fs.writeFile(file, res.html);
+            files += 1;
+        }
+    }
+    log(`  → ${files ? `inlined emoji in ${files} source file(s)` : 'sources already up to date'}.`);
+    return files;
 }

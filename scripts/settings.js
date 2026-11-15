@@ -612,7 +612,17 @@ function setupSettings() {
         // Translate elements with data-key for their innerHTML.
         document.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
-            if (translations[lang] && translations[lang][key]) elem.innerHTML = translations[lang][key];
+            if (!(translations[lang] && translations[lang][key])) return;
+            // Already showing exactly this text (the page was built in this
+            // language)? Leave the DOM alone: it carries build-time work — emoji
+            // drawn as SVG, ARIA — that a raw rewrite would throw away.
+            const probe = document.createElement('div');
+            probe.innerHTML = translations[lang][key];
+            const norm = (t) => t.replace(/\s+/g, ' ').trim();
+            if (norm(probe.textContent) === norm(elem.textContent)) return;
+            elem.innerHTML = translations[lang][key];
+            // Draw any emoji now, before layout can paint them as text.
+            if (window.pbEmoji) window.pbEmoji.convert(elem);
         });
         
         // Translate elements with data-title-key for their 'title' attribute (tooltips).
