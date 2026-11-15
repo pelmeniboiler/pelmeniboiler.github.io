@@ -354,7 +354,9 @@ function setupStartMenu() {
             const title = w.querySelector('.title-bar .title');
             if (title) {
                 if (!title.id) title.id = `${w.id || `window-${i}`}-title`;
-                w.setAttribute('role', 'region');
+                // Keep a role the build gave it (the content window is "main"), and
+                // never paint over a real <main>/<nav> element's own role.
+                if (!w.hasAttribute('role') && /^(DIV|SECTION)$/.test(w.tagName)) w.setAttribute('role', 'region');
                 w.setAttribute('aria-labelledby', title.id);
             }
             const close = w.querySelector('.close-btn');

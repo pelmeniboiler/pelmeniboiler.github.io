@@ -828,7 +828,7 @@ try {
         const a11y = await page.evaluate(() => {
             const wins = [...document.querySelectorAll('#desktop > .window:not(.init-closed)')];
             return {
-                named: wins.filter((w) => w.getAttribute('role') === 'region' && document.getElementById(w.getAttribute('aria-labelledby'))?.textContent.trim()).length,
+                named: wins.filter((w) => ['region', 'main'].includes(w.getAttribute('role')) && document.getElementById(w.getAttribute('aria-labelledby'))?.textContent.trim()).length,
                 total: wins.length,
                 closeLabelled: [...document.querySelectorAll('.close-btn')].every((b) => b.getAttribute('aria-label')),
                 iconsHidden: [...document.querySelectorAll('.title .symbol')].every((s) => s.getAttribute('aria-hidden') === 'true'),
