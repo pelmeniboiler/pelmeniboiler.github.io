@@ -31,7 +31,6 @@
             margin-bottom: 1rem;
             font-family: 'Selyodka', var(--font-body);
         }
-        .viewer-note { text-align: center; margin: 0 auto 2rem; max-width: 60ch; }
         .unicode-block {
             margin-bottom: 3rem;
             background-color: var(--win-bg-color);
@@ -110,7 +109,6 @@
 
     <div class="container">
         <h1>Unicode Symbol &amp; Emoji Viewer</h1>
-        <p class="viewer-note">The big glyph is the one the site draws: the first font in its emoji stack that has the character. The small ones on the left are the same character in the fonts further down the stack. Hover for the font names; click to copy.</p>
         <div id="symbol-container">
             <!-- Unicode blocks will be generated here by JavaScript -->
         </div>
@@ -204,10 +202,10 @@
                             mini.title = f.name;
                             layers.appendChild(mini);
                         }
-                        item.title = `${codeText}: drawn by ${winner.name}` + (rest.length ? `; also in ${rest.map((f) => f.name).join(', ')}` : '') + '. Click to copy.';
+                        item.title = [winner, ...rest].map((f) => f.name).join(' › ');
                     } else {
                         glyph.style.fontFamily = emojiStack;
-                        item.title = `${codeText}. Click to copy.`;
+                        
                     }
 
                     const codeTag = document.createElement('code');

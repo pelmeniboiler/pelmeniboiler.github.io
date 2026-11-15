@@ -319,6 +319,20 @@ html.emoji-pending .symbol { font-family: sans-serif; }
 /* Wide screens: the tray IS the program launcher; retire the start-menu box. */
 @media (min-width: 769px) { .start-menu { display: none; } }
 
+/* --- KEYBOARD (system.keys) --- */
+.title-bar:focus-visible, .window:focus-visible { outline: 2px solid var(--text-color); outline-offset: 2px; }
+#keys-window { width: 370px; max-height: none; }
+#keys-window .keys-content { display: flex; flex-direction: column; gap: 8px; padding: 12px; overflow: visible; max-height: none; }
+.keys-content .setting-divider { margin: 4px 0; flex-shrink: 0; }
+.keys-list { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.keys-list > div { display: flex; align-items: center; gap: 12px; }
+.keys-list dt { flex: 0 0 9.5em; display: flex; gap: 3px; }
+.keys-list dd { white-space: nowrap; }
+.keys-list dd { margin: 0; }
+kbd { font: inherit; display: inline-block; min-width: 1.6em; padding: 0 5px; text-align: center; border: 1px solid var(--text-color); background-color: var(--win-bg-color); color: var(--text-color); }
+/* Letter keys switched off: struck through, the one place a list says "no". */
+.keys-off { text-decoration: line-through; }
+
 /* --- ZMANIM CLOCK (shaon.zmanim) --- */
 #zman-clock-window { width: 340px; }
 .zman-content { display: flex; flex-direction: column; gap: 6px; padding: 12px; }

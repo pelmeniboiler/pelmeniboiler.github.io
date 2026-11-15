@@ -13,8 +13,40 @@
 <div id="tray" class="tray">
     <a id="tray-logo" class="tray-logo" href="/" title="pelmeniboiler"><img id="tray-logo-img" src="/logo/shzh.svg" alt="ש-Ж"></a>
     <ul id="tray-icons"></ul>
+    <button id="tray-keys" class="tray-icon" title="system.keys"><span class="symbol">⌨</span></button>
     <button id="tray-settings" class="tray-icon" title="system.settings"><span class="symbol">⚙</span></button>
     <button id="tray-clock" title="shaon.zmanim"></button>
+</div>
+
+<!-- Keyboard reference (opened with ? or the tray's ⌨). The list is the
+     documentation: scripts/start-menu.js implements exactly these keys. -->
+<div id="keys-window" class="window init-closed" style="top: 6%; left: 38%; z-index: var(--z-window-active);">
+    <div class="title-bar">
+        <span class="title"><span class="symbol">⌨</span> system.keys</span>
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="content keys-content">
+        <dl class="keys-list">
+            <div><dt><kbd>F6</kbd></dt><dd>window.next</dd></div>
+            <div><dt><kbd>⇧</kbd><kbd>F6</kbd></dt><dd>window.previous</dd></div>
+            <div><dt><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></dt><dd>window.move</dd></div>
+            <div><dt><kbd>Esc</kbd></dt><dd>window.close</dd></div>
+        </dl>
+        <hr class="setting-divider">
+        <div class="setting-group-inline">
+            <input type="checkbox" id="keys-toggle" class="checkbox" checked>
+            <label for="keys-toggle">letter.keys</label>
+        </div>
+        <dl class="keys-list" id="keys-letters">
+            <div><dt><kbd>?</kbd></dt><dd><span class="symbol">⌨</span> system.keys</dd></div>
+            <div><dt><kbd>S</kbd></dt><dd data-key="win_settings_title">🛠 system.settings</dd></div>
+            <div><dt><kbd>C</kbd></dt><dd data-key="win_zman_title"><span class="symbol">🕰</span> shaon.zmanim</dd></div>
+            <div><dt><kbd>E</kbd></dt><dd data-key="theme_eink_label">E-Ink Mode</dd></div>
+            <div><dt><kbd>T</kbd></dt><dd data-key="theme_title">Display Theme</dd></div>
+            <div><dt><kbd>L</kbd></dt><dd data-key="lang_select_label">Select Language</dd></div>
+            <div><dt><kbd>H</kbd></dt><dd><span class="symbol">⌂</span> pelmeniboiler</dd></div>
+        </dl>
+    </div>
 </div>
 
 <!-- Zmanim clock window (opened from the tray clock). Counterclockwise dial in

@@ -128,7 +128,7 @@ function setupStartMenu() {
         // On wide screens the tray IS the launcher: every closed window docks
         // there as an icon — except settings and the zmanim clock, which have
         // pinned tray buttons of their own. The start-menu list serves mobile.
-        const PINNED = ['settings-main-window', 'zman-clock-window'];
+        const PINNED = ['settings-main-window', 'zman-clock-window', 'keys-window'];
         const toTray = closedWindows.filter((w) => !isMobile() && !PINNED.includes(w.id));
         const toList = closedWindows.filter((w) => !toTray.includes(w));
         renderTray(toTray, translations, lang);
@@ -361,6 +361,15 @@ function setupStartMenu() {
             }
             const close = w.querySelector('.close-btn');
             if (close && !close.hasAttribute('aria-label')) close.setAttribute('aria-label', 'Close');
+            // The title bar is the window's keyboard handle: Tab or F6 lands on
+            // it, arrows move the window, Esc closes it (see the keyboard
+            // section below).
+            const bar = w.querySelector(':scope > .title-bar');
+            if (bar && !(isMobile() && w.id === 'nav-window')) {
+                bar.tabIndex = 0;
+                bar.setAttribute('role', 'toolbar');
+                if (title) bar.setAttribute('aria-labelledby', title.id);
+            }
         });
         document.querySelectorAll('.title .symbol, .filter-btn .symbol, .app-list .symbol, .app-folder summary .symbol, #tile-bar .symbol')
             .forEach((sym) => sym.setAttribute('aria-hidden', 'true'));
@@ -440,6 +449,104 @@ function setupStartMenu() {
         setupMobileNav();
         updateWindowList(translations, lang);
     }
+
+    // --- Keyboard ----------------------------------------------------------
+    // Everything the pointer can do to a window, from the keys. The list in
+    // #keys-window (modules/start-menu-module.html) is the reference; keep the
+    // two in step.
+    //   F6 / Shift+F6   next / previous window (focus lands on its title bar)
+    //   arrows          move the window whose title bar has focus (Shift: farther)
+    //   Esc             close the window that has focus
+    //   ? S C E T L H   single-letter shortcuts; never while typing, and they
+    //                   can be switched off (WCAG 2.1.4) with the checkbox.
+    const KEYS_KEY = 'pelmeniboiler-keys';
+    const lettersOn = () => { try { return localStorage.getItem(KEYS_KEY) !== '0'; } catch (_) { return true; } };
+    const isTyping = (el) => !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+    const isOpen = (w) => getComputedStyle(w).display !== 'none';
+    const focusWindow = (w) => {
+        raise(w);
+        const bar = w.querySelector(':scope > .title-bar');
+        const target = bar && bar.tabIndex === 0 ? bar : w;
+        if (target === w && !w.hasAttribute('tabindex')) w.tabIndex = -1;
+        target.focus();
+    };
+    const openAndFocus = (w) => { if (!w) return; openWindow(w, lastTranslations, lastLang); focusWindow(w); };
+    const currentWindow = () => document.activeElement && document.activeElement.closest('.window');
+
+    const keysToggle = document.getElementById('keys-toggle');
+    if (keysToggle) {
+        const sync = () => { keysToggle.checked = lettersOn(); document.getElementById('keys-letters')?.classList.toggle('keys-off', !lettersOn()); };
+        keysToggle.addEventListener('change', () => { try { localStorage.setItem(KEYS_KEY, keysToggle.checked ? '1' : '0'); } catch (_) { /* ignore */ } sync(); });
+        sync();
+    }
+    document.getElementById('tray-keys')?.addEventListener('click', () => openAndFocus(document.getElementById('keys-window')));
+
+    const LETTERS = {
+        '?': () => openAndFocus(document.getElementById('keys-window')),
+        s: () => openAndFocus(document.getElementById('settings-main-window')),
+        c: () => { document.getElementById('tray-clock')?.click(); const w = document.getElementById('zman-clock-window'); if (w) focusWindow(w); },
+        e: () => document.getElementById('eink-toggle')?.click(),
+        t: () => {
+            const radios = [...document.querySelectorAll('#theme-setting-group input[name="theme"]')].filter((r) => !r.disabled);
+            if (!radios.length) return;
+            radios[(radios.findIndex((r) => r.checked) + 1) % radios.length].click();
+        },
+        l: () => {
+            const items = [...document.querySelectorAll('#language-select-custom .custom-dropdown-item')];
+            if (!items.length) return;
+            const cur = document.documentElement.lang || 'en';
+            items[(items.findIndex((i) => i.dataset.value === cur) + 1) % items.length].click();
+        },
+        h: () => { if (location.pathname !== '/') location.href = '/'; },
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+        const typing = isTyping(e.target);
+
+        if (e.key === 'F6') {
+            const open = [...windows].filter(isOpen);
+            if (!open.length) return;
+            e.preventDefault();
+            const at = open.indexOf(currentWindow());
+            focusWindow(open[(at + (e.shiftKey ? -1 : 1) + open.length) % open.length]);
+            return;
+        }
+
+        if (e.key === 'Escape' && !typing) {
+            // An open menu owns Esc first.
+            if (document.querySelector('.custom-dropdown-menu.show')) return;
+            const w = currentWindow();
+            const btn = w && w.querySelector(':scope > .title-bar .close-btn');
+            if (!btn) return;
+            e.preventDefault();
+            btn.click();
+            const rest = [...windows].filter(isOpen).sort((a, b) => (parseInt(b.style.zIndex) || 0) - (parseInt(a.style.zIndex) || 0));
+            if (rest.length) focusWindow(rest[0]);
+            return;
+        }
+
+        if (/^Arrow/.test(e.key) && e.target.classList && e.target.classList.contains('title-bar')) {
+            if (isMobile() || isTiled()) return;
+            const w = e.target.closest('.window');
+            if (!w) return;
+            e.preventDefault();
+            const step = e.shiftKey ? 96 : 24;
+            const r = w.getBoundingClientRect();
+            const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0;
+            const dy = e.key === 'ArrowUp' ? -step : e.key === 'ArrowDown' ? step : 0;
+            const p = clampPosition(w, r.left + dx, r.top + dy);
+            w.style.left = `${p.x}px`; w.style.top = `${p.y}px`;
+            saveLayout();
+            return;
+        }
+
+        if (typing || !lettersOn() || e.key.length !== 1) return;
+        const run = LETTERS[e.key === '?' ? '?' : e.key.toLowerCase()];
+        if (!run) return;
+        e.preventDefault();
+        run();
+    });
 
     // --- Event Listener ---
     document.addEventListener('translationsReady', (event) => {
