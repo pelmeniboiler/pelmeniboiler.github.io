@@ -408,9 +408,20 @@ html.emoji-pending .symbol { font-family: sans-serif; }
 .settings-page h3 { margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 15px; }
 .settings-page > *:not(h3) { padding-left: 1em; } 
 .setting-group-inline { display: flex; align-items: center; gap: 10px; }
+/* A bare <hr> otherwise takes the browser's default grey. */
+hr { border: none; height: 1px; background-color: var(--text-color); color: var(--text-color); }
 .setting-divider { border: none; height: 2px; background-color: var(--border-color); margin: 20px 0; }
 .setting-group { display: flex; flex-direction: column; align-items: flex-start; }
 .radio-label { display: flex; align-items: center; gap: 0.5em; margin-bottom: 8px; cursor: var(--cur-pointer); }
+/* Theme list: every icon gets the same slot so the names line up; the divider
+   spans the list (it collapsed to nothing as a flex item); and a folder's
+   themes sit one step in from the folder's own row, which lines up with the
+   rows above it. Logical margins, so it mirrors in Hebrew. */
+.radio-label .symbol { width: 1.5em; text-align: center; flex-shrink: 0; }
+.setting-group > .setting-divider { align-self: stretch; }
+.theme-folder { margin: 0 0 8px; align-self: stretch; }
+.theme-folder > summary { margin-bottom: 8px; }
+.theme-folder > .radio-label { margin-inline-start: 1.75em; }
 
 /* Custom form controls outlined in the theme's TEXT colour — never browser grey.
    Grey is reserved exclusively for the :disabled state below. The checkbox is a
