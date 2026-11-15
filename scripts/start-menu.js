@@ -361,7 +361,7 @@ function setupStartMenu() {
             }
             const close = w.querySelector('.close-btn');
             if (close && !close.hasAttribute('aria-label')) close.setAttribute('aria-label', 'Close');
-            // The title bar is the window's keyboard handle: Tab or F6 lands on
+            // The title bar is the window's keyboard handle: Tab or W lands on
             // it, arrows move the window, Esc closes it (see the keyboard
             // section below).
             const bar = w.querySelector(':scope > .title-bar');
@@ -454,11 +454,12 @@ function setupStartMenu() {
     // Everything the pointer can do to a window, from the keys. The list in
     // #keys-window (modules/start-menu-module.html) is the reference; keep the
     // two in step.
-    //   F6 / Shift+F6   next / previous window (focus lands on its title bar)
     //   arrows          move the window whose title bar has focus (Shift: farther)
     //   Esc             close the window that has focus
-    //   ? S C E T L H   single-letter shortcuts; never while typing, and they
-    //                   can be switched off (WCAG 2.1.4) with the checkbox.
+    //   W / Shift+W     next / previous window (focus lands on its title bar)
+    //   ? S C E T L H   ...these and W are single-letter shortcuts: never while
+    //                   typing, and the checkbox switches them off (WCAG 2.1.4).
+    //                   Tab still reaches every title bar without them.
     const KEYS_KEY = 'pelmeniboiler-keys';
     const lettersOn = () => { try { return localStorage.getItem(KEYS_KEY) !== '0'; } catch (_) { return true; } };
     const isTyping = (el) => !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
@@ -504,15 +505,6 @@ function setupStartMenu() {
         if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
         const typing = isTyping(e.target);
 
-        if (e.key === 'F6') {
-            const open = [...windows].filter(isOpen);
-            if (!open.length) return;
-            e.preventDefault();
-            const at = open.indexOf(currentWindow());
-            focusWindow(open[(at + (e.shiftKey ? -1 : 1) + open.length) % open.length]);
-            return;
-        }
-
         if (e.key === 'Escape' && !typing) {
             // An open menu owns Esc first.
             if (document.querySelector('.custom-dropdown-menu.show')) return;
@@ -542,6 +534,14 @@ function setupStartMenu() {
         }
 
         if (typing || !lettersOn() || e.key.length !== 1) return;
+        if (e.key.toLowerCase() === 'w') {
+            const open = [...windows].filter(isOpen);
+            if (!open.length) return;
+            e.preventDefault();
+            const at = open.indexOf(currentWindow());
+            focusWindow(open[(at + (e.shiftKey ? -1 : 1) + open.length) % open.length]);
+            return;
+        }
         const run = LETTERS[e.key === '?' ? '?' : e.key.toLowerCase()];
         if (!run) return;
         e.preventDefault();

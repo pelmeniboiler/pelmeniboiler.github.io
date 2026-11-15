@@ -320,7 +320,10 @@ html.emoji-pending .symbol { font-family: sans-serif; }
 @media (min-width: 769px) { .start-menu { display: none; } }
 
 /* --- KEYBOARD (system.keys) --- */
-.title-bar:focus-visible, .window:focus-visible { outline: 2px solid var(--text-color); outline-offset: 2px; }
+/* A title bar with keyboard focus swaps its two colours. */
+.title-bar:focus-visible { outline: none; background-color: var(--inv-text-color); color: var(--inv-bg-color); }
+.title-bar:focus-visible .title, .title-bar:focus-visible .title a, .title-bar:focus-visible .close-btn, .title-bar:focus-visible .rss-btn { color: var(--inv-bg-color); }
+.window:focus-visible { outline: 2px solid var(--text-color); outline-offset: 2px; }
 #keys-window { width: 370px; max-height: none; }
 #keys-window .keys-content { display: flex; flex-direction: column; gap: 8px; padding: 12px; overflow: visible; max-height: none; }
 .keys-content .setting-divider { margin: 4px 0; flex-shrink: 0; }
