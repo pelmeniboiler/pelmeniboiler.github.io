@@ -519,6 +519,15 @@ function setupSettings() {
         docEl.classList.remove(...themeClassesToRemove(docEl));
         body.classList.remove(...themeClassesToRemove(body));
         
+        // The theme's own stylesheet, if the build split it out and this page
+        // hasn't linked it yet (theme-loader.js links the one active at load).
+        const themeCss = window.pbThemeCss && window.pbThemeCss[theme];
+        if (themeCss && !document.querySelector(`link[data-theme-css="${theme}"]`)) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet'; link.href = themeCss; link.dataset.themeCss = theme;
+            document.head.appendChild(link);
+        }
+
         // **FIX:** Add the new theme class to both <html> and <body>.
         docEl.classList.add(`${theme}-mode`);
         body.classList.add(`${theme}-mode`);

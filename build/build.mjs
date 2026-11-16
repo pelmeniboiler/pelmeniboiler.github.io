@@ -16,7 +16,10 @@ import { JSDOM } from 'jsdom';
 import { processImages, pictureize } from './images.mjs';
 import { buildEmoji, emojifyDocument, emojifySourceFiles, splitSprites } from './emoji.mjs';
 import { ariaDocument, ariaSourceFiles } from './aria.mjs';
+import { splitThemeCss } from './css-split.mjs';
 
+// Set once per build by main(): theme name → its split-out stylesheet URL.
+let THEME_CSS = {};
 // Set once per build by main(): our emoji glyphs as an SVG sprite + map.
 let EMOJI_MAP = null;
 /** Swap emoji in an HTML document or fragment string for our SVG glyphs. */
@@ -286,6 +289,9 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
 async function main() {
     console.log('Staging sources into /_site...');
     await stageSources();
+
+    console.log('Splitting the stylesheet per theme...');
+    THEME_CSS = await splitThemeCss(ROOT_DIR);
 
     await fs.mkdir(RSS_OUTPUT_DIR, { recursive: true });
 
@@ -838,7 +844,13 @@ ${rows(missing, '∅')}
  * still references it.
  */
 async function inlineThemeLoader(rootDir) {
-    const code = (await fs.readFile(path.join(rootDir, 'scripts/theme-loader.js'), 'utf-8')).replace(/<\/script/gi, '<\\/script');
+    const loaderPath = path.join(rootDir, 'scripts/theme-loader.js');
+    // Fill in the theme → stylesheet table (see build/css-split.mjs).
+    const filled = (await fs.readFile(loaderPath, 'utf-8')).replace('/*THEME-CSS*/{}', JSON.stringify(THEME_CSS));
+    await fs.writeFile(loaderPath, filled);
+    const code = filled.replace(/<\/script/gi, '<\\/script');
+    // ...and have each page link the active theme's sheet right after the main one.
+    const MAIN_CSS = /(<link\b[^>]*\bhref="[^"]*pelmeni2025\.css[^"]*"[^>]*>)(?!<script>window\.pbThemeLink)/g;
     const TAG = /<script\b[^>]*\bsrc="[^"]*\/?scripts\/theme-loader\.js[^"]*"[^>]*><\/script>/g;
     let n = 0;
     const walk = async (dir) => {
@@ -849,7 +861,8 @@ async function inlineThemeLoader(rootDir) {
             const html = await fs.readFile(full, 'utf-8');
             if (!TAG.test(html)) continue;
             TAG.lastIndex = 0;
-            await fs.writeFile(full, html.replace(TAG, () => `<script>${code}</script>`));
+            await fs.writeFile(full, html.replace(TAG, () => `<script>${code}</script>`)
+                .replace(MAIN_CSS, (m) => `${m}<script>window.pbThemeLink&&pbThemeLink()</script>`));
             n += 1;
         }
     };
