@@ -18,7 +18,7 @@
     let map = null;
     // glyph id → sprite file already referenced by this page (build/emoji.mjs splitSprites).
     const local = new Map();
-    const learn = () => document.querySelectorAll('.emoji use').forEach((u) => { const [file, id] = (u.getAttribute('href') || '').split('#'); if (id && !local.has(id)) local.set(id, file); });
+    const learn = () => document.querySelectorAll('.emoji use').forEach((u) => { const [file, id] = (u.getAttribute('href') || u.getAttribute('data-href') || '').split('#'); if (id && !local.has(id)) local.set(id, file); });
 
     const keyOf = (s) => s.replace(/[︎️]/g, '');
     function glyphsFor(seq) {

@@ -1,8 +1,8 @@
 // /scripts/eink-dither.js
-// True 1-bit Floyd–Steinberg dithering for e-ink mode. Replaces the old
+// True 1-bit ordered (Bayer) dithering for e-ink mode. Replaces the old
 // grayscale+contrast crush with a genuine halftone: each raster image is
-// redrawn on a canvas, luminance-quantized to pure black/white with error
-// diffusion, and swapped in. Originals are kept so switching back to LCD is
+// redrawn on a canvas, luminance-quantized to pure black/white against a
+// repeating threshold grid, and swapped in. Originals are kept so switching back to LCD is
 // lossless. Pure vanilla, no dependencies; if anything fails (e.g. a tainted
 // canvas), the image is left alone and the CSS filter fallback still applies.
 //
@@ -13,6 +13,7 @@
 
 (function () {
     const DITHERED = 'dithered';
+    const BAYER8 = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
     const MAX_W = 1400; // cap working size to bound CPU on large photos
 
     function isRaster(img) {
@@ -53,28 +54,14 @@
             const imageData = ctx.getImageData(0, 0, w, h);
             const d = imageData.data;
 
-            // Luminance buffer, then Floyd–Steinberg error diffusion to 1-bit.
-            const lum = new Float32Array(w * h);
-            for (let i = 0, p = 0; i < d.length; i += 4, p++) {
-                lum[p] = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
-            }
-            for (let y = 0; y < h; y++) {
-                for (let x = 0; x < w; x++) {
-                    const p = y * w + x;
-                    const old = lum[p];
-                    const val = old < 128 ? 0 : 255;
-                    const err = old - val;
-                    lum[p] = val;
-                    if (x + 1 < w) lum[p + 1] += err * 7 / 16;
-                    if (y + 1 < h) {
-                        if (x > 0) lum[p + w - 1] += err * 3 / 16;
-                        lum[p + w] += err * 5 / 16;
-                        if (x + 1 < w) lum[p + w + 1] += err * 1 / 16;
-                    }
+            // Ordered (Bayer) dither to 1-bit: the same look as the photos the
+            // build pre-dithers (build/images.mjs).
+            for (let y = 0, p = 0; y < h; y++) {
+                for (let x = 0; x < w; x++, p++) {
+                    const i = p * 4;
+                    const lum = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+                    d[i] = d[i + 1] = d[i + 2] = lum > (BAYER8[(y & 7) * 8 + (x & 7)] + 0.5) * 4 ? 255 : 0; // alpha untouched
                 }
-            }
-            for (let i = 0, p = 0; i < d.length; i += 4, p++) {
-                d[i] = d[i + 1] = d[i + 2] = lum[p]; // alpha untouched
             }
             ctx.putImageData(imageData, 0, 0);
 

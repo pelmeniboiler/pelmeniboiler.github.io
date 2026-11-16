@@ -523,7 +523,9 @@ kbd { font: inherit; display: inline-block; min-width: 1.6em; padding: 0 5px; te
    width:0 + min-width:100% makes the paragraph adopt the content box width
    set by the (nowrap) h2, without contributing to it. */
 #about-window .content { width: max-content; max-width: 80vw; }
-#about-window .content h2 { white-space: nowrap; }
+/* The name is the page's one <h1> (it used to be the welcome window's
+   greeting), set at heading-2 size. */
+#about-window .content h1 { white-space: nowrap; font-size: 1.5em; }
 #about-window .content p { width: 0; min-width: 100%; }
 
 /* --- APP LIBRARY --- */
@@ -788,7 +790,7 @@ textarea::-webkit-scrollbar-thumb {
     /* Long single-line content (e.g. the about name) must wrap on a phone rather
        than force a sideways scroll. */
     .window .content { overflow-x: hidden; }
-    #about-window .content h2 { white-space: normal; overflow-wrap: break-word; }
+    #about-window .content h1 { white-space: normal; overflow-wrap: break-word; }
     .title-bar { cursor: var(--cur-default); }
     .start-menu {
         width: 100%;
@@ -1430,7 +1432,7 @@ html:not(.js) body#desktop { padding-bottom: 36px; }
     html.dev-tiles #tile-bar { right: 300px; } /* leave the tray its corner */
     /* Three columns from a wrapping flex column, arranged with `order` so the
        DOM (and with it the floating layout and phone stacking) is untouched:
-         left:   welcome, about
+         left:   about
          middle: blog (full height, which is what forces the column breaks)
          right:  app library, logo, music
        Each pane takes its content's height; only the last pane in a column
@@ -1482,8 +1484,8 @@ html:not(.js) body#desktop { padding-bottom: 36px; }
     html.dev-tiles #desktop > #logo-window { order: 5; }
     html:not(.js) #desktop > #music-window,
     html.dev-tiles #desktop > #music-window { order: 6; flex-grow: 1; }
-    html:not(.js) #desktop > #about-window h2,
-    html.dev-tiles #desktop > #about-window h2 { white-space: normal; overflow-wrap: anywhere; }
+    html:not(.js) #desktop > #about-window h1,
+    html.dev-tiles #desktop > #about-window h1 { white-space: normal; overflow-wrap: anywhere; }
     /* Floating, the about window sizes itself to the name (max-content); as a tile it takes the column. */
     html:not(.js) #desktop > #about-window > .content,
     html.dev-tiles #desktop > #about-window > .content { width: auto; max-width: none; }

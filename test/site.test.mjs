@@ -77,8 +77,6 @@ try {
         const dateText = (await page.textContent('#blog-posts-list .post-date'))?.trim();
         ok(/57\d\d/.test(dateText), `Hub: dates render Anno Mundi (got "${dateText}")`);
 
-        const welcome = await page.evaluate(() => document.querySelector('.welcome-text-eink')?.textContent || '');
-        ok(!welcome.includes('without JavaScript'), 'Hub: JS-availability note removed from welcome');
         const about = await page.evaluate(() => document.querySelector('[data-key="about_p"]')?.textContent || '');
         ok(about.startsWith('Interlinked interdisciplinary'), `Hub: inter-wordplay about text baked (got "${about.slice(0, 40)}…")`);
 
@@ -373,9 +371,9 @@ try {
         ok(/57\d\d/.test(clock) && /[א-ת]{1,2}׳/.test(clock) && /ח/.test(clock) && !/\d{2}:\d{2}/.test(clock),
             `Tray clock: Anno Mundi date + HEBREW time of day, no civil HH:MM (got "${clock}")`);
 
-        // Close the welcome window (started open) → docks to tray as an icon.
+        // Close a window that started open → docks to tray as an icon.
         await page.evaluate(() => {
-            const win = document.querySelector('[data-key="welcome_h1"]').closest('.window');
+            const win = document.getElementById('about-window');
             win.querySelector('.close-btn').click();
         });
         await page.waitForTimeout(300);
@@ -385,7 +383,7 @@ try {
         await page.click('#tray-icons .tray-icon');
         await page.waitForTimeout(300);
         const reopened = await page.evaluate(() =>
-            getComputedStyle(document.querySelector('[data-key="welcome_h1"]').closest('.window')).display !== 'none');
+            getComputedStyle(document.getElementById('about-window')).display !== 'none');
         const trayAfter = await page.locator('#tray-icons .tray-icon').count();
         ok(reopened && trayAfter === 0, 'Tray: clicking the icon restores the window');
         await ctx.close();
@@ -507,7 +505,7 @@ try {
 
         // About window: description wraps at the heading's width.
         const about = await page.evaluate(() => {
-            const h2 = document.querySelector('#about-window h2').getBoundingClientRect().width;
+            const h2 = document.querySelector('#about-window h1').getBoundingClientRect().width;
             const p = document.querySelector('#about-window p').getBoundingClientRect().width;
             return { h2: Math.round(h2), p: Math.round(p) };
         });
@@ -634,7 +632,7 @@ try {
 
     // ============ TILED DESKTOP: no-JS layout + hidden developer preview ============
     {
-        const PANES = ['welcome-window', 'blog-window', 'app-library', 'music-window', 'logo-window', 'about-window'];
+        const PANES = ['blog-window', 'app-library', 'music-window', 'logo-window', 'about-window'];
         const layout = (page) => page.evaluate((ids) => {
             const vw = innerWidth, vh = innerHeight;
             const rects = ids.map((id) => {
@@ -669,8 +667,8 @@ try {
         const page = await ctx.newPage();
         await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         let L = await layout(page);
-        ok(L.shown === 6 && L.overlaps === 0 && L.inView, `No-JS hub: 6 tiled panes, no overlap, all on screen (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, inView: L.inView })})`);
-        ok(L.bar === 7 && L.closeBtns === 0, `No-JS hub: window bar (7 links), no dead close buttons (bar=${L.bar}, close=${L.closeBtns})`);
+        ok(L.shown === 5 && L.overlaps === 0 && L.inView, `No-JS hub: 5 tiled panes, no overlap, all on screen (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, inView: L.inView })})`);
+        ok(L.bar === 6 && L.closeBtns === 0, `No-JS hub: window bar (6 links), no dead close buttons (bar=${L.bar}, close=${L.closeBtns})`);
         // Content-aware sizing: the blog gets the most room; logo and music hug their content.
         const R = L.rects;
         ok(R['blog-window'].w * R['blog-window'].h > Math.max(...PANES.filter((p) => p !== 'blog-window').map((p) => R[p].w * R[p].h)) * 1.5,
@@ -689,7 +687,7 @@ try {
         ok(L.shown === 1 && L.rects['blog-window'].w > 1200, `No-JS hub: window-bar entry zooms its pane (shown=${L.shown}, width=${Math.round(L.rects['blog-window'].w)})`);
         await page.click('#tile-bar .tile-all');
         L = await layout(page);
-        ok(L.shown === 6, `No-JS hub: ▦ shows all panes again (shown=${L.shown})`);
+        ok(L.shown === 5, `No-JS hub: ▦ shows all panes again (shown=${L.shown})`);
 
         // CSS-only blog filter.
         await page.click('label[for="bf-Photos"]');
@@ -768,7 +766,7 @@ try {
         await tpage.goto(`${BASE}/index.html`, { waitUntil: 'load' });
         await tpage.waitForTimeout(800);
         L = await layout(tpage);
-        ok(L.shown === 6 && L.overlaps === 0 && L.inView && L.bar === 7, `Dev tiles: 6 panes, no overlap, window bar (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, bar: L.bar })})`);
+        ok(L.shown === 5 && L.overlaps === 0 && L.inView && L.bar === 6, `Dev tiles: 5 panes, no overlap, window bar (${JSON.stringify({ shown: L.shown, overlaps: L.overlaps, bar: L.bar })})`);
         const before = L.rects['about-window'];
         const tb = await tpage.locator('#about-window .title-bar').boundingBox();
         await tpage.mouse.move(tb.x + 20, tb.y + 10); await tpage.mouse.down();
@@ -802,9 +800,9 @@ try {
         };
 
         const a0 = await box('about-window');
-        await drag('about-window', 120, -60);
+        await drag('about-window', 120, 60);
         const a1 = await box('about-window');
-        ok(Math.abs(a1.x - a0.x - 120) <= 2 && Math.abs(a1.y - a0.y + 60) <= 2, `WM: pointer drag moves a window (${a0.x},${a0.y} → ${a1.x},${a1.y})`);
+        ok(Math.abs(a1.x - a0.x - 120) <= 2 && Math.abs(a1.y - a0.y - 60) <= 2, `WM: pointer drag moves a window (${a0.x},${a0.y} → ${a1.x},${a1.y})`);
 
         await drag('about-window', -3000, -3000);
         const a2 = await box('about-window');
@@ -1007,6 +1005,28 @@ try {
         const sprites = [...gt.got, ...ru.got].filter((f) => /\.svg$/.test(f));
         ok(sprites.length > 0 && sprites.every((f) => /^(core|set)-[0-9a-f]{8}\.svg$/.test(f)) && gt.drawn && ru.drawn,
             `Emoji: pages use the core + per-page sprites, never the full one, and every glyph draws (${[...new Set(sprites)].join(', ')})`);
+
+        // Icons inside windows that start closed wait for the window to open.
+        {
+            const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 800 } });
+            const page = await ctx.newPage();
+            const got = [];
+            page.on('request', (r) => { const u = new URL(r.url()).pathname; if (/\/styles\/emoji\/lazy-/.test(u)) got.push(u); });
+            await page.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+            await page.waitForTimeout(1500);
+            const early = got.length;
+            const parked = await page.evaluate(() => document.querySelectorAll('#settings-main-window use[data-href]').length);
+            await page.keyboard.press('s');
+            await page.waitForTimeout(1200);
+            const after = await page.evaluate(() => {
+                const uses = [...document.querySelectorAll('#settings-main-window .emoji use')];
+                const seen = uses.filter((u) => u.getClientRects().length);
+                return { left: uses.filter((u) => u.hasAttribute('data-href')).length, drawn: seen.length > 0 && seen.every((u) => { try { return u.getBBox().width > 0; } catch { return false; } }) };
+            });
+            ok(early === 0 && parked > 0 && got.length === 1 && after.left === 0 && after.drawn,
+                `Emoji: settings icons load when settings opens, not before (early=${early}, parked=${parked}, fetched=${got.length}, ${JSON.stringify(after)})`);
+            await ctx.close();
+        }
     }
 
     // ============ THE HUB TRAVELS LIGHT ============
