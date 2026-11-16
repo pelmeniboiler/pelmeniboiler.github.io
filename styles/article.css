@@ -27,6 +27,10 @@
 }
 
 .article-image {
+    /* width: auto, not the width="" the build stamps on every photo: that
+       attribute is there to reserve space, and as a fixed width it stretched
+       any photo that also has a max-height. */
+    width: auto;
     max-width: 100%;
     height: auto;
     display: block;
