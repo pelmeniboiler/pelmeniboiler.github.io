@@ -36,6 +36,6 @@
     "eink_p21": "For now, E-Ink mode is also stuck on by default, and if you don't have js there's no way out of it. However, the images without JS render using an older trick where the colors are all crushed into black or white, with contrast, so they are worse that way. Again, there may be an easy solution. I like that as a dead-man's switch, but without JS you do have to hit tab a bunch to do things keyboard-only. The dead-man's switch is necessary though, because even though there's a css @media (monochrome) query, it's not guaranteed an E-Ink device will properly share its identity in a way that engages with it. You may then therefore get the impression that I don't particularly care if a non-E-Ink user gets an E-Ink-like experience, and you would be completely right, because I personally want to have an E-Ink-like experience on all my devices.",
     "eink_h2_tldr": "TLDR",
     "eink_nav_tldr": "<strong>&ensp;TLDR</strong>",
-    "eink_p22": "<li>Two colors.</li><li>No motion.</li><li>No pointer.</li><li>Own emoji.</li><li>Light pages.</li><li>Build first.</li><li>Scripts optional.</li><li>Untested hardware.</li>"
+    "eink_p22": "<li>Two colors.</li><li>No motion.</li><li>No pointer.</li><li>Own emoji.</li><li>Light pages.</li><li>Build first.</li><li>Scripts optional.</li>"
   }
 }
