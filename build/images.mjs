@@ -4,7 +4,7 @@
 //
 // For each PNG/JPEG under /photos/ this writes, into the gitignored /img/ tree:
 //   <name>-<w>.avif / <name>-<w>.webp   at 800 px and 1600 px wide (never upscaled)
-//   <name>-eink.png                     1-bit Floyd–Steinberg dither, ≤1400 px wide
+//   <name>-eink.png                     1-bit ordered (Bayer) dither, ≤1400 px wide
 //
 // The e-ink dither is the same algorithm (same luminance weights, same error
 // kernel, same 1400 px cap) scripts/eink-dither.js used to run on a <canvas> in
@@ -36,29 +36,30 @@ async function walk(dir, out = []) {
     return out;
 }
 
-/** Floyd–Steinberg to 1-bit, identical to the old runtime canvas version. */
+// 8×8 Bayer matrix (values 0–63). The same table is in scripts/eink-dither.js,
+// scripts/settings.js (gallery) and screensaver/index.html — keep them equal.
+export const BAYER8 = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+// Bump when the dithering changes: it is part of each photo's cache stamp, so
+// already-encoded e-ink files are redone.
+export const DITHER_VERSION = 'bayer8-1';
+
+/**
+ * Ordered (Bayer) dither to 1-bit. Each pixel is compared with a threshold
+ * from a repeating 8×8 grid, giving a regular halftone like newsprint.
+ *
+ * It used to be Floyd–Steinberg error diffusion. That scatters dots
+ * irregularly, which PNG can barely compress: the same photo was 87 KB
+ * against 19 KB this way, and every e-ink reader paid the difference.
+ */
 export function ditherLuminance(rgba, w, h) {
-    const lum = new Float32Array(w * h);
-    for (let i = 0, p = 0; p < w * h; i += 4, p++) {
-        lum[p] = 0.2126 * rgba[i] + 0.7152 * rgba[i + 1] + 0.0722 * rgba[i + 2];
-    }
-    for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-            const p = y * w + x;
-            const old = lum[p];
-            const val = old < 128 ? 0 : 255;
-            const err = old - val;
-            lum[p] = val;
-            if (x + 1 < w) lum[p + 1] += err * 7 / 16;
-            if (y + 1 < h) {
-                if (x > 0) lum[p + w - 1] += err * 3 / 16;
-                lum[p + w] += err * 5 / 16;
-                if (x + 1 < w) lum[p + w + 1] += err * 1 / 16;
-            }
+    const out = Buffer.alloc(w * h);
+    for (let y = 0, p = 0; y < h; y++) {
+        for (let x = 0; x < w; x++, p++) {
+            const i = p * 4;
+            const lum = 0.2126 * rgba[i] + 0.7152 * rgba[i + 1] + 0.0722 * rgba[i + 2];
+            out[p] = lum > (BAYER8[(y & 7) * 8 + (x & 7)] + 0.5) * 4 ? 255 : 0;
         }
     }
-    const out = Buffer.alloc(w * h);
-    for (let p = 0; p < w * h; p++) out[p] = lum[p];
     return out;
 }
 
@@ -96,7 +97,7 @@ export async function processImages(rootDir, { log = console.log } = {}) {
     async function one(src) {
         const url = urlOf(rootDir, src);
         // Content hash, not mtime: a fresh CI checkout resets every mtime.
-        const stamp = crypto.createHash('sha1').update(await fs.readFile(src)).digest('hex').slice(0, 16);
+        const stamp = crypto.createHash('sha1').update(DITHER_VERSION).update(await fs.readFile(src)).digest('hex').slice(0, 16);
         const rel = path.relative(rootDir, src);
         const base = path.join(outRoot, rel.replace(/\.[^.]+$/, ''));
         const prev = cache[url];

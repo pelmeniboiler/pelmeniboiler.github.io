@@ -81,6 +81,57 @@ const compactPath = (d) => d
     .replace(/ ?([MLQCZ]) ?/g, '$1')
     .replace(/ -/g, '-');
 
+// Some glyphs are drawn for poster size: Symbola's world map 🗺 is 1,468
+// path commands of coastline, 22 KB of the sprite, to be shown at 16–40 px.
+// For heavy glyphs only, the outline is simplified: curves are flattened,
+// each contour is reduced with Douglas–Peucker to within 0.35% of the em
+// (about a tenth of a pixel at 32 px), and contours smaller than 1.2% of the
+// em are dropped. It is the same drawing with fewer points. Light glyphs are
+// left exactly as the font has them.
+const HEAVY_COMMANDS = 300;
+function simplifyHeavy(d, upm) {
+    if ((d.match(/[MLQCZ]/g) || []).length < HEAVY_COMMANDS) return d;
+    const tol = upm * 0.0035, minSize = upm * 0.012;
+    const toks = d.match(/[MLQCZ]|-?\d+(?:\.\d+)?/g) || [];
+    const contours = []; let cur = null, i = 0, pos = [0, 0];
+    const num = () => Number(toks[i++]);
+    while (i < toks.length) {
+        const c = toks[i++];
+        if (c === 'M') { cur = [[num(), num()]]; contours.push(cur); pos = cur[0]; }
+        else if (c === 'L') { pos = [num(), num()]; cur.push(pos); }
+        else if (c === 'Q') { const [x1, y1, x, y] = [num(), num(), num(), num()], p0 = pos; for (let t = 1; t <= 4; t++) { const u = t / 4, v = 1 - u; cur.push([v * v * p0[0] + 2 * v * u * x1 + u * u * x, v * v * p0[1] + 2 * v * u * y1 + u * u * y]); } pos = [x, y]; }
+        else if (c === 'C') { const [x1, y1, x2, y2, x, y] = [num(), num(), num(), num(), num(), num()], p0 = pos; for (let t = 1; t <= 6; t++) { const u = t / 6, v = 1 - u; cur.push([v * v * v * p0[0] + 3 * v * v * u * x1 + 3 * v * u * u * x2 + u * u * u * x, v * v * v * p0[1] + 3 * v * v * u * y1 + 3 * v * u * u * y2 + u * u * u * y]); } pos = [x, y]; }
+        // Z: contours are closed when written out
+    }
+    const dp = (pts) => {
+        if (pts.length < 3) return pts;
+        const keep = new Uint8Array(pts.length); keep[0] = keep[pts.length - 1] = 1;
+        const stack = [[0, pts.length - 1]];
+        while (stack.length) {
+            const [a, b] = stack.pop(); let worst = 0, at = -1;
+            const [ax, ay] = pts[a], [bx, by] = pts[b], dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy) || 1;
+            for (let k = a + 1; k < b; k++) { const dist = Math.abs((pts[k][0] - ax) * dy - (pts[k][1] - ay) * dx) / len; if (dist > worst) { worst = dist; at = k; } }
+            if (worst > tol) { keep[at] = 1; stack.push([a, at], [at, b]); }
+        }
+        return pts.filter((_, k) => keep[k]);
+    };
+    let out = '';
+    for (const pts of contours) {
+        const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+        if (Math.max(...xs) - Math.min(...xs) < minSize && Math.max(...ys) - Math.min(...ys) < minSize) continue;
+        // Split the closed contour at its farthest point so Douglas–Peucker has two real ends.
+        let far = 0, fd = -1; for (let k = 1; k < pts.length; k++) { const dd = Math.hypot(pts[k][0] - pts[0][0], pts[k][1] - pts[0][1]); if (dd > fd) { fd = dd; far = k; } }
+        const s = [...dp(pts.slice(0, far + 1)), ...dp(pts.slice(far)).slice(1)].map(([x, y]) => [Math.round(x), Math.round(y)]);
+        if (s.length < 3) continue;
+        out += `M${s[0][0]} ${s[0][1]}`;
+        // Relative line-tos: small numbers, and "-" doubles as the separator.
+        let seg = 'l';
+        for (let k = 1; k < s.length; k++) { const dx = s[k][0] - s[k - 1][0], dy = s[k][1] - s[k - 1][1]; if (!dx && !dy) continue; seg += `${seg.length > 1 && dx >= 0 ? ' ' : ''}${dx}${dy >= 0 ? ' ' : ''}${dy}`; }
+        out += `${seg}z`;
+    }
+    return out;
+}
+
 export async function buildEmoji(rootDir, { log = console.log, scanRoot = rootDir } = {}) {
     const fonts = STACK.map((f) => fontkit.openSync(path.join(rootDir, 'styles/fonts', f)));
 
@@ -113,7 +164,7 @@ export async function buildEmoji(rootDir, { log = console.log, scanRoot = rootDi
             const upm = font.unitsPerEm, asc = font.ascent, desc = font.descent; // desc < 0
             const adv = g.advanceWidth || upm;
             const id = idFor(key);
-            symbols.push(`<symbol id="${id}" viewBox="0 ${-asc} ${adv} ${asc - desc}" overflow="visible"><path transform="scale(1,-1)" d="${compactPath(g.path.toSVG())}"/></symbol>`);
+            symbols.push(`<symbol id="${id}" viewBox="0 ${-asc} ${adv} ${asc - desc}" overflow="visible"><path transform="scale(1,-1)" d="${simplifyHeavy(compactPath(g.path.toSVG()), upm)}"/></symbol>`);
             glyphs[key] = [id, r3(adv / upm), r3((asc - desc) / upm), r3(desc / upm)];
             done = true;
             break;
@@ -313,15 +364,18 @@ export async function emojifySourceFiles(rootDir, map, { log = console.log } = {
 
 // --- Per-page sprites -------------------------------------------------------
 //
-// sprite.svg holds every glyph the whole site uses (≈170, ≈125 KB compressed);
-// a page draws a few dozen. So once all pages are built, each is pointed at
-// just what it needs, in two files:
+// sprite.svg holds every glyph the whole site uses; a page draws a few dozen.
+// So once all pages are built, each is pointed at just what it needs:
 //
-//   core-<hash>.svg   glyphs on at least half the pages (the window chrome:
-//                     settings, tray, theme icons). One download, then cached
-//                     for every other page.
-//   set-<hash>.svg    the rest of what this page uses. Pages with the same
-//                     set (an article's language versions) share the file.
+//   core-<hash>.svg   glyphs visible on at least half the pages (the tray,
+//                     title bars). One download, cached for every other page.
+//   set-<hash>.svg    the rest of what this page shows on arrival. Pages with
+//                     the same set (an article's language versions) share it.
+//   lazy-<hash>.svg   glyphs that only appear inside windows that start
+//                     closed — settings, the key list, the clock (title bars
+//                     aside: the tray shows those). Their <use>
+//                     carries data-href instead of href, so nothing is fetched
+//                     until scripts/start-menu.js sees the window open.
 //
 // The full sprite stays: scripts/emoji.js falls back to it for a glyph that
 // only turns up at runtime.
@@ -329,7 +383,20 @@ export async function splitSprites(rootDir, { log = console.log } = {}) {
     const dir = path.join(rootDir, OUT_DIR);
     const full = await fs.readFile(path.join(dir, 'sprite.svg'), 'utf8');
     const symbols = new Map([...full.matchAll(/<symbol id="([^"]+)"[\s\S]*?<\/symbol>/g)].map((m) => [m[1], m[0]]));
-    const REF = /\/styles\/emoji\/sprite\.svg(?:\?v=[0-9a-f]+)?#(e[0-9a-f-]+)/g;
+    const REF = /(data-)?href=(\\?")\/styles\/emoji\/sprite\.svg(?:\?v=[0-9a-f]+)?#(e[0-9a-f-]+)/g;
+
+    // Park the references inside windows that start closed.
+    const park = (html) => {
+        if (!html.includes('init-closed')) return html;
+        const whole = /<html[\s>]/i.test(html);
+        const dom = new JSDOM(whole ? html : `<!DOCTYPE html><body>${html}</body>`);
+        // (Not the title bar's: the tray and start menu show a closed window's
+        // title icon from the start.)
+        const uses = [...dom.window.document.querySelectorAll('.window.init-closed use[href*="/styles/emoji/"]')].filter((u) => !u.closest('.title-bar'));
+        if (!uses.length) return html;
+        uses.forEach((u) => { u.setAttribute('data-href', u.getAttribute('href')); u.removeAttribute('href'); });
+        return whole ? dom.serialize() : dom.window.document.body.innerHTML;
+    };
 
     const pages = [];
     const walk = async (d) => {
@@ -338,16 +405,17 @@ export async function splitSprites(rootDir, { log = console.log } = {}) {
             if (ent.isDirectory()) { if (!['img', 'photos', 'styles', 'scripts', 'sounds', 'logo'].includes(ent.name)) await walk(p); continue; }
             // (+ the screensaver's window titles, which live in a JSON file)
             if (!ent.name.endsWith('.html') && ent.name !== 'photos.json') continue;
-            const html = await fs.readFile(p, 'utf8');
-            const ids = new Set([...html.matchAll(REF)].map((m) => m[1]).filter((id) => symbols.has(id)));
-            if (ids.size) pages.push({ file: p, html, ids });
+            const html = ent.name.endsWith('.html') ? park(await fs.readFile(p, 'utf8')) : await fs.readFile(p, 'utf8');
+            const eager = new Set(), lazy = new Set();
+            for (const m of html.matchAll(REF)) if (symbols.has(m[3])) (m[1] ? lazy : eager).add(m[3]);
+            if (eager.size || lazy.size) pages.push({ file: p, html, eager, lazy });
         }
     };
     await walk(rootDir);
     if (!pages.length) return;
 
     const count = new Map();
-    for (const pg of pages) for (const id of pg.ids) count.set(id, (count.get(id) || 0) + 1);
+    for (const pg of pages) for (const id of pg.eager) count.set(id, (count.get(id) || 0) + 1);
     const core = new Set([...count].filter(([, n]) => n * 2 >= pages.length).map(([id]) => id));
 
     const written = new Map(); // file name → bytes
@@ -360,12 +428,16 @@ export async function splitSprites(rootDir, { log = console.log } = {}) {
     };
     const coreUrl = core.size ? await write('core', core) : null;
     for (const pg of pages) {
-        const extra = [...pg.ids].filter((id) => !core.has(id));
+        const extra = [...pg.eager].filter((id) => !core.has(id));
+        const later = [...pg.lazy].filter((id) => !core.has(id) && !pg.eager.has(id));
         const setUrl = extra.length ? await write('set', extra) : null;
-        await fs.writeFile(pg.file, pg.html.replace(REF, (m, id) => (!symbols.has(id) ? m : `${core.has(id) ? coreUrl : setUrl}#${id}`)));
+        const lazyUrl = later.length ? await write('lazy', later) : null;
+        await fs.writeFile(pg.file, pg.html.replace(REF, (m, data, q, id) => (!symbols.has(id) ? m
+            : `${data || ''}href=${q}${core.has(id) ? coreUrl : pg.eager.has(id) ? setUrl : lazyUrl}#${id}`)));
     }
     const kb = (n) => (n / 1024).toFixed(0);
-    const sets = [...written].filter(([n]) => n.startsWith('set-'));
-    log(`  → ${pages.length} pages: core sprite ${core.size} glyphs (${kb([...written].find(([n]) => n.startsWith('core-'))?.[1] || 0)} KB), ` +
-        `${sets.length} page set(s) averaging ${kb(sets.reduce((a, [, n]) => a + n, 0) / (sets.length || 1))} KB; full sprite ${kb(full.length)} KB.`);
+    const of = (p) => [...written].filter(([n]) => n.startsWith(p));
+    const avg = (list) => kb(list.reduce((a, [, n]) => a + n, 0) / (list.length || 1));
+    log(`  → ${pages.length} pages: core ${core.size} glyphs (${kb(of('core-')[0]?.[1] || 0)} KB), ${of('set-').length} page set(s) ~${avg(of('set-'))} KB, ` +
+        `${of('lazy-').length} lazy set(s) ~${avg(of('lazy-'))} KB; full sprite ${kb(full.length)} KB.`);
 }

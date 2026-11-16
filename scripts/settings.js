@@ -253,7 +253,7 @@ function setupSettings() {
 
     // --- Gallery background: the photo-article gallery behind the desktop. In
     // colour (LCD) mode it's a slow cross-fading slideshow; in e-ink mode it's a
-    // single random photo, Floyd–Steinberg dithered to the theme, held still. ---
+    // single random photo, dithered (ordered, Bayer) to the theme, held still. ---
     const galleryToggle = getElement('gallery-toggle');
     const GALLERY_KEY = 'pelmeniboiler-gallery';
     let galleryBox = null, galleryLayers = [], galleryActive = 0,
@@ -282,14 +282,14 @@ function setupSettings() {
         const scale = Math.max(w / img.width, h / img.height);
         const dw = img.width * scale, dh = img.height * scale;
         ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
-        const id = ctx.getImageData(0, 0, w, h), d = id.data, g = new Float32Array(w * h);
-        for (let i = 0; i < w * h; i++) g[i] = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]) / 255;
-        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-            const i = y * w + x, o = g[i], nv = o < 0.5 ? 0 : 1, e = o - nv; g[i] = nv;
-            if (x + 1 < w) g[i + 1] += e * 7 / 16;
-            if (y + 1 < h) { if (x > 0) g[i + w - 1] += e * 3 / 16; g[i + w] += e * 5 / 16; if (x + 1 < w) g[i + w + 1] += e * 1 / 16; }
+        // Ordered (Bayer) dither, the same table as build/images.mjs.
+        const B = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+        const id = ctx.getImageData(0, 0, w, h), d = id.data;
+        for (let y = 0, k = 0; y < h; y++) for (let x = 0; x < w; x++, k += 4) {
+            const lum = 0.299 * d[k] + 0.587 * d[k + 1] + 0.114 * d[k + 2];
+            const c = lum > (B[(y & 7) * 8 + (x & 7)] + 0.5) * 4 ? paper : ink;
+            d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
         }
-        for (let i = 0; i < w * h; i++) { const c = g[i] >= 0.5 ? paper : ink, k = i * 4; d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255; }
         ctx.putImageData(id, 0, 0);
         return cv.toDataURL('image/png');
     }

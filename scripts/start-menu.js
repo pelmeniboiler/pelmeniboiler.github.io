@@ -36,6 +36,18 @@ function setupStartMenu() {
     });
     let lastTranslations = null, lastLang = null;
 
+    // Icons inside windows that start closed are parked by the build: their
+    // <use> has data-href instead of href, so their sprite file is not fetched
+    // on arrival (build/emoji.mjs splitSprites). Wake them when the window is
+    // first shown, however it gets shown. (Title bars are never parked — the
+    // tray and start menu copy those.)
+    const wakeEmoji = (root) => root.querySelectorAll('use[data-href]').forEach((u) => { u.setAttribute('href', u.getAttribute('data-href')); u.removeAttribute('data-href'); });
+    windows.forEach((win) => {
+        if (!win.querySelector('use[data-href]')) return;
+        const seen = new MutationObserver(() => { if (getComputedStyle(win).display !== 'none') { wakeEmoji(win); seen.disconnect(); } });
+        seen.observe(win, { attributes: true, attributeFilter: ['style', 'class'] });
+    });
+
     function windowIcon(win) {
         const titleEl = win.querySelector('.title-bar .title');
         // Returns HTML. Reuse the title's already-drawn SVG emoji where there is

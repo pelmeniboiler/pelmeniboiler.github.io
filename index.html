@@ -35,14 +35,6 @@
 <body id="desktop" class="eink-mode light-mode">
 
     <!-- Window Content -->
-    <div id="welcome-window" class="window" style="top: 2%; left: 2%; z-index: 4;">
-        <div class="title-bar"><span class="title" data-key="win_welcome_title">ש hello.welcome</span><button class="close-btn">&times;</button></div>
-        <div class="content">
-            <h1 data-key="welcome_h1">Welcome to my page!</h1>
-            <!-- English baked in for SEO / no-JS; data-key still drives runtime translation -->
-            <p class="welcome-text-eink" data-key="welcome_text_eink">This website is currently using E-Ink friendly and standard English localization settings.<br>If you would prefer to see images in color, or to read in another supported localization option,<br> you can do so by opening <span class="symbol">⚙</span> <strong>system.settings</strong> which starts closed in the program.launcher at the bottom of the screen.</p>
-            <p class="welcome-text-lcd" data-key="welcome_text_lcd">E-ink mode has been disabled, enjoy images in full color!</p>
-        </div>
     </div>
 
     <div id="blog-window" class="window" style="top: 12%; left: 40%; z-index: 2;">
@@ -91,10 +83,10 @@
         <div class="title-bar"><span class="title" data-key="win_logo_title">❈ logo.canvas</span> <button class="close-btn">&times;</button></div>
         <div class="content logo-image-container"><img id="logo-img" src="logo/shzh.svg" alt="Logo"></div>
     </div>
-    <div id="about-window" class="window" style="top: 64%; left: 9%; z-index: 1;">
+    <div id="about-window" class="window" style="top: 2%; left: 2%; z-index: 1;">
         <div class="title-bar"><span class="title" data-key="win_about_title">ℹ user.about</span><button class="close-btn">&times;</button></div>
         <div class="content">
-            <h2 data-key="about_h2">❯ Wendy Shoshana Zhulkovsky ❮</h2>
+            <h1 data-key="about_h2">❯ Wendy Shoshana Zhulkovsky ❮</h1>
             <p data-key="about_p">Interlinked interdisciplinary intermediate internetter interested in interacting with the intersection of interface, intercommunication, and intermedia.</p>
         </div>
     </div>
@@ -102,7 +94,6 @@
          pane via :target; the first entry shows all panes again. -->
     <nav id="tile-bar" aria-label="Windows">
         <a class="tile-all" href="#desktop" title="all windows"><span class="symbol">▦</span></a>
-        <a href="#welcome-window"><span data-key="win_welcome_title">ש hello.welcome</span></a>
         <a href="#blog-window"><span data-key="win_blog_title"><span class="symbol">📓</span> blog.posts</span></a>
         <a href="#app-library"><span data-key="win_applib_title"><span class="symbol">🗀</span> app.library</span></a>
         <a href="#music-window"><span data-key="win_music_title">𝄆 music.ogg</span></a>
