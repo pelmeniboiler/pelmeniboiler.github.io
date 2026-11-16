@@ -266,9 +266,13 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
     const g = (localizationData && localizationData.global) || {};
     const ui = {};
     for (const lang of Object.keys(g)) {
+        // Titles are stored as ready-to-insert HTML with their icons already
+        // drawn as SVG: the screensaver builds its windows from strings, and a
+        // bare ❈ or ◈ there used to pull in a whole emoji font to draw it.
+        const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         ui[lang] = {
-            logo: g[lang]?.win_logo_title || '',
-            exitTitle: g[lang]?.ss_exit_title || '',
+            logo: emojifyHtml(g[lang]?.win_logo_title || '<span class="symbol">❈</span> logo.canvas', { fragment: true }),
+            exitTitle: emojifyHtml(esc(g[lang]?.ss_exit_title || '◈ exit.screensaver'), { fragment: true }),
             exitHint: g[lang]?.ss_exit_hint || '',
         };
     }

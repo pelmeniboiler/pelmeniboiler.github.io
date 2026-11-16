@@ -101,8 +101,9 @@
             const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const build = (mark, ui) => {
                 const rtl = lang === "he" ? ' dir="rtl"' : '';
-                const logoTitle = ui.logo || '<span class="symbol">❈</span> logo.canvas';
-                const exitTitle = esc(ui.exitTitle || "◈ exit.screensaver");
+                // Both titles arrive from photos.json as HTML, icons already SVG.
+                const logoTitle = ui.logo || 'logo.canvas';
+                const exitTitle = ui.exitTitle || 'exit.screensaver';
                 const exitHint = esc(ui.exitHint || "click or press any key to exit");
                 spawn("ss-exit", '<div class="title-bar"><span class="title">' + exitTitle + '</span> <button class="close-btn">&times;</button></div>'
                     + '<div class="content"' + rtl + '>' + exitHint + '</div>');
