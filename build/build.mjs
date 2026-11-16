@@ -341,6 +341,9 @@ async function main() {
     console.log('Generating sitemap...');
     await generateSitemap(pageUrls, processedPosts, ROOT_DIR);
 
+    console.log('Generating the translation status page...');
+    await generateTranslationReport(ROOT_DIR, localizationData);
+
     console.log('Generating folder index pages...');
     await generateFolderIndexes(ROOT_DIR, manifestItems, localizationData);
 
@@ -750,6 +753,84 @@ function stripHtml(value) {
  * Bake translated text into an HTML fragment (a chrome module) for one language
  * and return the resulting HTML string, ready to replace a placeholder element.
  */
+/**
+ * /tools/translations.html — what `npm run tl:status` prints, as a page: every
+ * key that has English text but no translation (missing), or whose English has
+ * changed since it was translated (stale), per file and language, with the
+ * English beside it. Same rules and the same stamp file as build/tl.mjs.
+ */
+async function generateTranslationReport(rootDir, localizationData) {
+    const hash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 12);
+    const hasText = (v) => v != null && String(v).trim() !== '';
+    const status = localizationData['tl-status'] || {};
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const plain = (s) => { const t = String(s).replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|ensp|emsp|thinsp);/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim(); return t.length > 160 ? `${t.slice(0, 157)}…` : t; };
+
+    let missingTotal = 0, staleTotal = 0;
+    const sections = [];
+    for (const prefix of Object.keys(localizationData).sort()) {
+        if (prefix === 'tl-status') continue;
+        const data = localizationData[prefix] || {};
+        const en = data.en || {};
+        const langs = Object.keys(data).filter((l) => l !== 'en');
+        if (!langs.length || !Object.keys(en).length) continue;
+        const perLang = [];
+        for (const lang of langs) {
+            const t = data[lang] || {};
+            const missing = [], stale = [];
+            for (const key of Object.keys(en)) {
+                if (!hasText(t[key])) { missing.push(key); continue; }
+                const stamped = status[prefix]?.[key]?.[lang];
+                if (stamped && stamped !== hash(en[key])) stale.push(key);
+            }
+            missingTotal += missing.length; staleTotal += stale.length;
+            if (!missing.length && !stale.length) continue;
+            const rows = (keys, mark) => keys.map((k) => `<li><span class="symbol">${mark}</span> <code>${esc(k)}</code> ${esc(plain(en[k]))}</li>`).join('\n');
+            perLang.push(`<details class="app-folder"><summary>${lang} · ${missing.length + stale.length}</summary>
+<ul class="tl-keys">
+${rows(stale, '↻')}
+${rows(missing, '∅')}
+</ul></details>`);
+        }
+        if (perLang.length) sections.push(`<details class="app-folder"><summary><span class="symbol">🗀</span> ${prefix}.json</summary>\n${perLang.join('\n')}\n</details>`);
+    }
+
+    const html = `<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>translation.status</title>
+    <link rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        .tl-keys { list-style: none; margin: 4px 0 10px; padding-inline-start: 1.75em; display: flex; flex-direction: column; gap: 4px; }
+        .tl-keys code { border: 1px solid var(--text-color); padding: 0 4px; }
+        .tl-totals { display: flex; gap: 1.5em; margin: 0 0 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="window" style="top: 6%; left: 14%; width: min(760px, 92vw); max-height: 86vh; display: flex; flex-direction: column;">
+        <div class="title-bar">
+            <span class="title"><span class="symbol">▤</span> translation.status</span>
+            <button class="close-btn" onclick="window.location.href='/'">&times;</button>
+        </div>
+        <div class="content" style="overflow-y: auto; max-height: none;">
+            <p class="tl-totals"><span><span class="symbol">∅</span> missing ${missingTotal}</span><span><span class="symbol">↻</span> stale ${staleTotal}</span></p>
+            ${sections.join('\n') || '<p><span class="symbol">✓</span></p>'}
+        </div>
+    </div>
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>
+`;
+    await fs.mkdir(path.join(rootDir, 'tools'), { recursive: true });
+    await fs.writeFile(path.join(rootDir, 'tools', 'translations.html'), emojifyHtml(html));
+    console.log(`  → ${missingTotal} missing, ${staleTotal} stale.`);
+}
+
 /**
  * theme-loader.js must run before first paint (it sets the theme classes), so
  * as an external file it is a render-blocking request on every page. It is
