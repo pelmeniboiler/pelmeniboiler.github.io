@@ -567,7 +567,7 @@ hr { border: none; height: 1px; background-color: var(--text-color); color: var(
 .theme-folder > .radio-label { margin-inline-start: 1.75em; }
 
 /* Custom form controls outlined in the theme's TEXT colour — never browser grey.
-   Grey is reserved exclusively for the :disabled state below. The checkbox is a
+   No grey anywhere, the :disabled state included (see below). The checkbox is a
    square with pointy corners; the radio stays round. */
 input[type="checkbox"], input[type="radio"] {
     appearance: none; -webkit-appearance: none; margin: 0 8px 0 0;
@@ -592,12 +592,13 @@ input[type="radio"]:checked::before { transform: scale(1); }
 input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
     outline: 2px solid var(--text-color); outline-offset: 2px;
 }
-/* The one place grey belongs: a disabled control. */
+/* A disabled control is not greyed out — grey dithers into noise on e-ink and
+   is not one of the theme's two colours. Its outline goes dashed and its label
+   is struck through. */
 input[type="checkbox"]:disabled, input[type="radio"]:disabled {
-    border-color: gray; cursor: var(--cur-default);
+    border-style: dashed; cursor: var(--cur-default);
 }
-input[type="checkbox"]:disabled:checked { background: gray; }
-input[type="radio"]:disabled:checked::before { background: gray; }
+label:has(> input:disabled), input:disabled + label { text-decoration: line-through; cursor: var(--cur-default); }
 /* Range slider keeps the native track/thumb, tinted to the theme. */
 input[type="range"] { accent-color: var(--text-color); }
 

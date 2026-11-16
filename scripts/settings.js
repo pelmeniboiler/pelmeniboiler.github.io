@@ -191,7 +191,8 @@ function setupSettings() {
     }
 
     /**
-     * Enable/disable (and dim) the colour theme presets. Colour themes are only
+     * Enable/disable the colour theme presets (the stylesheet strikes a
+     * disabled one through). Colour themes are only
      * valid in LCD mode, so they're disabled while e-ink mode is active. Called
      * both when the mode is toggled and on initial load (otherwise a page that
      * loads already in e-ink mode would show the colour presets selectable until
@@ -202,7 +203,6 @@ function setupSettings() {
         const themeSettingGroup = getElement('theme-setting-group');
         if (!themeSettingGroup) return;
         themeSettingGroup.querySelectorAll('.color-theme').forEach(label => {
-            label.style.opacity = isEink ? '0.5' : '1';
             const radio = label.querySelector('input');
             if (radio) radio.disabled = isEink;
         });
