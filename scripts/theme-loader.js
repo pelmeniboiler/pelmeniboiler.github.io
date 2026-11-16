@@ -55,6 +55,42 @@
         // Apply correct classes to the <html> element immediately.
         docEl.classList.add(correctThemeClass, correctModeClass);
 
+        // The active theme's own stylesheet. The build splits every theme but
+        // light/dark out of the main sheet (build/css-split.mjs) and fills in
+        // this table; unbuilt, it is empty and the main sheet has everything.
+        // The build also calls pbThemeLink() right after the main stylesheet's
+        // <link>, so the theme sheet lands after it and blocks first paint
+        // exactly like the main one (no flash of the wrong colours).
+        const THEME_CSS = /*THEME-CSS*/{};
+        window.pbThemeCss = THEME_CSS;
+        window.pbThemeLink = function () {
+            if (THEME_CSS[theme]) document.write('<link rel="stylesheet" href="' + THEME_CSS[theme] + '" data-theme-css="' + theme + '">');
+        };
+
+        // E-ink mode: point each photo at its pre-dithered file as the parser
+        // creates it, before the browser has fetched the colour one. (Without
+        // this every photo was downloaded twice: colour first, then dithered
+        // once eink-dither.js ran.) Same markers as eink-dither.js, so
+        // switching back to colour restores everything.
+        if (mode === 'eink') {
+            const toEink = (img) => {
+                if (!img.dataset || !img.dataset.einkSrc || img.classList.contains('dithered')) return;
+                const pic = img.parentElement;
+                if (pic && pic.tagName === 'PICTURE') pic.querySelectorAll('source').forEach((s) => { if (s.hasAttribute('srcset')) { s.dataset.srcset = s.getAttribute('srcset'); s.removeAttribute('srcset'); } });
+                img.dataset.origSrc = img.getAttribute('src');
+                img.src = img.dataset.einkSrc;
+                img.classList.add('dithered');
+            };
+            const imgWatch = new MutationObserver((records) => {
+                for (const r of records) for (const n of r.addedNodes) {
+                    if (n.nodeType !== 1) continue;
+                    if (n.tagName === 'IMG') toEink(n); else if (n.querySelectorAll) n.querySelectorAll('img[data-eink-src]').forEach(toEink);
+                }
+            });
+            imgWatch.observe(docEl, { childList: true, subtree: true });
+            document.addEventListener('DOMContentLoaded', () => imgWatch.disconnect());
+        }
+
         // Point the PWA manifest at the current theme's variant so an install
         // picks up a matching icon + colours. (Installed apps keep the icon
         // they were installed with — the platform offers no way to change it
