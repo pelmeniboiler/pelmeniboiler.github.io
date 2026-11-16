@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="eink-compatibility" content="optimized">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Meta">
+    <meta name="pubDate" content="2026-11-16T12:00:00Z">
+    <meta name="translation-source" content="eink">
+    <title>This Blog Might Support Your E-Reader</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+    <style>
+        /* Figures in this post: the theme's two colours only; slices of the
+           chart are told apart by pattern, not shade. */
+        .pb-fig { display: block; width: 100%; height: auto; max-width: 640px; margin: 15px auto; font-family: var(--font-body); }
+        .pb-kindle { max-width: 230px; }
+        .pb-float { margin: 0 0 10px 0; }
+        @media (min-width: 769px) { .pb-float { float: right; width: 230px; margin: 0 0 10px 20px; } }
+        .pb-ink { fill: var(--text-color); }
+        .pb-paper { fill: var(--win-bg-color); }
+        .pb-st, .pb-pat, .pb-rim { stroke: var(--text-color); stroke-width: 1.5; }
+        .pb-rim { fill: none; stroke-width: 2; }
+        .pb-line { stroke: var(--text-color); stroke-width: 1.5; fill: none; }
+        .pb-t { fill: var(--text-color); font-size: 14px; }
+        .pb-h { fill: var(--text-color); font-size: 16px; font-weight: bold; }
+        .pb-body, .pb-box { fill: var(--win-bg-color); stroke: var(--text-color); stroke-width: 2.5; stroke-linejoin: round; }
+        .pb-screen { fill: var(--win-bg-color); stroke: var(--text-color); stroke-width: 3; }
+        .pb-key { fill: var(--win-bg-color); stroke: var(--text-color); stroke-width: 1.3; }
+        .pb-sc { fill: var(--text-color); }
+        .pb-word { fill: var(--text-color); font-size: 46px; letter-spacing: 3px; text-anchor: middle; }
+        #gallery-window .content ol ul { margin: 6px 0 12px; }
+        #gallery-window .content ol > li { margin-bottom: 8px; }
+    </style>
+</head>
+
+<body class="eink-mode light-mode">
+    <nav id="nav-window" class="window">
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ eink.nav</span><button
+                class="close-btn">&times;</button></div>
+        <div class="content">
+            <ul>
+                <h1 data-key="eink_nav_title"></h1>
+                <li><a href="#kindling-interest" data-key="eink_nav_kindling-interest"></a></li>
+                <li><a href="#careless-whispernet" data-key="eink_nav_careless-whispernet"></a></li>
+                <li><a href="#putting-pen-to-paper" data-key="eink_nav_putting-pen-to-paper"></a></li>
+                <li><a href="#on-paper" data-key="eink_nav_on-paper"></a></li>
+                <li><a href="#paper-tiger" data-key="eink_nav_paper-tiger"></a></li>
+                <li><a href="#tldr" data-key="eink_nav_tldr"></a></li>
+            </ul>
+            <a href="/index.html" data-key="gt_nav_h2_home">⌂←</a>
+        </div>
+    </nav>
+    <main id="gallery-window" class="window"
+        style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
+        <div class="title-bar"><span class="title" data-key="eink_win_gallery_title">▤ eink.article</span><button
+                class="close-btn">&times;</button></div>
+        <article class="content">
+            <h1 id="title" data-key="eink_title"></h1>
+            <p data-key="eink_p1"></p>
+            <h2 id="kindling-interest" data-key="eink_h2_kindling-interest"></h2>
+            <figure class="pb-float">
+<svg class="pb-fig pb-kindle" viewBox="0 0 340 600" role="img" aria-labelledby="pbk-t"><title id="pbk-t">A first-generation Kindle resting on its book-shaped box</title>
+<rect class="pb-box" x="24" y="230" width="292" height="356" rx="3"/>
+<rect class="pb-paper pb-st" x="282" y="318" width="34" height="26"/><circle class="pb-ink" cx="292" cy="331" r="5"/>
+<text class="pb-sc" x="40" y="438" font-size="8" transform="rotate(-35 40 438)">B</text><text class="pb-sc" x="93" y="475" font-size="15" transform="rotate(12 93 475)">C</text><text class="pb-sc" x="146" y="512" font-size="13" transform="rotate(-11 146 512)">S</text><text class="pb-sc" x="199" y="549" font-size="11" transform="rotate(-34 199 549)">A</text><text class="pb-sc" x="252" y="466" font-size="9" transform="rotate(13 252 466)">J</text><text class="pb-sc" x="55" y="503" font-size="16" transform="rotate(-10 55 503)">Q</text><text class="pb-sc" x="108" y="540" font-size="14" transform="rotate(-33 108 540)">K</text><text class="pb-sc" x="161" y="457" font-size="12" transform="rotate(14 161 457)">H</text><text class="pb-sc" x="214" y="494" font-size="10" transform="rotate(-9 214 494)">N</text><text class="pb-sc" x="267" y="531" font-size="8" transform="rotate(-32 267 531)">O</text><text class="pb-sc" x="70" y="448" font-size="15" transform="rotate(15 70 448)">R</text><text class="pb-sc" x="123" y="485" font-size="13" transform="rotate(-8 123 485)">M</text><text class="pb-sc" x="176" y="522" font-size="11" transform="rotate(-31 176 522)">G</text><text class="pb-sc" x="229" y="439" font-size="9" transform="rotate(16 229 439)">E</text><text class="pb-sc" x="282" y="476" font-size="16" transform="rotate(-7 282 476)">P</text><text class="pb-sc" x="85" y="513" font-size="14" transform="rotate(-30 85 513)">T</text><text class="pb-sc" x="138" y="550" font-size="12" transform="rotate(17 138 550)">D</text><text class="pb-sc" x="191" y="467" font-size="10" transform="rotate(-6 191 467)">X</text><text class="pb-sc" x="244" y="504" font-size="8" transform="rotate(-29 244 504)">B</text><text class="pb-sc" x="47" y="541" font-size="15" transform="rotate(18 47 541)">C</text><text class="pb-sc" x="100" y="458" font-size="13" transform="rotate(-5 100 458)">S</text><text class="pb-sc" x="153" y="495" font-size="11" transform="rotate(-28 153 495)">A</text><text class="pb-sc" x="206" y="532" font-size="9" transform="rotate(19 206 532)">J</text><text class="pb-sc" x="259" y="449" font-size="16" transform="rotate(-4 259 449)">Q</text><text class="pb-sc" x="62" y="486" font-size="14" transform="rotate(-27 62 486)">K</text><text class="pb-sc" x="115" y="523" font-size="12" transform="rotate(20 115 523)">H</text><text class="pb-sc" x="168" y="440" font-size="10" transform="rotate(-3 168 440)">N</text><text class="pb-sc" x="221" y="477" font-size="8" transform="rotate(-26 221 477)">O</text><text class="pb-sc" x="274" y="514" font-size="15" transform="rotate(21 274 514)">R</text><text class="pb-sc" x="77" y="551" font-size="13" transform="rotate(-2 77 551)">M</text><text class="pb-sc" x="130" y="468" font-size="11" transform="rotate(-25 130 468)">G</text><text class="pb-sc" x="183" y="505" font-size="9" transform="rotate(22 183 505)">E</text><text class="pb-sc" x="236" y="542" font-size="16" transform="rotate(-1 236 542)">P</text><text class="pb-sc" x="289" y="459" font-size="14" transform="rotate(-24 289 459)">T</text><text class="pb-sc" x="92" y="496" font-size="12" transform="rotate(23 92 496)">D</text><text class="pb-sc" x="145" y="533" font-size="10" transform="rotate(0 145 533)">X</text><text class="pb-sc" x="198" y="450" font-size="8" transform="rotate(-23 198 450)">B</text><text class="pb-sc" x="251" y="487" font-size="15" transform="rotate(24 251 487)">C</text><text class="pb-sc" x="54" y="524" font-size="13" transform="rotate(1 54 524)">S</text><text class="pb-sc" x="107" y="441" font-size="11" transform="rotate(-22 107 441)">A</text><text class="pb-sc" x="160" y="478" font-size="9" transform="rotate(25 160 478)">J</text><text class="pb-sc" x="213" y="515" font-size="16" transform="rotate(2 213 515)">Q</text><text class="pb-sc" x="266" y="552" font-size="14" transform="rotate(-21 266 552)">K</text><text class="pb-sc" x="69" y="469" font-size="12" transform="rotate(26 69 469)">H</text><text class="pb-sc" x="122" y="506" font-size="10" transform="rotate(3 122 506)">N</text><text class="pb-sc" x="175" y="543" font-size="8" transform="rotate(-20 175 543)">O</text>
+<text class="pb-word" x="176" y="520">kindle</text>
+<g transform="rotate(-11 170 190)">
+<path class="pb-body" d="M 22 30 L 250 22 L 262 348 L 34 356 Z"/>
+<path class="pb-st pb-paper" d="M 22 30 L 36 30 L 46 246 L 30 246 Z"/><line class="pb-line" x1="27" y1="140" x2="42" y2="140"/>
+<path class="pb-st pb-paper" d="M 234 24 L 250 22 L 258 250 L 244 250 Z"/>
+<rect class="pb-screen" x="50" y="40" width="180" height="204"/>
+<rect class="pb-st pb-paper" x="58" y="48" width="164" height="188"/>
+<path class="pb-ink" d="M 64 54 h 62 v 84 h -62 Z"/><path class="pb-paper" d="M 76 126 L 92 64 h 8 L 116 126 h -9 l -4 -16 h -16 l -4 16 Z M 90 100 h 12 l -6 -24 Z"/>
+<rect class="pb-ink" x="134" y="58" width="82" height="5"/><rect class="pb-ink" x="134" y="72" width="70" height="5"/><rect class="pb-ink" x="134" y="86" width="78" height="5"/><rect class="pb-ink" x="134" y="100" width="58" height="5"/><rect class="pb-ink" x="134" y="114" width="74" height="5"/><rect class="pb-ink" x="134" y="128" width="64" height="5"/>
+<rect class="pb-ink" x="58" y="148" width="118" height="3.2"/><rect class="pb-ink" x="61" y="157" width="96" height="3.2"/><rect class="pb-ink" x="64" y="166" width="124" height="3.2"/><rect class="pb-ink" x="58" y="175" width="88" height="3.2"/><rect class="pb-ink" x="61" y="184" width="112" height="3.2"/><rect class="pb-ink" x="64" y="193" width="120" height="3.2"/><rect class="pb-ink" x="58" y="202" width="70" height="3.2"/><rect class="pb-ink" x="61" y="211" width="104" height="3.2"/><rect class="pb-ink" x="64" y="220" width="92" height="3.2"/>
+<rect class="pb-key" x="232" y="262" width="18" height="18" rx="2"/>
+<rect class="pb-key" x="34" y="250" width="13" height="8" rx="4" transform="rotate(-18 40.5 254)"/><rect class="pb-key" x="51" y="252.2" width="13" height="8" rx="4" transform="rotate(-18 57.5 256.2)"/><rect class="pb-key" x="68" y="254.4" width="13" height="8" rx="4" transform="rotate(-18 74.5 258.4)"/><rect class="pb-key" x="85" y="256.6" width="13" height="8" rx="4" transform="rotate(-18 91.5 260.6)"/><rect class="pb-key" x="102" y="258.8" width="13" height="8" rx="4" transform="rotate(-18 108.5 262.8)"/><rect class="pb-key" x="140" y="262" width="13" height="8" rx="4" transform="rotate(18 146.5 266)"/><rect class="pb-key" x="157" y="259.8" width="13" height="8" rx="4" transform="rotate(18 163.5 263.8)"/><rect class="pb-key" x="174" y="257.6" width="13" height="8" rx="4" transform="rotate(18 180.5 261.6)"/><rect class="pb-key" x="191" y="255.4" width="13" height="8" rx="4" transform="rotate(18 197.5 259.4)"/><rect class="pb-key" x="208" y="253.2" width="13" height="8" rx="4" transform="rotate(18 214.5 257.2)"/><rect class="pb-key" x="37" y="265" width="13" height="8" rx="4" transform="rotate(-18 43.5 269)"/><rect class="pb-key" x="54" y="267.2" width="13" height="8" rx="4" transform="rotate(-18 60.5 271.2)"/><rect class="pb-key" x="71" y="269.4" width="13" height="8" rx="4" transform="rotate(-18 77.5 273.4)"/><rect class="pb-key" x="88" y="271.6" width="13" height="8" rx="4" transform="rotate(-18 94.5 275.6)"/><rect class="pb-key" x="105" y="273.8" width="13" height="8" rx="4" transform="rotate(-18 111.5 277.8)"/><rect class="pb-key" x="138" y="277" width="13" height="8" rx="4" transform="rotate(18 144.5 281)"/><rect class="pb-key" x="155" y="274.8" width="13" height="8" rx="4" transform="rotate(18 161.5 278.8)"/><rect class="pb-key" x="172" y="272.6" width="13" height="8" rx="4" transform="rotate(18 178.5 276.6)"/><rect class="pb-key" x="189" y="270.4" width="13" height="8" rx="4" transform="rotate(18 195.5 274.4)"/><rect class="pb-key" x="206" y="268.2" width="13" height="8" rx="4" transform="rotate(18 212.5 272.2)"/><rect class="pb-key" x="40" y="280" width="13" height="8" rx="4" transform="rotate(-18 46.5 284)"/><rect class="pb-key" x="57" y="282.2" width="13" height="8" rx="4" transform="rotate(-18 63.5 286.2)"/><rect class="pb-key" x="74" y="284.4" width="13" height="8" rx="4" transform="rotate(-18 80.5 288.4)"/><rect class="pb-key" x="91" y="286.6" width="13" height="8" rx="4" transform="rotate(-18 97.5 290.6)"/><rect class="pb-key" x="108" y="288.8" width="13" height="8" rx="4" transform="rotate(-18 114.5 292.8)"/><rect class="pb-key" x="136" y="292" width="13" height="8" rx="4" transform="rotate(18 142.5 296)"/><rect class="pb-key" x="153" y="289.8" width="13" height="8" rx="4" transform="rotate(18 159.5 293.8)"/><rect class="pb-key" x="170" y="287.6" width="13" height="8" rx="4" transform="rotate(18 176.5 291.6)"/><rect class="pb-key" x="187" y="285.4" width="13" height="8" rx="4" transform="rotate(18 193.5 289.4)"/><rect class="pb-key" x="204" y="283.2" width="13" height="8" rx="4" transform="rotate(18 210.5 287.2)"/><rect class="pb-key" x="43" y="295" width="13" height="8" rx="4" transform="rotate(-18 49.5 299)"/><rect class="pb-key" x="60" y="297.2" width="13" height="8" rx="4" transform="rotate(-18 66.5 301.2)"/><rect class="pb-key" x="77" y="299.4" width="13" height="8" rx="4" transform="rotate(-18 83.5 303.4)"/><rect class="pb-key" x="94" y="301.6" width="13" height="8" rx="4" transform="rotate(-18 100.5 305.6)"/><rect class="pb-key" x="134" y="307" width="13" height="8" rx="4" transform="rotate(18 140.5 311)"/><rect class="pb-key" x="151" y="304.8" width="13" height="8" rx="4" transform="rotate(18 157.5 308.8)"/><rect class="pb-key" x="168" y="302.6" width="13" height="8" rx="4" transform="rotate(18 174.5 306.6)"/><rect class="pb-key" x="185" y="300.4" width="13" height="8" rx="4" transform="rotate(18 191.5 304.4)"/>
+</g>
+</svg>
+            </figure>
+            <p data-key="eink_p2"></p>
+            <p data-key="eink_p3"></p>
+            <p data-key="eink_p4"></p>
+            <p data-key="eink_p5"></p>
+            <aside data-key="eink_aside6"></aside>
+            <p data-key="eink_p7"></p>
+            <h3 id="careless-whispernet" data-key="eink_h3_careless-whispernet"></h3>
+            <p data-key="eink_p8"></p>
+            <p data-key="eink_p9"></p>
+            <p data-key="eink_p10"></p>
+            <h2 id="putting-pen-to-paper" data-key="eink_h2_putting-pen-to-paper"></h2>
+            <p data-key="eink_p11"></p>
+            <ol data-key="eink_p12"></ol>
+            <h3 id="on-paper" data-key="eink_h3_on-paper"></h3>
+            <p data-key="eink_p13"></p>
+            <aside data-key="eink_aside14"></aside>
+            <p data-key="eink_p15"></p>
+            <p data-key="eink_p16"></p>
+            <figure>
+<svg class="pb-fig" viewBox="0 0 640 640" role="img" aria-labelledby="pbc-t pbc-d"><title id="pbc-t">What a first visit to the home page downloads, before and after</title><desc id="pbc-d">Before: 6242 kilobytes, of which 5189 are fonts. After: 556 kilobytes, split fairly evenly between styles, scripts, the emoji sprite, the page and one font.</desc><defs>
+<pattern id="pb-dots" width="7" height="7" patternUnits="userSpaceOnUse"><rect class="pb-paper" width="7" height="7"/><circle class="pb-ink" cx="3.5" cy="3.5" r="1.4"/></pattern>
+<pattern id="pb-diag" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="pb-paper" width="7" height="7"/><rect class="pb-ink" width="2.2" height="7"/></pattern>
+<pattern id="pb-horiz" width="7" height="7" patternUnits="userSpaceOnUse"><rect class="pb-paper" width="7" height="7"/><rect class="pb-ink" width="7" height="2.2"/></pattern>
+<pattern id="pb-cross" width="8" height="8" patternUnits="userSpaceOnUse"><rect class="pb-paper" width="8" height="8"/><rect class="pb-ink" width="8" height="1.6"/><rect class="pb-ink" width="1.6" height="8"/></pattern>
+</defs>
+<text class="pb-h" x="200" y="18" text-anchor="middle">before · 6,242 KB</text>
+<path class="pb-ink" d="M 200 186 L 200 90 A 96 96 0 1 1 116.3 139.1 Z"/><path class="pb-pat" fill="url(#pb-dots)" d="M 200 186 L 116.3 139.1 A 96 96 0 0 1 147.8 105.4 Z"/><path class="pb-pat" fill="url(#pb-diag)" d="M 200 186 L 147.8 105.4 A 96 96 0 0 1 171.9 94.2 Z"/><path class="pb-pat" fill="url(#pb-horiz)" d="M 200 186 L 171.9 94.2 A 96 96 0 0 1 185.2 91.2 Z"/><path class="pb-pat" fill="url(#pb-cross)" d="M 200 186 L 185.2 91.2 A 96 96 0 0 1 198.1 90 Z"/><path class="pb-paper" d="M 200 186 L 198.1 90 A 96 96 0 0 1 200 90 Z"/><circle class="pb-rim" cx="200" cy="186" r="96"/><line class="pb-line" x1="252.6" y1="275.7" x2="261.7" y2="291.3"/><text class="pb-t" x="266.7" y="295.3" text-anchor="start">fonts 5189</text><line class="pb-line" x1="124.1" y1="114.8" x2="111" y2="102.5"/><text class="pb-t" x="106" y="106.5" text-anchor="end">translations 482</text><line class="pb-line" x1="156.1" y1="91.7" x2="148.5" y2="75.4"/><text class="pb-t" x="143.5" y="79.4" text-anchor="end">emoji sprite 276</text><polyline class="pb-line" points="189,84.6 189,60 216,60"/><text class="pb-t" x="221" y="64">scripts 141 · styles 134 · page 20</text>
+<text class="pb-h" x="520" y="20" text-anchor="middle">after · 556 KB</text>
+<path class="pb-ink" d="M 520 186 L 520 157.3 A 28.7 28.7 0 0 1 541.3 166.8 Z"/><path class="pb-pat" fill="url(#pb-dots)" d="M 520 186 L 541.3 166.8 A 28.7 28.7 0 0 1 542.6 168.3 Z"/><path class="pb-pat" fill="url(#pb-diag)" d="M 520 186 L 542.6 168.3 A 28.7 28.7 0 0 1 544.1 201.6 Z"/><path class="pb-pat" fill="url(#pb-horiz)" d="M 520 186 L 544.1 201.6 A 28.7 28.7 0 0 1 502.8 208.9 Z"/><path class="pb-pat" fill="url(#pb-cross)" d="M 520 186 L 502.8 208.9 A 28.7 28.7 0 0 1 498.5 167 Z"/><path class="pb-paper" d="M 520 186 L 498.5 167 A 28.7 28.7 0 0 1 520 157.3 Z"/><circle class="pb-rim" cx="520" cy="186" r="28.7"/>
+<text class="pb-t" x="520" y="236.7" text-anchor="middle">same scale</text>
+<line class="pb-line" x1="40" y1="316" x2="600" y2="316"/>
+<text class="pb-h" x="320" y="346" text-anchor="middle">after, enlarged</text>
+<path class="pb-ink" d="M 320 486 L 320 376 A 110 110 0 0 1 401.6 412.3 Z"/><path class="pb-pat" fill="url(#pb-dots)" d="M 320 486 L 401.6 412.3 A 110 110 0 0 1 406.4 418 Z"/><path class="pb-pat" fill="url(#pb-diag)" d="M 320 486 L 406.4 418 A 110 110 0 0 1 412.2 545.9 Z"/><path class="pb-pat" fill="url(#pb-horiz)" d="M 320 486 L 412.2 545.9 A 110 110 0 0 1 253.9 574 Z"/><path class="pb-pat" fill="url(#pb-cross)" d="M 320 486 L 253.9 574 A 110 110 0 0 1 237.5 413.2 Z"/><path class="pb-paper" d="M 320 486 L 237.5 413.2 A 110 110 0 0 1 320 376 Z"/><circle class="pb-rim" cx="320" cy="486" r="110"/><line class="pb-line" x1="367.9" y1="378.2" x2="375.2" y2="361.7"/><text class="pb-t" x="380.2" y="365.7" text-anchor="start">fonts 74</text><line class="pb-line" x1="437.9" y1="480.7" x2="455.9" y2="479.9"/><text class="pb-t" x="460.9" y="483.9" text-anchor="start">emoji sprite 110</text><line class="pb-line" x1="340.6" y1="602.2" x2="343.7" y2="619.9"/><text class="pb-t" x="348.7" y="623.9" text-anchor="start">scripts 145</text><line class="pb-line" x1="202.6" y1="498" x2="184.7" y2="499.8"/><text class="pb-t" x="179.7" y="503.8" text-anchor="end">styles 146</text><line class="pb-line" x1="271.5" y1="378.4" x2="264.1" y2="362"/><text class="pb-t" x="259.1" y="366" text-anchor="end">page 75</text><line class="pb-line" x1="410.2" y1="409.9" x2="424" y2="398.3"/><text class="pb-t" x="429" y="402.3" text-anchor="start">translations 6</text>
+</svg>
+            </figure>
+            <p data-key="eink_p17"></p>
+            <p data-key="eink_p18"></p>
+            <aside data-key="eink_aside19"></aside>
+            <h3 id="paper-tiger" data-key="eink_h3_paper-tiger"></h3>
+            <p data-key="eink_p20"></p>
+            <p data-key="eink_p21"></p>
+            <h2 id="tldr" data-key="eink_h2_tldr"></h2>
+            <ul data-key="eink_p22"></ul>
+        </article>
+    </main>
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    <div id="share-module-placeholder"></div>
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+
+</html>
