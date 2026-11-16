@@ -916,7 +916,7 @@ try {
     // With every symbol drawn from the sprite, ordinary pages must never
     // download an emoji font (they are megabytes each).
     {
-        for (const url of ['/', '/blog/sunshine/en/']) {
+        for (const url of ['/', '/blog/sunshine/en/', '/screensaver/']) {
             const ctx = await browser.newContext({ serviceWorkers: 'block' });
             const page = await ctx.newPage();
             const fonts = [];

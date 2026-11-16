@@ -336,7 +336,8 @@ export async function splitSprites(rootDir, { log = console.log } = {}) {
         for (const ent of await fs.readdir(d, { withFileTypes: true })) {
             const p = path.join(d, ent.name);
             if (ent.isDirectory()) { if (!['img', 'photos', 'styles', 'scripts', 'sounds', 'logo'].includes(ent.name)) await walk(p); continue; }
-            if (!ent.name.endsWith('.html')) continue;
+            // (+ the screensaver's window titles, which live in a JSON file)
+            if (!ent.name.endsWith('.html') && ent.name !== 'photos.json') continue;
             const html = await fs.readFile(p, 'utf8');
             const ids = new Set([...html.matchAll(REF)].map((m) => m[1]).filter((id) => symbols.has(id)));
             if (ids.size) pages.push({ file: p, html, ids });

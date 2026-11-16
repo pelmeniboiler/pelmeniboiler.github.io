@@ -12,8 +12,12 @@ So each font is declared as several @font-face rules of the same family, each
 a slice with an exact `unicode-range`. The browser picks, per page, only the
 slices whose range covers a character actually on that page:
 
-    Garamond   latin · latin-ext · greek · cyrillic · rest
-    FairfaxHD  graflect (U+EC70–ECEF) · latin · rest
+    both       latin · latin-ext-a · latin-ext-b · ipa · marks · latin-ext-add ·
+               greek · cyrillic · symbols · rest
+    FairfaxHD  also graflect (U+EC70–ECEF) and cjk
+
+Slices follow Unicode blocks, so one stray character (an IPA ɪ, a ①) costs a
+few KB, not the hundred-odd its neighbours would add.
 
 The slices (styles/fonts/slices/*.woff2) are committed; the @font-face rules
 are written into styles/pelmeni2025.css between the FONT-SLICES markers.
@@ -37,10 +41,19 @@ CSS = ROOT / "styles" / "pelmeni2025.css"
 R = lambda a, b=None: (a, a if b is None else b)
 LATIN = [R(0x0000, 0x00FF), R(0x0131), R(0x0152, 0x0153), R(0x02BB, 0x02BC), R(0x02C6), R(0x02DA), R(0x02DC),
          R(0x2000, 0x206F), R(0x20AC), R(0x2122), R(0x2191), R(0x2193), R(0x2212), R(0x2215), R(0xFEFF), R(0xFFFD)]
-LATIN_EXT = [R(0x0100, 0x036F), R(0x1E00, 0x1EFF), R(0x2C60, 0x2C7F), R(0xA720, 0xA7FF)]
+LATIN_EXT_A = [R(0x0100, 0x017F)]
+LATIN_EXT_B = [R(0x0180, 0x024F)]
+IPA = [R(0x0250, 0x02FF)]                       # IPA extensions + spacing modifiers (ɪ ʃ ː …)
+MARKS = [R(0x0300, 0x036F)]                     # combining diacritics
+LATIN_EXT_ADD = [R(0x1E00, 0x1EFF), R(0x2C60, 0x2C7F), R(0xA720, 0xA7FF)]
 GREEK = [R(0x0370, 0x03FF), R(0x1F00, 0x1FFF)]
 CYRILLIC = [R(0x0400, 0x052F), R(0x1C80, 0x1C88), R(0x2DE0, 0x2DFF), R(0xA640, 0xA69F)]
+SYMBOLS = [R(0x2000, 0x2BFF)]                   # arrows, enclosed numbers, shapes (what LATIN left)
+CJK = [R(0x2E80, 0x9FFF), R(0xFF00, 0xFFEF)]    # kana and the kanji Fairfax has
 GRAFLECT = [R(0xEC70, 0xECEF)]
+
+BLOCKS = [("latin", LATIN), ("latin-ext-a", LATIN_EXT_A), ("latin-ext-b", LATIN_EXT_B), ("ipa", IPA), ("marks", MARKS),
+          ("latin-ext-add", LATIN_EXT_ADD), ("greek", GREEK), ("cyrillic", CYRILLIC), ("symbols", SYMBOLS)]
 
 # family, source, [(slice name, ranges or None for "everything left"), ...],
 # gap to merge in the CSS range of "rest", layout features (None = fontTools' default set)
@@ -48,8 +61,8 @@ PLAN = [
     # Garamond keeps only the default OpenType features (kerning, ligatures,
     # marks): its small caps, swashes and the rest double each slice, and the
     # site never asks for them. Fairfax keeps everything (Graflect shaping).
-    ("Garamond", "EBGaramond.ttf", [("latin", LATIN), ("latin-ext", LATIN_EXT), ("greek", GREEK), ("cyrillic", CYRILLIC), ("rest", None)], 0, None),
-    ("FairfaxHD", "FairfaxHD.ttf", [("graflect", GRAFLECT), ("latin", LATIN + LATIN_EXT), ("rest", None)], 256, ["*"]),
+    ("Garamond", "EBGaramond.ttf", BLOCKS + [("rest", None)], 0, None),
+    ("FairfaxHD", "FairfaxHD.ttf", [("graflect", GRAFLECT)] + BLOCKS + [("cjk", CJK), ("rest", None)], 256, ["*"]),
 ]
 
 
@@ -97,6 +110,7 @@ def main():
                 opts.layout_features = features
             opts.name_IDs = ["*"]          # keep the copyright/licence records
             opts.notdef_outline = True
+            opts.hinting = False           # hint programs are dead weight on modern rasterisers
             font = TTFont(FONTS / src)
             sub = subset.Subsetter(options=opts)
             sub.populate(unicodes=sorted(want))
