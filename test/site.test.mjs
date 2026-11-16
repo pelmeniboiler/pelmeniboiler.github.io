@@ -756,9 +756,9 @@ try {
             const top = [...document.querySelectorAll('#theme-setting-group > label input[name="theme"]')].map((i) => i.value);
             return { top, colors: vals(f[0]), silly: vals(f[1]), open: f.map((d) => d.open) };
         });
-        ok(JSON.stringify(folders.top) === '["light","dark","funky","zikit"]' && folders.colors.includes('akai') && folders.silly.includes('wordart')
+        ok(JSON.stringify(folders.top) === '["light","dark","zikit"]' && folders.colors.includes('akai') && folders.silly[0] === 'funky' && folders.silly.includes('wordart')
             && folders.open[0] === true && folders.open[1] === false,
-            `Settings: themes foldered (Zikit beside Funky), current theme's folder open (${JSON.stringify(folders)})`);
+            `Settings: themes foldered (Funky in silly), current theme's folder open (${JSON.stringify(folders)})`);
         await thctx.close();
 
         // Developer preview on: same tiles with JS, dragging disabled, settings gets a tall row.

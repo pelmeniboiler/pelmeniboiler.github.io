@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Sofrut II — article scribe</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        /* Sofrut II: write a post the way it will look, get the two files the
+           build wants (blog/<slug>.html + localization/<prefix>.json), then
+           translate it. Site rules apply: the theme's two colours only. */
+        body { overflow: auto; padding: 12px; box-sizing: border-box; }
+        .forge { max-width: 920px; margin: 0 auto; }
+        .forge .window { position: relative; left: 0; top: 0; margin-bottom: 14px; }
+        @media (min-width: 1100px) {
+            html, body { height: 100%; }
+            body { overflow: hidden; padding: 10px; }
+            .forge {
+                display: grid; height: calc(100vh - 20px); max-width: none; gap: 10px;
+                grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr) minmax(0, 0.9fr);
+                grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-areas: "meta doc out" "mtpe doc edit";
+            }
+            .forge .window { display: flex; flex-direction: column; margin: 0; min-height: 0; min-width: 0; }
+            .forge .window > .content { flex: 1; overflow: auto; min-height: 0; max-height: none; }
+            .pane-meta { grid-area: meta; } .pane-doc { grid-area: doc; } .pane-out { grid-area: out; }
+            .pane-mtpe { grid-area: mtpe; } .pane-edit { grid-area: edit; }
+            .pane-doc > .content { display: flex; flex-direction: column; padding: 0; }
+            #doc, #src { flex: 1; min-height: 0; }
+        }
+        .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+        .field label { font-weight: bold; font-size: 14px; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row .field { flex: 1; min-width: 140px; }
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%; box-sizing: border-box; padding: 6px;
+            border: 2px solid var(--text-color); background: var(--win-bg-color);
+            color: var(--text-color); font-family: inherit; font-size: inherit;
+        }
+        textarea { resize: vertical; }
+        textarea.out, #src { min-height: 120px; white-space: pre; font-family: monospace; font-size: 12px; }
+        .chips, .bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .bar { margin: 8px 0; }
+        .chip, .tb button {
+            border: 2px solid var(--text-color); background: var(--win-bg-color); color: var(--text-color);
+            padding: 2px 8px; cursor: var(--cur-pointer, pointer); font-family: monospace; font-size: 13px;
+        }
+        .chip.on, .tb button.on, .tb button:hover, .tb button:focus-visible, .chip:hover {
+            background: var(--text-color); color: var(--win-bg-color); outline: none;
+        }
+        .tb { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; border-bottom: 2px solid var(--text-color); }
+        .tb .sep { width: 2px; background: var(--text-color); margin: 0 4px; }
+        .tb input[type="text"] { width: 11em; padding: 2px 6px; font-family: monospace; font-size: 13px; }
+        /* The page being written. Looks like an article. */
+        #doc { padding: 14px 18px; overflow: auto; min-height: 320px; outline: none; }
+        #doc:focus-visible { outline: none; }
+        #doc > * { margin-top: 0; }
+        #doc aside { border-left: 6px solid var(--text-color); padding: 6px 12px; margin: 12px 0; font-style: italic; }
+        #doc blockquote { border-left: 2px solid var(--text-color); margin: 12px 0; padding: 2px 14px; }
+        #doc pre { border: 1px solid var(--text-color); padding: 8px; overflow: auto; white-space: pre-wrap; }
+        #doc code, #doc kbd { border: 1px solid var(--text-color); padding: 0 3px; font-family: monospace; }
+        #doc img { max-width: 100%; max-height: 300px; display: block; margin: 12px auto; border: 2px solid var(--text-color); }
+        #doc figure { margin: 12px 0; } #doc figcaption { text-align: center; font-style: italic; }
+        #doc table { border-collapse: collapse; margin: 12px 0; } #doc td, #doc th { border: 1px solid var(--text-color); padding: 4px 8px; min-width: 3em; }
+        #doc ul { list-style: disc; padding-left: 2em; } #doc ol { list-style: decimal; padding-left: 2em; }
+        #doc hr { border: none; height: 1px; background: var(--text-color); }
+        #doc:empty::before { content: attr(data-empty); }
+        #src { display: none; border: none; resize: none; }
+        .pane-doc.source #doc { display: none; } .pane-doc.source #src { display: block; }
+        .report { border-left: 4px solid var(--text-color); padding: 4px 12px; margin-top: 8px; font-size: 13px; }
+        .report .bad { font-weight: bold; text-decoration: underline; }
+        .report .ok { font-weight: bold; }
+        #edit-table { max-height: 380px; overflow-y: auto; margin: 8px 0; }
+        .edit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; border-bottom: 1px solid var(--text-color); padding: 6px 0; }
+        .edit-row > div:first-child { grid-column: 1 / -1; font-size: 12px; }
+        .badge { font-size: 11px; padding: 0 6px; border: 1px solid var(--text-color); margin-left: 6px; }
+        .b-stale, .b-missing { background: var(--text-color); color: var(--win-bg-color); font-weight: bold; }
+        h2.sec { border-bottom: 2px solid var(--text-color); padding-bottom: 4px; font-size: 1em; }
+        #stats, #edit-summary, #slug-warn, #concept-result { font-size: 13px; }
+    </style>
+</head>
+<body class="eink-mode light-mode">
+<div class="forge">
+
+    <div class="window pane-meta">
+        <div class="title-bar"><span class="title">🖋 sofrut.ii</span></div>
+        <div class="content">
+            <div class="field"><label for="title">title</label><input type="text" id="title"></div>
+            <div class="row">
+                <div class="field"><label for="slug">slug</label><input type="text" id="slug"><span id="slug-warn"></span></div>
+                <div class="field"><label for="prefix">prefix</label><input type="text" id="prefix"></div>
+            </div>
+            <div class="row">
+                <div class="field"><label for="date">date</label><input type="date" id="date"></div>
+                <div class="field"><label for="author">author</label><input type="text" id="author" value="Wendy Zhulkovsky"></div>
+            </div>
+            <div class="field"><label>keywords</label>
+                <div class="chips" id="kw-pool"></div>
+                <div class="bar"><input type="text" id="kw-new" style="max-width: 12em;"><button class="chip" id="kw-add">+</button></div>
+            </div>
+            <div class="bar"><button class="chip" id="new-doc">new</button></div>
+        </div>
+    </div>
+
+    <div class="window pane-doc">
+        <div class="title-bar"><span class="title">▤ article</span></div>
+        <div class="content">
+            <!-- Each button is named for the tag it makes. -->
+            <div class="tb" id="tb">
+                <button data-block="p">p</button><button data-block="h2">h2</button><button data-block="h3">h3</button>
+                <button data-block="aside">aside</button><button data-block="blockquote">blockquote</button><button data-block="pre">pre</button>
+                <button data-cmd="insertUnorderedList">ul</button><button data-cmd="insertOrderedList">ol</button>
+                <button data-insert="hr">hr</button><button data-insert="table">table</button>
+                <span class="sep"></span>
+                <button data-cmd="bold">b</button><button data-cmd="italic">i</button><button data-cmd="strikeThrough">s</button>
+                <button data-wrap="code">code</button><button data-wrap="kbd">kbd</button>
+                <button data-cmd="subscript">sub</button><button data-cmd="superscript">sup</button>
+                <button data-cmd="removeFormat">∅</button>
+                <span class="sep"></span>
+                <input type="text" id="url" placeholder="https:// or /photos/x.png" aria-label="address">
+                <input type="text" id="alt" placeholder="alt / caption" aria-label="alt text or caption">
+                <button data-insert="a">a</button><button data-insert="img">img</button><button data-insert="figure">figure</button>
+                <span class="sep"></span>
+                <button id="toggle-src">&lt;&gt;</button>
+            </div>
+            <div id="doc" contenteditable="true" spellcheck="true" data-empty="…"></div>
+            <textarea id="src" spellcheck="false" aria-label="HTML source"></textarea>
+        </div>
+    </div>
+
+    <div class="window pane-out">
+        <div class="title-bar"><span class="title">⚙ files</span></div>
+        <div class="content">
+            <div class="bar"><button class="chip" id="generate">generate</button><span id="stats"></span></div>
+            <div class="field"><label>blog/<span id="out-html-name">…</span></label>
+                <textarea class="out" id="out-html" readonly></textarea>
+                <div class="bar"><button class="chip" data-copy="out-html">copy</button><button class="chip" data-download="html">download</button></div>
+            </div>
+            <div class="field"><label>localization/<span id="out-json-name">…</span></label>
+                <textarea class="out" id="out-json" readonly></textarea>
+                <div class="bar"><button class="chip" data-copy="out-json">copy</button><button class="chip" data-download="json">download</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window pane-mtpe">
+        <div class="title-bar"><span class="title">文 translate</span></div>
+        <div class="content">
+            <div class="row">
+                <div class="field"><label for="mtpe-lang">language</label>
+                    <select id="mtpe-lang"><option value="he">he</option><option value="ru">ru</option><option value="de">de</option><option value="ja">ja</option><option value="gt">gt</option></select>
+                </div>
+                <div class="field" style="flex: 2;"><label for="glossary">glossary</label><textarea id="glossary" rows="2" placeholder="English term = target term"></textarea></div>
+            </div>
+            <div class="bar"><input type="text" id="concept-term" placeholder="wikidata" style="max-width: 14em;"><button class="chip" id="concept-lookup">look up</button></div>
+            <div id="concept-result"></div>
+            <div class="bar"><button class="chip" id="mk-prompt">prompt</button><button class="chip" data-copy="prompt-out">copy</button></div>
+            <textarea class="out" id="prompt-out" readonly></textarea>
+            <h2 class="sec">returned JSON</h2>
+            <textarea class="out" id="paste-in"></textarea>
+            <div class="bar"><button class="chip" id="validate">validate</button><button class="chip" id="merge">merge into files</button></div>
+            <div class="report" id="report" hidden></div>
+        </div>
+    </div>
+
+    <div class="window pane-edit">
+        <div class="title-bar"><span class="title">↻ stale</span></div>
+        <div class="content">
+            <div class="bar">
+                <input type="text" id="edit-prefix" list="edit-prefixes" placeholder="prefix" style="max-width: 10em;"><datalist id="edit-prefixes"></datalist>
+                <button class="chip" id="edit-load">load</button>
+                <select id="edit-lang" style="max-width: 6em;" aria-label="language"></select>
+                <span id="edit-summary"></span>
+            </div>
+            <div id="edit-table"></div>
+            <div class="bar"><button class="chip" id="edit-regen">JSON</button><button class="chip" id="edit-stale-prompt">prompt</button><button class="chip" data-copy="edit-out">copy</button></div>
+            <textarea class="out" id="edit-out" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const $ = (id) => document.getElementById(id);
+    const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const isGraflect = (c) => c >= 0xec70 && c <= 0xecef;
+    const doc = $('doc'), src = $('src');
+    const DRAFT = 'pelmeniboiler-sofrut2-draft';
+
+    // ---------- keywords, slugs ----------
+    const selectedKw = new Set();
+    function addChip(kw, on) {
+        let b = [...$('kw-pool').children].find((c) => c.dataset.kw === kw);
+        if (!b) {
+            b = document.createElement('button'); b.className = 'chip'; b.textContent = kw; b.dataset.kw = kw;
+            b.addEventListener('click', () => { b.classList.toggle('on'); b.classList.contains('on') ? selectedKw.add(kw) : selectedKw.delete(kw); save(); });
+            $('kw-pool').appendChild(b);
+        }
+        b.classList.toggle('on', !!on); on ? selectedKw.add(kw) : selectedKw.delete(kw);
+    }
+    let posts = [];
+    fetch('/blog/blog-manifest.json').then((r) => r.json()).then((list) => {
+        posts = list;
+        [...new Set(list.flatMap((p) => p.keywords || []))].sort().forEach((k) => addChip(k, selectedKw.has(k)));
+        $('edit-prefixes').innerHTML = [...new Set(list.map((p) => p.translationSource).filter(Boolean))].sort().map((s) => `<option value="${s}">`).join('');
+        checkSlug();
+    }).catch(() => {});
+    $('kw-add').addEventListener('click', () => { const v = $('kw-new').value.trim(); if (v) { addChip(v, true); $('kw-new').value = ''; save(); } });
+    $('title').addEventListener('input', () => {
+        if (!$('slug').dataset.touched) $('slug').value = slugify($('title').value);
+        if (!$('prefix').dataset.touched) { const w = slugify($('title').value).split('-').filter(Boolean); $('prefix').value = w.length > 1 ? w.map((x) => x[0]).join('') : (w[0] || ''); }
+        checkSlug();
+    });
+    $('slug').addEventListener('input', () => { $('slug').dataset.touched = '1'; checkSlug(); });
+    $('prefix').addEventListener('input', () => { $('prefix').dataset.touched = '1'; });
+    function checkSlug() { const s = slugify($('slug').value); $('slug-warn').textContent = posts.some((p) => p.slug === s) && s !== openedSlug ? '⚠ exists' : ''; }
+    $('date').valueAsDate = new Date();
+
+    // ---------- the editor ----------
+    // Allowed markup. Everything else is unwrapped; attributes other than these are dropped.
+    const BLOCKS = new Set(['P', 'H2', 'H3', 'ASIDE', 'BLOCKQUOTE', 'PRE', 'UL', 'OL', 'HR', 'TABLE', 'FIGURE', 'IMG']);
+    const INLINE = new Set(['B', 'STRONG', 'I', 'EM', 'S', 'CODE', 'KBD', 'SUB', 'SUP', 'A', 'BR', 'LI', 'TR', 'TD', 'TH', 'TBODY', 'THEAD', 'FIGCAPTION', 'IMG', 'UL', 'OL', 'SPAN']);
+    // data-key / id survive so that a post opened for editing keeps its keys,
+    // and with them its translations.
+    const KEYED = ['data-key'];
+    const ATTRS = { A: ['href'], IMG: ['src', 'alt', 'data-alt-key'], SPAN: ['class'], P: KEYED, ASIDE: KEYED, BLOCKQUOTE: KEYED, UL: KEYED, OL: KEYED, TABLE: KEYED, FIGCAPTION: KEYED, H2: ['data-key', 'id'], H3: ['data-key', 'id'] };
+    // A paragraph can't hold a list, table or figure: lift those out. Nodes are
+    // moved, not rebuilt, so the caret stays where it is.
+    function lift(root) {
+        for (const p of [...root.querySelectorAll(':scope > p')]) {
+            if (p.querySelector('ul, ol, table, figure, hr, pre, aside, blockquote, h2, h3')) p.replaceWith(...p.childNodes);
+        }
+    }
+    function clean(root) {
+        for (const el of [...root.querySelectorAll('*')]) {
+            if (el.tagName === 'DIV' && el.parentNode === root) { const p = document.createElement('p'); p.append(...el.childNodes); el.replaceWith(p); continue; }
+            if (el.tagName === 'STRIKE' || el.tagName === 'DEL') { const s = document.createElement('s'); s.append(...el.childNodes); el.replaceWith(s); continue; }
+            if (!BLOCKS.has(el.tagName) && !INLINE.has(el.tagName)) { el.replaceWith(...el.childNodes); continue; }
+            for (const a of [...el.attributes]) if (!(ATTRS[el.tagName] || []).includes(a.name)) el.removeAttribute(a.name);
+            if (el.tagName === 'SPAN' && el.className !== 'symbol') el.replaceWith(...el.childNodes);
+        }
+        lift(root);
+        // Loose text at the top level becomes a paragraph.
+        for (const n of [...root.childNodes]) {
+            if (n.nodeType === 3 && n.data.trim()) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
+            else if (n.nodeType === 1 && !BLOCKS.has(n.tagName)) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
+        }
+        return root;
+    }
+    // The caret's last place in the document, so toolbar fields (address, alt)
+    // can take focus without losing where an insert should go.
+    let lastRange = null;
+    document.addEventListener('selectionchange', () => { const s = getSelection(); if (s.rangeCount && doc.contains(s.anchorNode)) lastRange = s.getRangeAt(0).cloneRange(); });
+    const restore = () => { if (document.activeElement === doc) return; const r = lastRange; doc.focus(); if (r) { const s = getSelection(); s.removeAllRanges(); s.addRange(r); } };
+    const topBlock = () => { let n = getSelection().anchorNode; if (!n || !doc.contains(n)) n = lastRange && lastRange.startContainer; while (n && n.parentNode !== doc) n = n.parentNode; return n && n.nodeType === 1 ? n : null; };
+    const placeCaret = (el) => { const r = document.createRange(); r.selectNodeContents(el); r.collapse(false); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    function setBlock(tag) {
+        restore();
+        let b = topBlock();
+        if (!b) { b = document.createElement('p'); b.innerHTML = '<br>'; doc.append(b); }
+        if (['UL', 'OL', 'TABLE', 'FIGURE', 'HR', 'IMG'].includes(b.tagName)) return;
+        const n = document.createElement(tag); n.append(...b.childNodes); if (!n.childNodes.length) n.innerHTML = '<br>';
+        b.replaceWith(n); placeCaret(n);
+    }
+    function insertBlock(html) {
+        restore();
+        const b = topBlock(); const t = document.createElement('template'); t.innerHTML = html;
+        const nodes = [...t.content.childNodes];
+        if (b) b.after(...nodes); else doc.append(...nodes);
+        // Into the table's first cell if there is one, else the paragraph after.
+        const cell = nodes.find((x) => x.nodeType === 1 && x.tagName === 'TABLE')?.querySelector('th, td');
+        placeCaret(cell || nodes[nodes.length - 1]);
+    }
+    function wrapInline(tag) {
+        const s = getSelection(); if (!s.rangeCount || s.isCollapsed || !doc.contains(s.anchorNode)) return;
+        const r = s.getRangeAt(0), inside = (r.commonAncestorContainer.nodeType === 1 ? r.commonAncestorContainer : r.commonAncestorContainer.parentElement).closest(tag);
+        if (inside && doc.contains(inside)) { inside.replaceWith(...inside.childNodes); return; } // toggle off
+        const el = document.createElement(tag);
+        try { r.surroundContents(el); } catch (_) { el.append(r.extractContents()); r.insertNode(el); }
+    }
+    $('tb').addEventListener('mousedown', (e) => { if (e.target.tagName === 'BUTTON') e.preventDefault(); }); // keep the selection
+    $('tb').addEventListener('click', (e) => {
+        const b = e.target.closest('button'); if (!b || b.id === 'toggle-src') return;
+        const url = $('url').value.trim(), alt = $('alt').value.trim();
+        if (b.dataset.block) setBlock(b.dataset.block);
+        else if (b.dataset.cmd) {
+            restore();
+            // Making a list (and lifting it out of its paragraph) moves the
+            // caret's text node around; remember the spot and put it back.
+            const s = getSelection(), collapsed = s.isCollapsed, an = s.anchorNode, ao = s.anchorOffset;
+            document.execCommand(b.dataset.cmd, false, null); lift(doc);
+            if (collapsed) {
+                if (an && doc.contains(an)) { try { s.collapse(an, Math.min(ao, an.nodeType === 3 ? an.length : an.childNodes.length)); } catch (_) { /* node gone */ } }
+                else { const el = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement); const item = el && el.closest('li, p'); if (item && doc.contains(item)) placeCaret(item); }
+            }
+        }
+        else if (b.dataset.wrap) wrapInline(b.dataset.wrap);
+        else if (b.dataset.insert === 'hr') insertBlock('<hr><p><br></p>');
+        else if (b.dataset.insert === 'table') insertBlock('<table><tbody><tr><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td></tr></tbody></table><p><br></p>');
+        else if (b.dataset.insert === 'a') { if (url) { restore(); document.execCommand('createLink', false, url); } }
+        else if (b.dataset.insert === 'img') { if (url) insertBlock(`<img src="${esc(url)}" alt="${esc(alt)}"><p><br></p>`); }
+        else if (b.dataset.insert === 'figure') { if (url) insertBlock(`<figure><img src="${esc(url)}" alt="${esc(alt)}"><figcaption>${esc(alt) || '<br>'}</figcaption></figure><p><br></p>`); }
+        changed();
+    });
+    // Table keys: Tab moves between cells and grows the table at the end.
+    doc.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        const cell = getSelection().anchorNode && (getSelection().anchorNode.nodeType === 1 ? getSelection().anchorNode : getSelection().anchorNode.parentElement).closest('td, th');
+        if (!cell || !doc.contains(cell)) return;
+        e.preventDefault();
+        const cells = [...cell.closest('table').querySelectorAll('td, th')];
+        let next = cells[cells.indexOf(cell) + (e.shiftKey ? -1 : 1)];
+        if (!next && !e.shiftKey) { const row = cell.parentElement.cloneNode(true); row.querySelectorAll('td, th').forEach((c) => { c.innerHTML = '<br>'; if (c.tagName === 'TH') { const d = document.createElement('td'); d.innerHTML = '<br>'; c.replaceWith(d); } }); cell.closest('tbody, table').append(row); next = row.firstElementChild; }
+        if (next) placeCaret(next);
+    });
+    doc.addEventListener('paste', () => setTimeout(() => { clean(doc); changed(); }));
+    doc.addEventListener('input', changed);
+    // Show which tags the caret is inside.
+    document.addEventListener('selectionchange', () => {
+        const n = getSelection().anchorNode; if (!n || !doc.contains(n)) return;
+        const chain = []; for (let e = n.nodeType === 1 ? n : n.parentElement; e && e !== doc; e = e.parentElement) chain.push(e.tagName.toLowerCase());
+        const map = { strong: 'b', em: 'i' };
+        document.querySelectorAll('#tb button').forEach((b) => { const t = b.dataset.block || b.dataset.wrap || { bold: 'b', italic: 'i', strikeThrough: 's', subscript: 'sub', superscript: 'sup', insertUnorderedList: 'ul', insertOrderedList: 'ol' }[b.dataset.cmd] || b.dataset.insert; b.classList.toggle('on', chain.some((c) => (map[c] || c) === t)); });
+    });
+    // <> : the same document as HTML source.
+    const pretty = (html) => html.replace(/></g, '>\n<').replace(/\n(<\/?(?:b|i|s|strong|em|code|kbd|sub|sup|a|br|span)\b)/g, '$1').replace(/(<\/(?:b|i|s|strong|em|code|kbd|sub|sup|a|span)>)\n/g, '$1');
+    $('toggle-src').addEventListener('click', () => {
+        const pane = document.querySelector('.pane-doc');
+        if (pane.classList.contains('source')) { doc.innerHTML = src.value; clean(doc); } else { clean(doc); src.value = pretty(doc.innerHTML); }
+        pane.classList.toggle('source'); $('toggle-src').classList.toggle('on', pane.classList.contains('source'));
+        changed();
+    });
+    src.addEventListener('input', () => save());
+    const currentHtml = () => document.querySelector('.pane-doc').classList.contains('source') ? src.value : doc.innerHTML;
+
+    // ---------- draft ----------
+    function save() {
+        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, slug: $('slug').value, prefix: $('prefix').value, date: $('date').value, author: $('author').value, kw: [...selectedKw], opened: openedSlug })); } catch (_) { /* full or blocked */ }
+    }
+    function changed() {
+        const words = (doc.textContent.trim().match(/\S+/g) || []).length;
+        $('stats').textContent = `${doc.children.length} blocks · ${words} words`;
+        save();
+    }
+    ['title', 'slug', 'prefix', 'date', 'author'].forEach((id) => $(id).addEventListener('input', save));
+    let openedSlug = null;
+    try {
+        const d = JSON.parse(localStorage.getItem(DRAFT));
+        if (d) { doc.innerHTML = d.html || ''; clean(doc); $('title').value = d.title || ''; $('slug').value = d.slug || ''; $('prefix').value = d.prefix || ''; if (d.date) $('date').value = d.date; if (d.author) $('author').value = d.author; (d.kw || []).forEach((k) => addChip(k, true)); openedSlug = d.opened || null; if (d.slug) $('slug').dataset.touched = '1'; if (d.prefix) $('prefix').dataset.touched = '1'; }
+    } catch (_) { /* no draft */ }
+    if (!doc.children.length) doc.innerHTML = '<p><br></p>';
+    $('new-doc').addEventListener('click', () => {
+        doc.innerHTML = '<p><br></p>'; src.value = ''; ['title', 'slug', 'prefix'].forEach((id) => { $(id).value = ''; delete $(id).dataset.touched; });
+        [...selectedKw].forEach((k) => addChip(k, false)); openedSlug = null; translations = {}; $('date').valueAsDate = new Date(); changed(); checkSlug();
+    });
+
+    // Translations merged in from the translate pane, keyed by language.
+    let translations = {};
+    const chrome = {};
+
+    // ---------- generate the two files ----------
+    let lastEn = {};
+    function generate() {
+        if (document.querySelector('.pane-doc').classList.contains('source')) $('toggle-src').click();
+        clean(doc);
+        const title = $('title').value.trim() || 'Untitled';
+        const slug = slugify($('slug').value) || 'untitled';
+        const prefix = slugify($('prefix').value).replace(/-/g, '') || 'untitled';
+        const author = $('author').value.trim() || 'Wendy Zhulkovsky';
+        const iso = ($('date').valueAsDate || new Date()).toISOString().replace(/\.\d+Z$/, 'Z');
+        const en = {}, used = new Set(), body = [], nav = [];
+        const mkId = (s) => { const b = slugify(s) || 'sec'; let id = b, i = 2; while (used.has(id)) id = `${b}-${i++}`; used.add(id); return id; };
+        const n = { p: 0, aside: 0, quote: 0, list: 0, table: 0, cap: 0, alt: 0 };
+        // A block that already has a key (an opened post) keeps it; a new block,
+        // or a copy the browser made by splitting one, gets the next free name.
+        const taken = new Set([...doc.querySelectorAll('[data-key], [data-alt-key]')].flatMap((e) => [e.getAttribute('data-key'), e.getAttribute('data-alt-key')]).filter(Boolean));
+        const seen = new Set();
+        const keyFor = (el, attr, make) => { let k = el.getAttribute(attr); if (!k || seen.has(k)) { do { k = make(); } while (taken.has(k) || seen.has(k)); } seen.add(k); return k; };
+        const img = (el) => { const k = keyFor(el, 'data-alt-key', () => `${prefix}_alt${++n.alt}`); en[k] = el.getAttribute('alt') || ''; return `<img src="${esc(el.getAttribute('src') || '')}" alt="${esc(en[k])}" data-alt-key="${k}" class="article-image" style="max-height: 300px;">`; };
+        en[`${prefix}_win_gallery_title`] = en[`${prefix}_win_gallery_title`] || `▤ ${prefix}.article`;
+        en[`${prefix}_title`] = title;
+        en[`${prefix}_nav_title`] = en[`${prefix}_nav_title`] || title;
+        const I = '            ';
+        for (const el of doc.children) {
+            const html = el.innerHTML.replace(/<br>\s*$/, '').trim(), text = el.textContent.trim();
+            const keyed = (tag, make) => { const key = keyFor(el, 'data-key', make); en[key] = html; body.push(`${I}<${tag} data-key="${key}"></${tag}>`); };
+            switch (el.tagName) {
+                case 'H2': case 'H3': { if (!text) break; const lv = el.tagName[1]; let id = el.id && !used.has(el.id) ? el.id : mkId(text); used.add(id);
+                    const hk = keyFor(el, 'data-key', () => `${prefix}_h${lv}_${id}`);
+                    en[hk] = html; en[`${prefix}_nav_${id}`] = lv === '2' ? `<strong>&ensp;${text}</strong>` : `&emsp;&emsp;${text}`;
+                    body.push(`${I}<h${lv} id="${id}" data-key="${hk}"></h${lv}>`); nav.push(`                <li><a href="#${id}" data-key="${prefix}_nav_${id}"></a></li>`); break; }
+                case 'P': { const only = el.children.length === 1 && el.firstElementChild.tagName === 'IMG' && !text; if (only) body.push(`${I}${img(el.firstElementChild)}`); else if (text) keyed('p', () => `${prefix}_p${++n.p}`); break; }
+                case 'ASIDE': if (text) keyed('aside', () => `${prefix}_aside${++n.aside}`); break;
+                case 'BLOCKQUOTE': if (text) keyed('blockquote', () => `${prefix}_quote${++n.quote}`); break;
+                case 'UL': case 'OL': if (text) keyed(el.tagName.toLowerCase(), () => `${prefix}_list${++n.list}`); break;
+                case 'TABLE': if (text) keyed('table', () => `${prefix}_table${++n.table}`); break;
+                case 'PRE': body.push(`${I}<pre><code>${esc(el.textContent)}</code></pre>`); break; // code is not translated
+                case 'HR': body.push(`${I}<hr>`); break;
+                case 'IMG': body.push(`${I}${img(el)}`); break;
+                case 'FIGURE': { const im = el.querySelector('img'), cap = el.querySelector('figcaption'); if (!im) break; const k = cap ? keyFor(cap, 'data-key', () => `${prefix}_cap${++n.cap}`) : `${prefix}_cap${++n.cap}`; en[k] = cap ? cap.innerHTML.replace(/<br>\s*$/, '').trim() : '';
+                    body.push(`${I}<figure>\n${I}    ${img(im)}\n${I}    <figcaption data-key="${k}"></figcaption>\n${I}</figure>`); break; }
+            }
+        }
+        const html = `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="/scripts/theme-loader.js"><\/script>
+    <meta charset="UTF-8">
+    <meta name="eink-compatibility" content="optimized">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="${esc([...selectedKw].join(', '))}">
+    <meta name="author" content="${esc(author)}">
+    <meta name="pubDate" content="${iso}">
+    <meta name="translation-source" content="${prefix}">
+    <title>${esc(title)}</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+</head>
+
+<body class="eink-mode light-mode">
+    <nav id="nav-window" class="window">
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ ${prefix}.nav</span><button
+                class="close-btn">&times;</button></div>
+        <div class="content">
+            <ul>
+                <h1 data-key="${prefix}_nav_title"></h1>
+${nav.join('\n')}
+            </ul>
+            <a href="/index.html" data-key="gt_nav_h2_home">⌂←</a>
+        </div>
+    </nav>
+    <main id="gallery-window" class="window"
+        style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
+        <div class="title-bar"><span class="title" data-key="${prefix}_win_gallery_title">▤ ${prefix}.article</span><button
+                class="close-btn">&times;</button></div>
+        <article class="content">
+            <h1 id="title" data-key="${prefix}_title"></h1>
+${body.join('\n')}
+        </article>
+    </main>
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    <div id="share-module-placeholder"></div>
+    <script src="/scripts/module-loader.js" defer><\/script>
+</body>
+
+</html>
+`;
+        lastEn = en;
+        // Other languages of an opened post ride along, minus keys that no longer exist.
+        const out = { en };
+        for (const [l, t] of Object.entries(translations)) out[l] = Object.fromEntries(Object.entries(t).filter(([k]) => k in en));
+        $('out-html').value = html; $('out-json').value = JSON.stringify(out, null, 2) + '\n';
+        $('out-html-name').textContent = `${slug}.html`; $('out-json-name').textContent = `${prefix}.json`;
+        $('stats').textContent = `${body.length} blocks · ${Object.keys(en).length} keys`;
+    }
+    $('generate').addEventListener('click', generate);
+
+    // ---------- copy / download ----------
+    document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => { const el = $(btn.dataset.copy); el.select(); if (navigator.clipboard) navigator.clipboard.writeText(el.value); }));
+    document.querySelectorAll('[data-download]').forEach((btn) => btn.addEventListener('click', () => {
+        const isHtml = btn.dataset.download === 'html';
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([isHtml ? $('out-html').value : $('out-json').value], { type: 'text/plain' }));
+        a.download = isHtml ? $('out-html-name').textContent : $('out-json-name').textContent; a.click(); URL.revokeObjectURL(a.href);
+    }));
+
+    // ---------- translate (MTPE): prompt out, JSON back, check, merge ----------
+    $('mk-prompt').addEventListener('click', () => {
+        generate();
+        const code = $('mtpe-lang').value, names = { he: 'Hebrew', ru: 'Russian', de: 'German', ja: 'Japanese', gt: 'Graflect' };
+        const glossary = $('glossary').value.trim(), lines = [];
+        lines.push(`You are localizing a personal blog article from English into ${names[code]} (code "${code}").`, 'Rules:',
+            '- Localize, do not translate. Avoid "translatese"; preserve the author\'s voice and register.',
+            '- Keep every HTML tag and entity (<br>, <span ...>, <strong>, &nbsp;, etc.) exactly where it is.',
+            '- Output ONLY valid JSON: the SAME keys as the input, values translated. No commentary.');
+        if (glossary) { lines.push('- Use these established terms for jargon (keep the English if you are unsure):'); glossary.split('\n').map((l) => l.trim()).filter(Boolean).forEach((l) => lines.push(`    · ${l}`)); }
+        if (code === 'gt') lines.push('- Graflect is a featural phonetic script in the Unicode Private Use Area (U+EC70–U+ECEF).', '  Render the ENGLISH pronunciation in Graflect. Use ONLY Graflect glyphs — never Latin/Cyrillic/other letters inside a Graflect word.');
+        lines.push('', `Output shape: { "${code}": { ...same keys, translated values... } }`, '', 'English source:', JSON.stringify({ en: lastEn }, null, 2));
+        $('prompt-out').value = lines.join('\n');
+    });
+    function readPasted() {
+        const code = $('mtpe-lang').value; let data;
+        try { data = JSON.parse($('paste-in').value); } catch (e) { return { error: `✗ ${e.message}` }; }
+        return { code, table: data[code] || data };
+    }
+    $('validate').addEventListener('click', () => {
+        const report = $('report'); report.hidden = false;
+        if (!Object.keys(lastEn).length) generate();
+        const { error, code, table } = readPasted(); if (error) { report.innerHTML = `<span class="bad">${esc(error)}</span>`; return; }
+        const enKeys = Object.keys(lastEn), got = new Set(Object.keys(table));
+        const missing = enKeys.filter((k) => !got.has(k)), extra = [...got].filter((k) => !enKeys.includes(k)), tagMismatch = [], bad = new Set();
+        const tags = (s) => (String(s).match(/<[^>]+>/g) || []).length;
+        enKeys.forEach((k) => {
+            if (table[k] == null) return;
+            if (tags(lastEn[k]) !== tags(table[k])) tagMismatch.push(k);
+            if (code === 'gt') String(table[k]).replace(/<[^>]*>/g, ' ').split(/\s+/).forEach((w) => { let g = false, o = false; for (const ch of w) { if (isGraflect(ch.charCodeAt(0))) g = true; else if (/\S/.test(ch)) o = true; } if (g && o) for (const ch of w) if (!isGraflect(ch.charCodeAt(0)) && /\S/.test(ch)) bad.add(ch); });
+        });
+        const line = (ok, good, what, list) => ok ? `<div class="ok">✓ ${good}</div>` : `<div class="bad">✗ ${what}</div><code>${esc(list.join(', '))}</code>`;
+        report.innerHTML = line(!missing.length, 'keys present', `missing ${missing.length}`, missing) + (extra.length ? line(false, '', `unexpected ${extra.length}`, extra) : '')
+            + line(!tagMismatch.length, 'tags preserved', 'tag count differs', tagMismatch) + (code === 'gt' ? line(!bad.size, 'pure Graflect', 'stray glyphs', [...bad]) : '');
+    });
+    $('merge').addEventListener('click', () => {
+        const { error, code, table } = readPasted(); const report = $('report'); report.hidden = false;
+        if (error) { report.innerHTML = `<span class="bad">${esc(error)}</span>`; return; }
+        translations[code] = { ...(translations[code] || {}), ...table }; generate();
+        report.innerHTML = `<div class="ok">✓ ${code} → ${$('out-json-name').textContent}</div>`;
+    });
+    const WD = 'https://www.wikidata.org/w/api.php', CONCEPT_LANGS = ['he', 'ja', 'de', 'ru'];
+    $('concept-lookup').addEventListener('click', async () => {
+        const term = $('concept-term').value.trim(), box = $('concept-result'); if (!term) return; box.textContent = '…';
+        try {
+            const s = await fetch(`${WD}?action=wbsearchentities&search=${encodeURIComponent(term)}&language=en&format=json&origin=*&limit=1`).then((r) => r.json());
+            const hit = s.search && s.search[0]; if (!hit) { box.textContent = '∅'; return; }
+            const e = await fetch(`${WD}?action=wbgetentities&ids=${hit.id}&props=labels&languages=${CONCEPT_LANGS.join('|')}&format=json&origin=*`).then((r) => r.json());
+            const labels = (e.entities[hit.id] && e.entities[hit.id].labels) || {};
+            box.innerHTML = `<b>${esc(hit.label)}</b> ${esc(hit.id)} ` + CONCEPT_LANGS.filter((l) => labels[l]).map((l) => `<button class="chip" data-t="${esc(labels[l].value)}">${l}: ${esc(labels[l].value)}</button>`).join(' ');
+            box.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { const g = $('glossary'); g.value = (g.value.trim() ? `${g.value.trim()}\n` : '') + `${term} = ${b.dataset.t}`; }));
+        } catch (err) { box.textContent = `✗ ${err.message}`; }
+    });
+
+    // ---------- stale: which translations fell behind the English ----------
+    let editData = null, editStatus = {};
+    async function hash12(s) { const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(s))); return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 12); }
+    async function keyStatus(lang, key) {
+        const v = editData[lang]?.[key]; if (v == null || String(v).trim() === '') return 'missing';
+        const stamped = editStatus[key]?.[lang]; if (!stamped) return 'untracked';
+        return stamped === await hash12(editData.en[key]) ? 'ok' : 'stale';
+    }
+    async function renderEditTable() {
+        if (!editData) return;
+        const lang = $('edit-lang').value, keys = Object.keys(editData.en || {});
+        const st = await Promise.all(keys.map((k) => keyStatus(lang, k)));
+        const mark = { ok: ['', '✓'], stale: ['b-stale', '↻ stale'], missing: ['b-missing', '∅ missing'], untracked: ['', '?'] };
+        $('edit-table').innerHTML = keys.map((k, i) => `<div class="edit-row"><div><code>${esc(k)}</code><span class="badge ${mark[st[i]][0]}">${mark[st[i]][1]}</span></div>
+            <textarea data-k="${esc(k)}" data-f="en" rows="2">${esc(editData.en[k] ?? '')}</textarea>
+            <textarea data-k="${esc(k)}" data-f="${lang}" rows="2">${esc(editData[lang]?.[k] ?? '')}</textarea></div>`).join('');
+        $('edit-summary').textContent = `${keys.length} · ↻ ${st.filter((s) => s === 'stale').length} · ∅ ${st.filter((s) => s === 'missing').length}`;
+        $('edit-table').querySelectorAll('textarea').forEach((ta) => ta.addEventListener('input', () => { (editData[ta.dataset.f] = editData[ta.dataset.f] || {})[ta.dataset.k] = ta.value; }));
+    }
+    $('edit-load').addEventListener('click', async () => {
+        const prefix = $('edit-prefix').value.trim(); if (!prefix) return;
+        try { editData = await (await fetch(`/localization/${prefix}.json`)).json(); } catch { $('edit-summary').textContent = '✗'; return; }
+        editStatus = (await fetch('/localization/tl-status.json').then((r) => r.json()).catch(() => ({})))[prefix] || {};
+        const langs = Object.keys(editData).filter((l) => l !== 'en');
+        $('edit-lang').innerHTML = (langs.length ? langs : ['he', 'ru', 'de', 'ja', 'gt']).map((l) => `<option value="${l}">${l}</option>`).join('');
+        await renderEditTable();
+    });
+    $('edit-lang').addEventListener('change', renderEditTable);
+    $('edit-regen').addEventListener('click', () => { if (editData) $('edit-out').value = JSON.stringify(editData, null, 2); });
+    $('edit-stale-prompt').addEventListener('click', async () => {
+        if (!editData) return;
+        const lang = $('edit-lang').value, keys = Object.keys(editData.en || {});
+        const st = await Promise.all(keys.map((k) => keyStatus(lang, k)));
+        const need = keys.filter((k, i) => st[i] === 'stale' || st[i] === 'missing');
+        $('edit-out').value = need.length
+            ? `Re-localize ONLY these keys from English into "${lang}". Localize, don't translate; keep every HTML tag. Output JSON: { "${lang}": { ...these keys, translated... } }.\n\n${JSON.stringify({ en: Object.fromEntries(need.map((k) => [k, editData.en[k]])) }, null, 2)}`
+            : '✓';
+    });
+
+    changed();
+})();
+</script>
+</body>
+</html>
