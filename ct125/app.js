@@ -134,13 +134,13 @@ function openCalendar(btn, onPick) {
     });
     document.body.appendChild(el);
     const r = btn.getBoundingClientRect();
-    el.style.left = `${Math.max(8, Math.min(r.left, innerWidth - 300))}px`;
-    el.style.top = `${r.bottom + 4 + 300 > innerHeight && r.top > 320 ? r.top - 4 - 300 : r.bottom + 4}px`;
+    // Placed on the page, not the screen, so it scrolls with the field it belongs to.
+    el.style.left = `${scrollX + Math.max(8, Math.min(r.left, innerWidth - 300))}px`;
+    el.style.top = `${scrollY + (r.bottom + 4 + 300 > innerHeight && r.top > 320 ? r.top - 4 - 300 : r.bottom + 4)}px`;
     cal = { el, btn };
     draw();
 }
 document.addEventListener('click', (e) => { if (cal && !cal.el.contains(e.target) && e.target !== cal.btn) closeCalendar(); });
-addEventListener('scroll', () => closeCalendar(), true);
 
 /* ---------- photos ---------- */
 // Photos of receipts and work, kept on this device only (IndexedDB), under
@@ -476,7 +476,8 @@ const stepIn = (i, u) => M['intervals_' + u]?.[i] ?? Math.round(conv(STEPS[i], N
 const dist = (n, u = UNIT) => { const i = STEPS.indexOf(n); return (i >= 0 ? stepIn(i, u) : Math.round(conv(n, NATIVE, u) / 100) * 100).toLocaleString(); };
 const colOf = (n) => (STEPS.includes(n) ? STEPS.indexOf(n) : STEPS.indexOf(((n - EVERY) % CYCLE) + EVERY));
 const odoNative = () => { const n = parseFloat(store.get('odo', '')); return isNaN(n) ? NaN : conv(n, UNIT, NATIVE); };
-const today = () => new Date().toISOString().slice(0, 10);
+// The owner's calendar day, not UTC's (which is already tomorrow on a US evening).
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 // The service tab opens on the next service due: the first one at or above the odometer.
 { const k = odoNative(); if (!isNaN(k)) { const m = milestoneFor(k); svcCol = m.col; svcAt = m.at > CYCLE ? m.at : null; } }
 function renderService() {
@@ -484,7 +485,7 @@ function renderService() {
     const col = svcCol, label = svcAt || STEPS[col];
     const key = 'chk:' + label;
     const done = store.get(key, {});
-    const items = dueItems(col), ro = !!BIKE.ro;
+    const items = dueItems(col), ro = !!BIKE.ro || !!BIKE.visit;
     // Who did each job. Services beyond the current owner's handover are theirs;
     // earlier ones get a picker, defaulting to whoever owned the bike at that mileage.
     const ws = BIKE.owners || [], cur = ws.at(-1), inUnit = (w) => conv(parseFloat(w.o) || 0, w.u || UNIT, UNIT);
@@ -494,7 +495,8 @@ function renderService() {
     const byItems = [...new Set([...ws.map((w) => w.n), ...(ws.some((w) => inUnit(w) <= atU) ? [] : ['earlier owner'])])].map((n) => [n, esc(n)]).concat([['shop', 'a shop']]);
     const nowU = parseFloat(store.get('odo', '')), past = !isNaN(nowU) && atU + stepIn(1, UNIT) / 2 < nowU;
     v.innerHTML = `
-        ${ro ? `<div class="ro-note"><p>${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>
+        ${BIKE.visit ? `<p class="ro-note">Viewing the ${esc(MODEL.label)} manual. To keep a record, add a bike from the menu on the name.</p>` : ''}
+        ${BIKE.ro ? `<div class="ro-note"><p>${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>
             ${recordChecks().length ? `<p><b>Worth a look</b></p><ul>${recordChecks().map((c) => `<li>${esc(c)}</li>`).join('')}</ul>` : ''}
             <details><summary>What to check</summary><ul>
                 <li>Receipts dated on or just before the job, naming the part numbers listed.</li>
@@ -553,7 +555,7 @@ $('#photopick').onchange = async (e) => {
     const d = store.get(key, {}); if (!d[item]) return;
     const rec = typeof d[item] === 'object' ? d[item] : {};
     for (const f of files) {
-        try { const blob = await shrinkPhoto(f), h = await fingerprint(blob); await photoPut(BIKE.id, h, blob); rec.p = [...new Set([...(rec.p || []), h])]; } catch { alert(`${f.name} could not be read as a photo.`); }
+        try { const blob = await shrinkPhoto(f), h = await fingerprint(blob); await photoPut(BIKE.id, h, blob); rec.p = [...new Set([...(rec.p || []), h])]; } catch (err) { alert(/quota|space/i.test(String(err?.name) + String(err?.message)) ? 'This device is out of space for photos.' : `${f.name} could not be read as a photo.`); break; }
     }
     d[item] = rec; store.set(key, d); renderService();
 };
@@ -733,7 +735,7 @@ async function openShare() {
     $('#sharecopy').onclick = async (e) => { try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copied'; } catch { $('#shareurl').select(); } };
     if ($('#sharesend')) $('#sharesend').onclick = () => navigator.share({ title: BIKE.name || 'CT125', url }).catch(() => {});
     const svg = await qrSvg(url);
-    if (svg) $('#qr').innerHTML = svg; else $('#qr').remove();
+    if (svg) $('#qr').innerHTML = svg; else $('#qr').outerHTML = '<p>This record is too long for a QR code. Copy the link, or use the bike file.</p>';
 }
 // A QR code as SVG in the theme's two colours ('' if the text is too long or the library is missing).
 async function qrSvg(text) {
@@ -785,17 +787,31 @@ $('#bikefilepick').onchange = async (e) => {
         const doc = new DOMParser().parseFromString(await f.text(), 'text/html');
         const p = JSON.parse(doc.getElementById('ct125-bike').textContent);
         const photos = new Map();
-        for (const img of doc.querySelectorAll('img[data-hash]')) { const blob = await (await fetch(img.getAttribute('src'))).blob(); photos.set(img.dataset.hash, blob); }
+        for (const img of doc.querySelectorAll('img[data-hash]')) { const src = img.getAttribute('src') || ''; if (!/^data:image\/(jpeg|png|webp);base64,/.test(src)) continue; photos.set(img.dataset.hash, await (await fetch(src)).blob()); }
         importBike(p, photos);
     } catch { alert('That file is not a CT125 bike file.'); }
 };
 // The read-only switch: a lock that opens.
 function lockToggle(btn) { const ro = btn.getAttribute('aria-pressed') !== 'true'; btn.setAttribute('aria-pressed', String(ro)); btn.innerHTML = `${lockSym(ro)} ${ro ? 'Read-only' : 'Unlocked'}`; }
 // Opened from a shared link (photos == null) or a bike file (photos: fingerprint → Blob).
+// A shared bike comes from outside: keep only what has the expected shape.
+function cleanPayload(p) {
+    if (!p || typeof p !== 'object') throw new Error('not a bike');
+    const str = (s, n = 200) => (typeof s === 'string' ? s.slice(0, n) : '');
+    const num = (x) => (x === null || x === '' || x === undefined || isNaN(+x) ? null : +x);
+    const h = {};
+    for (const [at, rows] of Object.entries(p.h && typeof p.h === 'object' ? p.h : {})) {
+        if (!/^\d{1,7}$/.test(at) || !Array.isArray(rows)) continue;
+        h[at] = rows.filter((r) => Array.isArray(r) && Number.isInteger(+r[0]) && +r[0] >= 0).map(([j, day, o, u, ph, by]) => [Math.trunc(+j) || 0, num(day), num(o), u ? 1 : 0, Array.isArray(ph) ? ph.filter((x) => /^[0-9a-f]{16}$/.test(x)) : null, str(by, 80) || undefined]);
+    }
+    return { n: str(p.n, 80), m: str(p.m, 10), y: num(p.y), u: p.u === 'km' ? 'km' : 'mi', o: num(p.o) == null ? '' : String(Math.max(0, num(p.o))), h,
+        w: (Array.isArray(p.w) ? p.w : []).filter((w) => w && typeof w === 'object').map((w) => ({ n: str(w.n, 80), d: /^\d{4}-\d\d-\d\d$/.test(w.d) ? w.d : '', o: num(w.o) == null ? '' : String(num(w.o)), u: w.u === 'km' ? 'km' : 'mi' })).filter((w) => w.n) };
+}
 async function importBike(p, photos = null) {
+    try { p = cleanPayload(p); } catch { shareWin('import.bike', '<p>This isn’t a bike that can be imported.</p>'); return; }
     const model = MODELS.find((m) => m.id === p.m) ? p.m : MODELS[0].id;
     const recs = Object.values(p.h || {}).reduce((a, r) => a + r.length, 0), nph = photoCount(p);
-    const name = p.n || 'CT125', same = bikes.find((b) => (b.name || '') === (p.n || ''));
+    const name = p.n || 'CT125', same = p.n ? bikes.find((b) => b.name === p.n) : null;
     // Photos from a file are checked against the fingerprints the record lists.
     let good = 0; const ok = new Map();
     if (photos) for (const [h, blob] of photos) { if (await fingerprint(blob) === h) { ok.set(h, blob); good++; } }
@@ -810,6 +826,7 @@ async function importBike(p, photos = null) {
         <div class="choices">${same ? `<button type="button" data-imp="over">Overwrite ${esc(name)}</button><button type="button" data-imp="add">Add as ${esc(copyName)}</button>` : '<button type="button" data-imp="add">Add</button>'}<button type="button" data-imp="no">Cancel</button></div>`);
     $('#impro').onclick = (e) => lockToggle(e.currentTarget);
     $('#sharebody').querySelectorAll('[data-imp]').forEach((b) => { b.onclick = async () => {
+        $('#sharebody').querySelectorAll('[data-imp]').forEach((x) => { x.disabled = true; });
         if (b.dataset.imp === 'no') { closeShare(); history.replaceState(null, '', location.pathname); return; }
         const items = (await (await fetch(MODELS.find((m) => m.id === model).data)).json()).maint.items;
         let target;
@@ -833,7 +850,8 @@ function exportHistory() {
             rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', doerOf(at, rec)]); });
     }); } catch { /* private mode */ }
     rows.sort((x, y) => x[0] - y[0] || String(x[4]).localeCompare(String(y[4])));
-    const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
+    // (a cell starting with = + - @ would run as a formula in a spreadsheet)
+    const q = (s) => `"${String(s).replace(/^([=+\-@])/, "'$1").replace(/"/g, '""')}"`;
     const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Odometer', 'Unit', 'Manual page', 'Done by'];
     const csv = [head, ...rows.map((r) => [BIKE.name || 'CT125', D.name, ...r.slice(1)])].map((r) => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
@@ -1120,9 +1138,9 @@ const ICON = {
     pencil: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 7l4 4M4 20l5-1" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
     floppy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l3 3v15H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 3v6h8V3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12" y="4.5" width="2.5" height="3" fill="currentColor"/><rect x="7" y="13" width="10" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
 };
-const odoDigits = (n) => String(Math.max(0, Math.floor(+n || 0))).padStart(6, '0').slice(-7);
+const odoDigits = (n) => String(Math.max(0, Math.floor(+n || 0))).padStart(6, '0');
 // Each wheel shows its digit with the neighbours peeking at the edges, like a drum.
-const odometer = (n) => `<span class="odometer" role="img" aria-label="${(+n || 0).toLocaleString()} ${UNIT}">${[...odoDigits(n)].map((d) => `<span class="wheel"><span>${(+d + 9) % 10}</span><span>${d}</span><span>${(+d + 1) % 10}</span></span>`).join('')}</span><span class="odo-unit">${UNIT}</span>`;
+const odometer = (n) => `<span class="odometer" style="--n:${odoDigits(n).length}" role="img" aria-label="${(+n || 0).toLocaleString()} ${UNIT}">${[...odoDigits(n)].map((d) => `<span class="wheel"><span>${(+d + 9) % 10}</span><span>${d}</span><span>${(+d + 1) % 10}</span></span>`).join('')}</span><span class="odo-unit">${UNIT}</span>`;
 let editing = false;
 // Menus in the site's own dropdown (the hub's language menu), not the OS one.
 const DD = {};
@@ -1143,7 +1161,8 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { closeMenus(); m.previousElementSibling.focus(); }
 });
 // One row of the owners table: name, date they took the bike, mileage then.
-const ownerRow = (w = {}) => `<div class="owner-row"><input type="text" class="ow-n" placeholder="Owner" aria-label="Owner" value="${esc(w.n || '')}" autocomplete="off">${dateBtn('ow-d', w.d, 'aria-label="Took over on"')}<input type="number" class="ow-o num" aria-label="Odometer at handover" placeholder="${UNIT} at handover" min="0" value="${w.o ?? ''}"><button type="button" class="ow-x" aria-label="Remove owner">×</button></div>`;
+// (handover readings are shown in the bike's unit, whatever unit they were saved in)
+const ownerRow = (w = {}) => `<div class="owner-row"><input type="text" class="ow-n" placeholder="Owner" aria-label="Owner" value="${esc(w.n || '')}" autocomplete="off">${dateBtn('ow-d', w.d, 'aria-label="Took over on"')}<input type="number" class="ow-o num" aria-label="Odometer at handover" placeholder="${UNIT} at handover" min="0" value="${w.o === '' || w.o == null ? '' : Math.round(conv(+w.o, w.u || UNIT, UNIT))}"><button type="button" class="ow-x" aria-label="Remove owner">×</button></div>`;
 function renderBike() {
     const el = $('#bike');
     const odo = store.get('odo', '');
@@ -1161,6 +1180,7 @@ function renderBike() {
             // Switching the unit converts the reading in the field.
             const f = $('#odo'), n = parseFloat(f.value), from = dd.dataset.from || UNIT;
             if (!isNaN(n) && from !== v) f.value = Math.round(conv(n, from, v));
+            if (from !== v) document.querySelectorAll('#owners .ow-o').forEach((o) => { const k = parseFloat(o.value); if (!isNaN(k)) o.value = Math.round(conv(k, from, v)); });
             dd.dataset.from = v; dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = v;
         }, 'unit-dd')}</span>
         <button type="button" class="lock" id="bro" aria-pressed="${!!BIKE.ro}" title="Lock or unlock the record">${lockSym(!!BIKE.ro)} ${BIKE.ro ? 'Read-only' : 'Unlocked'}</button>
@@ -1182,13 +1202,15 @@ function renderBike() {
     const save = () => {
         const name = $('#bname').value.trim(), pick = $('#byear').dataset.value || `${modelId}:`, [year, yr] = pick.split(':'), unit = $('#bunit').dataset.value, n = $('#odo').value;
         if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
+        // Each model has its own schedule; ticks made against one don't line up with the other.
+        if (year !== BIKE.model && bikeRecords().length && !confirm(`This bike's ticks were made against the ${MODEL.label} schedule and won't line up with ${MODELS.find((m) => m.id === year).label}. Change the model anyway?`)) return;
         const moved = year !== BIKE.model || unit !== UNIT;
         const roWas = !!BIKE.ro;
         BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').getAttribute('aria-pressed') === 'true';
         if (yr) BIKE.year = +yr;
         // The owners table, in ownership order. Handover readings are in the bike's unit.
         BIKE.owners = sortOwners([...document.querySelectorAll('#owners .owner-row')].map((r) => ({ n: r.querySelector('.ow-n').value.trim(), d: r.querySelector('.ow-d').dataset.value, o: r.querySelector('.ow-o').value, u: unit })).filter((w) => w.n));
-        saveBikes(); store.set('odo', n);
+        saveBikes(); store.set('odo', n === '' || isNaN(+n) ? '' : String(Math.max(0, Math.round(+n))));
         if (roWas !== BIKE.ro && view === 'service') renderService();
         if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
         editing = false; renderBike();
@@ -1210,10 +1232,12 @@ function renderBike() {
         bikes = bikes.filter((b) => b.id !== BIKE.id); saveBikes(); ls.set('ct125:bike', bikes[0].id); location.reload();
     };
 }
+// Another tab changed the saved bikes or this bike's record: show it, unless this tab is mid-edit.
+addEventListener('storage', (e) => { if (!e.key || !e.key.startsWith('ct125:') || editing || cal) return; if (e.key === 'ct125:bikes') { location.reload(); return; } renderBike(); if (view === 'service') renderService(); });
 if (ls.get('ct125:editNew', false)) { editing = true; ls.set('ct125:editNew', false); }
 renderBike();
 $('#foot').innerHTML = [...D.source.notes, Object.keys(REFS).length ? 'Shop links are referral links: buying through them supports this page at no cost to you.' : '', 'Not affiliated with Honda.'].filter(Boolean).map((s) => `<div>${esc(s)}</div>`).join('');
-const okTab = (t) => RENDER[t] && !(t === 'tools' && !Object.keys(TOOLS).length);
+const okTab = (t) => Object.hasOwn(RENDER, t) && !(t === 'tools' && !Object.keys(TOOLS).length);
 if (LINK.at && STEPS.includes(+LINK.at)) setSvc(STEPS.indexOf(+LINK.at), null);
 const startTab = okTab(LINK.tab) ? LINK.tab : okTab(store.get('tab', 'search')) ? store.get('tab', 'search') : 'search';
 if (LINK.q && startTab === 'search') $('#q').value = LINK.q;
@@ -1221,7 +1245,7 @@ show(startTab);
 if (LINK.q && (startTab === 'torque' || startTab === 'specs')) { const f = $(startTab === 'torque' ? '#tf' : '#sf'); f.value = LINK.q; f.dispatchEvent(new Event('input')); }
 if (LINK.guide) { const g = D.guides.find((x) => slug(x.item) === slug(LINK.guide)); if (g) openGuide(g.item); }
 if (LINK.page && mp2p(LINK.page)) openPage(mp2p(LINK.page));
-if (LINK.bike) unpackBike(LINK.bike).then((p) => importBike(p)).catch(() => history.replaceState(null, '', location.pathname));
+if (LINK.bike) unpackBike(LINK.bike).then((p) => importBike(p)).catch(() => { history.replaceState(null, '', location.pathname); shareWin('import.bike', '<p>This bike link is incomplete or damaged. Ask for it again, or for the bike file.</p>'); });
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
 window.addEventListener('hashchange', () => location.reload());

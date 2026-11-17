@@ -1279,6 +1279,29 @@ try {
             ok(native === 0 && !picked.open && /^\d{4}-\d\d-\d\d$/.test(picked.value) && picked.spin === 'textfield', `CT125: dates use the app's calendar; numbers have no spinners (${JSON.stringify({ native, ...picked })})`);
         }
 
+        // Things people do by accident or on purpose.
+        {
+            const probe = async (opts, fn) => { const cx = await browser.newContext(opts); const pp = await cx.newPage(); const errs = []; pp.on('pageerror', (e) => errs.push(e.message)); try { return { ...(await fn(pp)), errs: errs.length }; } finally { await cx.close(); } };
+            const proto = await probe({}, async (pp) => { await pp.goto(`${BASE}/ct125/#tab=__proto__`, { waitUntil: 'load' }); await pp.waitForSelector('.quick button'); return { ok: true }; });
+            const late = await probe({ timezoneId: 'America/Los_Angeles' }, async (pp) => {
+                await pp.clock.setFixedTime(new Date('2026-11-17T20:30:00-08:00'));
+                await pp.goto(`${BASE}/ct125/#tab=service`, { waitUntil: 'load' }); await pp.waitForSelector('.chk input');
+                await pp.click('.chk input[type=checkbox] >> nth=0');
+                return { day: await pp.getAttribute('.tick-date', 'data-value') };
+            });
+            const odo = await probe({}, async (pp) => {
+                await pp.goto(`${BASE}/ct125/`, { waitUntil: 'load' }); await pp.waitForSelector('#bedit');
+                await pp.click('#bedit'); await pp.fill('#odo', '12345678'); await pp.click('#bsave');
+                const big = await pp.getAttribute('.odometer', 'aria-label');
+                await pp.click('#bedit'); await pp.fill('#odo', '-50'); await pp.click('#bsave');
+                return { big, neg: await pp.getAttribute('.odometer', 'aria-label') };
+            });
+            const bad = await probe({}, async (pp) => { await pp.goto(`${BASE}/ct125/#bike=zAAAA`, { waitUntil: 'load' }); await pp.waitForSelector('#sharewin:not([hidden])'); return { text: await pp.textContent('#sharebody') }; });
+            const visit = await probe({}, async (pp) => { await pp.goto(`${BASE}/ct125/#year=2023&tab=service`, { waitUntil: 'load' }); await pp.waitForSelector('.chk input'); return { locked: await pp.$eval('.chk input[type=checkbox]', (x) => x.disabled) }; });
+            ok(proto.errs === 0 && late.day === '2026-11-17' && /^12,345,678 mi/.test(odo.big) && /^0 mi/.test(odo.neg) && /incomplete or damaged/.test(bad.text) && visit.locked,
+                `CT125: odd links, a US evening, huge or negative odometers, broken share links, and a year opened from a link (${JSON.stringify({ proto, late, odo, bad: !!bad.text, visit })})`);
+        }
+
         // Tools owned counts every tool on the list, not only the priced ones.
         await page.click('.tabs [data-v=tools]');
         const tools = await page.evaluate(() => ({ shown: document.querySelector('.tl-sum b').textContent, rows: document.querySelector('#v-tools .box').querySelectorAll('.trow').length, opt: document.querySelector('#v-tools .box').querySelectorAll('.tag2').length }));
@@ -1290,6 +1313,7 @@ try {
         // The 2023+ (JA65) year: km schedule with the oil filter, its own part numbers and prices, both code systems.
         {
             const p2 = await ctx.newPage();
+            p2.on('dialog', (d) => d.accept()); // (changing the model of a bike with ticks asks first)
             await p2.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
             await p2.waitForSelector('#bedit');
             await p2.click('#bedit');

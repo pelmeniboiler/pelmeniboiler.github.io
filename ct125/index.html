@@ -61,7 +61,7 @@
         .odo-view:hover { background: none; color: inherit; }
         .odo-view:hover .odometer { outline: 2px dashed var(--text-color); outline-offset: 3px; }
         .odometer { display: inline-flex; border: 3px double var(--text-color); padding: 3px; gap: 2px; background: var(--bg-color); }
-        .wheel { position: relative; display: flex; flex-direction: column; align-items: center; width: 1.05em; height: 1.45em; overflow: hidden; border: 1px solid var(--text-color); font: 600 2rem/0.82 'FairfaxHD', ui-monospace, monospace; }
+        .wheel { position: relative; display: flex; flex-direction: column; align-items: center; width: 1.05em; height: 1.45em; overflow: hidden; border: 1px solid var(--text-color); font: 600 min(2rem, calc((100vw - 110px) / (var(--n, 6) * 1.25))) / 0.82 'FairfaxHD', ui-monospace, monospace; }
         /* hairlines where the drum curves away */
         .wheel::before, .wheel::after { content: ''; position: absolute; left: 0; right: 0; border-top: 1px solid var(--text-color); z-index: 1; }
         .wheel::before { top: 0.2em; }
@@ -95,7 +95,7 @@
         .datebtn:disabled { cursor: default; }
         .owner-row .ow-d { min-height: 40px; }
         /* The calendar: square cells, the theme's two colours, nothing moves. */
-        .cal { position: fixed; z-index: 90; width: 292px; padding: 8px; background: var(--win-bg-color); color: var(--text-color); border: 2px solid var(--text-color); }
+        .cal { position: absolute; z-index: 90; width: 292px; padding: 8px; background: var(--win-bg-color); color: var(--text-color); border: 2px solid var(--text-color); }
         .cal button { border: 1px solid transparent; background: none; color: inherit; padding: 0; font: inherit; }
         .cal button:hover, .cal button:focus-visible { border-color: var(--text-color); background: none; color: inherit; outline: none; }
         .cal-head { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
