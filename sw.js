@@ -27,6 +27,24 @@ const PRECACHE = [
     '/manifest.json',
 ];
 
+// /ct125/ is an app people install and open in a garage with no signal, so
+// its files live in a cache that deploys do not clear: served from the cache
+// at once, refreshed from the network in the background.
+const APP_CACHE = 'pelmeniboiler-ct125';
+const isApp = (url) => url.pathname.startsWith('/ct125/');
+function appResponse(event) {
+    const req = event.request;
+    const key = new URL(req.url); key.search = '';
+    const fresh = fetch(req.url, { cache: 'no-cache' }).then((res) => {
+        if (res.ok) { const copy = res.clone(); event.waitUntil(caches.open(APP_CACHE).then((cache) => cache.put(key.href, copy))); }
+        return res;
+    });
+    return caches.open(APP_CACHE).then((cache) => cache.match(key.href)).then((hit) => {
+        if (hit) { event.waitUntil(fresh.catch(() => {})); return hit; }
+        return fresh;
+    });
+}
+
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE)
@@ -38,7 +56,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys()
-            .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+            .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== APP_CACHE).map((k) => caches.delete(k))))
             .then(() => self.clients.claim()),
     );
 });
@@ -128,6 +146,8 @@ self.addEventListener('fetch', (event) => {
     if (req.method !== 'GET') return;
     const url = new URL(req.url);
     if (url.origin !== self.location.origin) return; // only cache our own site
+
+    if (isApp(url)) { event.respondWith(appResponse(event)); return; }
 
     if (req.mode === 'navigate') {
         // Pages: network-first so content is always fresh online, with the

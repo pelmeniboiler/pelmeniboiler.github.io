@@ -67,6 +67,15 @@ async function stageSources() {
         });
     }
 }
+// pdf.js for /ct125/ (renders the manual PDF an owner loads from their own
+// device). Copied from node_modules so the library is never checked in.
+async function vendorPdfJs() {
+    const from = path.join(SRC_DIR, 'node_modules', 'pdfjs-dist', 'build');
+    const to = path.join(OUT_DIR, 'ct125', 'vendor');
+    await fs.mkdir(to, { recursive: true });
+    // Renamed .mjs → .js: not every static host serves .mjs as JavaScript.
+    for (const f of ['pdf.min', 'pdf.worker.min']) await fs.copyFile(path.join(from, f + '.mjs'), path.join(to, f + '.js'));
+}
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
 const LOCALIZATION_DIR = path.join(ROOT_DIR, 'localization');
 const RSS_OUTPUT_DIR = path.join(ROOT_DIR, 'rss');
@@ -289,6 +298,7 @@ async function generatePhotoScreensaverManifest(manifestItems, blogDir, rootDir,
 async function main() {
     console.log('Staging sources into /_site...');
     await stageSources();
+    await vendorPdfJs();
 
     console.log('Splitting the stylesheet per theme...');
     THEME_CSS = await splitThemeCss(ROOT_DIR);
@@ -632,6 +642,7 @@ const APP_LIBRARY = {
         // graflect.workbench deliberately unlisted for now.
         { href: '/tools/emojiviewer.html', icon: '🙾', label: 'emoji.viewer' },
         { href: '/screensaver/', icon: '🖳', label: 'screensaver.dvd' },
+        { href: '/ct125/', icon: '🏍', label: 'ct125.manual' },
     ],
     folders: [{
         icon: '🗺', label: 'hoi4.mapping',
