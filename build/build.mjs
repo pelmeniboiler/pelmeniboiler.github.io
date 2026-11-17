@@ -480,7 +480,7 @@ async function generateBlogManifest(processedPosts, localizationData, blogDir) {
     return manifestItems;
 }
 
-const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻' };
+const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻', Motorcycles: '🏍' };
 
 // Static markup for the blog.posts window's guts: the filter buttons and the post
 // cards. Shared by the hub (bakeBlogList) and the /blog/ folder page so both render

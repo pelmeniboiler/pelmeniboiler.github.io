@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="preload" href="/styles/fonts/FrankRuhl.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="eink-compatibility" content="optimized">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Projects, Motorcycles">
+    <meta name="description" content="Claude and the art of motorcycle maintenance.">
+    <meta name="pubDate" content="2026-11-17T18:00:00Z">
+    <meta name="translation-source" content="ct125">
+    <title>Your Service Manual Should be an App</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <link rel="stylesheet" href="/styles/article.css">
+    <style>
+        /* The diagram: the theme's two colours only. */
+        .sm-fig { display: block; width: 100%; height: auto; max-width: 640px; margin: 15px auto; font-family: var(--font-body); }
+        .sm-ink { fill: var(--text-color); }
+        .sm-paper { fill: var(--win-bg-color); }
+        .sm-st { stroke: var(--text-color); stroke-width: 2; }
+        .sm-line { stroke: var(--text-color); stroke-width: 1.5; fill: none; }
+        .sm-t { fill: var(--text-color); font-size: 15px; }
+        .sm-inv { fill: var(--win-bg-color); font-size: 18px; font-weight: bold; }
+        .sm-inv.sm-s { font-size: 13px; font-weight: normal; }
+        #gallery-window .content figure { margin: 15px 0; }
+        #gallery-window .content figcaption { font-size: .9em; text-align: center; }
+    </style>
+</head>
+
+<body class="eink-mode light-mode">
+    <nav id="nav-window" class="window">
+        <div class="title-bar"><span class="title" data-key="win_gallerynav_title">◈ ct125.nav</span><button
+                class="close-btn">&times;</button></div>
+        <div class="content">
+            <ul>
+                <h1 data-key="ct125_nav_title"></h1>
+                <li><a href="#the-great-escape" data-key="ct125_nav_the-great-escape"></a></li>
+                <li><a href="#on-any-sunday" data-key="ct125_nav_on-any-sunday"></a></li>
+                <li><a href="#super-cub" data-key="ct125_nav_super-cub"></a></li>
+                <li><a href="#what-about-my-bike" data-key="ct125_nav_what-about-my-bike"></a></li>
+            </ul>
+            <a href="/index.html" data-key="gt_nav_h2_home">⌂←</a>
+        </div>
+    </nav>
+    <main id="gallery-window" class="window"
+        style="top: 0; left: 260px; right: 0; bottom: 0; position: absolute; z-index: var(--z-window-base);">
+        <div class="title-bar"><span class="title" data-key="ct125_win_gallery_title">▤ ct125.article</span><button
+                class="close-btn">&times;</button></div>
+        <article class="content">
+            <h1 id="title" data-key="ct125_title"></h1>
+            <p data-key="ct125_p1"></p>
+            <h2 id="the-great-escape" data-key="ct125_h2_the-great-escape"></h2>
+            <p data-key="ct125_p2"></p>
+            <p data-key="ct125_p3"></p>
+            <p data-key="ct125_p4"></p>
+            <h3 id="on-any-sunday" data-key="ct125_h3_on-any-sunday"></h3>
+            <p data-key="ct125_p5"></p>
+            <p data-key="ct125_p6"></p>
+            <p data-key="ct125_p7"></p>
+            <p data-key="ct125_p8"></p>
+            <p data-key="ct125_p9"></p>
+            <p data-key="ct125_p10"></p>
+            <figure><img src="/photos/ct125/02-search.png" alt="The CT125 manual app, searching for “skid plate”: the results show Honda’s “under cover” pages and the torque values for the bolts." class="article-image"></figure>
+            <p data-key="ct125_p11"></p>
+            <figure><img src="/photos/ct125/03-service.png" alt="The 8,000 mile service in the app: a checklist with some jobs ticked off, and beside it the parts to buy with Honda part numbers and prices." class="article-image"></figure>
+            <p data-key="ct125_p12"></p>
+            <figure>
+<svg class="sm-fig" viewBox="0 0 640 310" role="img" aria-labelledby="smf-t smf-d"><title id="smf-t">Four books become one app</title><desc id="smf-d">The service manual, common service manual, owner’s manual and parts catalog all feed one app. The app answers you directly, and gives your LLM links to cite.</desc>
+<defs><marker id="sm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="sm-ink" d="M0 0L10 5L0 10z"/></marker></defs>
+<g><rect class="sm-paper sm-st" x="8" y="18" width="128" height="58"/><rect class="sm-ink" x="8" y="18" width="8" height="58"/><text class="sm-t" x="78" y="43" text-anchor="middle">Service</text><text class="sm-t" x="78" y="62" text-anchor="middle">Manual</text></g><g><rect class="sm-paper sm-st" x="8" y="90" width="128" height="58"/><rect class="sm-ink" x="8" y="90" width="8" height="58"/><text class="sm-t" x="78" y="115" text-anchor="middle">Common Service</text><text class="sm-t" x="78" y="134" text-anchor="middle">Manual</text></g><g><rect class="sm-paper sm-st" x="8" y="162" width="128" height="58"/><rect class="sm-ink" x="8" y="162" width="8" height="58"/><text class="sm-t" x="78" y="187" text-anchor="middle">Owner’s</text><text class="sm-t" x="78" y="206" text-anchor="middle">Manual</text></g><g><rect class="sm-paper sm-st" x="8" y="234" width="128" height="58"/><rect class="sm-ink" x="8" y="234" width="8" height="58"/><text class="sm-t" x="78" y="259" text-anchor="middle">Parts</text><text class="sm-t" x="78" y="278" text-anchor="middle">Catalog</text></g>
+<line class="sm-line" x1="140" y1="47" x2="262" y2="155" marker-end="url(#sm-arr)"/><line class="sm-line" x1="140" y1="119" x2="262" y2="155" marker-end="url(#sm-arr)"/><line class="sm-line" x1="140" y1="191" x2="262" y2="155" marker-end="url(#sm-arr)"/><line class="sm-line" x1="140" y1="263" x2="262" y2="155" marker-end="url(#sm-arr)"/>
+<rect class="sm-ink" x="266" y="104" width="150" height="102"/><text class="sm-inv" x="341" y="142" text-anchor="middle">ct125.manual</text><text class="sm-inv sm-s" x="341" y="166" text-anchor="middle">search · tables</text><text class="sm-inv sm-s" x="341" y="186" text-anchor="middle">guides · parts · links</text>
+<line class="sm-line" x1="418" y1="135" x2="512" y2="82" marker-end="url(#sm-arr)"/><line class="sm-line" x1="418" y1="176" x2="512" y2="228" marker-end="url(#sm-arr)"/>
+<rect class="sm-paper sm-st" x="516" y="50" width="116" height="62"/><text class="sm-t" x="574" y="78" text-anchor="middle">you,</text><text class="sm-t" x="574" y="98" text-anchor="middle">at the bench</text>
+<rect class="sm-paper sm-st" x="516" y="198" width="116" height="62"/><text class="sm-t" x="574" y="226" text-anchor="middle">your LLM,</text><text class="sm-t" x="574" y="246" text-anchor="middle">citing a link</text>
+</svg>
+            </figure>
+            <p data-key="ct125_p13"></p>
+            <figure><img src="/photos/ct125/04-guide.png" alt="The valve clearance guide: why, when, numbered steps each citing a manual page, the specs, parts with Honda part numbers, tools, and videos." class="article-image"></figure>
+            <h2 id="super-cub" data-key="ct125_h2_super-cub"></h2>
+            <p data-key="ct125_p14"></p>
+            <figure><img src="/photos/ct125/05-tools.png" alt="The Tools and costs tab: the tools each service needs, with the ones already owned crossed out, links to buy the rest, and totals." class="article-image"></figure>
+            <h3 id="what-about-my-bike" data-key="ct125_h3_what-about-my-bike"></h3>
+            <p data-key="ct125_p15"></p>
+            <aside data-key="ct125_aside16"></aside>
+        </article>
+    </main>
+    <div id="settings-module-placeholder"></div>
+    <div id="start-menu-module-placeholder"></div>
+    <div id="share-module-placeholder"></div>
+    <script src="/scripts/module-loader.js" defer></script>
+</body>
+
+</html>

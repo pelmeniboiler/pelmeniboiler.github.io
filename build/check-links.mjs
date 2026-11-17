@@ -64,8 +64,9 @@ async function checkUrl(raw, fromFile, fromUrl) {
     const target = await resolveFile(url.pathname);
     if (!target) { broken.push([fromFile, raw, 'no such file']); return; }
     const frag = decodeURIComponent(url.hash.slice(1));
-    // Fragments starting with ":~:" are text fragments; others must be real anchors.
-    if (frag && !frag.startsWith(':~:') && /\.(html|svg)$/.test(target) && !(await idsOf(target)).has(frag)) {
+    // Fragments starting with ":~:" are text fragments, and ones like "year=2021&tab=specs"
+    // are app state (/ct125/ reads them); others must be real anchors.
+    if (frag && !frag.startsWith(':~:') && !/^[\w-]+=/.test(frag) && /\.(html|svg)$/.test(target) && !(await idsOf(target)).has(frag)) {
         broken.push([fromFile, raw, `no #${frag} on page`]);
     }
 }

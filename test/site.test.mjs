@@ -1153,21 +1153,23 @@ try {
 
         // Odometer and ticks are kept on the device.
         await page.click('.tabs [data-v=service]');
-        await page.fill('#odo', '7450'); await page.dispatchEvent('#odo', 'change');
+        await page.click('#bedit'); await page.fill('#odo', '7450'); await page.click('#bsave');
         await page.click('.chk input');
         await page.reload({ waitUntil: 'load' });
-        await page.waitForSelector('#odo');
-        const kept = await page.evaluate(() => ({ odo: document.querySelector('#odo').value, ticks: document.querySelectorAll('.chk input:checked').length, title: document.querySelector('.box .bh h3').textContent }));
-        ok(kept.odo === '7450' && kept.ticks === 1 && /8,000/.test(kept.title), `CT125: odometer, due service and ticked jobs survive a reload (${JSON.stringify(kept)})`);
+        await page.waitForSelector('.odometer');
+        const kept = await page.evaluate(() => ({ odo: (document.querySelector('.odometer')?.getAttribute('aria-label') || ''), ticks: document.querySelectorAll('.chk input:checked').length, title: document.querySelector('.box .bh h3').textContent }));
+        ok(/^7,450 mi/.test(kept.odo) && kept.ticks === 1 && /8,000/.test(kept.title), `CT125: odometer, due service and ticked jobs survive a reload (${JSON.stringify(kept)})`);
 
         // A second bike keeps its own odometer and ticks; the first is untouched.
-        await page.fill('#bname', 'Red'); await page.dispatchEvent('#bname', 'change');
-        await page.click('#badd');
-        await page.waitForFunction(() => document.querySelector('#bpick')?.options.length === 2 && document.querySelector('#odo').value === '');
+        await page.click('#bedit'); await page.fill('#bname', 'Red'); await page.click('#bsave');
+        await page.selectOption('#bpick', 'new');
+        await page.waitForFunction(() => document.querySelector('#bike.editing') && document.querySelector('#odo').value === '');
+        await page.click('#bsave');
+        await page.waitForFunction(() => document.querySelector('#bpick')?.options.length === 3);
         const second = await page.evaluate(() => ({ ticks: document.querySelectorAll('.chk input:checked').length, names: [...document.querySelector('#bpick').options].map((o) => o.textContent) }));
         await page.selectOption('#bpick', { label: 'Red' });
-        await page.waitForFunction(() => document.querySelector('#odo')?.value === '7450');
-        const first = await page.evaluate(() => ({ name: document.querySelector('#bname').value, ticks: document.querySelectorAll('.chk input:checked').length }));
+        await page.waitForFunction(() => /^7,450/.test((document.querySelector('.odometer')?.getAttribute('aria-label') || '')));
+        const first = await page.evaluate(() => ({ name: document.querySelector('.bike-name').textContent, ticks: document.querySelectorAll('.chk input:checked').length }));
         ok(second.ticks === 0 && first.name === 'Red' && first.ticks === 1, `CT125: each bike has its own name, odometer and ticks (${JSON.stringify({ second, first })})`);
 
         // Tools owned counts every tool on the list, not only the priced ones.
@@ -1182,17 +1184,34 @@ try {
         {
             const p2 = await ctx.newPage();
             await p2.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
-            await p2.waitForSelector('#byear');
-            await p2.selectOption('#byear', '2023');
-            await p2.waitForFunction(() => /JA65/.test(document.querySelector('#byear').selectedOptions[0].textContent) && /2023/.test(document.querySelector('#sub').textContent));
+            await p2.waitForSelector('#bedit');
+            await p2.click('#bedit');
+            const labels = await p2.evaluate(() => [...document.querySelectorAll('#byear option')].map((o) => o.textContent).join(' / '));
+            await p2.selectOption('#byear', '2023'); await p2.click('#bsave');
+            await p2.waitForFunction(() => /JA65/.test(document.querySelector('.bike-year')?.textContent || '') && /2023/.test(document.querySelector('#sub').textContent));
             await p2.click('.tabs [data-v=service]');
-            const y = await p2.evaluate(() => ({ unit: document.querySelector('.box .bh h3').textContent, filter: [...document.querySelectorAll('.chk .nm2')].some((n) => /oil filter$/i.test(n.firstChild.textContent.trim())), pn: document.querySelector('#shopbox')?.textContent.includes('15412-MGS-D21'), tools: !document.querySelector('.tabs [data-v=tools]').hidden, labels: [...document.querySelectorAll('#byear option')].map((o) => o.textContent).join(' / ') }));
+            const y = await p2.evaluate(() => ({ unit: document.querySelector('.box .bh h3').textContent, filter: [...document.querySelectorAll('.chk .nm2')].some((n) => /oil filter$/i.test(n.firstChild.textContent.trim())), pn: document.querySelector('#shopbox')?.textContent.includes('15412-MGS-D21'), tools: !document.querySelector('.tabs [data-v=tools]').hidden }));
+            y.labels = labels;
             await p2.click('.tabs [data-v=codes]');
             const codes = await p2.evaluate(() => document.querySelectorAll('#v-codes .dt').length);
             ok(/km/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && y.labels === '2020–2022 (JA55) / 2023+ (JA65)', `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
-            await p2.selectOption('#byear', '2021');
+            await p2.click('#bedit'); await p2.selectOption('#byear', '2021'); await p2.click('#bsave');
             await p2.waitForFunction(() => /2021/.test(document.querySelector('#sub').textContent));
             await p2.close();
+        }
+
+        // Links open what they name, and the address follows what is on screen.
+        {
+            const p3 = await ctx.newPage();
+            await p3.goto(`${BASE}/ct125/#year=2023&guide=engine-oil-filter`, { waitUntil: 'load' });
+            await p3.waitForFunction(() => !document.querySelector('#guide').hidden);
+            const g = await p3.evaluate(() => ({ title: document.querySelector('#gtitle').textContent, year: document.querySelector('.bike-year').textContent }));
+            await p3.click('#gclose');
+            await p3.click('.tabs [data-v=specs]');
+            await p3.fill('#sf', 'fork');
+            await p3.waitForFunction(() => /tab=specs&q=fork/.test(location.hash));
+            ok(g.title === 'Engine oil filter' && /JA65/.test(g.year), `CT125: a link opens its guide and year, and the address tracks the view (${JSON.stringify(g)})`);
+            await p3.close();
         }
 
         // No page of Honda's manual is ever served: a citation opens as text.
