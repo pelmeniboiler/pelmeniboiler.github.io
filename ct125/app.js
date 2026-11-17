@@ -100,6 +100,48 @@ const idb = (mode, fn) => new Promise((res, rej) => {
     open.onerror = () => rej(open.error);
     open.onsuccess = () => { const tx = open.result.transaction('files', mode); const rq = fn(tx.objectStore('files')); tx.oncomplete = () => res(rq.result); tx.onerror = () => rej(tx.error); };
 });
+/* ---------- calendar ---------- */
+// The browser's own date picker can't be restyled (grey, blue, animated), so
+// dates are a button that opens this one: the theme's two colours, square
+// buttons, no animation, and keys (arrows, Page Up/Down for months, Enter, Esc).
+const dateBtn = (cls, iso, attrs = '', disabled = false) => `<button type="button" class="datebtn ${cls}" data-value="${esc(iso || '')}" ${attrs}${disabled ? ' disabled' : ''}>${iso ? esc(fmtDate(iso)) : 'date'}</button>`;
+const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+let cal = null;
+function closeCalendar() { if (cal) { cal.el.remove(); cal.btn.focus({ preventScroll: true }); cal = null; } }
+function openCalendar(btn, onPick) {
+    closeCalendar();
+    const pick = (iso) => { btn.dataset.value = iso || ''; btn.textContent = iso ? fmtDate(iso) : 'date'; const f = onPick; closeCalendar(); f?.(iso); };
+    const sel = btn.dataset.value ? new Date(btn.dataset.value + 'T12:00:00') : null;
+    let focus = sel || new Date(), view = new Date(focus.getFullYear(), focus.getMonth(), 1);
+    const el = document.createElement('div');
+    el.className = 'cal'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Choose a date');
+    const draw = () => {
+        const y = view.getFullYear(), m = view.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate(), t = isoDay(new Date());
+        el.innerHTML = `<div class="cal-head"><button type="button" data-step="-12" aria-label="Previous year">«</button><button type="button" data-step="-1" aria-label="Previous month">‹</button><b>${new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(view)}</b><button type="button" data-step="1" aria-label="Next month">›</button><button type="button" data-step="12" aria-label="Next year">»</button></div>
+            <div class="cal-grid" role="grid">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => `<span class="cal-dow">${d}</span>`).join('')}${'<span></span>'.repeat(first)}${Array.from({ length: days }, (_, i) => { const iso = isoDay(new Date(y, m, i + 1)); return `<button type="button" class="cal-day${iso === t ? ' today' : ''}" data-iso="${iso}" aria-pressed="${iso === btn.dataset.value}" tabindex="${iso === isoDay(focus) ? 0 : -1}">${i + 1}</button>`; }).join('')}</div>
+            <div class="cal-foot"><button type="button" data-iso="">Clear</button><button type="button" data-iso="${t}">Today</button></div>`;
+        el.querySelector('[tabindex="0"]')?.focus({ preventScroll: true });
+    };
+    el.addEventListener('click', (e) => {
+        e.stopPropagation(); e.preventDefault();
+        const st = e.target.closest('[data-step]'); if (st) { view = new Date(view.getFullYear(), view.getMonth() + +st.dataset.step, 1); focus = new Date(view); draw(); return; }
+        const d = e.target.closest('[data-iso]'); if (d) pick(d.dataset.iso);
+    });
+    el.addEventListener('keydown', (e) => {
+        const mv = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+        if (mv || e.key === 'PageUp' || e.key === 'PageDown') { e.preventDefault(); focus = mv ? new Date(focus.getFullYear(), focus.getMonth(), focus.getDate() + mv) : new Date(focus.getFullYear(), focus.getMonth() + (e.key === 'PageUp' ? -1 : 1), focus.getDate()); view = new Date(focus.getFullYear(), focus.getMonth(), 1); draw(); }
+        if (e.key === 'Escape') { e.preventDefault(); closeCalendar(); }
+    });
+    document.body.appendChild(el);
+    const r = btn.getBoundingClientRect();
+    el.style.left = `${Math.max(8, Math.min(r.left, innerWidth - 300))}px`;
+    el.style.top = `${r.bottom + 4 + 300 > innerHeight && r.top > 320 ? r.top - 4 - 300 : r.bottom + 4}px`;
+    cal = { el, btn };
+    draw();
+}
+document.addEventListener('click', (e) => { if (cal && !cal.el.contains(e.target) && e.target !== cal.btn) closeCalendar(); });
+addEventListener('scroll', () => closeCalendar(), true);
+
 /* ---------- photos ---------- */
 // Photos of receipts and work, kept on this device only (IndexedDB), under
 // photo:<bike>:<fingerprint>. A ticked job lists its photos' fingerprints
@@ -466,7 +508,7 @@ function renderService() {
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
             <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button>${ro ? '' : '<button type="button" id="clr">Clear</button>'}</span></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}><input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? `<small class="look">Look for: ${esc(lookFor(label, it.item, rec))}</small>` : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick">${dateBtn('tick-date', rec.d, `data-item="${esc(it.item)}"`, ro)}<input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? `<small class="look">Look for: ${esc(lookFor(label, it.item, rec))}</small>` : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -486,7 +528,7 @@ function renderService() {
     function setRec(item, patch) { const d = store.get(key, {}); d[item] = { ...(typeof d[item] === 'object' ? d[item] : {}), ...patch }; store.set(key, d); }
     v.querySelectorAll('.tick-odo').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => setRec(t.dataset.item, { o: t.value === '' ? undefined : +t.value, u: UNIT }); });
     v.querySelectorAll('.by-dd').forEach((dd) => dd.addEventListener('click', (e) => e.preventDefault()));
-    v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => { const d = store.get(key, {}); const r = typeof d[t.dataset.item] === 'object' ? d[t.dataset.item] : {}; d[t.dataset.item] = { ...r, d: t.value }; store.set(key, d); }; });
+    v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => { e.preventDefault(); e.stopPropagation(); if (!ro) openCalendar(t, (iso) => setRec(t.dataset.item, { d: iso || undefined })); }; });
     v.querySelector('#hist').onclick = openHistory;
     if (!ro) v.querySelector('#clr').onclick = () => { if (Object.values(store.get(key, {})).some((r) => r?.p?.length) && !confirm('Clear these ticks and their photos?')) return; Object.values(store.get(key, {})).forEach((r) => (r?.p || []).forEach((h) => photoDel(BIKE.id, h))); store.set(key, {}); renderService(); };
     // Photos: thumbnails from this device; a fingerprint with no file here (an imported link) says so.
@@ -1101,7 +1143,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { closeMenus(); m.previousElementSibling.focus(); }
 });
 // One row of the owners table: name, date they took the bike, mileage then.
-const ownerRow = (w = {}) => `<div class="owner-row"><input type="text" class="ow-n" placeholder="Owner" aria-label="Owner" value="${esc(w.n || '')}" autocomplete="off"><input type="date" class="ow-d" aria-label="Took over on" value="${esc(w.d || '')}"><input type="number" class="ow-o num" aria-label="Odometer at handover" placeholder="${UNIT} at handover" min="0" value="${w.o ?? ''}"><button type="button" class="ow-x" aria-label="Remove owner">×</button></div>`;
+const ownerRow = (w = {}) => `<div class="owner-row"><input type="text" class="ow-n" placeholder="Owner" aria-label="Owner" value="${esc(w.n || '')}" autocomplete="off">${dateBtn('ow-d', w.d, 'aria-label="Took over on"')}<input type="number" class="ow-o num" aria-label="Odometer at handover" placeholder="${UNIT} at handover" min="0" value="${w.o ?? ''}"><button type="button" class="ow-x" aria-label="Remove owner">×</button></div>`;
 function renderBike() {
     const el = $('#bike');
     const odo = store.get('odo', '');
@@ -1145,7 +1187,7 @@ function renderBike() {
         BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').getAttribute('aria-pressed') === 'true';
         if (yr) BIKE.year = +yr;
         // The owners table, in ownership order. Handover readings are in the bike's unit.
-        BIKE.owners = sortOwners([...document.querySelectorAll('#owners .owner-row')].map((r) => ({ n: r.querySelector('.ow-n').value.trim(), d: r.querySelector('.ow-d').value, o: r.querySelector('.ow-o').value, u: unit })).filter((w) => w.n));
+        BIKE.owners = sortOwners([...document.querySelectorAll('#owners .owner-row')].map((r) => ({ n: r.querySelector('.ow-n').value.trim(), d: r.querySelector('.ow-d').dataset.value, o: r.querySelector('.ow-o').value, u: unit })).filter((w) => w.n));
         saveBikes(); store.set('odo', n);
         if (roWas !== BIKE.ro && view === 'service') renderService();
         if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
@@ -1158,7 +1200,7 @@ function renderBike() {
     };
     $('#bsave').onclick = save;
     $('#addowner').onclick = () => { $('#owners').insertAdjacentHTML('beforeend', ownerRow({ d: today(), o: $('#odo').value })); $('#owners .owner-row:last-child .ow-n').focus(); };
-    $('#owners').onclick = (e) => { if (e.target.closest('.ow-x')) e.target.closest('.owner-row').remove(); };
+    $('#owners').onclick = (e) => { if (e.target.closest('.ow-x')) e.target.closest('.owner-row').remove(); const d = e.target.closest('.ow-d'); if (d) openCalendar(d); };
     $('#bro').onclick = (e) => lockToggle(e.currentTarget);
     el.querySelectorAll('input').forEach((i) => { i.onkeydown = (e) => { if (e.key === 'Enter') save(); if (e.key === 'Escape') { editing = false; renderBike(); } }; });
     if ($('#bdel')) $('#bdel').onclick = async () => {
