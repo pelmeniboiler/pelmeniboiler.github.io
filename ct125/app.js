@@ -151,7 +151,36 @@ const photoPut = (bike, h, blob) => idb('readwrite', (s) => s.put(blob, photoKey
 const photoGet = (bike, h) => idb('readonly', (s) => s.get(photoKey(bike, h))).catch(() => null);
 const photoDel = (bike, h) => idb('readwrite', (s) => s.delete(photoKey(bike, h))).catch(() => {});
 const photosDelAll = (bike) => idb('readwrite', (s) => s.delete(IDBKeyRange.bound(photoKey(bike, ''), photoKey(bike, '\uffff')))).catch(() => {});
-const fingerprint = async (blob) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', await blob.arrayBuffer()))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+// A photo's fingerprint covers its pixels and the day it was added, so the
+// date can't be changed without the fingerprint (and the paper) disagreeing.
+// (Photos from before dates were kept are fingerprinted on their pixels alone.)
+const fingerprint = async (blob, added = '') => { const bytes = new Uint8Array(await blob.arrayBuffer()), tail = added ? new TextEncoder().encode(`\nadded ${added}`) : new Uint8Array(0), all = new Uint8Array(bytes.length + tail.length); all.set(bytes); all.set(tail, bytes.length); return [...new Uint8Array(await crypto.subtle.digest('SHA-256', all))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join(''); };
+// When the photo was taken, from the camera's own data in the file (EXIF), if it's there.
+async function takenOn(file) {
+    try {
+        const v = new DataView(await file.slice(0, 256 * 1024).arrayBuffer());
+        if (v.getUint16(0) !== 0xffd8) return '';
+        for (let o = 2; o + 4 < v.byteLength;) {
+            const mk = v.getUint16(o), len = v.getUint16(o + 2);
+            if (mk === 0xffe1 && v.getUint32(o + 4) === 0x45786966) {
+                const t = o + 10, le = v.getUint16(t) === 0x4949, u16 = (p) => v.getUint16(t + p, le), u32 = (p) => v.getUint32(t + p, le);
+                const tag = (ifd, want) => { const n = u16(ifd); for (let i = 0; i < n; i++) { const e = ifd + 2 + i * 12; if (u16(e) === want) return e; } return -1; };
+                const str = (e) => { if (e < 0) return ''; let s = ''; const off = u32(e + 8); for (let i = 0; i < 19; i++) s += String.fromCharCode(v.getUint8(t + off + i)); return s; };
+                const ifd0 = u32(4), ex = tag(ifd0, 0x8769);
+                const raw = (ex >= 0 ? str(tag(u32(ex + 8), 0x9003)) : '') || str(tag(ifd0, 0x0132));
+                const m = raw.match(/^(\d{4}):(\d\d):(\d\d)/);
+                return m && m[1] !== '0000' ? `${m[1]}-${m[2]}-${m[3]}` : '';
+            }
+            if ((mk & 0xff00) !== 0xff00) return '';
+            o += 2 + len;
+        }
+    } catch { /* not a JPEG with EXIF */ }
+    return '';
+}
+// In links and bike files a photo travels as "fingerprint@addedDay@takenDay".
+const phPack = (h, m = {}) => [h, m.a ? dayOf(m.a) : '', m.t ? dayOf(m.t) : ''].join('@').replace(/@+$/, '');
+const phUnpack = (s) => { const [h, a, t] = String(s).split('@'); return { h, a: a ? isoOf(+a) : '', t: t ? isoOf(+t) : '' }; };
+const phDates = (m = {}) => [m.t && `taken ${fmtDate(m.t)}`, m.a && `added ${fmtDate(m.a)}`].filter(Boolean).join(' · ');
 // Phone photos are several MB; 1,600 px keeps a receipt readable at a few hundred KB.
 async function shrinkPhoto(file) {
     const bmp = await createImageBitmap(file);
@@ -510,7 +539,7 @@ function renderService() {
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
             <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button>${ro ? '' : '<button type="button" id="clr">Clear</button>'}</span></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick">${dateBtn('tick-date', rec.d, `data-item="${esc(it.item)}"`, ro)}<input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? `<small class="look">Look for: ${esc(lookFor(label, it.item, rec))}</small>` : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick">${dateBtn('tick-date', rec.d, `data-item="${esc(it.item)}"`, ro)}<input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="${esc(phDates(rec.pd?.[h]) || 'Photo')}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? `<small class="look">Look for: ${esc(lookFor(label, it.item, rec))}</small>` : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -539,7 +568,7 @@ function renderService() {
         const blob = await photoGet(BIKE.id, t.dataset.ph);
         if (!blob) { t.classList.add('missing'); t.textContent = 'no file'; return; }
         const u = URL.createObjectURL(blob); thumbURLs.push(u); t.querySelector('img').src = u;
-        t.onclick = (e) => { e.preventDefault(); showPhoto(t.dataset.item, t.dataset.ph, u, key); };
+        t.onclick = (e) => { e.preventDefault(); showPhoto(t.dataset.item, t.dataset.ph, u, key, (store.get(key, {})[t.dataset.item] || {}).pd?.[t.dataset.ph]); };
     });
     v.querySelectorAll('.addph').forEach((b) => { b.onclick = (e) => { e.preventDefault(); const p = $('#photopick'); p.dataset.item = b.dataset.item; p.dataset.key = key; p.click(); }; });
     if (hasShop) v.querySelector('#copy').onclick = async (e) => {
@@ -555,13 +584,13 @@ $('#photopick').onchange = async (e) => {
     const d = store.get(key, {}); if (!d[item]) return;
     const rec = typeof d[item] === 'object' ? d[item] : {};
     for (const f of files) {
-        try { const blob = await shrinkPhoto(f), h = await fingerprint(blob); await photoPut(BIKE.id, h, blob); rec.p = [...new Set([...(rec.p || []), h])]; } catch (err) { alert(/quota|space/i.test(String(err?.name) + String(err?.message)) ? 'This device is out of space for photos.' : `${f.name} could not be read as a photo.`); break; }
+        try { const added = today(), taken = await takenOn(f), blob = await shrinkPhoto(f), h = await fingerprint(blob, added); await photoPut(BIKE.id, h, blob); rec.p = [...new Set([...(rec.p || []), h])]; rec.pd = { ...(rec.pd || {}), [h]: { a: added, ...(taken ? { t: taken } : {}) } }; } catch (err) { alert(/quota|space/i.test(String(err?.name) + String(err?.message)) ? 'This device is out of space for photos.' : `${f.name} could not be read as a photo.`); break; }
     }
     d[item] = rec; store.set(key, d); renderService();
 };
-function showPhoto(item, h, url, key) {
-    shareWin('photo', `<img class="photo-big" src="${url}" alt="${esc(item)}"><p>${esc(item)} · <span class="num">fingerprint ${esc(h.slice(0, 8))}</span></p>${BIKE.ro ? '' : '<div class="choices"><button type="button" id="phdel">Delete photo</button></div>'}`);
-    if ($('#phdel')) $('#phdel').onclick = () => { const d = store.get(key, {}); if (d[item]?.p) d[item].p = d[item].p.filter((x) => x !== h); store.set(key, d); photoDel(BIKE.id, h); closeShare(); renderService(); };
+function showPhoto(item, h, url, key, meta) {
+    shareWin('photo', `<img class="photo-big" src="${url}" alt="${esc(item)}"><p>${esc(item)} · <span class="num">fingerprint ${esc(h.slice(0, 8))}</span></p>${phDates(meta) ? `<p class="num">${esc(phDates(meta))}</p>` : ''}${BIKE.ro ? '' : '<div class="choices"><button type="button" id="phdel">Delete photo</button></div>'}`);
+    if ($('#phdel')) $('#phdel').onclick = () => { const d = store.get(key, {}); if (d[item]?.p) { d[item].p = d[item].p.filter((x) => x !== h); if (d[item].pd) delete d[item].pd[h]; } store.set(key, d); photoDel(BIKE.id, h); closeShare(); renderService(); };
 }
 // Every ticked job on this bike, by service, as a spreadsheet (CSV).
 // The record of one bike: [service, job, record] for every ticked job, oldest service first.
@@ -667,7 +696,7 @@ async function openHistory() {
                 <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span>${doerOf(at, r) ? ` · by ${esc(doerOf(at, r))}` : ''}</p>
                 ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
                 <p class="doc-proof">${box} attached: ${esc(proofOf(at, job))}</p>
-                ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8))).join(', ')}</span></p>` : ''}
+                ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8)) + (phDates(r.pd?.[h]) ? ` (${esc(phDates(r.pd[h]))})` : '')).join(', ')}</span></p>` : ''}
                 <p class="doc-note">Note ${line('fill')}</p>
             </li>`; }).join('')}</ol></section>`).join('') : '<p>Nothing ticked yet.</p>'}
         <footer class="doc-foot">
@@ -706,7 +735,7 @@ const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso +
 // [job index, day, odometer, km?, [photo fingerprints]].
 function bikePayload() {
     const h = {};
-    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length || r.by) row.push(r.p?.length ? r.p : null); if (r.by) row.push(r.by); (h[at] = h[at] || []).push(row); });
+    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length || r.by) row.push(r.p?.length ? r.p.map((h) => phPack(h, r.pd?.[h])) : null); if (r.by) row.push(r.by); (h[at] = h[at] || []).push(row); });
     return { v: 1, n: BIKE.name, m: modelId, y: BIKE.year || null, w: BIKE.owners || [], u: UNIT, o: store.get('odo', ''), h };
 }
 const photoCount = (p) => Object.values(p.h || {}).reduce((a, rows) => a + rows.reduce((b, r) => b + (r[4] || []).length, 0), 0);
@@ -752,10 +781,10 @@ async function qrSvg(text) {
 const blobURL = (blob) => new Promise((r) => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(blob); });
 async function downloadBikeFile() {
     const p = bikePayload(), photos = new Map();
-    for (const rows of Object.values(p.h)) for (const r of rows) for (const h of r[4] || []) { const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
+    for (const rows of Object.values(p.h)) for (const r of rows) for (const s of r[4] || []) { const { h } = phUnpack(s); const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
     let logo = ''; try { logo = (await (await fetch('/logo/shzh.svg')).text()).replace(/<title>.*?<\/title>/s, '').replace(/ width="\d+" height="\d+"/, ''); } catch { /* offline */ }
     const name = BIKE.name || 'CT125', q = (s) => esc(s);
-    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph, by]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}${doerOf(+at, { by }) ? ` · by ${q(doerOf(+at, { by }))}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
+    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph, by]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}${doerOf(+at, { by }) ? ` · by ${q(doerOf(+at, { by }))}` : ''}</p>${(ph || []).map(phUnpack).map((m) => photos.has(m.h) ? `<figure><img data-hash="${m.h}" src="${photos.get(m.h)}" alt="${q(it.item)}"><figcaption>fingerprint ${m.h.slice(0, 8)}${phDates(m) ? ` · ${q(phDates(m))}` : ''}</figcaption></figure>` : `<p class="miss">photo ${m.h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
     const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${q(name)} · service record</title>
@@ -802,7 +831,7 @@ function cleanPayload(p) {
     const h = {};
     for (const [at, rows] of Object.entries(p.h && typeof p.h === 'object' ? p.h : {})) {
         if (!/^\d{1,7}$/.test(at) || !Array.isArray(rows)) continue;
-        h[at] = rows.filter((r) => Array.isArray(r) && Number.isInteger(+r[0]) && +r[0] >= 0).map(([j, day, o, u, ph, by]) => [Math.trunc(+j) || 0, num(day), num(o), u ? 1 : 0, Array.isArray(ph) ? ph.filter((x) => /^[0-9a-f]{16}$/.test(x)) : null, str(by, 80) || undefined]);
+        h[at] = rows.filter((r) => Array.isArray(r) && Number.isInteger(+r[0]) && +r[0] >= 0).map(([j, day, o, u, ph, by]) => [Math.trunc(+j) || 0, num(day), num(o), u ? 1 : 0, Array.isArray(ph) ? ph.filter((x) => /^[0-9a-f]{16}(@\d{0,6}(@\d{0,6})?)?$/.test(x)) : null, str(by, 80) || undefined]);
     }
     return { n: str(p.n, 80), m: str(p.m, 10), y: num(p.y), u: p.u === 'km' ? 'km' : 'mi', o: num(p.o) == null ? '' : String(Math.max(0, num(p.o))), h,
         w: (Array.isArray(p.w) ? p.w : []).filter((w) => w && typeof w === 'object').map((w) => ({ n: str(w.n, 80), d: /^\d{4}-\d\d-\d\d$/.test(w.d) ? w.d : '', o: num(w.o) == null ? '' : String(num(w.o)), u: w.u === 'km' ? 'km' : 'mi' })).filter((w) => w.n) };
@@ -814,7 +843,8 @@ async function importBike(p, photos = null) {
     const name = p.n || 'CT125', same = p.n ? bikes.find((b) => b.name === p.n) : null;
     // Photos from a file are checked against the fingerprints the record lists.
     let good = 0; const ok = new Map();
-    if (photos) for (const [h, blob] of photos) { if (await fingerprint(blob) === h) { ok.set(h, blob); good++; } }
+    const added = {}; Object.values(p.h || {}).forEach((rows) => rows.forEach((r) => (r[4] || []).forEach((s) => { const m = phUnpack(s); added[m.h] = m.a; })));
+    if (photos) for (const [h, blob] of photos) { if ((await fingerprint(blob, added[h] || '')) === h || (await fingerprint(blob)) === h) { ok.set(h, blob); good++; } }
     // A device that has never been used has one empty, unnamed bike: the import takes its place.
     let blank = null;
     try { blank = bikes.length === 1 && !bikes[0].name && !Object.keys(localStorage).some((x) => x.startsWith(`ct125:b:${bikes[0].id}:`)) ? bikes[0] : null; } catch { /* private mode */ }
@@ -835,7 +865,7 @@ async function importBike(p, photos = null) {
         else { target = { id: 'b' + Date.now().toString(36), name: same ? copyName : p.n }; bikes.push(target); }
         Object.assign(target, { model, unit: p.u, year: p.y || undefined, owners: p.w || [], ro: $('#impro').getAttribute('aria-pressed') === 'true' }); delete target.visit; saveBikes();
         ls.set(`ct125:b:${target.id}:odo`, p.o ?? '');
-        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph, by]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph } : {}), ...(by ? { by } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
+        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph, by]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph.map((s) => phUnpack(s).h), pd: Object.fromEntries(ph.map(phUnpack).filter((m) => m.a || m.t).map((m) => [m.h, { ...(m.a ? { a: m.a } : {}), ...(m.t ? { t: m.t } : {}) }])) } : {}), ...(by ? { by } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
         for (const [h, blob] of ok) await photoPut(target.id, h, blob);
         ls.set('ct125:bike', target.id);
         history.replaceState(null, '', location.pathname); location.reload();

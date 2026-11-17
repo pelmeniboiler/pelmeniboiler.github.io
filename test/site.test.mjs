@@ -1217,6 +1217,7 @@ try {
             const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('.addph')]);
             await chooser.setFiles({ name: 'receipt.png', mimeType: 'image/png', buffer: shot });
             await page.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0);
+            const dated = /^added \d/.test(await page.getAttribute('.thumb', 'title'));
             await page.click('#bshare');
             await page.waitForFunction(() => /photo\)/.test(document.querySelector('#sharefile')?.textContent || ''));
             const note = await page.textContent('#sharebody');
@@ -1237,7 +1238,7 @@ try {
             await p5.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0, null, { timeout: 10000 }).catch(() => {});
             const got = await p5.evaluate(() => ({ year: document.querySelector('.bike-year').textContent, locked: document.querySelectorAll('.chk input[type=checkbox]:disabled').length, photo: document.querySelector('.thumb img')?.naturalWidth > 0, add: document.querySelectorAll('.addph').length }));
             await other.close();
-            ok(/use the bike file/.test(note) && /matches its fingerprint/.test(imp.text) && imp.ro && /🔒/.test(got.year) && got.locked > 0 && got.photo && got.add === 0,
+            ok(dated && /use the bike file/.test(note) && /matches its fingerprint/.test(imp.text) && imp.ro && /🔒/.test(got.year) && got.locked > 0 && got.photo && got.add === 0,
                 `CT125: a job's photo travels in the bike file, matches its fingerprint, and imports read-only (${JSON.stringify({ ro: imp.ro, ...got })})`);
         }
 
