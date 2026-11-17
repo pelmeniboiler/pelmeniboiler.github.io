@@ -438,7 +438,7 @@ function renderService() {
         store.set(key, d); renderService();
     }; });
     v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => { const d = store.get(key, {}); const r = typeof d[t.dataset.item] === 'object' ? d[t.dataset.item] : {}; d[t.dataset.item] = { ...r, d: t.value }; store.set(key, d); }; });
-    v.querySelector('#hist').onclick = exportHistory;
+    v.querySelector('#hist').onclick = openHistory;
     v.querySelector('#clr').onclick = () => { store.set(key, {}); renderService(); };
     if (hasShop) v.querySelector('#copy').onclick = async (e) => {
         const sd = shopData(items, store.get(key, {}));
@@ -448,6 +448,100 @@ function renderService() {
     };
 }
 // Every ticked job on this bike, by service, as a spreadsheet (CSV).
+// The record of one bike: [service, job, record] for every ticked job, oldest service first.
+function bikeRecords(id = BIKE.id) {
+    const pre = `ct125:b:${id}:chk:`, out = [];
+    try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
+        const at = +k.slice(pre.length), done = JSON.parse(localStorage.getItem(k) || '{}');
+        Object.entries(done).forEach(([job, r]) => { if (r) out.push([at, job, typeof r === 'object' ? r : {}]); });
+    }); } catch { /* private mode */ }
+    const order = (j) => M.items.findIndex((x) => x.item === j);
+    return out.sort((x, y) => x[0] - y[0] || order(x[1]) - order(y[1]));
+}
+const fmtDay = (iso) => { const s = fmtDate(iso); const m = s.match(/^(.*) \((.*)\)$/); return m ? `${m[1]} · ${m[2]}` : s; };
+// Service history as a page to print: each service, its jobs and dates, and room to write.
+function openHistory() {
+    const recs = bikeRecords(), by = new Map();
+    recs.forEach(([at, job, r]) => { if (!by.has(at)) by.set(at, []); by.get(at).push([job, r]); });
+    const actOf = (at, job) => { const it = M.items.find((x) => x.item === job) || {}; return ACT[it.every ? 'L' : it.sched?.[colOf(at)]] || ''; };
+    const rules = (n) => '<div class="rule"></div>'.repeat(n);
+    $('#hbody').innerHTML = `<h1>${esc(BIKE.name || 'CT125')}</h1><p class="who">${esc(D.name)} · ${esc(D.code)}${store.get('odo', '') !== '' ? ` · now ${(+store.get('odo', '')).toLocaleString()} ${UNIT}` : ''}</p>
+        ${by.size ? [...by].map(([at, jobs]) => `<section><h2 class="num">${dist(at)} ${UNIT}</h2><ul>${jobs.map(([job, r]) => `<li>${esc(job)}${actOf(at, job) ? ` · ${esc(actOf(at, job).toLowerCase())}` : ''} <span class="num">(${r.d ? esc(fmtDay(r.d)) : 'date: __________'}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''})</span>${rules(1)}</li>`).join('')}</ul><div class="notes">${rules(2)}</div></section>`).join('') : '<p class="empty-h">Nothing ticked yet.</p>'}`;
+    document.body.classList.add('printing');
+    $('#histwin').hidden = false; $('#histwin').scrollTop = 0; document.body.style.overflow = 'hidden';
+    $('#hclose').focus({ preventScroll: true });
+}
+function closeHistory() { $('#histwin').hidden = true; document.body.classList.remove('printing'); document.body.style.overflow = ''; }
+$('#hclose').onclick = closeHistory;
+$('#hprint').onclick = () => print();
+$('#hcsv').onclick = () => exportHistory();
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#histwin').hidden) closeHistory(); });
+
+/* ---------- share bike ---------- */
+// A bike travels as a link: name, year, unit, odometer and every ticked job,
+// compressed into the hash (#bike=…). Opening it offers to add the bike, or to
+// overwrite the one with the same name, so it can keep two devices in step.
+const b64u = { to: (u8) => btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), from: (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0)) };
+const pipe = async (u8, stream) => new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer());
+const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso + 'T00:00:00Z') - DAY0) / 864e5), isoOf = (n) => new Date(DAY0 + n * 864e5).toISOString().slice(0, 10);
+async function packBike() {
+    const h = {};
+    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; (h[at] = h[at] || []).push([j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]); });
+    const data = new TextEncoder().encode(JSON.stringify({ v: 1, n: BIKE.name, m: modelId, u: UNIT, o: store.get('odo', ''), h }));
+    try { return 'z' + b64u.to(await pipe(data, new CompressionStream('deflate-raw'))); } catch { return 'j' + b64u.to(data); }
+}
+async function unpackBike(s) {
+    const raw = b64u.from(s.slice(1));
+    const json = s[0] === 'z' ? await pipe(raw, new DecompressionStream('deflate-raw')) : raw;
+    return JSON.parse(new TextDecoder().decode(json));
+}
+const shareWin = (title, body) => { $('#sharetitle').innerHTML = title; $('#sharebody').innerHTML = body; $('#sharewin').hidden = false; };
+const closeShare = () => { $('#sharewin').hidden = true; };
+$('#shareclose').onclick = closeShare;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sharewin').hidden) closeShare(); });
+async function openShare() {
+    const url = `${location.origin}/ct125/#bike=${await packBike()}`;
+    shareWin('share.bike', `<div class="qr" id="qr"></div>
+        <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>`);
+    $('#shareurl').onfocus = (e) => e.target.select();
+    $('#sharecopy').onclick = async (e) => { try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copied'; } catch { $('#shareurl').select(); } };
+    if ($('#sharesend')) $('#sharesend').onclick = () => navigator.share({ title: BIKE.name || 'CT125', url }).catch(() => {});
+    try {
+        const qrcode = (await import('/ct125/vendor/qrcode.js')).default;
+        const qr = qrcode(0, 'L'); qr.addData(url, 'Byte'); qr.make();
+        const n = qr.getModuleCount(), q = 4; let d = '';
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (qr.isDark(y, x)) d += `M${x + q} ${y + q}h1v1h-1z`;
+        $('#qr').innerHTML = `<svg viewBox="0 0 ${n + 2 * q} ${n + 2 * q}" role="img" aria-label="QR code of the link" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="var(--bg-color)"/><path d="${d}" fill="currentColor"/></svg>`;
+    } catch { $('#qr').remove(); }
+}
+// Opened from a shared link.
+async function importBike(s) {
+    let p; try { p = await unpackBike(s); } catch { history.replaceState(null, '', location.pathname); return; }
+    const model = MODELS.find((m) => m.id === p.m) ? p.m : MODELS[0].id;
+    const recs = Object.values(p.h || {}).reduce((a, r) => a + r.length, 0);
+    const name = p.n || 'CT125', same = bikes.find((b) => (b.name || '') === (p.n || ''));
+    // A device that has never been used has one empty, unnamed bike: the import takes its place.
+    let blank = null;
+    try { blank = bikes.length === 1 && !bikes[0].name && !Object.keys(localStorage).some((x) => x.startsWith(`ct125:b:${bikes[0].id}:`)) ? bikes[0] : null; } catch { /* private mode */ }
+    let k = 2; while (bikes.some((b) => b.name === `${name} ${k}`)) k++;
+    const copyName = `${name} ${k}`;
+    shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(MODELS.find((m) => m.id === model).label)}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>
+        <div class="choices">${same ? `<button type="button" data-imp="over">Overwrite ${esc(name)}</button><button type="button" data-imp="add">Add as ${esc(copyName)}</button>` : '<button type="button" data-imp="add">Add</button>'}<button type="button" data-imp="no">Cancel</button></div>`);
+    $('#sharebody').querySelectorAll('[data-imp]').forEach((b) => { b.onclick = async () => {
+        if (b.dataset.imp === 'no') { closeShare(); history.replaceState(null, '', location.pathname); return; }
+        const items = (await (await fetch(MODELS.find((m) => m.id === model).data)).json()).maint.items;
+        let target;
+        if (b.dataset.imp === 'over') { target = same; try { Object.keys(localStorage).filter((x) => x.startsWith(`ct125:b:${same.id}:`)).forEach((x) => localStorage.removeItem(x)); } catch { /* private mode */ } }
+        else if (blank) { target = blank; target.name = p.n; }
+        else { target = { id: 'b' + Date.now().toString(36), name: same ? copyName : p.n }; bikes.push(target); }
+        Object.assign(target, { model, unit: p.u }); delete target.visit; saveBikes();
+        ls.set(`ct125:b:${target.id}:odo`, p.o ?? '');
+        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
+        ls.set('ct125:bike', target.id);
+        history.replaceState(null, '', location.pathname); location.reload();
+    }; });
+}
+
 function exportHistory() {
     const pre = `ct125:b:${BIKE.id}:chk:`, rows = [];
     try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
@@ -714,6 +808,7 @@ document.title = `CT125 Manual · ${D.name}`;
 // pencil turns the plate into fields; the floppy saves them. Other bikes, and
 // a new one, are in the menu beside it.
 const ICON = {
+    link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.3-3.3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3.3 3.3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     pencil: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 7l4 4M4 20l5-1" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
     floppy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l3 3v15H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 3v6h8V3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12" y="4.5" width="2.5" height="3" fill="currentColor"/><rect x="7" y="13" width="10" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
 };
@@ -723,7 +818,7 @@ const odometer = (n) => `<span class="odometer" role="img" aria-label="${(+n || 
 let editing = false;
 // Menus in the site's own dropdown (the hub's language menu), not the OS one.
 const DD = {};
-const dropdown = (id, label, items, current, onPick, cls = '') => { DD[id] = onPick; return `<div class="custom-dropdown ${cls}" id="${id}" data-value="${esc(current)}"><button type="button" class="custom-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">${label}<span class="custom-dropdown-arrow" aria-hidden="true">▾</span></button><div class="custom-dropdown-menu" role="listbox">${items.map(([v, t]) => `<a href="#" class="custom-dropdown-item" role="option" data-value="${esc(v)}" aria-selected="${v === current}">${t}</a>`).join('')}</div></div>`; };
+const dropdown = (id, label, items, current, onPick, cls = '') => { DD[id] = onPick; return `<div class="custom-dropdown ${cls}" id="${id}" data-value="${esc(current)}"><button type="button" class="custom-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">${label}<span class="custom-dropdown-arrow" aria-hidden="true"></span></button><div class="custom-dropdown-menu" role="listbox">${items.map(([v, t]) => `<a href="#" class="custom-dropdown-item" role="option" data-value="${esc(v)}" aria-selected="${v === current}">${t}</a>`).join('')}</div></div>`; };
 const closeMenus = (except) => document.querySelectorAll('.custom-dropdown-menu.show').forEach((m) => { if (m !== except) { m.classList.remove('show'); m.previousElementSibling.setAttribute('aria-expanded', 'false'); } });
 document.addEventListener('click', (e) => {
     const t = e.target.closest('.custom-dropdown-toggle');
@@ -765,7 +860,8 @@ function renderBike() {
             history.replaceState(null, '', location.pathname); location.reload();
         }, 'name-dd')}<span class="bike-year">${esc(MODEL.label)}</span></div>
         <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
-        <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button></span>`;
+        <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button><button type="button" id="bshare" class="icon" title="Share bike" aria-label="Share bike">${ICON.link}</button></span>`;
+        $('#bshare').onclick = openShare;
         $('#bedit').onclick = $('#odoview').onclick = () => { editing = true; renderBike(); ($('#bname').value ? $('#odo') : $('#bname')).focus(); };
         return;
     }
@@ -801,6 +897,7 @@ show(startTab);
 if (LINK.q && (startTab === 'torque' || startTab === 'specs')) { const f = $(startTab === 'torque' ? '#tf' : '#sf'); f.value = LINK.q; f.dispatchEvent(new Event('input')); }
 if (LINK.guide) { const g = D.guides.find((x) => slug(x.item) === slug(LINK.guide)); if (g) openGuide(g.item); }
 if (LINK.page && mp2p(LINK.page)) openPage(mp2p(LINK.page));
+if (LINK.bike) importBike(LINK.bike);
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
 window.addEventListener('hashchange', () => location.reload());

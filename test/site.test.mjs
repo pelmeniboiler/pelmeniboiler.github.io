@@ -1186,6 +1186,27 @@ try {
             await page.waitForFunction(() => /mi/.test(document.querySelector('.odometer')?.getAttribute('aria-label') || ''));
         }
 
+        // History opens as a printable page; share bike makes a link and QR code that bring the bike to another device.
+        {
+            await page.click('.tabs [data-v=service]');
+            await page.click('#hist');
+            const hist = await page.evaluate(() => ({ shown: !document.querySelector('#histwin').hidden, services: document.querySelectorAll('#hbody section').length, jobs: document.querySelectorAll('#hbody li').length, rules: document.querySelectorAll('#hbody .rule').length }));
+            await page.click('#hclose');
+            await page.click('#bshare');
+            await page.waitForSelector('#qr svg');
+            const url = await page.inputValue('#shareurl');
+            await page.click('#shareclose');
+            const other = await browser.newContext();
+            const p4 = await other.newPage();
+            await p4.goto(url, { waitUntil: 'load' });
+            await p4.waitForSelector('#sharewin:not([hidden]) [data-imp=add]');
+            await p4.click('[data-imp=add]');
+            await p4.waitForFunction(() => document.querySelector('.bike-name')?.textContent === 'Red' && /7,450/.test(document.querySelector('.odometer')?.getAttribute('aria-label') || ''));
+            const recs = await p4.evaluate(() => Object.keys(localStorage).filter((k) => /:chk:/.test(k)).length);
+            await other.close();
+            ok(hist.shown && hist.services >= 1 && hist.jobs >= 1 && hist.rules > hist.jobs && /#bike=/.test(url) && recs >= 1, `CT125: history page and share-bike link round trip (${JSON.stringify({ ...hist, recs, len: url.length })})`);
+        }
+
         // Tools owned counts every tool on the list, not only the priced ones.
         await page.click('.tabs [data-v=tools]');
         const tools = await page.evaluate(() => ({ shown: document.querySelector('.tl-sum b').textContent, rows: document.querySelector('#v-tools .box').querySelectorAll('.trow').length, opt: document.querySelector('#v-tools .box').querySelectorAll('.tag2').length }));
