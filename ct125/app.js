@@ -93,6 +93,24 @@ const idb = (mode, fn) => new Promise((res, rej) => {
     open.onerror = () => rej(open.error);
     open.onsuccess = () => { const tx = open.result.transaction('files', mode); const rq = fn(tx.objectStore('files')); tx.oncomplete = () => res(rq.result); tx.onerror = () => rej(tx.error); };
 });
+/* ---------- photos ---------- */
+// Photos of receipts and work, kept on this device only (IndexedDB), under
+// photo:<bike>:<fingerprint>. A ticked job lists its photos' fingerprints
+// (the first 16 hex digits of the SHA-256 of the stored JPEG).
+const photoKey = (bike, h) => `photo:${bike}:${h}`;
+const photoPut = (bike, h, blob) => idb('readwrite', (s) => s.put(blob, photoKey(bike, h)));
+const photoGet = (bike, h) => idb('readonly', (s) => s.get(photoKey(bike, h))).catch(() => null);
+const photoDel = (bike, h) => idb('readwrite', (s) => s.delete(photoKey(bike, h))).catch(() => {});
+const photosDelAll = (bike) => idb('readwrite', (s) => s.delete(IDBKeyRange.bound(photoKey(bike, ''), photoKey(bike, '\uffff')))).catch(() => {});
+const fingerprint = async (blob) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', await blob.arrayBuffer()))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+// Phone photos are several MB; 1,600 px keeps a receipt readable at a few hundred KB.
+async function shrinkPhoto(file) {
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    return new Promise((r) => c.toBlob(r, 'image/jpeg', 0.82));
+}
 const pdf = { doc: null, n: 0, shift: store.get('pdfShift', 0), urls: new Map(), queue: Promise.resolve() };
 const hasPdf = () => !!pdf.doc;
 async function openPdf(blob) {
@@ -415,14 +433,15 @@ function renderService() {
     const col = svcCol, label = svcAt || STEPS[col];
     const key = 'chk:' + label;
     const done = store.get(key, {});
-    const items = dueItems(col);
+    const items = dueItems(col), ro = !!BIKE.ro;
     v.innerHTML = `
+        ${ro ? '<p class="ro-note">Read-only record, as it was handed over. To log your own work, edit the bike with the pencil and turn read-only off.</p>' : ''}
         <div class="svc-top">
             <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${stepIn(i, UNIT).toLocaleString()}</b><span>${stepIn(i, OTHER).toLocaleString()} ${OTHER}</span></button>`).join('')}</div></div>
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
-            <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button><button type="button" id="clr">Clear</button></span></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done">${rec.o ? `<span class="num">${(+rec.o).toLocaleString()} ${esc(rec.u || UNIT)}</span>` : ''}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+            <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button>${ro ? '' : '<button type="button" id="clr">Clear</button>'}</span></div>
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}>${rec.o ? `<span class="num">${(+rec.o).toLocaleString()} ${esc(rec.u || UNIT)}</span>` : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? '' : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -433,19 +452,43 @@ function renderService() {
     v.querySelectorAll('.ms button').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.col, null); renderService(); }; });
     // A tick records the day and the odometer, for a service history to hand over with the bike.
     v.querySelectorAll('.chk input[type=checkbox]').forEach((c) => { c.onchange = () => {
-        const d = store.get(key, {}), odo = parseFloat(store.get('odo', ''));
-        if (c.checked) d[c.dataset.item] = { d: today(), ...(isNaN(odo) ? {} : { o: odo, u: UNIT }) }; else delete d[c.dataset.item];
+        const d = store.get(key, {}), odo = parseFloat(store.get('odo', '')), had = (d[c.dataset.item] || {}).p || [];
+        if (!c.checked && had.length && !confirm(`Untick and delete its ${had.length} photo${had.length === 1 ? '' : 's'}?`)) { c.checked = true; return; }
+        if (c.checked) d[c.dataset.item] = { d: today(), ...(isNaN(odo) ? {} : { o: odo, u: UNIT }) }; else { had.forEach((h) => photoDel(BIKE.id, h)); delete d[c.dataset.item]; }
         store.set(key, d); renderService();
     }; });
     v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => { const d = store.get(key, {}); const r = typeof d[t.dataset.item] === 'object' ? d[t.dataset.item] : {}; d[t.dataset.item] = { ...r, d: t.value }; store.set(key, d); }; });
     v.querySelector('#hist').onclick = openHistory;
-    v.querySelector('#clr').onclick = () => { store.set(key, {}); renderService(); };
+    if (!ro) v.querySelector('#clr').onclick = () => { if (Object.values(store.get(key, {})).some((r) => r?.p?.length) && !confirm('Clear these ticks and their photos?')) return; Object.values(store.get(key, {})).forEach((r) => (r?.p || []).forEach((h) => photoDel(BIKE.id, h))); store.set(key, {}); renderService(); };
+    // Photos: thumbnails from this device; a fingerprint with no file here (an imported link) says so.
+    thumbURLs.forEach((u) => URL.revokeObjectURL(u)); thumbURLs = [];
+    v.querySelectorAll('.thumb').forEach(async (t) => {
+        const blob = await photoGet(BIKE.id, t.dataset.ph);
+        if (!blob) { t.classList.add('missing'); t.textContent = 'no file'; return; }
+        const u = URL.createObjectURL(blob); thumbURLs.push(u); t.querySelector('img').src = u;
+        t.onclick = (e) => { e.preventDefault(); showPhoto(t.dataset.item, t.dataset.ph, u, key); };
+    });
+    v.querySelectorAll('.addph').forEach((b) => { b.onclick = (e) => { e.preventDefault(); const p = $('#photopick'); p.dataset.item = b.dataset.item; p.dataset.key = key; p.click(); }; });
     if (hasShop) v.querySelector('#copy').onclick = async (e) => {
         const sd = shopData(items, store.get(key, {}));
         const txt = `${D.name} — ${dist(label)} ${UNIT} service\n` + (sd.tl.length ? '\nTOOLS\n' + sd.tl.map((id) => `- ${TOOLS[id].n}`).join('\n') + '\n' : '') + TIERS.map(([tk, name]) => { const rs = sd.open.filter((x) => x.r[5] === tk); return rs.length ? `\n${name.toUpperCase()}\n` + rs.map(({ r: [n, d, pg, , pn], job }) => `- ${n}${pn ? ' — Honda ' + pn : ''} (${d}) [${job}, p. ${pg}]`).join('\n') : ''; }).join('\n');
         try { await navigator.clipboard.writeText(txt); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Not copied'; }
         setTimeout(() => { e.target.textContent = 'Copy'; }, 1800);
     };
+}
+let thumbURLs = [];
+$('#photopick').onchange = async (e) => {
+    const files = [...e.target.files], { item, key } = e.target.dataset; e.target.value = '';
+    const d = store.get(key, {}); if (!d[item]) return;
+    const rec = typeof d[item] === 'object' ? d[item] : {};
+    for (const f of files) {
+        try { const blob = await shrinkPhoto(f), h = await fingerprint(blob); await photoPut(BIKE.id, h, blob); rec.p = [...new Set([...(rec.p || []), h])]; } catch { alert(`${f.name} could not be read as a photo.`); }
+    }
+    d[item] = rec; store.set(key, d); renderService();
+};
+function showPhoto(item, h, url, key) {
+    shareWin('photo', `<img class="photo-big" src="${url}" alt="${esc(item)}"><p>${esc(item)} · <span class="num">fingerprint ${esc(h.slice(0, 8))}</span></p>${BIKE.ro ? '' : '<div class="choices"><button type="button" id="phdel">Delete photo</button></div>'}`);
+    if ($('#phdel')) $('#phdel').onclick = () => { const d = store.get(key, {}); if (d[item]?.p) d[item].p = d[item].p.filter((x) => x !== h); store.set(key, d); photoDel(BIKE.id, h); closeShare(); renderService(); };
 }
 // Every ticked job on this bike, by service, as a spreadsheet (CSV).
 // The record of one bike: [service, job, record] for every ticked job, oldest service first.
@@ -498,6 +541,7 @@ async function openHistory() {
                 <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span></p>
                 ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
                 <p class="doc-proof">${box} attached: ${esc(ATTACH[act] || 'photo')}${parts ? ` (${esc(parts)})` : ''}${act === 'R' && oldPart(job, act) ? ' · photo of the old part' : ''}</p>
+                ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8))).join(', ')}</span></p>` : ''}
                 <p class="doc-note">Note ${line('fill')}</p>
             </li>`; }).join('')}</ol></section>`).join('') : '<p>Nothing ticked yet.</p>'}
         <footer class="doc-foot">
@@ -530,10 +574,16 @@ const SITE = /^https:$/.test(location.protocol) && !/^(localhost|127\.|\[::1\])/
 const b64u = { to: (u8) => btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), from: (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0)) };
 const pipe = async (u8, stream) => new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer());
 const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso + 'T00:00:00Z') - DAY0) / 864e5), isoOf = (n) => new Date(DAY0 + n * 864e5).toISOString().slice(0, 10);
-async function packBike() {
+// Everything about the bike except the photos themselves: rows are
+// [job index, day, odometer, km?, [photo fingerprints]].
+function bikePayload() {
     const h = {};
-    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; (h[at] = h[at] || []).push([j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]); });
-    const data = new TextEncoder().encode(JSON.stringify({ v: 1, n: BIKE.name, m: modelId, u: UNIT, o: store.get('odo', ''), h }));
+    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length) row.push(r.p); (h[at] = h[at] || []).push(row); });
+    return { v: 1, n: BIKE.name, m: modelId, u: UNIT, o: store.get('odo', ''), h };
+}
+const photoCount = (p) => Object.values(p.h || {}).reduce((a, rows) => a + rows.reduce((b, r) => b + (r[4] || []).length, 0), 0);
+async function packBike() {
+    const data = new TextEncoder().encode(JSON.stringify(bikePayload()));
     try { return 'z' + b64u.to(await pipe(data, new CompressionStream('deflate-raw'))); } catch { return 'j' + b64u.to(data); }
 }
 async function unpackBike(s) {
@@ -546,9 +596,13 @@ const closeShare = () => { $('#sharewin').hidden = true; };
 $('#shareclose').onclick = closeShare;
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sharewin').hidden) closeShare(); });
 async function openShare() {
+    const nph = photoCount(bikePayload());
     const url = `${SITE}/ct125/#bike=${await packBike()}`;
     shareWin('share.bike', `<div class="qr" id="qr"></div>
-        <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>`);
+        <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>
+        ${nph ? `<p>Photos don’t fit in a link or a QR code. This link carries the record and each photo’s fingerprint; ${nph === 1 ? 'the photo travels' : `the ${nph} photos travel`} in the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>` : ''}
+        <div class="choices"><button type="button" id="sharefile">Download bike file${nph ? ` (record and ${nph} photo${nph === 1 ? '' : 's'})` : ''}</button></div>`);
+    $('#sharefile').onclick = downloadBikeFile;
     $('#shareurl').onfocus = (e) => e.target.select();
     $('#sharecopy').onclick = async (e) => { try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copied'; } catch { $('#shareurl').select(); } };
     if ($('#sharesend')) $('#sharesend').onclick = () => navigator.share({ title: BIKE.name || 'CT125', url }).catch(() => {});
@@ -565,29 +619,78 @@ async function qrSvg(text) {
         return `<svg viewBox="0 0 ${n + 2 * q} ${n + 2 * q}" role="img" aria-label="QR code" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="var(--bg-color)"/><path d="${d}" fill="currentColor"/></svg>`;
     } catch { return ''; }
 }
-// Opened from a shared link.
-async function importBike(s) {
-    let p; try { p = await unpackBike(s); } catch { history.replaceState(null, '', location.pathname); return; }
+// The bike file: one self-contained web page with the record and its photos.
+// It opens in any browser; ct125.manual reads it back with "Open bike file…".
+const blobURL = (blob) => new Promise((r) => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(blob); });
+async function downloadBikeFile() {
+    const p = bikePayload(), photos = new Map();
+    for (const rows of Object.values(p.h)) for (const r of rows) for (const h of r[4] || []) { const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
+    let logo = ''; try { logo = (await (await fetch('/logo/shzh.svg')).text()).replace(/<title>.*?<\/title>/s, '').replace(/ width="\d+" height="\d+"/, ''); } catch { /* offline */ }
+    const name = BIKE.name || 'CT125', q = (s) => esc(s);
+    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
+    const html = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${q(name)} · service record</title>
+<style>
+body { margin: 0; padding: 24px 20px 60px; max-width: 780px; font: 16px/1.45 Georgia, 'Times New Roman', serif; color: #000; background: #fff; text-align: left; }
+header { display: flex; gap: 14px; align-items: center; border-bottom: 3px double #000; padding-bottom: 10px; }
+header svg { width: 52px; height: 52px; flex: none; }
+h1 { margin: 0; font-size: 1.7rem; } h2 { margin: 26px 0 6px; font-size: 1.2rem; border-bottom: 2px solid #000; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; } dt { font-weight: bold; } dd { margin: 0; }
+.name { font-style: italic; font-size: 1.6rem; }
+ol { padding-left: 1.3em; } li { padding: 6px 0; border-bottom: 1px solid #000; } li p { margin: 0; }
+figure { margin: 8px 0; } figure img { display: block; max-width: 100%; max-height: 70vh; border: 1px solid #000; } figcaption, .miss, footer { font-size: .9rem; }
+footer { margin-top: 30px; padding-top: 12px; border-top: 3px double #000; }
+</style></head><body>
+<header>${logo}<div><h1>Service record</h1><p style="margin:0">Exported ${q(fmtDay(today()))}</p></div></header>
+<dl><dt>Bike</dt><dd class="name">${q(name)}</dd><dt>Model</dt><dd>${q(D.name)} · ${q(D.code)}</dd><dt>Odometer</dt><dd>${p.o !== '' ? `${(+p.o).toLocaleString()} ${UNIT}` : '—'}</dd><dt>Photos</dt><dd>${photos.size}</dd></dl>
+${services || '<p>Nothing ticked yet.</p>'}
+<footer><p>To take over this bike with its record and photos: open <b>${q(SITE.replace(/^https?:\/\//, ''))}/ct125/</b>, open the menu on the bike’s name, choose <b>Open bike file…</b> and pick this file. Each photo’s fingerprint can be checked against the printed service record.</p></footer>
+<script type="application/json" id="ct125-bike">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>
+</body></html>`;
+    const el = document.createElement('a');
+    el.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    el.download = `${slug(name)}-record.html`; el.click();
+    setTimeout(() => URL.revokeObjectURL(el.href), 2000);
+}
+$('#bikefilepick').onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try {
+        const doc = new DOMParser().parseFromString(await f.text(), 'text/html');
+        const p = JSON.parse(doc.getElementById('ct125-bike').textContent);
+        const photos = new Map();
+        for (const img of doc.querySelectorAll('img[data-hash]')) { const blob = await (await fetch(img.getAttribute('src'))).blob(); photos.set(img.dataset.hash, blob); }
+        importBike(p, photos);
+    } catch { alert('That file is not a CT125 bike file.'); }
+};
+// Opened from a shared link (photos == null) or a bike file (photos: fingerprint → Blob).
+async function importBike(p, photos = null) {
     const model = MODELS.find((m) => m.id === p.m) ? p.m : MODELS[0].id;
-    const recs = Object.values(p.h || {}).reduce((a, r) => a + r.length, 0);
+    const recs = Object.values(p.h || {}).reduce((a, r) => a + r.length, 0), nph = photoCount(p);
     const name = p.n || 'CT125', same = bikes.find((b) => (b.name || '') === (p.n || ''));
+    // Photos from a file are checked against the fingerprints the record lists.
+    let good = 0; const ok = new Map();
+    if (photos) for (const [h, blob] of photos) { if (await fingerprint(blob) === h) { ok.set(h, blob); good++; } }
     // A device that has never been used has one empty, unnamed bike: the import takes its place.
     let blank = null;
     try { blank = bikes.length === 1 && !bikes[0].name && !Object.keys(localStorage).some((x) => x.startsWith(`ct125:b:${bikes[0].id}:`)) ? bikes[0] : null; } catch { /* private mode */ }
     let k = 2; while (bikes.some((b) => b.name === `${name} ${k}`)) k++;
     const copyName = `${name} ${k}`;
-    shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(MODELS.find((m) => m.id === model).label)}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>
+    const photoLine = !nph ? '' : photos ? `<p>${nph === 1 ? (good ? 'The photo matches its fingerprint in the record.' : 'The photo does not match its fingerprint in the record, so it was left out.') : `${good} of ${nph} photos match their fingerprints in the record${good < nph ? '; the others were left out' : ''}.`}</p>` : `<p>This record lists ${nph} photo${nph === 1 ? '' : 's'}. Photos only travel in the bike file: ask for it, then choose <b>Open bike file…</b> in the menu on the bike’s name.</p>`;
+    shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(MODELS.find((m) => m.id === model).label)}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>${photoLine}
+        <label class="ro-pick"><input type="checkbox" id="impro"${same ? '' : ' checked'}> Read-only: keep this record exactly as it was handed over, so nothing gets ticked by mistake</label>
         <div class="choices">${same ? `<button type="button" data-imp="over">Overwrite ${esc(name)}</button><button type="button" data-imp="add">Add as ${esc(copyName)}</button>` : '<button type="button" data-imp="add">Add</button>'}<button type="button" data-imp="no">Cancel</button></div>`);
     $('#sharebody').querySelectorAll('[data-imp]').forEach((b) => { b.onclick = async () => {
         if (b.dataset.imp === 'no') { closeShare(); history.replaceState(null, '', location.pathname); return; }
         const items = (await (await fetch(MODELS.find((m) => m.id === model).data)).json()).maint.items;
         let target;
-        if (b.dataset.imp === 'over') { target = same; try { Object.keys(localStorage).filter((x) => x.startsWith(`ct125:b:${same.id}:`)).forEach((x) => localStorage.removeItem(x)); } catch { /* private mode */ } }
+        if (b.dataset.imp === 'over') { target = same; await photosDelAll(same.id); try { Object.keys(localStorage).filter((x) => x.startsWith(`ct125:b:${same.id}:`)).forEach((x) => localStorage.removeItem(x)); } catch { /* private mode */ } }
         else if (blank) { target = blank; target.name = p.n; }
         else { target = { id: 'b' + Date.now().toString(36), name: same ? copyName : p.n }; bikes.push(target); }
-        Object.assign(target, { model, unit: p.u }); delete target.visit; saveBikes();
+        Object.assign(target, { model, unit: p.u, ro: $('#impro').checked }); delete target.visit; saveBikes();
         ls.set(`ct125:b:${target.id}:odo`, p.o ?? '');
-        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
+        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
+        for (const [h, blob] of ok) await photoPut(target.id, h, blob);
         ls.set('ct125:bike', target.id);
         history.replaceState(null, '', location.pathname); location.reload();
     }; });
@@ -902,14 +1005,16 @@ function renderBike() {
             if (!isNaN(n) && from !== v) f.value = Math.round(conv(n, from, v));
             dd.dataset.from = v; dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = v;
         }, 'unit-dd')}</span>
+        <label class="ro-toggle"><input type="checkbox" id="bro"${BIKE.ro ? ' checked' : ''}> read-only</label>
         <span class="bike-tools"><button type="button" id="bsave" class="icon" title="Save" aria-label="Save">${ICON.floppy}</button>${bikes.length > 1 && !BIKE.visit ? '<button type="button" id="bdel">Remove</button>' : ''}</span>`;
     } else {
         el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
-        <div class="plate">${dropdown('bpick', `<span class="bike-name">${esc(nameOf(BIKE, bikes.indexOf(BIKE)))}</span>`, [...bikes.map((b, i) => [b.id, esc(nameOf(b, i))]), ...(BIKE.visit ? [[BIKE.id, esc(MODEL.label)]] : []), ['new', '+ Add new bike']], BIKE.id, (v) => {
+        <div class="plate">${dropdown('bpick', `<span class="bike-name">${esc(nameOf(BIKE, bikes.indexOf(BIKE)))}</span>`, [...bikes.map((b, i) => [b.id, esc(nameOf(b, i))]), ...(BIKE.visit ? [[BIKE.id, esc(MODEL.label)]] : []), ['new', '+ Add new bike'], ['file', 'Open bike file…']], BIKE.id, (v, dd) => {
+            if (v === 'file') { dd.dataset.value = BIKE.id; $('#bikefilepick').click(); return; }
             if (v === BIKE.id) return;
             if (v === 'new') { const id = 'b' + Date.now().toString(36); bikes.push({ id, name: '', model: modelId, unit: UNIT }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true); } else ls.set('ct125:bike', v);
             history.replaceState(null, '', location.pathname); location.reload();
-        }, 'name-dd')}<span class="bike-year">${esc(MODEL.label)}</span></div>
+        }, 'name-dd')}<span class="bike-year">${esc(MODEL.label)}${BIKE.ro ? ' · read-only' : ''}</span></div>
         <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
         <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button><button type="button" id="bshare" class="icon" title="Share bike" aria-label="Share bike">${ICON.link}</button></span>`;
         $('#bshare').onclick = openShare;
@@ -920,7 +1025,9 @@ function renderBike() {
         const name = $('#bname').value.trim(), year = $('#byear').dataset.value, unit = $('#bunit').dataset.value, n = $('#odo').value;
         if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
         const moved = year !== BIKE.model || unit !== UNIT;
-        BIKE.name = name; BIKE.model = year; BIKE.unit = unit; saveBikes(); store.set('odo', n);
+        const roWas = !!BIKE.ro;
+        BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').checked; saveBikes(); store.set('odo', n);
+        if (roWas !== BIKE.ro && view === 'service') renderService();
         if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
         editing = false; renderBike();
         const k = odoNative();
@@ -931,8 +1038,9 @@ function renderBike() {
     };
     $('#bsave').onclick = save;
     el.querySelectorAll('input').forEach((i) => { i.onkeydown = (e) => { if (e.key === 'Enter') save(); if (e.key === 'Escape') { editing = false; renderBike(); } }; });
-    if ($('#bdel')) $('#bdel').onclick = () => {
-        if (!confirm(`Remove ${BIKE.name || 'this bike'} and its saved service history?`)) return;
+    if ($('#bdel')) $('#bdel').onclick = async () => {
+        if (!confirm(`Remove ${BIKE.name || 'this bike'} and its saved service history and photos?`)) return;
+        await photosDelAll(BIKE.id);
         try { Object.keys(localStorage).filter((k) => k.startsWith(`ct125:b:${BIKE.id}:`)).forEach((k) => localStorage.removeItem(k)); } catch { /* private mode */ }
         bikes = bikes.filter((b) => b.id !== BIKE.id); saveBikes(); ls.set('ct125:bike', bikes[0].id); location.reload();
     };
@@ -948,7 +1056,7 @@ show(startTab);
 if (LINK.q && (startTab === 'torque' || startTab === 'specs')) { const f = $(startTab === 'torque' ? '#tf' : '#sf'); f.value = LINK.q; f.dispatchEvent(new Event('input')); }
 if (LINK.guide) { const g = D.guides.find((x) => slug(x.item) === slug(LINK.guide)); if (g) openGuide(g.item); }
 if (LINK.page && mp2p(LINK.page)) openPage(mp2p(LINK.page));
-if (LINK.bike) importBike(LINK.bike);
+if (LINK.bike) unpackBike(LINK.bike).then((p) => importBike(p)).catch(() => history.replaceState(null, '', location.pathname));
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
 window.addEventListener('hashchange', () => location.reload());

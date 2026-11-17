@@ -89,6 +89,19 @@
         .tick { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 4px; font-size: .84rem; text-decoration: none; }
         .tick-date { width: auto; height: auto; font: inherit; padding: 1px 4px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--text-color); }
         .bh-tools { display: flex; gap: 6px; }
+        .thumb { width: 44px; height: 44px; padding: 0; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; font-size: .7rem; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .thumb.missing { border-style: dashed; }
+        .addph { padding: 1px 8px; font-size: .84rem; }
+        .ro-note { margin: 0; padding: 8px 12px; border: 2px dashed var(--text-color); }
+        .ro-toggle, .ro-pick { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+        .ro-pick { align-items: flex-start; }
+        .ro-toggle input, .ro-pick input { width: 18px; height: 18px; accent-color: var(--text-color); flex: none; }
+        /* read-only: the site strikes out disabled labels; here the row is still readable */
+        .chk:has(> input:disabled) { text-decoration: none; cursor: default; }
+        .chk:not(.done):has(> input:disabled) .nm2 * { text-decoration: none; }
+        .share-win p { margin: 0; }
+        .photo-big { max-width: 100%; max-height: 60vh; border: 1px solid var(--text-color); align-self: flex-start; }
         /* Menus point sideways when closed, down when open. */
         .custom-dropdown-arrow { font-family: var(--font-emoji); }
         .custom-dropdown-arrow::before { content: '🞂'; }
@@ -411,6 +424,8 @@
         <aside class="vinfo" id="vpanel"></aside>
     </div>
 </div>
+<input type="file" id="photopick" accept="image/*" multiple hidden>
+<input type="file" id="bikefilepick" accept=".html,text/html" hidden>
 <input type="file" id="pdfpick" accept="application/pdf,.pdf" hidden>
 <input type="file" id="restorepick" accept="application/json,.json" hidden>
 <script type="module" src="/ct125/app.js"></script>
