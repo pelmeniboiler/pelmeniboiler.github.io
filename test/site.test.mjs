@@ -1174,7 +1174,7 @@ try {
 
         // A tick is dated, and the bike can switch to kilometres: the reading converts and the service list leads with km.
         {
-            const tick = await page.evaluate(() => document.querySelector('.chk .tick-date')?.value);
+            const tick = await page.evaluate(() => document.querySelector('.chk .tick-date')?.dataset.value);
             await page.click('#bedit'); await page.click('#bunit .custom-dropdown-toggle'); await page.click('#bunit .custom-dropdown-item[data-value="km"]');
             const field = await page.inputValue('#odo');
             await page.click('#bsave');
@@ -1255,9 +1255,9 @@ try {
             await p6.waitForFunction(() => /Zhulkovsky’s/.test(document.querySelector('.bike-year')?.textContent || ''));
             await p6.click('.tabs [data-v=service]'); await p6.click('.ms button >> nth=0');
             await p6.click('.chk input[type=checkbox] >> nth=0');
-            const old = await p6.evaluate(() => ({ odo: document.querySelector('.tick-odo').value, date: document.querySelector('.tick-date').value, by: document.querySelector('.by-dd .custom-dropdown-toggle')?.textContent.trim() }));
+            const old = await p6.evaluate(() => ({ odo: document.querySelector('.tick-odo').value, date: document.querySelector('.tick-date').dataset.value, by: document.querySelector('.by-dd .custom-dropdown-toggle')?.textContent.trim() }));
             await p6.click('.ms button >> nth=2'); await p6.click('.chk input[type=checkbox] >> nth=0');
-            const fresh = await p6.evaluate(() => ({ pickers: document.querySelectorAll('.by-dd').length, date: document.querySelector('.tick-date').value }));
+            const fresh = await p6.evaluate(() => ({ pickers: document.querySelectorAll('.by-dd').length, date: document.querySelector('.tick-date').dataset.value }));
             await p6.click('#bedit'); await p6.click('#bro'); await p6.click('#bsave');
             const count = await p6.evaluate(() => document.querySelector('.owner-count')?.textContent);
             const chuck = await p6.evaluate(() => /formerly Chuck’s/.test(document.querySelector('.bike-year').textContent));
@@ -1267,6 +1267,16 @@ try {
             const cited = await p6.evaluate(() => [...document.querySelectorAll('#vpanel .gbtn')].map((b) => b.textContent).join('|'));
             await o2.close();
             ok(count === '2 owners' && chuck && look.worth && look.tip && /Valve clearance/.test(cited) && old.odo === '600' && old.date === '' && /Charles Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh, count, chuck, look, cited })})`);
+        }
+
+        // Dates use the app's own calendar (two colours, no browser picker), and number fields have no spinners.
+        {
+            const native = await page.evaluate(() => document.querySelectorAll('#v-service input[type=date]').length);
+            await page.click('.chk .tick-date');
+            await page.waitForSelector('.cal');
+            await page.click('.cal-foot button >> text=Today');
+            const picked = await page.evaluate(() => ({ open: !!document.querySelector('.cal'), value: document.querySelector('.chk .tick-date').dataset.value, spin: getComputedStyle(document.querySelector('.tick-odo')).appearance }));
+            ok(native === 0 && !picked.open && /^\d{4}-\d\d-\d\d$/.test(picked.value) && picked.spin === 'textfield', `CT125: dates use the app's calendar; numbers have no spinners (${JSON.stringify({ native, ...picked })})`);
         }
 
         // Tools owned counts every tool on the list, not only the priced ones.

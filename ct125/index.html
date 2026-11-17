@@ -87,8 +87,27 @@
         .bike button:hover, .bike button:focus-visible { color: var(--bg-color); }
         .bike .name-dd button:hover { color: var(--text-color); }
         .tick { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 4px; font-size: .84rem; text-decoration: none; }
-        .tick-date { width: auto; height: auto; font: inherit; padding: 1px 4px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--text-color); }
         .bh-tools { display: flex; gap: 6px; }
+        /* Numbers are typed: no grey spinner arrows. */
+        input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .datebtn { padding: 1px 8px; font: inherit; font-size: .9rem; white-space: nowrap; }
+        .datebtn:disabled { cursor: default; }
+        .owner-row .ow-d { min-height: 40px; }
+        /* The calendar: square cells, the theme's two colours, nothing moves. */
+        .cal { position: fixed; z-index: 90; width: 292px; padding: 8px; background: var(--win-bg-color); color: var(--text-color); border: 2px solid var(--text-color); }
+        .cal button { border: 1px solid transparent; background: none; color: inherit; padding: 0; font: inherit; }
+        .cal button:hover, .cal button:focus-visible { border-color: var(--text-color); background: none; color: inherit; outline: none; }
+        .cal-head { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
+        .cal-head b { flex: 1; text-align: center; }
+        .cal-head button { width: 32px; height: 32px; font-size: 1.1rem; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .cal-dow { text-align: center; font-size: .78rem; font-weight: bold; padding: 2px 0; }
+        .cal-day { height: 36px; font-variant-numeric: tabular-nums; }
+        .cal-day.today { border: 1px dashed var(--text-color); }
+        .cal .cal-day[aria-pressed="true"] { background: var(--text-color); color: var(--bg-color); border-color: var(--text-color); }
+        .cal-foot { display: flex; justify-content: space-between; margin-top: 6px; }
+        .cal-foot button { padding: 4px 10px; border-color: var(--text-color); }
         .sym { font-family: var(--font-emoji); font-variant-emoji: text; font-style: normal; }
         .lock { display: inline-flex; gap: 6px; align-items: center; min-height: 40px; padding: 0 10px; white-space: nowrap; }
         .share-win .lock { align-self: flex-start; }
