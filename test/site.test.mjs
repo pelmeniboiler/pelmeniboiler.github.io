@@ -1250,7 +1250,7 @@ try {
             await p6.waitForSelector('#bedit');
             await p6.click('#bedit'); await p6.fill('#odo', '6971');
             await p6.click('#addowner'); await p6.fill('.owner-row:last-child .ow-n', 'W.S. Zhulkovsky'); await p6.fill('.owner-row:last-child .ow-o', '1500');
-            await p6.click('#addowner'); await p6.fill('.owner-row:last-child .ow-n', 'J. Doe'); await p6.fill('.owner-row:last-child .ow-o', '0');
+            await p6.click('#addowner'); await p6.fill('.owner-row:last-child .ow-n', 'Charles Doe'); await p6.fill('.owner-row:last-child .ow-o', '0');
             await p6.click('#bsave');
             await p6.waitForFunction(() => /Zhulkovsky’s/.test(document.querySelector('.bike-year')?.textContent || ''));
             await p6.click('.tabs [data-v=service]'); await p6.click('.ms button >> nth=0');
@@ -1260,8 +1260,13 @@ try {
             const fresh = await p6.evaluate(() => ({ pickers: document.querySelectorAll('.by-dd').length, date: document.querySelector('.tick-date').value }));
             await p6.click('#bedit'); await p6.click('#bro'); await p6.click('#bsave');
             const count = await p6.evaluate(() => document.querySelector('.owner-count')?.textContent);
+            const chuck = await p6.evaluate(() => /formerly Chuck’s/.test(document.querySelector('.bike-year').textContent));
+            const look = await p6.evaluate(() => ({ worth: /no date/.test(document.querySelector('.ro-note')?.textContent || ''), tip: !!document.querySelector('.look') }));
+            await p6.goto(`${BASE}/ct125/#page=2-16`, { waitUntil: 'load' });
+            await p6.waitForFunction(() => !document.querySelector('#viewer').hidden);
+            const cited = await p6.evaluate(() => [...document.querySelectorAll('#vpanel .gbtn')].map((b) => b.textContent).join('|'));
             await o2.close();
-            ok(count === '2 owners' && old.odo === '600' && old.date === '' && /J\. Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh, count })})`);
+            ok(count === '2 owners' && chuck && look.worth && look.tip && /Valve clearance/.test(cited) && old.odo === '600' && old.date === '' && /Charles Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh, count, chuck, look, cited })})`);
         }
 
         // Tools owned counts every tool on the list, not only the priced ones.
