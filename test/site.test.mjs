@@ -1251,6 +1251,17 @@ try {
                 if (req.method() === 'POST') { form = req.postData() || ''; uploaded = form.slice(form.indexOf('<!DOCTYPE html>'), form.lastIndexOf('</html>') + 7); return route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, body: 'https://litter.catbox.moe/ab12cd.html' }); }
                 return uploaded && /ab12cd\.html$/.test(req.url()) ? route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'text/plain' }, body: uploaded }) : route.fulfill({ status: 404, headers: { 'access-control-allow-origin': '*' }, body: '' });
             };
+            await page.context().route(/catbox\.moe/, (r) => r.abort('namenotresolved'));
+            await page.click('#bshare');
+            await page.waitForSelector('#shareup');
+            const ways = await page.textContent('#sharebody');
+            await page.click('#shareup');
+            await page.click('#upgo');
+            await page.waitForSelector('#upback');
+            const blocked = await page.textContent('#sharebody');
+            await page.click('#upback');
+            await page.click('#shareclose');
+            await page.context().unroute(/catbox\.moe/);
             await page.context().route(/catbox\.moe/, litter);
             await page.click('#bshare');
             await page.waitForSelector('#shareup');
@@ -1278,7 +1289,7 @@ try {
             const gone = await p8.textContent('#sharebody');
             await other.close();
             await page.context().unroute(/catbox\.moe/);
-            ok(/Litterbox/.test(warn) && /can’t be taken down/.test(warn) && /time"\r?\n\r?\n72h/.test(form) && /&file=ab12cd\.html&until=\d+$/.test(url) && noUp && /matches its fingerprint/.test(imp) && photo && /online until/.test(gone) && !/matches/.test(gone),
+            ok(/third party/.test(ways) && /couldn’t reach Litterbox/.test(blocked) && /Is this okay\?/.test(warn) && /Litterbox/.test(warn) && /can’t be taken down/.test(warn) && /time"\r?\n\r?\n72h/.test(form) && /&file=ab12cd\.html&until=\d+$/.test(url) && noUp && /matches its fingerprint/.test(imp) && photo && /online until/.test(gone) && !/matches/.test(gone),
                 `CT125: upload for 72 hours brings the photos along by link, and says when it has expired (${JSON.stringify({ url: url.slice(-40), noUp, photo, imp: imp.slice(0, 120), gone: gone.slice(0, 160) })})`);
         }
 
