@@ -76,7 +76,7 @@ const bikeLine = (b, m) => [ownerOf(b) && possessive(ownerOf(b)), b.year ? `${b.
 const sortOwners = (ws) => ws.sort((x, y) => { const xo = parseFloat(x.o), yo = parseFloat(y.o); return (isNaN(xo) ? -1 : xo) - (isNaN(yo) ? -1 : yo) || String(x.d || '').localeCompare(String(y.d || '')); });
 const lockSym = (ro) => `<span class="sym" aria-hidden="true">${ro ? '🔒' : '🔓'}</span>`;
 // Where each kind of saved thing lives.
-const SCOPE = (k) => (/^(odo|svcCol|svcAt|chk:)/.test(k) ? `ct125:b:${BIKE.id}:` : /^pdf/.test(k) ? `ct125:m:${modelId}:` : 'ct125:') + k;
+const SCOPE = (k) => (/^(odo|svcCol|svcAt|chk:|up$)/.test(k) ? `ct125:b:${BIKE.id}:` : /^pdf/.test(k) ? `ct125:m:${modelId}:` : 'ct125:') + k;
 const store = { get: (k, d) => ls.get(SCOPE(k), d), set: (k, v) => ls.set(SCOPE(k), v) };
 
 const D = await (await fetch(MODEL.data)).json();
@@ -702,7 +702,7 @@ async function openHistory() {
         <footer class="doc-foot">
             <div class="doc-qr" id="hqr"></div>
             <div>
-                <p>Scan to load this bike and its record into <b>ct125.manual</b>, or open <span class="doc-url">${esc(home.replace(/^https?:\/\//, ''))}</span>. Each value cites its page in Honda's service manual.</p>
+                <p>Scan to load this bike and its record into <b>ct125.manual</b>, or open <span class="doc-url">${esc(home.replace(/^https?:\/\//, ''))}</span>. Each value cites its page in Honda's service manual.${liveUpload() ? ` Photos online until ${esc(fmtUntil(liveUpload().until))}.` : ''}</p>
                 <p class="doc-sign">Owner's signature ${line('long')}</p>
                 <p class="doc-sign">Date ${line()}</p>
             </div>
@@ -712,7 +712,7 @@ async function openHistory() {
     $('#hclose').focus({ preventScroll: true });
     // The logo inline, in the text colour: printers skip background images, not SVG fills.
     fetch('/logo/shzh.svg').then((r) => r.text()).then((t) => { $('#hlogo').innerHTML = t.replace(/<title>.*?<\/title>/s, '').replace(/#000000/g, 'currentColor').replace(/ width="\d+" height="\d+"/, ''); }).catch(() => {});
-    const svg = await qrSvg(`${SITE}/ct125/#bike=${await packBike()}`);
+    const svg = await qrSvg(await shareURL());
     if (svg) $('#hqr').innerHTML = svg; else $('#hqr').remove();
 }
 function closeHistory() { $('#histwin').hidden = true; document.body.classList.remove('printing'); document.body.style.overflow = ''; }
@@ -752,14 +752,46 @@ const shareWin = (title, body) => { $('#sharetitle').innerHTML = title; $('#shar
 const closeShare = () => { $('#sharewin').hidden = true; };
 $('#shareclose').onclick = closeShare;
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sharewin').hidden) closeShare(); });
+// Litterbox (litterbox.catbox.moe) keeps an uploaded bike file for up to 72 hours.
+// The link then names the file, and opening it fetches the photos from there.
+const LITTER = 'https://litter.catbox.moe/', LITTER_API = 'https://litterbox.catbox.moe/resources/internals/api.php';
+const okFile = (f) => /^[a-z0-9]{3,16}\.(html|txt)$/i.test(f || '');
+const fmtUntil = (ms) => { const d = new Date(+ms); return `${fmtDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`)}, ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`; };
+const photoSig = (p = bikePayload()) => Object.values(p.h || {}).flatMap((rows) => rows.flatMap((r) => (r[4] || []).map((x) => phUnpack(x).h))).sort().join();
+// The upload still online for exactly this bike's photos, if there is one.
+const liveUpload = () => { const u = store.get('up', null); return u && okFile(u.f) && u.until > Date.now() && u.sig === photoSig() ? u : null; };
+async function shareURL() { const u = liveUpload(); return `${SITE}/ct125/#bike=${await packBike()}${u ? `&file=${u.f}&until=${Math.floor(u.until / 1000)}` : ''}`; }
+function confirmUpload() {
+    shareWin('upload.bike', `<p>The bike file, with its photos, goes to Litterbox (litterbox.catbox.moe) for 72 hours. Until then anyone with the link can open it, and it can’t be taken down early.</p>
+        <div class="choices"><button type="button" id="upgo">Upload</button><button type="button" id="upno">Cancel</button></div>`);
+    $('#upno').onclick = openShare;
+    $('#upgo').onclick = async (e) => {
+        e.target.disabled = true; $('#upno').disabled = true; e.target.textContent = 'Uploading…';
+        const sig = photoSig();
+        try {
+            const fd = new FormData();
+            fd.append('reqtype', 'fileupload'); fd.append('time', '72h');
+            fd.append('fileToUpload', new Blob([await bikeFileHtml()], { type: 'text/html' }), `${slug(BIKE.name || 'CT125')}-record.html`);
+            const r = await fetch(LITTER_API, { method: 'POST', body: fd }), t = (await r.text()).trim();
+            const f = t.startsWith(LITTER) ? t.slice(LITTER.length) : '';
+            if (!r.ok || !okFile(f)) throw new Error(t);
+            store.set('up', { f, until: Date.now() + 72 * 36e5, sig });
+            openShare();
+        } catch {
+            shareWin('upload.bike', '<p>The upload didn’t go through. The bike file still works: download it and send it yourself.</p><div class="choices"><button type="button" id="upback">Back</button></div>');
+            $('#upback').onclick = openShare;
+        }
+    };
+}
 async function openShare() {
-    const nph = photoCount(bikePayload());
-    const url = `${SITE}/ct125/#bike=${await packBike()}`;
+    const nph = photoCount(bikePayload()), up = liveUpload();
+    const url = await shareURL();
     shareWin('share.bike', `<div class="qr" id="qr"></div>
         <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>
-        ${nph ? '<p>Photos don’t fit in a link or a QR code.<br>The link only contains the record and each photo’s fingerprint.<br>To share the bike with photos, use the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>' : ''}
-        <div class="choices"><button type="button" id="sharefile">Download bike file${nph ? ` (record and ${nph} photo${nph === 1 ? '' : 's'})` : ''}</button></div>`);
+        ${!nph ? '' : up ? `<p>Photos online until ${esc(fmtUntil(up.until))}. Anyone with the link can see them until then.</p>` : '<p>Photos don’t fit in a link or a QR code.<br>The link only contains the record and each photo’s fingerprint.<br>To share the bike with photos, use the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>'}
+        <div class="choices">${nph && !up ? '<button type="button" id="shareup">Upload for 72 hours</button>' : ''}<button type="button" id="sharefile">Download bike file${nph ? ` (record and ${nph} photo${nph === 1 ? '' : 's'})` : ''}</button></div>`);
     $('#sharefile').onclick = downloadBikeFile;
+    if ($('#shareup')) $('#shareup').onclick = confirmUpload;
     $('#shareurl').onfocus = (e) => e.target.select();
     $('#sharecopy').onclick = async (e) => { try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copied'; } catch { $('#shareurl').select(); } };
     if ($('#sharesend')) $('#sharesend').onclick = () => navigator.share({ title: BIKE.name || 'CT125', url }).catch(() => {});
@@ -779,7 +811,7 @@ async function qrSvg(text) {
 // The bike file: one self-contained web page with the record and its photos.
 // It opens in any browser; ct125.manual reads it back with "Open bike file…".
 const blobURL = (blob) => new Promise((r) => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(blob); });
-async function downloadBikeFile() {
+async function bikeFileHtml() {
     const p = bikePayload(), photos = new Map();
     for (const rows of Object.values(p.h)) for (const r of rows) for (const s of r[4] || []) { const { h } = phUnpack(s); const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
     let logo = ''; try { logo = (await (await fetch('/logo/shzh.svg')).text()).replace(/<title>.*?<\/title>/s, '').replace(/ width="\d+" height="\d+"/, ''); } catch { /* offline */ }
@@ -805,20 +837,25 @@ ${services || '<p>Nothing ticked yet.</p>'}
 <footer><p>To take over this bike with its record and photos: open <b>${q(SITE.replace(/^https?:\/\//, ''))}/ct125/</b>, open the menu on the bike’s name, choose <b>Open bike file…</b> and pick this file. Each photo’s fingerprint can be checked against the printed service record.</p></footer>
 <script type="application/json" id="ct125-bike">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>
 </body></html>`;
-    const el = document.createElement('a');
+    return html;
+}
+async function downloadBikeFile() {
+    const html = await bikeFileHtml(), el = document.createElement('a');
     el.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
-    el.download = `${slug(name)}-record.html`; el.click();
+    el.download = `${slug(BIKE.name || 'CT125')}-record.html`; el.click();
     setTimeout(() => URL.revokeObjectURL(el.href), 2000);
+}
+// A bike file's record and photos (only photos embedded in the file itself).
+async function readBikeFile(text) {
+    const doc = new DOMParser().parseFromString(text, 'text/html');
+    const p = JSON.parse(doc.getElementById('ct125-bike').textContent);
+    const photos = new Map();
+    for (const img of doc.querySelectorAll('img[data-hash]')) { const src = img.getAttribute('src') || ''; if (!/^data:image\/(jpeg|png|webp);base64,/.test(src)) continue; photos.set(img.dataset.hash, await (await fetch(src)).blob()); }
+    return { p, photos };
 }
 $('#bikefilepick').onchange = async (e) => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-    try {
-        const doc = new DOMParser().parseFromString(await f.text(), 'text/html');
-        const p = JSON.parse(doc.getElementById('ct125-bike').textContent);
-        const photos = new Map();
-        for (const img of doc.querySelectorAll('img[data-hash]')) { const src = img.getAttribute('src') || ''; if (!/^data:image\/(jpeg|png|webp);base64,/.test(src)) continue; photos.set(img.dataset.hash, await (await fetch(src)).blob()); }
-        importBike(p, photos);
-    } catch { alert('That file is not a CT125 bike file.'); }
+    try { const { p, photos } = await readBikeFile(await f.text()); importBike(p, photos); } catch { alert('That file is not a CT125 bike file.'); }
 };
 // The read-only switch: a lock that opens.
 function lockToggle(btn) { const ro = btn.getAttribute('aria-pressed') !== 'true'; btn.setAttribute('aria-pressed', String(ro)); btn.innerHTML = `${lockSym(ro)} ${ro ? 'Read-only' : 'Unlocked'}`; }
@@ -836,7 +873,7 @@ function cleanPayload(p) {
     return { n: str(p.n, 80), m: str(p.m, 10), y: num(p.y), u: p.u === 'km' ? 'km' : 'mi', o: num(p.o) == null ? '' : String(Math.max(0, num(p.o))), h,
         w: (Array.isArray(p.w) ? p.w : []).filter((w) => w && typeof w === 'object').map((w) => ({ n: str(w.n, 80), d: /^\d{4}-\d\d-\d\d$/.test(w.d) ? w.d : '', o: num(w.o) == null ? '' : String(num(w.o)), u: w.u === 'km' ? 'km' : 'mi' })).filter((w) => w.n) };
 }
-async function importBike(p, photos = null) {
+async function importBike(p, photos = null, online = null) {
     try { p = cleanPayload(p); } catch { shareWin('import.bike', '<p>This isn’t a bike that can be imported.</p>'); return; }
     const model = MODELS.find((m) => m.id === p.m) ? p.m : MODELS[0].id;
     const recs = Object.values(p.h || {}).reduce((a, r) => a + r.length, 0), nph = photoCount(p);
@@ -850,7 +887,7 @@ async function importBike(p, photos = null) {
     try { blank = bikes.length === 1 && !bikes[0].name && !Object.keys(localStorage).some((x) => x.startsWith(`ct125:b:${bikes[0].id}:`)) ? bikes[0] : null; } catch { /* private mode */ }
     let k = 2; while (bikes.some((b) => b.name === `${name} ${k}`)) k++;
     const copyName = `${name} ${k}`;
-    const photoLine = !nph ? '' : photos ? `<p>${nph === 1 ? (good ? 'The photo matches its fingerprint in the record.' : 'The photo does not match its fingerprint in the record, so it was left out.') : `${good} of ${nph} photos match their fingerprints in the record${good < nph ? '; the others were left out' : ''}.`}</p>` : `<p>This record lists ${nph} photo${nph === 1 ? '' : 's'}. Photos only travel in the bike file: ask for it, then choose <b>Open bike file…</b> in the menu on the bike’s name.</p>`;
+    const photoLine = !nph ? '' : photos ? `<p>${nph === 1 ? (good ? 'The photo matches its fingerprint in the record.' : 'The photo does not match its fingerprint in the record, so it was left out.') : `${good} of ${nph} photos match their fingerprints in the record${good < nph ? '; the others were left out' : ''}.`}</p>` : `<p>This record lists ${nph} photo${nph === 1 ? '' : 's'}.${online?.gone ? ` ${nph === 1 ? 'It was' : 'They were'} online until ${esc(fmtUntil(online.until))}.` : online ? ` ${nph === 1 ? 'It' : 'They'} couldn’t be fetched from Litterbox.` : ''} Photos only travel in the bike file: ask for it, then choose <b>Open bike file…</b> in the menu on the bike’s name.</p>`;
     shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(bikeLine({ year: p.y, owners: p.w }, MODELS.find((m) => m.id === model)))}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>${photoLine}
         <button type="button" class="lock" id="impro" aria-pressed="${same ? 'false' : 'true'}">${same ? lockSym(false) + ' Unlocked' : lockSym(true) + ' Read-only'}</button>
         <div class="choices">${same ? `<button type="button" data-imp="over">Overwrite ${esc(name)}</button><button type="button" data-imp="add">Add as ${esc(copyName)}</button>` : '<button type="button" data-imp="add">Add</button>'}<button type="button" data-imp="no">Cancel</button></div>`);
@@ -1275,7 +1312,16 @@ show(startTab);
 if (LINK.q && (startTab === 'torque' || startTab === 'specs')) { const f = $(startTab === 'torque' ? '#tf' : '#sf'); f.value = LINK.q; f.dispatchEvent(new Event('input')); }
 if (LINK.guide) { const g = D.guides.find((x) => slug(x.item) === slug(LINK.guide)); if (g) openGuide(g.item); }
 if (LINK.page && mp2p(LINK.page)) openPage(mp2p(LINK.page));
-if (LINK.bike) unpackBike(LINK.bike).then((p) => importBike(p)).catch(() => { history.replaceState(null, '', location.pathname); shareWin('import.bike', '<p>This bike link is incomplete or damaged. Ask for it again, or for the bike file.</p>'); });
+// A link to an upload brings the photos along while the upload lasts.
+async function linkPhotos() {
+    if (!okFile(LINK.file)) return [null, null];
+    const until = +LINK.until * 1000 || 0;
+    if (until && until < Date.now()) return [null, { gone: true, until }];
+    shareWin('import.bike', '<p>Fetching photos…</p>');
+    try { const r = await fetch(LITTER + LINK.file); if (!r.ok) throw new Error(r.status); return [(await readBikeFile(await r.text())).photos, null]; }
+    catch { return [null, until ? { gone: until < Date.now() + 36e5, until } : {}]; }
+}
+if (LINK.bike) unpackBike(LINK.bike).then(async (p) => { const [photos, online] = await linkPhotos(); importBike(p, photos, online); }).catch(() => { history.replaceState(null, '', location.pathname); shareWin('import.bike', '<p>This bike link is incomplete or damaged. Ask for it again, or for the bike file.</p>'); });
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
 window.addEventListener('hashchange', () => location.reload());
