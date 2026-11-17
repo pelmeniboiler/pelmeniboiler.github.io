@@ -14,8 +14,8 @@
 // the household; a loaded manual belongs to its model year.
 
 const MODELS = [
-    { id: '2021', label: '2020–2022 (JA55)', data: '/ct125/data/2021.json' },
-    { id: '2023', label: '2023+ (JA65)', data: '/ct125/data/2023.json' },
+    { id: '2021', label: '2020–2022 (JA55)', code: 'JA55', years: [2020, 2021, 2022], data: '/ct125/data/2021.json' },
+    { id: '2023', label: '2023+ (JA65)', code: 'JA65', years: [2023, 2024, 2025, 2026], data: '/ct125/data/2023.json' },
 ];
 
 // Referral links. Keyed by shop hostname; {url} is replaced by the encoded
@@ -68,6 +68,12 @@ if (linkYear && linkYear.id !== BIKE.model) BIKE = bikes.find((b) => b.model ===
 const MODEL = MODELS.find((m) => m.id === BIKE.model) || MODELS[0];
 const modelId = MODEL.id;
 const saveBikes = () => ls.set('ct125:bikes', bikes);
+// Owners, oldest first: { n: name, d: ISO date taken over, o: odometer then, u: its unit }.
+const ownerOf = (b) => (b.owners || []).at(-1)?.n || '';
+const possessive = (n) => (/s$/i.test(n) ? `${n}’` : `${n}’s`);
+// "W.S. Zhulkovsky’s 2022 JA55": the owner, the bike's year and its frame code.
+const bikeLine = (b, m) => [ownerOf(b) && possessive(ownerOf(b)), b.year ? `${b.year} ${m.code}` : m.label].filter(Boolean).join(' ');
+const lockSym = (ro) => `<span class="sym" aria-hidden="true">${ro ? '🔒' : '🔓'}</span>`;
 // Where each kind of saved thing lives.
 const SCOPE = (k) => (/^(odo|svcCol|svcAt|chk:)/.test(k) ? `ct125:b:${BIKE.id}:` : /^pdf/.test(k) ? `ct125:m:${modelId}:` : 'ct125:') + k;
 const store = { get: (k, d) => ls.get(SCOPE(k), d), set: (k, v) => ls.set(SCOPE(k), v) };
@@ -428,6 +434,8 @@ const dist = (n, u = UNIT) => { const i = STEPS.indexOf(n); return (i >= 0 ? ste
 const colOf = (n) => (STEPS.includes(n) ? STEPS.indexOf(n) : STEPS.indexOf(((n - EVERY) % CYCLE) + EVERY));
 const odoNative = () => { const n = parseFloat(store.get('odo', '')); return isNaN(n) ? NaN : conv(n, UNIT, NATIVE); };
 const today = () => new Date().toISOString().slice(0, 10);
+// The service tab opens on the next service due: the first one at or above the odometer.
+{ const k = odoNative(); if (!isNaN(k)) { const m = milestoneFor(k); svcCol = m.col; svcAt = m.at > CYCLE ? m.at : null; } }
 function renderService() {
     const v = $('#v-service');
     const col = svcCol, label = svcAt || STEPS[col];
@@ -435,7 +443,7 @@ function renderService() {
     const done = store.get(key, {});
     const items = dueItems(col), ro = !!BIKE.ro;
     v.innerHTML = `
-        ${ro ? '<p class="ro-note">Read-only record, as it was handed over. To log your own work, edit the bike with the pencil and turn read-only off.</p>' : ''}
+        ${ro ? `<p class="ro-note">${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>` : ''}
         <div class="svc-top">
             <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${stepIn(i, UNIT).toLocaleString()}</b><span>${stepIn(i, OTHER).toLocaleString()} ${OTHER}</span></button>`).join('')}</div></div>
         </div>
@@ -530,10 +538,11 @@ async function openHistory() {
     $('#hbody').innerHTML = `<header class="doc-head"><span class="doc-logo" role="img" aria-label="ש-Ж"></span><div><h1>Service record</h1><p>Printed ${esc(fmtDay(today()))}</p></div></header>
         <dl class="doc-facts">
             <dt>Bike</dt><dd class="doc-name">${esc(BIKE.name || 'CT125')}</dd>
-            <dt>Model</dt><dd>${esc(D.name)} · ${esc(D.code)}</dd>
+            <dt>Model</dt><dd>${BIKE.year ? `${BIKE.year} · ` : ''}${esc(D.name)} · ${esc(D.code)}</dd>
             <dt>Odometer</dt><dd class="num">${odo !== '' ? `${(+odo).toLocaleString()} ${UNIT}` : line()}</dd>
             <dt>Frame no. (VIN)</dt><dd>${line('long')}</dd>
-            <dt>Owner</dt><dd>${line('long')}</dd>
+            <dt>Owner</dt><dd>${ownerOf(BIKE) ? esc(ownerOf(BIKE)) : line('long')}</dd>
+            ${(BIKE.owners || []).length ? `<dt>Owners</dt><dd>${BIKE.owners.map((w) => `${esc(w.n)} · from ${esc(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${esc(w.u || UNIT)}` : ''}`).join('<br>')}</dd>` : ''}
         </dl>
         ${by.size ? [...by].map(([at, jobs]) => `<section class="doc-svc"><h2 class="num">${dist(at)} ${UNIT} service</h2>
             <p class="doc-by">Done by ${box} owner ${box} shop ${line('long')}</p>
@@ -579,7 +588,7 @@ const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso +
 function bikePayload() {
     const h = {};
     bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length) row.push(r.p); (h[at] = h[at] || []).push(row); });
-    return { v: 1, n: BIKE.name, m: modelId, u: UNIT, o: store.get('odo', ''), h };
+    return { v: 1, n: BIKE.name, m: modelId, y: BIKE.year || null, w: BIKE.owners || [], u: UNIT, o: store.get('odo', ''), h };
 }
 const photoCount = (p) => Object.values(p.h || {}).reduce((a, rows) => a + rows.reduce((b, r) => b + (r[4] || []).length, 0), 0);
 async function packBike() {
@@ -600,7 +609,7 @@ async function openShare() {
     const url = `${SITE}/ct125/#bike=${await packBike()}`;
     shareWin('share.bike', `<div class="qr" id="qr"></div>
         <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>
-        ${nph ? `<p>Photos don’t fit in a link or a QR code. This link carries the record and each photo’s fingerprint; ${nph === 1 ? 'the photo travels' : `the ${nph} photos travel`} in the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>` : ''}
+        ${nph ? '<p>Photos don’t fit in a link or a QR code.<br>The link only contains the record and each photo’s fingerprint.<br>To share the bike with photos, use the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>' : ''}
         <div class="choices"><button type="button" id="sharefile">Download bike file${nph ? ` (record and ${nph} photo${nph === 1 ? '' : 's'})` : ''}</button></div>`);
     $('#sharefile').onclick = downloadBikeFile;
     $('#shareurl').onfocus = (e) => e.target.select();
@@ -643,7 +652,7 @@ figure { margin: 8px 0; } figure img { display: block; max-width: 100%; max-heig
 footer { margin-top: 30px; padding-top: 12px; border-top: 3px double #000; }
 </style></head><body>
 <header>${logo}<div><h1>Service record</h1><p style="margin:0">Exported ${q(fmtDay(today()))}</p></div></header>
-<dl><dt>Bike</dt><dd class="name">${q(name)}</dd><dt>Model</dt><dd>${q(D.name)} · ${q(D.code)}</dd><dt>Odometer</dt><dd>${p.o !== '' ? `${(+p.o).toLocaleString()} ${UNIT}` : '—'}</dd><dt>Photos</dt><dd>${photos.size}</dd></dl>
+<dl><dt>Bike</dt><dd class="name">${q(name)}</dd><dt>Model</dt><dd>${BIKE.year ? `${BIKE.year} · ` : ''}${q(D.name)} · ${q(D.code)}</dd>${(BIKE.owners || []).length ? `<dt>Owners</dt><dd>${BIKE.owners.map((w) => `${q(w.n)} · from ${q(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${q(w.u || UNIT)}` : ''}`).join('<br>')}</dd>` : ''}<dt>Odometer</dt><dd>${p.o !== '' ? `${(+p.o).toLocaleString()} ${UNIT}` : '—'}</dd><dt>Photos</dt><dd>${photos.size}</dd></dl>
 ${services || '<p>Nothing ticked yet.</p>'}
 <footer><p>To take over this bike with its record and photos: open <b>${q(SITE.replace(/^https?:\/\//, ''))}/ct125/</b>, open the menu on the bike’s name, choose <b>Open bike file…</b> and pick this file. Each photo’s fingerprint can be checked against the printed service record.</p></footer>
 <script type="application/json" id="ct125-bike">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>
@@ -663,6 +672,8 @@ $('#bikefilepick').onchange = async (e) => {
         importBike(p, photos);
     } catch { alert('That file is not a CT125 bike file.'); }
 };
+// The read-only switch: a lock that opens.
+function lockToggle(btn) { const ro = btn.getAttribute('aria-pressed') !== 'true'; btn.setAttribute('aria-pressed', String(ro)); btn.innerHTML = `${lockSym(ro)} ${ro ? 'Read-only' : 'Unlocked'}`; }
 // Opened from a shared link (photos == null) or a bike file (photos: fingerprint → Blob).
 async function importBike(p, photos = null) {
     const model = MODELS.find((m) => m.id === p.m) ? p.m : MODELS[0].id;
@@ -677,9 +688,10 @@ async function importBike(p, photos = null) {
     let k = 2; while (bikes.some((b) => b.name === `${name} ${k}`)) k++;
     const copyName = `${name} ${k}`;
     const photoLine = !nph ? '' : photos ? `<p>${nph === 1 ? (good ? 'The photo matches its fingerprint in the record.' : 'The photo does not match its fingerprint in the record, so it was left out.') : `${good} of ${nph} photos match their fingerprints in the record${good < nph ? '; the others were left out' : ''}.`}</p>` : `<p>This record lists ${nph} photo${nph === 1 ? '' : 's'}. Photos only travel in the bike file: ask for it, then choose <b>Open bike file…</b> in the menu on the bike’s name.</p>`;
-    shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(MODELS.find((m) => m.id === model).label)}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>${photoLine}
-        <label class="ro-pick"><input type="checkbox" id="impro"${same ? '' : ' checked'}> Read-only: keep this record exactly as it was handed over, so nothing gets ticked by mistake</label>
+    shareWin('import.bike', `<p><b>${esc(name)}</b> · ${esc(bikeLine({ year: p.y, owners: p.w }, MODELS.find((m) => m.id === model)))}${p.o !== '' ? ` · ${(+p.o).toLocaleString()} ${esc(p.u)}` : ''} · ${recs} job${recs === 1 ? '' : 's'} ticked</p>${photoLine}
+        <button type="button" class="lock" id="impro" aria-pressed="${same ? 'false' : 'true'}">${same ? lockSym(false) + ' Unlocked' : lockSym(true) + ' Read-only'}</button>
         <div class="choices">${same ? `<button type="button" data-imp="over">Overwrite ${esc(name)}</button><button type="button" data-imp="add">Add as ${esc(copyName)}</button>` : '<button type="button" data-imp="add">Add</button>'}<button type="button" data-imp="no">Cancel</button></div>`);
+    $('#impro').onclick = (e) => lockToggle(e.currentTarget);
     $('#sharebody').querySelectorAll('[data-imp]').forEach((b) => { b.onclick = async () => {
         if (b.dataset.imp === 'no') { closeShare(); history.replaceState(null, '', location.pathname); return; }
         const items = (await (await fetch(MODELS.find((m) => m.id === model).data)).json()).maint.items;
@@ -687,7 +699,7 @@ async function importBike(p, photos = null) {
         if (b.dataset.imp === 'over') { target = same; await photosDelAll(same.id); try { Object.keys(localStorage).filter((x) => x.startsWith(`ct125:b:${same.id}:`)).forEach((x) => localStorage.removeItem(x)); } catch { /* private mode */ } }
         else if (blank) { target = blank; target.name = p.n; }
         else { target = { id: 'b' + Date.now().toString(36), name: same ? copyName : p.n }; bikes.push(target); }
-        Object.assign(target, { model, unit: p.u, ro: $('#impro').checked }); delete target.visit; saveBikes();
+        Object.assign(target, { model, unit: p.u, year: p.y || undefined, owners: p.w || [], ro: $('#impro').getAttribute('aria-pressed') === 'true' }); delete target.visit; saveBikes();
         ls.set(`ct125:b:${target.id}:odo`, p.o ?? '');
         Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
         for (const [h, blob] of ok) await photoPut(target.id, h, blob);
@@ -997,7 +1009,9 @@ function renderBike() {
         el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
         <div class="plate">
             <input id="bname" type="text" placeholder="Name" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
-            ${dropdown('byear', esc(MODEL.label), MODELS.map((m) => [m.id, esc(m.label)]), modelId, (v, dd) => { dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = MODELS.find((m) => m.id === v).label; })}
+            ${dropdown('byear', esc(BIKE.year ? `${BIKE.year} (${MODEL.code})` : MODEL.label), MODELS.flatMap((m) => m.years.map((y) => [`${m.id}:${y}`, `${y} (${m.code})`])), BIKE.year ? `${modelId}:${BIKE.year}` : '', (v, dd) => { dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = dd.querySelector(`[data-value="${v}"]`).textContent; })}
+            <input id="bowner" type="text" placeholder="Owner" aria-label="Owner" value="${esc(ownerOf(BIKE))}" autocomplete="off">
+            ${(BIKE.owners || []).length ? `<small class="owners">${BIKE.owners.map((w) => `${esc(w.n)} from ${esc(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${esc(w.u || UNIT)}` : ''}`).join('<br>')}</small>` : ''}
         </div>
         <span class="odo-edit"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="1" aria-label="Odometer" value="${esc(odo)}">${dropdown('bunit', UNIT, [['mi', 'mi'], ['km', 'km']], UNIT, (v, dd) => {
             // Switching the unit converts the reading in the field.
@@ -1005,16 +1019,16 @@ function renderBike() {
             if (!isNaN(n) && from !== v) f.value = Math.round(conv(n, from, v));
             dd.dataset.from = v; dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = v;
         }, 'unit-dd')}</span>
-        <label class="ro-toggle"><input type="checkbox" id="bro"${BIKE.ro ? ' checked' : ''}> read-only</label>
+        <button type="button" class="lock" id="bro" aria-pressed="${!!BIKE.ro}" title="Lock or unlock the record">${lockSym(!!BIKE.ro)} ${BIKE.ro ? 'Read-only' : 'Unlocked'}</button>
         <span class="bike-tools"><button type="button" id="bsave" class="icon" title="Save" aria-label="Save">${ICON.floppy}</button>${bikes.length > 1 && !BIKE.visit ? '<button type="button" id="bdel">Remove</button>' : ''}</span>`;
     } else {
         el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
-        <div class="plate">${dropdown('bpick', `<span class="bike-name">${esc(nameOf(BIKE, bikes.indexOf(BIKE)))}</span>`, [...bikes.map((b, i) => [b.id, esc(nameOf(b, i))]), ...(BIKE.visit ? [[BIKE.id, esc(MODEL.label)]] : []), ['new', '+ Add new bike'], ['file', 'Open bike file…']], BIKE.id, (v, dd) => {
+        <div class="plate">${dropdown('bpick', `<span class="bike-name">${esc(nameOf(BIKE, bikes.indexOf(BIKE)))}</span>`, [...bikes.map((b, i) => [b.id, esc(nameOf(b, i))]), ...(BIKE.visit ? [[BIKE.id, esc(MODEL.label)]] : []), ['new', '<span class="sym" aria-hidden="true">+</span> Add new bike'], ['file', '<span class="sym" aria-hidden="true">🗁</span> Open bike file…']], BIKE.id, (v, dd) => {
             if (v === 'file') { dd.dataset.value = BIKE.id; $('#bikefilepick').click(); return; }
             if (v === BIKE.id) return;
             if (v === 'new') { const id = 'b' + Date.now().toString(36); bikes.push({ id, name: '', model: modelId, unit: UNIT }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true); } else ls.set('ct125:bike', v);
             history.replaceState(null, '', location.pathname); location.reload();
-        }, 'name-dd')}<span class="bike-year">${esc(MODEL.label)}${BIKE.ro ? ' · read-only' : ''}</span></div>
+        }, 'name-dd')}<span class="bike-year">${esc(bikeLine(BIKE, MODEL))}${BIKE.ro ? ` ${lockSym(true)}` : ''}</span></div>
         <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
         <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button><button type="button" id="bshare" class="icon" title="Share bike" aria-label="Share bike">${ICON.link}</button></span>`;
         $('#bshare').onclick = openShare;
@@ -1022,11 +1036,18 @@ function renderBike() {
         return;
     }
     const save = () => {
-        const name = $('#bname').value.trim(), year = $('#byear').dataset.value, unit = $('#bunit').dataset.value, n = $('#odo').value;
+        const name = $('#bname').value.trim(), pick = $('#byear').dataset.value || `${modelId}:`, [year, yr] = pick.split(':'), unit = $('#bunit').dataset.value, n = $('#odo').value, owner = $('#bowner').value.trim();
         if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
         const moved = year !== BIKE.model || unit !== UNIT;
         const roWas = !!BIKE.ro;
-        BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').checked; saveBikes(); store.set('odo', n);
+        BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').getAttribute('aria-pressed') === 'true';
+        if (yr) BIKE.year = +yr;
+        // A new owner name starts a new entry, dated today at today's reading; the same day's entry is just corrected.
+        if (owner !== ownerOf(BIKE)) {
+            const ws = BIKE.owners = BIKE.owners || [], last = ws.at(-1);
+            if (!owner) ws.pop(); else if (last && last.d === today()) last.n = owner; else ws.push({ n: owner, d: today(), o: n, u: unit });
+        }
+        saveBikes(); store.set('odo', n);
         if (roWas !== BIKE.ro && view === 'service') renderService();
         if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
         editing = false; renderBike();
@@ -1037,6 +1058,7 @@ function renderBike() {
         }
     };
     $('#bsave').onclick = save;
+    $('#bro').onclick = (e) => lockToggle(e.currentTarget);
     el.querySelectorAll('input').forEach((i) => { i.onkeydown = (e) => { if (e.key === 'Enter') save(); if (e.key === 'Escape') { editing = false; renderBike(); } }; });
     if ($('#bdel')) $('#bdel').onclick = async () => {
         if (!confirm(`Remove ${BIKE.name || 'this bike'} and its saved service history and photos?`)) return;
