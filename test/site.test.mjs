@@ -1190,7 +1190,8 @@ try {
         {
             await page.click('.tabs [data-v=service]');
             await page.click('#hist');
-            const hist = await page.evaluate(() => ({ shown: !document.querySelector('#histwin').hidden, services: document.querySelectorAll('#hbody section').length, jobs: document.querySelectorAll('#hbody li').length, rules: document.querySelectorAll('#hbody .rule').length }));
+            const hist = await page.evaluate(() => ({ shown: !document.querySelector('#histwin').hidden, services: document.querySelectorAll('#hbody section').length, jobs: document.querySelectorAll('#hbody li').length, rules: document.querySelectorAll('#hbody .blank').length, sign: /Owner's signature/.test(document.querySelector('#hbody').textContent), logo: !!document.querySelector('#hbody .doc-logo') }));
+            await page.waitForSelector('#hqr svg');
             await page.click('#hclose');
             await page.click('#bshare');
             await page.waitForSelector('#qr svg');
@@ -1204,7 +1205,7 @@ try {
             await p4.waitForFunction(() => document.querySelector('.bike-name')?.textContent === 'Red' && /7,450/.test(document.querySelector('.odometer')?.getAttribute('aria-label') || ''));
             const recs = await p4.evaluate(() => Object.keys(localStorage).filter((k) => /:chk:/.test(k)).length);
             await other.close();
-            ok(hist.shown && hist.services >= 1 && hist.jobs >= 1 && hist.rules > hist.jobs && /#bike=/.test(url) && recs >= 1, `CT125: history page and share-bike link round trip (${JSON.stringify({ ...hist, recs, len: url.length })})`);
+            ok(hist.shown && hist.services >= 1 && hist.jobs >= 1 && hist.rules > hist.jobs && hist.sign && hist.logo && /#bike=/.test(url) && recs >= 1, `CT125: history page and share-bike link round trip (${JSON.stringify({ ...hist, recs, len: url.length })})`);
         }
 
         // Tools owned counts every tool on the list, not only the priced ones.

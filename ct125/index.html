@@ -105,23 +105,41 @@
         .share-win .choices { display: flex; flex-direction: column; gap: 8px; }
         .share-win .choices button { text-align: left; padding: 8px 10px; }
         .bike button.icon svg path, .bike button.icon svg rect { vector-effect: non-scaling-stroke; }
-        /* Service history: a page to print, with room to write. */
+        /* Service history: a document to print and hand over with the bike. Left-aligned throughout. */
         .gtop .wrap { flex-wrap: wrap; }
-        .hist { padding-top: 24px; padding-bottom: 60px; max-width: 760px; }
-        .hist h1 { margin: 0; font-family: 'Garamond', var(--font-body); font-style: italic; font-size: 2.6rem; font-weight: normal; line-height: 1.05; }
-        .hist .who { margin: 4px 0 24px; }
-        .hist section { break-inside: avoid; margin-bottom: 26px; }
-        .hist h2 { margin: 0 0 6px; font-size: 1.35rem; border-bottom: 2px solid var(--text-color); padding-bottom: 2px; }
-        .hist ul { list-style: none; margin: 0; padding: 0; }
-        .hist li { padding: 6px 0 0; }
-        .hist li::before { content: '–'; margin-right: 8px; }
-        .hist .rule { height: 1.7em; border-bottom: 1px dashed var(--text-color); margin-left: 18px; }
-        .hist .notes { margin-top: 8px; }
-        .hist .notes .rule { margin-left: 0; }
-        .hist .empty-h { padding: 30px 0; }
+        .wrap.hist { margin: 0; max-width: 780px; padding-top: 28px; padding-bottom: 60px; text-align: left; }
+        .hist p { margin: 0; }
+        .doc-head { display: flex; gap: 16px; align-items: center; border-bottom: 3px double var(--text-color); padding-bottom: 12px; }
+        .doc-logo { flex: none; width: 56px; height: 56px; background: var(--text-color); -webkit-mask: url(/logo/shzh.svg) center / contain no-repeat; mask: url(/logo/shzh.svg) center / contain no-repeat; }
+        .doc-head h1 { margin: 0; font-size: 1.8rem; letter-spacing: .02em; }
+        .doc-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; margin: 18px 0 26px; align-items: baseline; }
+        .doc-facts dt { font-weight: bold; font-size: .9rem; }
+        .doc-facts dd { margin: 0; }
+        .doc-name { font-family: 'Garamond', var(--font-body); font-style: italic; font-size: 1.8rem; line-height: 1; }
+        .doc-svc { margin-bottom: 26px; }
+        .doc-svc h2 { margin: 0 0 4px; font-size: 1.25rem; border-bottom: 2px solid var(--text-color); padding-bottom: 2px; }
+        .doc-by { font-size: .9rem; margin-bottom: 6px !important; }
+        .doc-svc ol { margin: 0; padding-left: 1.4em; }
+        .doc-svc li { break-inside: avoid; padding: 8px 0; border-bottom: 1px solid var(--text-color); }
+        .doc-svc li > p + p { margin-top: 5px; }
+        .doc-meas, .doc-proof, .doc-note { font-size: .9rem; }
+        .blank { display: inline-block; min-width: 7em; border-bottom: 1px solid var(--text-color); height: 1em; vertical-align: baseline; }
+        .blank.long { min-width: 16em; }
+        .doc-note { display: flex; gap: 6px; align-items: baseline; }
+        .blank.fill { flex: 1; }
+        .cb { display: inline-block; width: .85em; height: .85em; border: 1.5px solid var(--text-color); vertical-align: -1px; margin: 0 2px; }
+        .doc-foot { display: flex; gap: 20px; align-items: flex-start; margin-top: 30px; padding-top: 16px; border-top: 3px double var(--text-color); break-inside: avoid; }
+        .doc-qr { flex: none; width: 150px; color: var(--text-color); }
+        .doc-qr svg { display: block; width: 100%; height: auto; }
+        .doc-foot p + p { margin-top: 18px; }
+        .doc-url { font-weight: bold; overflow-wrap: anywhere; }
+        .doc-sign .blank { min-width: 18em; }
         @media print {
             body.printing > :not(#histwin) { display: none !important; }
             body.printing #histwin { position: static; overflow: visible; }
+            /* Paper is white and ink is black, whatever the theme. */
+            body.printing { --text-color: #000; --bg-color: #fff; --win-bg-color: #fff; background: #fff; color: #000; }
+            @page { margin: 16mm; }
             .no-print { display: none !important; }
             .hist { padding-top: 0; }
         }

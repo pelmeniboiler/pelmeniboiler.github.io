@@ -460,16 +460,59 @@ function bikeRecords(id = BIKE.id) {
 }
 const fmtDay = (iso) => { const s = fmtDate(iso); const m = s.match(/^(.*) \((.*)\)$/); return m ? `${m[1]} · ${m[2]}` : s; };
 // Service history as a page to print: each service, its jobs and dates, and room to write.
-function openHistory() {
+// What evidence backs each job: something to measure and write in, and what to attach.
+const MEASURE = {
+    'Valve clearance': 'IN ______ mm    EX ______ mm',
+    'Spark plug': 'gap ______ mm',
+    'Drive chain': 'slack ______ mm',
+    'Brake pads wear': 'front ______ mm    rear ______ mm',
+    'Wheels/tires': 'pressure front ______    rear ______    tread ______ mm',
+    'Engine idle speed': '______ rpm',
+    'Throttle operation': 'free play ______ mm',
+    'Engine oil': 'oil used ______________________',
+    'Brake fluid': 'fluid used ______________',
+};
+const ATTACH = { R: 'receipt', C: 'photo after cleaning', I: 'photo or reading', A: 'reading before and after', L: 'photo' };
+const box = '<span class="cb" aria-hidden="true"></span>';
+const line = (w = '') => `<span class="blank${w ? ' ' + w : ''}"></span>`;
+// Service history as a document to print and hand over with the bike.
+async function openHistory() {
     const recs = bikeRecords(), by = new Map();
     recs.forEach(([at, job, r]) => { if (!by.has(at)) by.set(at, []); by.get(at).push([job, r]); });
-    const actOf = (at, job) => { const it = M.items.find((x) => x.item === job) || {}; return ACT[it.every ? 'L' : it.sched?.[colOf(at)]] || ''; };
-    const rules = (n) => '<div class="rule"></div>'.repeat(n);
-    $('#hbody').innerHTML = `<h1>${esc(BIKE.name || 'CT125')}</h1><p class="who">${esc(D.name)} · ${esc(D.code)}${store.get('odo', '') !== '' ? ` · now ${(+store.get('odo', '')).toLocaleString()} ${UNIT}` : ''}</p>
-        ${by.size ? [...by].map(([at, jobs]) => `<section><h2 class="num">${dist(at)} ${UNIT}</h2><ul>${jobs.map(([job, r]) => `<li>${esc(job)}${actOf(at, job) ? ` · ${esc(actOf(at, job).toLowerCase())}` : ''} <span class="num">(${r.d ? esc(fmtDay(r.d)) : 'date: __________'}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''})</span>${rules(1)}</li>`).join('')}</ul><div class="notes">${rules(2)}</div></section>`).join('') : '<p class="empty-h">Nothing ticked yet.</p>'}`;
+    const actOf = (at, job) => { const it = M.items.find((x) => x.item === job) || {}; return it.every ? 'L' : it.sched?.[colOf(at)] || ''; };
+    const need = (job, act) => (SUP[job]?.[act] || []).filter((r) => r[5] === 'need');
+    const partsFor = (job, act) => need(job, act).map((r) => (r[4] ? `Honda ${r[4]}` : r[0].replace(/,.*$/, ''))).join(', ');
+    const oldPart = (job, act) => need(job, act).some((r) => r[3] === 'part' && !/gasket|O-ring|washer/i.test(r[0]));
+    const odo = store.get('odo', ''), home = `${location.origin}/ct125/`;
+    $('#hbody').innerHTML = `<header class="doc-head"><span class="doc-logo" role="img" aria-label="ש-Ж"></span><div><h1>Service record</h1><p>Printed ${esc(fmtDay(today()))}</p></div></header>
+        <dl class="doc-facts">
+            <dt>Bike</dt><dd class="doc-name">${esc(BIKE.name || 'CT125')}</dd>
+            <dt>Model</dt><dd>${esc(D.name)} · ${esc(D.code)}</dd>
+            <dt>Odometer</dt><dd class="num">${odo !== '' ? `${(+odo).toLocaleString()} ${UNIT}` : line()}</dd>
+            <dt>Frame no. (VIN)</dt><dd>${line('long')}</dd>
+            <dt>Owner</dt><dd>${line('long')}</dd>
+        </dl>
+        ${by.size ? [...by].map(([at, jobs]) => `<section class="doc-svc"><h2 class="num">${dist(at)} ${UNIT} service</h2>
+            <p class="doc-by">Done by ${box} owner ${box} shop ${line('long')}</p>
+            <ol>${jobs.map(([job, r]) => { const act = actOf(at, job), parts = act === 'R' ? partsFor(job, act) : ''; return `<li>
+                <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span></p>
+                ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
+                <p class="doc-proof">${box} attached: ${esc(ATTACH[act] || 'photo')}${parts ? ` (${esc(parts)})` : ''}${act === 'R' && oldPart(job, act) ? ' · photo of the old part' : ''}</p>
+                <p class="doc-note">Note ${line('fill')}</p>
+            </li>`; }).join('')}</ol></section>`).join('') : '<p>Nothing ticked yet.</p>'}
+        <footer class="doc-foot">
+            <div class="doc-qr" id="hqr"></div>
+            <div>
+                <p>Scan to load this bike and its record into <b>ct125.manual</b>, or open <span class="doc-url">${esc(home.replace(/^https?:\/\//, ''))}</span>. Each value cites its page in Honda's service manual.</p>
+                <p class="doc-sign">Owner's signature ${line('long')}</p>
+                <p class="doc-sign">Date ${line()}</p>
+            </div>
+        </footer>`;
     document.body.classList.add('printing');
     $('#histwin').hidden = false; $('#histwin').scrollTop = 0; document.body.style.overflow = 'hidden';
     $('#hclose').focus({ preventScroll: true });
+    const svg = await qrSvg(`${location.origin}/ct125/#bike=${await packBike()}`);
+    if (svg) $('#hqr').innerHTML = svg; else $('#hqr').remove();
 }
 function closeHistory() { $('#histwin').hidden = true; document.body.classList.remove('printing'); document.body.style.overflow = ''; }
 $('#hclose').onclick = closeHistory;
@@ -506,13 +549,18 @@ async function openShare() {
     $('#shareurl').onfocus = (e) => e.target.select();
     $('#sharecopy').onclick = async (e) => { try { await navigator.clipboard.writeText(url); e.target.textContent = 'Copied'; } catch { $('#shareurl').select(); } };
     if ($('#sharesend')) $('#sharesend').onclick = () => navigator.share({ title: BIKE.name || 'CT125', url }).catch(() => {});
+    const svg = await qrSvg(url);
+    if (svg) $('#qr').innerHTML = svg; else $('#qr').remove();
+}
+// A QR code as SVG in the theme's two colours ('' if the text is too long or the library is missing).
+async function qrSvg(text) {
     try {
         const qrcode = (await import('/ct125/vendor/qrcode.js')).default;
-        const qr = qrcode(0, 'L'); qr.addData(url, 'Byte'); qr.make();
+        const qr = qrcode(0, 'L'); qr.addData(text, 'Byte'); qr.make();
         const n = qr.getModuleCount(), q = 4; let d = '';
         for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (qr.isDark(y, x)) d += `M${x + q} ${y + q}h1v1h-1z`;
-        $('#qr').innerHTML = `<svg viewBox="0 0 ${n + 2 * q} ${n + 2 * q}" role="img" aria-label="QR code of the link" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="var(--bg-color)"/><path d="${d}" fill="currentColor"/></svg>`;
-    } catch { $('#qr').remove(); }
+        return `<svg viewBox="0 0 ${n + 2 * q} ${n + 2 * q}" role="img" aria-label="QR code" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="var(--bg-color)"/><path d="${d}" fill="currentColor"/></svg>`;
+    } catch { return ''; }
 }
 // Opened from a shared link.
 async function importBike(s) {
