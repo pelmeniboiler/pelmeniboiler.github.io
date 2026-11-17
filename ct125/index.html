@@ -74,7 +74,7 @@
         .bike .custom-dropdown { width: auto; }
         .bike .custom-dropdown-toggle { gap: 10px; min-height: 40px; border-color: var(--text-color); }
         .bike .custom-dropdown-menu { min-width: 100%; width: max-content; max-width: 80vw; border-top: 2px solid var(--text-color); border-color: var(--text-color); }
-        body .custom-dropdown-item { cursor: pointer; text-decoration: none; }
+        body a.custom-dropdown-item[href] { cursor: pointer; text-decoration: none; }
         .custom-dropdown-item:hover, .custom-dropdown-item:focus-visible, .custom-dropdown-item[aria-selected="true"] { background: var(--text-color); color: var(--bg-color); outline: none; }
         /* The bike's name is the menu of bikes: a big name with a small pointer. */
         .name-dd .custom-dropdown-toggle { border: 0; padding: 0; background: none; min-height: 0; justify-content: flex-start; align-items: baseline; }
@@ -84,9 +84,47 @@
         .name-dd .custom-dropdown-item { font-size: 1.05rem; }
         .unit-dd .custom-dropdown-toggle { padding: 0 8px; }
         .bike-tools .custom-dropdown-toggle, .bike button { color: var(--text-color); }
+        .bike button:hover, .bike button:focus-visible { color: var(--bg-color); }
+        .bike .name-dd button:hover { color: var(--text-color); }
         .tick { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 4px; font-size: .84rem; text-decoration: none; }
         .tick-date { width: auto; height: auto; font: inherit; padding: 1px 4px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--text-color); }
         .bh-tools { display: flex; gap: 6px; }
+        /* Menus point sideways when closed, down when open. */
+        .custom-dropdown-arrow { font-family: var(--font-emoji); }
+        .custom-dropdown-arrow::before { content: '🞂'; }
+        [aria-expanded="true"] > .custom-dropdown-arrow::before { content: '🞃'; }
+        /* share bike: a small window over the page */
+        .share-win { position: fixed; top: 50%; left: 50%; right: auto; bottom: auto; transform: translate(-50%, -50%); width: min(440px, calc(100vw - 32px)); height: auto; max-height: calc(100vh - 32px); overflow: auto; z-index: 70; background: var(--win-bg-color); border: 2px solid var(--text-color); }
+        .share-win .title-bar { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: var(--text-color); color: var(--bg-color); }
+        .share-win .close-btn { background: none; border: 0; color: inherit; font-size: 1.3rem; padding: 0 4px; }
+        .share-win .content { max-height: none; height: auto; overflow: visible; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+        .share-win .qr { width: 100%; max-width: 300px; align-self: center; color: var(--text-color); }
+        .share-win .qr svg { display: block; width: 100%; height: auto; }
+        .share-win .linkrow { display: flex; gap: 6px; }
+        .share-win .linkrow input { flex: 1; min-width: 0; height: 38px; padding: 0 8px; background: var(--bg-color); color: var(--text-color); border: 2px solid var(--text-color); font-size: .85rem; }
+        .share-win .choices { display: flex; flex-direction: column; gap: 8px; }
+        .share-win .choices button { text-align: left; padding: 8px 10px; }
+        .bike button.icon svg path, .bike button.icon svg rect { vector-effect: non-scaling-stroke; }
+        /* Service history: a page to print, with room to write. */
+        .gtop .wrap { flex-wrap: wrap; }
+        .hist { padding-top: 24px; padding-bottom: 60px; max-width: 760px; }
+        .hist h1 { margin: 0; font-family: 'Garamond', var(--font-body); font-style: italic; font-size: 2.6rem; font-weight: normal; line-height: 1.05; }
+        .hist .who { margin: 4px 0 24px; }
+        .hist section { break-inside: avoid; margin-bottom: 26px; }
+        .hist h2 { margin: 0 0 6px; font-size: 1.35rem; border-bottom: 2px solid var(--text-color); padding-bottom: 2px; }
+        .hist ul { list-style: none; margin: 0; padding: 0; }
+        .hist li { padding: 6px 0 0; }
+        .hist li::before { content: '–'; margin-right: 8px; }
+        .hist .rule { height: 1.7em; border-bottom: 1px dashed var(--text-color); margin-left: 18px; }
+        .hist .notes { margin-top: 8px; }
+        .hist .notes .rule { margin-left: 0; }
+        .hist .empty-h { padding: 30px 0; }
+        @media print {
+            body.printing > :not(#histwin) { display: none !important; }
+            body.printing #histwin { position: static; overflow: visible; }
+            .no-print { display: none !important; }
+            .hist { padding-top: 0; }
+        }
         #q { width: 100%; height: 46px; padding: 0 12px; font-size: 1.05rem; background: var(--bg-color); border: 2px solid var(--text-color); }
         .tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
         .tabs::-webkit-scrollbar { display: none; }
@@ -321,6 +359,16 @@
 </div></main>
 
 <footer><div class="wrap" id="foot"></div></footer>
+
+<div id="sharewin" class="window share-win" hidden role="dialog" aria-modal="true" aria-labelledby="sharetitle">
+    <div class="title-bar"><span class="title" id="sharetitle"></span><button type="button" class="close-btn" id="shareclose" aria-label="Close">&times;</button></div>
+    <div class="content" id="sharebody"></div>
+</div>
+
+<div id="histwin" class="over" hidden role="dialog" aria-modal="true" aria-label="Service history">
+    <div class="gtop no-print"><div class="wrap"><button class="vbtn" id="hclose" aria-label="Close history">×</button><h2>Service history</h2><button type="button" id="hprint">Print</button><button type="button" id="hcsv">Spreadsheet</button></div></div>
+    <div class="wrap hist" id="hbody"></div>
+</div>
 
 <div id="guide" class="over" hidden role="dialog" aria-modal="true" aria-label="Service guide">
     <div class="gtop"><div class="wrap"><button class="vbtn" id="gclose" aria-label="Close guide">×</button><h2 id="gtitle"></h2></div></div>

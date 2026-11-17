@@ -75,6 +75,8 @@ async function vendorPdfJs() {
     await fs.mkdir(to, { recursive: true });
     // Renamed .mjs → .js: not every static host serves .mjs as JavaScript.
     for (const f of ['pdf.min', 'pdf.worker.min']) await fs.copyFile(path.join(from, f + '.mjs'), path.join(to, f + '.js'));
+    // and the QR code generator for "share bike"
+    await fs.copyFile(path.join(SRC_DIR, 'node_modules', 'qrcode-generator', 'dist', 'qrcode.mjs'), path.join(to, 'qrcode.js'));
 }
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
 const LOCALIZATION_DIR = path.join(ROOT_DIR, 'localization');
