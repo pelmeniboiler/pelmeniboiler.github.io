@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/ct125/icon.svg">
+    <link rel="manifest" href="/ct125/manifest.json" data-own>
+    <script src="/scripts/theme-loader.js"></script>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Searchable torque values, specs, service schedule, fault codes and how-to guides for the 2021 Honda Trail125A (CT125). Every value cites its service-manual page.">
+    <title>CT125 Manual</title>
+    <style>
+        /* Site rules apply here too: only the theme's background and text
+           colours, square corners, no shadows, no greys. Emphasis is weight,
+           inversion, or a dashed outline. */
+        html, body { height: auto; }
+        body {
+            font-family: var(--font-body);
+            margin: 0; padding: 0;
+            line-height: 1.45;
+            overflow: auto;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            -webkit-text-size-adjust: 100%;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+        button, input, select { font: inherit; color: inherit; border-radius: 0; }
+        button { cursor: pointer; background: var(--bg-color); border: 1px solid var(--text-color); padding: 4px 10px; }
+        button:hover, a.btn:hover { background: var(--text-color); color: var(--bg-color); }
+        :focus-visible { outline: 2px solid var(--text-color); outline-offset: 2px; }
+        body a[href] { color: inherit; text-decoration: underline; }
+        body .links a[href], .brand a[href] { text-decoration: none; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
+        .num { font-variant-numeric: tabular-nums; }
+        .inv { background: var(--text-color); color: var(--bg-color); }
+        small, .sm { font-size: .84em; }
+
+        header.top { position: sticky; top: 0; z-index: 20; background: var(--bg-color); border-bottom: 2px solid var(--text-color); padding-top: env(safe-area-inset-top, 0px); }
+        .top .wrap { display: flex; flex-direction: column; gap: 8px; padding-top: 10px; }
+        .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+        .brand h1 { margin: 0; font-size: 1.3rem; }
+        .brand a { margin-left: auto; }
+        #q { width: 100%; height: 46px; padding: 0 12px; font-size: 1.05rem; background: var(--bg-color); border: 2px solid var(--text-color); }
+        .tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tabs button { flex: none; border: 0; border-bottom: 4px solid transparent; padding: 8px 12px; font-weight: bold; background: none; }
+        .tabs button:hover { background: none; color: inherit; border-bottom-color: var(--text-color); }
+        .tabs button[aria-selected="true"] { background: var(--text-color); color: var(--bg-color); }
+
+        main .wrap { padding-top: 18px; padding-bottom: 60px; }
+        section.view { display: flex; flex-direction: column; gap: 20px; }
+        h2.sec { margin: 0; font-size: 1.05rem; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+        h2.sec .count { font-weight: normal; font-size: .9rem; }
+        .pg { font-size: .82rem; padding: 1px 6px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+        mark { background: var(--text-color); color: var(--bg-color); padding: 0 1px; }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .empty { padding: 30px 0; }
+        .filter { width: 100%; max-width: 420px; height: 42px; padding: 0 12px; background: var(--bg-color); border: 2px solid var(--text-color); }
+
+        /* tables built from rows */
+        .tbl { border: 2px solid var(--text-color); }
+        .tbl .row { display: grid; gap: 10px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--text-color); }
+        .tbl .row:first-child { border-top: 0; }
+        .tbl .hd { font-weight: bold; font-size: .82rem; }
+        .tbl .grp { background: var(--text-color); color: var(--bg-color); font-weight: bold; padding: 4px 12px; border-top: 1px solid var(--text-color); }
+        .tq .row { grid-template-columns: minmax(0, 1fr) 5.5rem 4.8rem; }
+        .tq .meta { font-size: .84rem; display: flex; flex-wrap: wrap; gap: 3px 10px; align-items: center; margin-top: 2px; }
+        .tq .nm { font-weight: bold; font-size: 1.15rem; text-align: right; }
+        .tq .lb, .tq .none { text-align: right; }
+        .tq small { font-weight: normal; margin-left: 3px; }
+        .flag { border: 1px dashed var(--text-color); padding: 0 4px; }
+        .sp .row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, .9fr) auto; align-items: baseline; }
+        .sp .val, .sp .lim { overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+        .sp .lim { font-weight: bold; }
+        .sp .lbl { display: none; }
+        .sp .fix { display: block; font-weight: normal; font-size: .84rem; margin-top: 2px; }
+        .dt .row { grid-template-columns: 4.2rem minmax(0, 1.6fr) minmax(0, 1fr) auto; }
+        .code { font-weight: bold; }
+
+        .quick { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0; border: 2px solid var(--text-color); }
+        .quick button { display: flex; flex-direction: column; gap: 2px; text-align: left; border: 0; outline: 1px solid var(--text-color); padding: 10px 12px; min-width: 0; }
+        .quick .v { font-weight: bold; }
+
+        /* pages */
+        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+        .card { display: flex; flex-direction: column; text-align: left; padding: 0; min-width: 0; border-width: 2px; }
+        .card .fig { overflow: hidden; max-height: 300px; border-bottom: 1px solid var(--text-color); background: #fff; }
+        .crop { position: relative; width: 100%; overflow: hidden; }
+        .crop img { position: absolute; max-width: none; }
+        .card .body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+        .card .crumb { display: flex; gap: 8px; font-size: .8rem; font-weight: bold; }
+        .card h3 { margin: 0; font-size: 1.1rem; line-height: 1.2; }
+        .card p { margin: 0; font-size: .9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .tqchips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tqchips span { font-size: .78rem; border: 1px solid currentColor; padding: 0 5px; }
+        .plist { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+        .prow { display: flex; gap: 10px; align-items: center; text-align: left; padding: 8px; }
+        .prow .th { flex: none; width: 56px; height: 72px; overflow: hidden; background: #fff; border: 1px solid var(--text-color); }
+        .prow .th img { width: 100%; display: block; }
+        .prow .m { font-size: .78rem; font-variant-numeric: tabular-nums; }
+        .prow .t { font-weight: bold; font-size: .92rem; line-height: 1.25; }
+        .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+        /* service */
+        .svc-top { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .field label, .field .lab { font-weight: bold; font-size: .84rem; }
+        #odo { width: 9.5rem; height: 44px; padding: 0 12px; font-size: 1.05rem; background: var(--bg-color); border: 2px solid var(--text-color); }
+        .ms { display: flex; flex-wrap: wrap; gap: 6px; }
+        .ms button { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; min-width: 5.2rem; padding: 5px 9px; }
+        .ms button span { font-size: .74rem; }
+        .ms button[aria-pressed="true"] { background: var(--text-color); color: var(--bg-color); }
+        .svc-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+        .box { border: 2px solid var(--text-color); }
+        .box .bh { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: var(--text-color); color: var(--bg-color); }
+        .box .bh h3 { margin: 0; font-size: 1rem; }
+        .box .bh button { color: var(--text-color); }
+        .box .bh button:hover { outline: 1px solid var(--bg-color); color: var(--bg-color); }
+        .chk { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--text-color); cursor: pointer; }
+        .chk:first-of-type { border-top: 0; }
+        .chk input, .trow input { width: 20px; height: 20px; accent-color: var(--text-color); }
+        .chk .nm2 small { display: block; }
+        .chk.done .nm2 { text-decoration: line-through; }
+        .chk .side { display: flex; gap: 6px; align-items: center; }
+        .act { font-weight: bold; font-size: .82rem; padding: 1px 6px; border: 1px solid var(--text-color); min-width: 5.2rem; text-align: center; }
+        .act.R { background: var(--text-color); color: var(--bg-color); }
+        .pgph { display: inline-block; width: 3.1rem; }
+        .chk .pg { width: 3.1rem; text-align: center; }
+        .shop ul { list-style: none; margin: 0; padding: 0; }
+        .shop li { padding: 9px 12px; border-top: 1px solid var(--text-color); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+        .shop li small { display: block; }
+        .shop .kind { font-size: .76rem; font-weight: bold; text-transform: uppercase; }
+        .shop .job { margin-left: 6px; font-size: .76rem; }
+        .shop .price { margin-left: 8px; font-variant-numeric: tabular-nums; }
+        .tier .th { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 6px 12px; border-top: 2px solid var(--text-color); font-weight: bold; }
+        .tier .th span { font-weight: normal; font-size: .8rem; text-align: right; }
+        .t-ifbad li { border-left: 4px dashed var(--text-color); }
+        .t-need li { border-left: 4px solid var(--text-color); }
+        .t-done li b, .t-done li small, li.own b { text-decoration: line-through; }
+        .t-tool summary { cursor: pointer; list-style: none; }
+        .t-tool summary::-webkit-details-marker { display: none; }
+        .cost { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 10px 12px; }
+        .cost div { display: flex; flex-direction: column; }
+        .cost b { font-size: 1.15rem; }
+        .cost span, .cost p { font-size: .78rem; }
+        .cost p { flex-basis: 100%; margin: 2px 0 0; }
+        .linkbtn { border: 0; background: none; padding: 0; text-decoration: underline; }
+        .linkbtn:hover { background: none; color: inherit; }
+        .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .84rem; }
+        .callout { border: 2px dashed var(--text-color); padding: 10px 12px; font-size: .92rem; }
+        .gidx { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+        .gcard { display: flex; flex-direction: column; gap: 3px; text-align: left; padding: 9px 12px; }
+        .gcard span { font-size: .82rem; }
+        .tl-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+        .tl-sum div { border: 2px solid var(--text-color); padding: 10px 12px; display: flex; flex-direction: column; }
+        .tl-sum b { font-size: 1.5rem; }
+        .tl-sum span { font-size: .8rem; }
+        .trow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--text-color); align-items: start; cursor: pointer; }
+        .trow:first-child { border-top: 0; }
+        .trow small { display: block; }
+        .trow.own b { text-decoration: line-through; }
+        .ctab { width: 100%; border-collapse: collapse; font-size: .92rem; }
+        .ctab th { text-align: left; background: var(--text-color); color: var(--bg-color); padding: 7px 12px; }
+        .ctab td { padding: 7px 12px; border-top: 1px solid var(--text-color); vertical-align: top; }
+        .tag2 { display: inline-block; margin-left: 6px; padding: 0 5px; font-size: .74rem; font-weight: bold; border: 1px solid var(--text-color); }
+        .tag2.need { background: var(--text-color); color: var(--bg-color); }
+        .tag2.ifbad { border-style: dashed; }
+
+        /* overlays: page viewer and guide */
+        .over { position: fixed; inset: 0; z-index: 50; background: var(--bg-color); display: flex; flex-direction: column; padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+        #guide { z-index: 45; overflow: auto; display: block; }
+        .vbar { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 2px solid var(--text-color); flex-wrap: wrap; }
+        .vbar .ttl { flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+        .vbar .ttl b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vbar .ttl span { font-size: .8rem; font-variant-numeric: tabular-nums; }
+        .vctl { display: flex; gap: 6px; flex-wrap: wrap; }
+        .vbtn { height: 38px; min-width: 38px; }
+        .vmain { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 360px; }
+        .vscroll { overflow: auto; position: relative; }
+        .vscroll img { display: block; margin: 0 auto; background: #fff; max-width: none; }
+        .vinfo { font-style: normal; margin: 0; border-left: 2px solid var(--text-color); overflow: auto; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 10px; }
+        .vinfo h3 { margin: 0; font-size: 1.2rem; line-height: 1.2; }
+        .vinfo h4 { margin: 6px 0 0; font-size: .84rem; }
+        .vinfo p { margin: 0; }
+        .vinfo ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: .92rem; }
+        .figbtn { display: block; width: 100%; text-align: left; padding: 7px 10px; }
+        .figbtn b, .figbtn small { display: block; }
+        .xref { display: flex; flex-wrap: wrap; gap: 6px; }
+        .nopdf .vscroll, .nopdf #vinfo { display: none; }
+        .nopdf .vmain { display: block; overflow: auto; }
+        .nopdf .vinfo { display: flex !important; border: 0; max-width: 760px; max-height: none; }
+        .hide-info .vmain { grid-template-columns: minmax(0, 1fr); }
+        .hide-info .vinfo { display: none; }
+        .gtop { position: sticky; top: 0; z-index: 2; background: var(--bg-color); border-bottom: 2px solid var(--text-color); }
+        .gtop .wrap { display: flex; align-items: center; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+        .gtop h2 { margin: 0; flex: 1; min-width: 0; font-size: 1.25rem; }
+        .gbody { padding-top: 18px; padding-bottom: 60px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+        .gbody .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+        .gbody h3 { margin: 0 0 6px; font-size: .9rem; }
+        .gbody p { margin: 0; max-width: 70ch; }
+        .meta3 { display: flex; flex-wrap: wrap; gap: 8px; }
+        .meta3 > span { border: 1px solid var(--text-color); padding: 2px 9px; font-size: .88rem; }
+        ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; border: 2px solid var(--text-color); }
+        ol.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 10px; padding: 9px 12px; border-top: 1px solid var(--text-color); align-items: start; }
+        ol.steps li:first-child { border-top: 0; }
+        ol.steps li::before { content: counter(s); font-weight: bold; }
+        .plist2 { border: 2px solid var(--text-color); }
+        .plist2 .pr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--text-color); align-items: start; }
+        .plist2 .pr:first-child { border-top: 0; }
+        .plist2 .pr.ifbad { border-left: 4px dashed var(--text-color); }
+        .plist2 .pr.need { border-left: 4px solid var(--text-color); }
+        .plist2 small { display: block; }
+        .links { display: flex; flex-direction: column; gap: 8px; }
+        .links a { display: block; border: 1px solid var(--text-color); padding: 7px 12px; }
+        .links a:hover { background: var(--text-color); color: var(--bg-color); }
+        .links a b, .links a small { display: block; }
+        ul.plain { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+
+        footer .wrap { padding-bottom: 40px; font-size: .86rem; display: flex; flex-direction: column; gap: 6px; }
+
+        @media (max-width: 820px) {
+            .svc-grid, .gbody { grid-template-columns: minmax(0, 1fr); }
+            .vmain { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+            .vinfo { border-left: 0; border-top: 2px solid var(--text-color); max-height: 40vh; }
+            .vctl { width: 100%; }
+            .vctl .vbtn { flex: 1; padding: 0 6px; }
+        }
+        @media (max-width: 620px) {
+            .sp .row { grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; }
+            .sp .row .it { grid-column: 1 / 2; }
+            .sp .row .pgc { grid-column: 2 / 3; grid-row: 1 / 2; }
+            .sp .row .val, .sp .row .lim { grid-column: 1 / 3; }
+            .sp .lbl { display: inline; font-weight: normal; font-size: .78rem; margin-right: 6px; }
+            .sp .hd { display: none; }
+            .dt .row { grid-template-columns: 3.6rem minmax(0, 1fr) auto; }
+            .dt .row .sym { grid-column: 2 / 3; }
+            .cards { grid-template-columns: minmax(0, 1fr); }
+            .tq .row { grid-template-columns: minmax(0, 1fr) 4.8rem 3.8rem; gap: 8px; }
+            .ctab th:nth-child(4), .ctab td:nth-child(4) { display: none; }
+            .chk { grid-template-columns: auto minmax(0, 1fr); }
+            .chk .side { grid-column: 2; }
+        }
+    </style>
+</head>
+<body>
+<header class="top">
+    <div class="wrap">
+        <div class="brand"><h1 id="brand">CT125 Manual</h1><select id="model" hidden aria-label="Model year"></select><span id="sub"></span><a href="/">pelmeniboiler</a></div>
+        <input id="q" type="search" placeholder="skid plate, front fork, chain slack, DTC 21-1" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search the manual">
+        <nav class="tabs" role="tablist" aria-label="Sections">
+            <button role="tab" data-v="search" aria-selected="true">Search</button>
+            <button role="tab" data-v="torque" aria-selected="false">Torque</button>
+            <button role="tab" data-v="specs" aria-selected="false">Specs</button>
+            <button role="tab" data-v="service" aria-selected="false">Service</button>
+            <button role="tab" data-v="tools" aria-selected="false">Tools &amp; costs</button>
+            <button role="tab" data-v="codes" aria-selected="false">Fault codes</button>
+            <button role="tab" data-v="pages" aria-selected="false">Pages</button>
+        </nav>
+    </div>
+</header>
+
+<main><div class="wrap">
+    <noscript>This manual needs JavaScript.</noscript>
+    <section class="view" id="v-search"></section>
+    <section class="view" id="v-torque" hidden></section>
+    <section class="view" id="v-specs" hidden></section>
+    <section class="view" id="v-service" hidden></section>
+    <section class="view" id="v-tools" hidden></section>
+    <section class="view" id="v-codes" hidden></section>
+    <section class="view" id="v-pages" hidden></section>
+</div></main>
+
+<footer><div class="wrap" id="foot"></div></footer>
+
+<div id="guide" class="over" hidden role="dialog" aria-modal="true" aria-label="Service guide">
+    <div class="gtop"><div class="wrap"><button class="vbtn" id="gclose" aria-label="Close guide">×</button><h2 id="gtitle"></h2></div></div>
+    <div class="wrap gbody" id="gbody"></div>
+</div>
+
+<div id="viewer" class="over" hidden role="dialog" aria-modal="true" aria-label="Manual page">
+    <div class="vbar">
+        <button class="vbtn" id="vclose" aria-label="Close">×</button>
+        <div class="ttl"><b id="vtitle"></b><span id="vsub"></span></div>
+        <div class="vctl">
+            <button class="vbtn" id="vprev" aria-label="Previous page">&lt;</button>
+            <button class="vbtn" id="vnext" aria-label="Next page">&gt;</button>
+            <button class="vbtn" id="vzo" aria-label="Zoom out" data-pdf>−</button>
+            <button class="vbtn" id="vzi" aria-label="Zoom in" data-pdf>+</button>
+            <button class="vbtn" id="vfit" data-pdf>Fit</button>
+            <button class="vbtn" id="vinfo">Info</button>
+        </div>
+    </div>
+    <div class="vmain">
+        <div class="vscroll" id="vscroll"><img id="vimg" alt="" hidden></div>
+        <aside class="vinfo" id="vpanel"></aside>
+    </div>
+</div>
+<input type="file" id="pdfpick" accept="application/pdf,.pdf" hidden>
+<input type="file" id="restorepick" accept="application/json,.json" hidden>
+<script type="module" src="/ct125/app.js"></script>
+</body>
+</html>

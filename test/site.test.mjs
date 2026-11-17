@@ -1129,6 +1129,60 @@ try {
         await ctx.close();
     }
 
+    // ============ /ct125/: the manual app ============
+    {
+        const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+        const page = await ctx.newPage();
+        const errors = [], imgs = [];
+        page.on('pageerror', (e) => errors.push(e.message));
+        page.on('request', (r) => { if (r.resourceType() === 'image' && !/icon|favicon|logo/.test(r.url())) imgs.push(r.url()); });
+        await page.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+        await page.waitForSelector('.quick button');
+        const manifest = await page.evaluate(() => document.querySelector('link[rel="manifest"]').getAttribute('href'));
+        ok(manifest === '/ct125/manifest.json', `CT125: keeps its own app manifest (${manifest})`);
+
+        await page.fill('#q', 'bash plate');
+        await page.waitForSelector('#v-search .card');
+        const found = await page.evaluate(() => [...document.querySelectorAll('#v-search .card h3')].map((h) => h.textContent).join(' | '));
+        ok(/under cover/i.test(found), `CT125: an owner's word finds Honda's ("bash plate" → ${found.slice(0, 80)})`);
+
+        // Every torque and spec row cites a manual page.
+        await page.click('.tabs [data-v=torque]');
+        const cited = await page.evaluate(() => { const rows = [...document.querySelectorAll('#v-torque .tq:last-of-type .row:not(.hd)')]; return { rows: rows.length, cited: rows.filter((r) => r.querySelector('.pg')).length }; });
+        ok(cited.rows > 80 && cited.rows === cited.cited, `CT125: every specified torque cites its page (${cited.cited}/${cited.rows})`);
+
+        // Odometer and ticks are kept on the device.
+        await page.click('.tabs [data-v=service]');
+        await page.fill('#odo', '7450'); await page.dispatchEvent('#odo', 'change');
+        await page.click('.chk input');
+        await page.reload({ waitUntil: 'load' });
+        await page.waitForSelector('#odo');
+        const kept = await page.evaluate(() => ({ odo: document.querySelector('#odo').value, ticks: document.querySelectorAll('.chk input:checked').length, title: document.querySelector('.box .bh h3').textContent }));
+        ok(kept.odo === '7450' && kept.ticks === 1 && /8,000/.test(kept.title), `CT125: odometer, due service and ticked jobs survive a reload (${JSON.stringify(kept)})`);
+
+        // No page of Honda's manual is ever served: a citation opens as text.
+        await page.click('.chk .pg');
+        const cite = await page.evaluate(() => ({ nopdf: document.querySelector('#viewer').classList.contains('nopdf'), load: !!document.querySelector('#vpanel [data-do=pick]'), img: !document.querySelector('#vimg').hidden }));
+        ok(cite.nopdf && cite.load && !cite.img && imgs.length === 0 && errors.length === 0, `CT125: without the owner's PDF a page is a citation, no scans requested (${JSON.stringify(cite)}, images=${imgs.length}, errors=${errors.join(';') || 'none'})`);
+        await page.keyboard.press('Escape');
+
+        // The owner's own PDF, read on their device, fills the viewer and is remembered.
+        const mk = await ctx.newPage();
+        await mk.setContent(Array.from({ length: 3 }, (_, i) => `<div style="page-break-after:always;font:90px sans-serif">PDF ${i + 1}</div>`).join(''));
+        const pdfBytes = await mk.pdf({ width: '8.5in', height: '11in' });
+        await mk.close();
+        await page.click('.tabs [data-v=pages]');
+        await page.setInputFiles('#pdfpick', { name: 'mine.pdf', mimeType: 'application/pdf', buffer: pdfBytes });
+        await page.waitForFunction(() => document.querySelector('.prow img')?.src.startsWith('blob:'), null, { timeout: 20000 });
+        await page.reload({ waitUntil: 'load' });
+        const again = await page.waitForFunction(() => document.querySelector('.prow img')?.src.startsWith('blob:'), null, { timeout: 20000 }).then(() => true, () => false);
+        await page.click('.prow');
+        const shown = await page.waitForFunction(() => !document.querySelector('#vimg').hidden && document.querySelector('#vimg').naturalWidth > 1000, null, { timeout: 20000 }).then(() => true, () => false);
+        const warn = await page.evaluate(() => !!document.querySelector('#v-pages .flag'));
+        ok(again && shown && warn, `CT125: a loaded PDF renders pages, is remembered, and a wrong page count is flagged (remembered=${again}, shown=${shown}, flagged=${warn})`);
+        await ctx.close();
+    }
+
     await browser.close();
     server.close();
 }

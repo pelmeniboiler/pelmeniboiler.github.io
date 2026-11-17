@@ -96,7 +96,8 @@
         // they were installed with — the platform offers no way to change it
         // afterwards — so this decides the icon at install time.)
         const THEMED_MANIFESTS = ['light', 'dark', 'champagne', 'bubblegum', 'techelet', 'zelyonny', 'akai', 'rindswurst', 'tapuz'];
-        const manifestLink = document.querySelector('link[rel="manifest"]');
+        // (A page that is its own app, like /ct125/, marks its manifest data-own.)
+        const manifestLink = document.querySelector('link[rel="manifest"]:not([data-own])');
         if (manifestLink && THEMED_MANIFESTS.includes(theme)) {
             manifestLink.href = `/manifest-${theme}.json`;
         }
