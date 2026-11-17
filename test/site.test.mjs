@@ -1135,7 +1135,7 @@ try {
         const page = await ctx.newPage();
         const errors = [], imgs = [];
         page.on('pageerror', (e) => errors.push(e.message));
-        page.on('request', (r) => { if (r.resourceType() === 'image' && !/icon|favicon|logo/.test(r.url())) imgs.push(r.url()); });
+        page.on('request', (r) => { if (r.resourceType() === 'image' && !/icon|favicon|logo|bike\.svg/.test(r.url())) imgs.push(r.url()); });
         await page.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
         await page.waitForSelector('.quick button');
         const manifest = await page.evaluate(() => document.querySelector('link[rel="manifest"]').getAttribute('href'));
@@ -1159,6 +1159,24 @@ try {
         await page.waitForSelector('#odo');
         const kept = await page.evaluate(() => ({ odo: document.querySelector('#odo').value, ticks: document.querySelectorAll('.chk input:checked').length, title: document.querySelector('.box .bh h3').textContent }));
         ok(kept.odo === '7450' && kept.ticks === 1 && /8,000/.test(kept.title), `CT125: odometer, due service and ticked jobs survive a reload (${JSON.stringify(kept)})`);
+
+        // A second bike keeps its own odometer and ticks; the first is untouched.
+        await page.fill('#bname', 'Red'); await page.dispatchEvent('#bname', 'change');
+        await page.click('#badd');
+        await page.waitForFunction(() => document.querySelector('#bpick')?.options.length === 2 && document.querySelector('#odo').value === '');
+        const second = await page.evaluate(() => ({ ticks: document.querySelectorAll('.chk input:checked').length, names: [...document.querySelector('#bpick').options].map((o) => o.textContent) }));
+        await page.selectOption('#bpick', { label: 'Red' });
+        await page.waitForFunction(() => document.querySelector('#odo')?.value === '7450');
+        const first = await page.evaluate(() => ({ name: document.querySelector('#bname').value, ticks: document.querySelectorAll('.chk input:checked').length }));
+        ok(second.ticks === 0 && first.name === 'Red' && first.ticks === 1, `CT125: each bike has its own name, odometer and ticks (${JSON.stringify({ second, first })})`);
+
+        // Tools owned counts every tool on the list, not only the priced ones.
+        await page.click('.tabs [data-v=tools]');
+        const tools = await page.evaluate(() => ({ shown: document.querySelector('.tl-sum b').textContent, rows: document.querySelector('#v-tools .box').querySelectorAll('.trow').length, opt: document.querySelector('#v-tools .box').querySelectorAll('.tag2').length }));
+        ok(tools.shown === `0 / ${tools.rows - tools.opt}` && tools.rows > 8, `CT125: tools owned is out of all listed tools (${JSON.stringify(tools)})`);
+        await page.click('.tabs [data-v=service]');
+        const inst = await page.evaluate(() => { const b = document.querySelector('#install'); b.click(); return { shown: !b.hidden, how: document.querySelector('#installhow').textContent }; });
+        ok(inst.shown && /Install app|Home Screen/i.test(inst.how), `CT125: Install is offered at the top and says where to find it when the browser has no prompt (${inst.how})`);
 
         // No page of Honda's manual is ever served: a citation opens as text.
         await page.click('.chk .pg');

@@ -9,8 +9,9 @@
 // page; an owner who loads their own PDF sees that page (rendered on their
 // device by pdf.js, kept in IndexedDB), everyone else sees the citation.
 //
-// What the owner does — odometer, ticked jobs, owned tools — is saved on the
-// device in localStorage, per model.
+// What the owner does is saved on the device in localStorage: each bike has
+// its name, model year, odometer and ticked jobs; owned tools are shared by
+// the household; a loaded manual belongs to its model year.
 
 const MODELS = [
     { id: '2021', label: '2021', data: '/ct125/data/2021.json' },
@@ -36,9 +37,29 @@ const fmtDate = (iso) => {
     try { return `${new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d)} (${f('')})`; } catch { return f(''); }
 };
 
-const modelId = MODELS.some((m) => m.id === ls.get('ct125:model')) ? ls.get('ct125:model') : MODELS[0].id;
-const MODEL = MODELS.find((m) => m.id === modelId);
-const store = { get: (k, d) => ls.get(`ct125:${modelId}:${k}`, d), set: (k, v) => ls.set(`ct125:${modelId}:${k}`, v) };
+// Bikes. (The first version kept one unnamed bike per model year under
+// ct125:<model>:…; that is carried over once.)
+let bikes = ls.get('ct125:bikes', null);
+if (!bikes) {
+    const old = MODELS.find((m) => m.id === ls.get('ct125:model')) || MODELS[0];
+    bikes = [{ id: 'b1', name: '', model: old.id }];
+    try {
+        const pre = `ct125:${old.id}:`;
+        Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
+            const key = k.slice(pre.length), v = localStorage.getItem(k);
+            const to = /^(odo|svcCol|svcAt|chk:)/.test(key) ? 'ct125:b:b1:' + key : /^pdf/.test(key) ? `ct125:m:${old.id}:${key}` : 'ct125:' + key;
+            localStorage.setItem(to, v); localStorage.removeItem(k);
+        });
+    } catch { /* private mode */ }
+    ls.set('ct125:bikes', bikes);
+}
+const BIKE = bikes.find((b) => b.id === ls.get('ct125:bike')) || bikes[0];
+const MODEL = MODELS.find((m) => m.id === BIKE.model) || MODELS[0];
+const modelId = MODEL.id;
+const saveBikes = () => ls.set('ct125:bikes', bikes);
+// Where each kind of saved thing lives.
+const SCOPE = (k) => (/^(odo|svcCol|svcAt|chk:)/.test(k) ? `ct125:b:${BIKE.id}:` : /^pdf/.test(k) ? `ct125:m:${modelId}:` : 'ct125:') + k;
+const store = { get: (k, d) => ls.get(SCOPE(k), d), set: (k, v) => ls.set(SCOPE(k), v) };
 
 const D = await (await fetch(MODEL.data)).json();
 const PAGES = D.pages, BYP = {}; PAGES.forEach((p) => { BYP[p.p] = p; });
@@ -370,7 +391,6 @@ function renderService() {
     const items = dueItems(col);
     v.innerHTML = `
         <div class="svc-top">
-            <div class="field"><label for="odo">Odometer (${UNIT})</label><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="100" value="${esc(store.get('odo', ''))}"></div>
             <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${m.toLocaleString()}</b><span>${other(m)}</span></button>`).join('')}</div></div>
         </div>
         <div class="svc-grid">
@@ -384,8 +404,6 @@ function renderService() {
         <div class="legend"><span><b>*</b> dealer job unless you have the tools and data</span><span><b>**</b> Honda recommends a dealer</span><span>p. ${esc(M.page)}</span></div>
         ${sec('Guides', D.guides.length)}${guideCards(D.guides)}`;
     v.querySelectorAll('.ms button').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.col, null); renderService(); }; });
-    const odo = v.querySelector('#odo');
-    odo.onchange = () => { const n = parseInt(odo.value, 10); store.set('odo', odo.value); if (!isNaN(n)) { const m = milestoneFor(n); setSvc(m.col, m.at > CYCLE ? m.at : null); renderService(); } };
     v.querySelectorAll('.chk input').forEach((c) => { c.onchange = () => { const d = store.get(key, {}); d[c.dataset.item] = c.checked; store.set(key, d); c.closest('.chk').classList.toggle('done', c.checked); v.querySelector('#shopbox').innerHTML = shopHTML(items, d); }; });
     v.querySelector('#clr').onclick = () => { store.set(key, {}); renderService(); };
     v.querySelector('#copy').onclick = async (e) => {
@@ -405,12 +423,13 @@ function renderTools() {
     const ids = Object.keys(TOOLS).filter((id) => need[id]).sort((a, b) => Math.min(...need[a].cols) - Math.min(...need[b].cols) || (toolPrice(b) || 0) - (toolPrice(a) || 0));
     const priced = ids.filter((id) => toolPrice(id) != null && !TOOLS[id].opt);
     const left = priced.filter((id) => !ow[id]);
+    const basic = ids.filter((id) => !TOOLS[id].opt);
     const stocks = []; Object.values(SUP).forEach((o) => Object.values(o).forEach((rs) => rs.forEach((r) => { if (rowX(r).stock && !stocks.some((s) => s[0] === r[0])) stocks.push(r); })));
     const costs = STEPS.map((m, col) => { const { rows } = shopData(dueItems(col), {}); return { m, col, need: sum(rows, 'need'), ifbad: sum(rows, 'ifbad') }; });
     const firstNew = {}; ids.forEach((id) => { const c = Math.min(...need[id].cols); (firstNew[c] = firstNew[c] || []).push(id); });
     v.innerHTML = `
         <div class="tl-sum">
-            <div><b class="num">${priced.length - left.length} / ${priced.length}</b><span>tools owned</span></div>
+            <div><b class="num">${basic.filter((id) => ow[id]).length} / ${basic.length}</b><span>tools owned</span></div>
             <div><b class="num">${money(left.reduce((a, id) => a + toolPrice(id), 0))}</b><span>tools to buy</span></div>
             <div><b class="num">${money(costs.reduce((a, c) => a + c.need, 0))}</b><span>parts, ${STEPS[0].toLocaleString()}–${CYCLE.toLocaleString()} ${UNIT}</span></div>
         </div>
@@ -450,7 +469,6 @@ function renderPages() {
             <button type="button" data-do="forget">Remove</button>` : ''}
         </div>
         <div class="bar">
-            ${installEvent ? '<button type="button" data-do="install">Install app</button>' : ''}
             <button type="button" data-do="backup">Back up my data</button>
             <button type="button" data-do="restore">Restore</button>
         </div>
@@ -474,13 +492,24 @@ $('#restorepick').onchange = async (e) => {
         location.reload();
     } catch { alert('That file is not a CT125 backup.'); }
 };
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; if (!$('#v-pages').hidden) renderPages(); });
-window.addEventListener('appinstalled', () => { installEvent = null; if (!$('#v-pages').hidden) renderPages(); });
+// Install: the browser's own prompt where it offers one, otherwise where to
+// find the command (iOS and some Android browsers never offer a prompt).
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+$('#install').hidden = standalone();
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; });
+window.addEventListener('appinstalled', () => { installEvent = null; $('#install').hidden = true; $('#installhow').hidden = true; });
+$('#install').onclick = async () => {
+    if (installEvent) { const ev = installEvent; installEvent = null; ev.prompt(); await ev.userChoice; return; }
+    const how = $('#installhow');
+    how.textContent = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+        ? 'Safari: Share, then Add to Home Screen.'
+        : 'Browser menu, then Install app or Add to Home screen.';
+    how.hidden = !how.hidden;
+};
 const DO = {
     pick: () => $('#pdfpick').click(),
     forget: () => forgetPdf(),
     shift: (b) => { pdf.shift += +b.dataset.by; store.set('pdfShift', pdf.shift); refresh(); },
-    install: async () => { const ev = installEvent; installEvent = null; ev.prompt(); await ev.userChoice; renderPages(); },
     backup,
     restore: () => $('#restorepick').click(),
 };
@@ -532,8 +561,8 @@ $('#vnext').onclick = () => cur < LAST && openPage(cur + 1);
 $('#vzi').onclick = () => setZoom(zoom * 1.4);
 $('#vzo').onclick = () => setZoom(zoom / 1.4);
 $('#vfit').onclick = () => { zoom = 1; vimg.style.width = '100%'; };
-$('#vinfo').onclick = () => { const v = $('#viewer'); v.classList.toggle('hide-info'); ls.set('ct125:hideInfo', v.classList.contains('hide-info')); };
-if (ls.get('ct125:hideInfo', false)) $('#viewer').classList.add('hide-info');
+$('#vinfo').onclick = () => { const v = $('#viewer'); v.classList.toggle('hide-info'); store.set('hideInfo', v.classList.contains('hide-info')); };
+if (store.get('hideInfo', false)) $('#viewer').classList.add('hide-info');
 vs.addEventListener('dblclick', (e) => { if (vimg.hidden) return; const r = vs.getBoundingClientRect(); setZoom(zoom > 1.2 ? 1 : 2.5, e.clientX - r.left, e.clientY - r.top); });
 $('#vpanel').addEventListener('click', (e) => { const b = e.target.closest('[data-zoom]'); if (b) zoomToBox(BYP[cur].f[+b.dataset.zoom].box); });
 document.addEventListener('keydown', (e) => {
@@ -611,11 +640,40 @@ document.addEventListener('click', (e) => {
 
 $('#sub').textContent = `${D.name} · ${D.code}`;
 document.title = `CT125 Manual · ${D.name}`;
-if (MODELS.length > 1) {
-    const sel = $('#model'); sel.hidden = false;
-    sel.innerHTML = MODELS.map((m) => `<option value="${m.id}"${m.id === modelId ? ' selected' : ''}>${esc(m.label)}</option>`).join('');
-    sel.onchange = () => { ls.set('ct125:model', sel.value); location.reload(); };
+/* ---------- my bike ---------- */
+function renderBike() {
+    const el = $('#bike');
+    el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
+        ${bikes.length > 1 ? `<select id="bpick" aria-label="Bike">${bikes.map((b, i) => `<option value="${b.id}"${b.id === BIKE.id ? ' selected' : ''}>${esc(b.name || 'Bike ' + (i + 1))}</option>`).join('')}</select>` : ''}
+        <input id="bname" type="text" placeholder="My bike" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
+        <select id="byear" aria-label="Model year">${MODELS.map((m) => `<option value="${m.id}"${m.id === modelId ? ' selected' : ''}>${esc(m.label)}</option>`).join('')}</select>
+        <label class="odo"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="100" aria-label="Odometer" value="${esc(store.get('odo', ''))}"><span>${UNIT}</span></label>
+        <button type="button" id="badd">Add bike</button>
+        ${bikes.length > 1 ? '<button type="button" id="bdel">Remove</button>' : ''}`;
+    $('#bname').onchange = (e) => { BIKE.name = e.target.value.trim(); saveBikes(); renderBike(); };
+    $('#byear').onchange = (e) => { BIKE.model = e.target.value; saveBikes(); location.reload(); };
+    $('#odo').onchange = (e) => {
+        store.set('odo', e.target.value);
+        const n = parseInt(e.target.value, 10);
+        if (isNaN(n)) return;
+        // Redraw only when the due service changes: a redraw under the finger
+        // would swallow a tap on the checklist.
+        const m = milestoneFor(n), at = m.at > CYCLE ? m.at : null;
+        if (m.col === svcCol && at === svcAt) return;
+        setSvc(m.col, at); if (view === 'service') renderService();
+    };
+    $('#badd').onclick = () => {
+        const id = 'b' + Date.now().toString(36);
+        bikes.push({ id, name: '', model: modelId }); saveBikes(); ls.set('ct125:bike', id); location.reload();
+    };
+    if ($('#bpick')) $('#bpick').onchange = (e) => { ls.set('ct125:bike', e.target.value); location.reload(); };
+    if ($('#bdel')) $('#bdel').onclick = () => {
+        if (!confirm(`Remove ${BIKE.name || 'this bike'} and its saved service history?`)) return;
+        try { Object.keys(localStorage).filter((k) => k.startsWith(`ct125:b:${BIKE.id}:`)).forEach((k) => localStorage.removeItem(k)); } catch { /* private mode */ }
+        bikes = bikes.filter((b) => b.id !== BIKE.id); saveBikes(); ls.set('ct125:bike', bikes[0].id); location.reload();
+    };
 }
+renderBike();
 $('#foot').innerHTML = [...D.source.notes, Object.keys(REFS).length ? 'Shop links are referral links: buying through them supports this page at no cost to you.' : '', 'Not affiliated with Honda.'].filter(Boolean).map((s) => `<div>${esc(s)}</div>`).join('');
 show(store.get('tab', 'search'));
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
