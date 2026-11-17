@@ -1135,7 +1135,7 @@ try {
         const page = await ctx.newPage();
         const errors = [], imgs = [];
         page.on('pageerror', (e) => errors.push(e.message));
-        page.on('request', (r) => { if (r.resourceType() === 'image' && !/icon|favicon|logo|bike\.svg/.test(r.url())) imgs.push(r.url()); });
+        page.on('request', (r) => { if (r.resourceType() === 'image' && !/icon|favicon|logo|bike\.svg|^blob:|^data:/.test(r.url())) imgs.push(r.url()); });
         await page.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
         await page.waitForSelector('.quick button');
         const manifest = await page.evaluate(() => document.querySelector('link[rel="manifest"]').getAttribute('href'));
@@ -1165,7 +1165,7 @@ try {
         await page.click('#bpick .custom-dropdown-toggle'); await page.click('#bpick .custom-dropdown-item[data-value="new"]');
         await page.waitForFunction(() => document.querySelector('#bike.editing') && document.querySelector('#odo').value === '');
         await page.click('#bsave');
-        await page.waitForFunction(() => document.querySelectorAll('#bpick .custom-dropdown-item').length === 3);
+        await page.waitForFunction(() => document.querySelectorAll('#bpick .custom-dropdown-item').length === 4);
         const second = await page.evaluate(() => ({ ticks: document.querySelectorAll('.chk input:checked').length, names: [...document.querySelectorAll('#bpick .custom-dropdown-item')].map((o) => o.textContent) }));
         await page.click('#bpick .custom-dropdown-toggle'); await page.click('#bpick .custom-dropdown-item >> text=Red');
         await page.waitForFunction(() => /^7,450/.test((document.querySelector('.odometer')?.getAttribute('aria-label') || '')));
@@ -1207,6 +1207,38 @@ try {
             const recs = await p4.evaluate(() => Object.keys(localStorage).filter((k) => /:chk:/.test(k)).length);
             await other.close();
             ok(hist.shown && hist.services >= 1 && hist.jobs >= 1 && hist.rules > hist.jobs && hist.sign && hist.logo && /^https:\/\/pelmeniboiler\.github\.io\/ct125\/#bike=/.test(url) && recs >= 1, `CT125: history page and share-bike link round trip (${JSON.stringify({ ...hist, recs, len: url.length })})`);
+        }
+
+        // A photo on a ticked job travels in the bike file, is checked against its fingerprint, and imports read-only.
+        {
+            await page.click('.tabs [data-v=service]');
+            for (let i = 0; i < 7 && !(await page.$('.addph')); i++) await page.click(`.ms button >> nth=${i}`);
+            const shot = await page.screenshot({ clip: { x: 0, y: 0, width: 400, height: 300 } });
+            const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('.addph')]);
+            await chooser.setFiles({ name: 'receipt.png', mimeType: 'image/png', buffer: shot });
+            await page.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0);
+            await page.click('#bshare');
+            await page.waitForFunction(() => /photo\)/.test(document.querySelector('#sharefile')?.textContent || ''));
+            const note = await page.textContent('#sharebody');
+            const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#sharefile')]);
+            const file = await dl.path();
+            await page.click('#shareclose');
+            const other = await browser.newContext();
+            const p5 = await other.newPage();
+            await p5.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await p5.waitForSelector('#bpick');
+            await p5.setInputFiles('#bikefilepick', file);
+            await p5.waitForSelector('#sharewin:not([hidden]) [data-imp=add]');
+            const imp = await p5.evaluate(() => ({ text: document.querySelector('#sharebody').textContent, ro: document.querySelector('#impro').checked }));
+            await p5.click('[data-imp=add]');
+            await p5.waitForFunction(() => /read-only/.test(document.querySelector('.bike-year')?.textContent || ''));
+            await p5.click('.tabs [data-v=service]');
+            for (let i = 0; i < 7 && !(await p5.$('.thumb')); i++) await p5.click(`.ms button >> nth=${i}`);
+            await p5.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0, null, { timeout: 10000 }).catch(() => {});
+            const got = await p5.evaluate(() => ({ year: document.querySelector('.bike-year').textContent, locked: document.querySelectorAll('.chk input[type=checkbox]:disabled').length, photo: document.querySelector('.thumb img')?.naturalWidth > 0, add: document.querySelectorAll('.addph').length }));
+            await other.close();
+            ok(/travels in the bike file/.test(note) && /matches its fingerprint/.test(imp.text) && imp.ro && /read-only/.test(got.year) && got.locked > 0 && got.photo && got.add === 0,
+                `CT125: a job's photo travels in the bike file, matches its fingerprint, and imports read-only (${JSON.stringify({ ro: imp.ro, ...got })})`);
         }
 
         // Tools owned counts every tool on the list, not only the priced ones.
