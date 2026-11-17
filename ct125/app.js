@@ -357,9 +357,12 @@ function renderSpecs() {
 
 /* ---------- service ---------- */
 const M = D.maint, SUP = D.supplies, TOOLS = D.tools, JT = D.jobTools, PRICE = D.prices.parts;
-const UNIT = D.unit, KM = UNIT === 'mi' ? 1.609344 : 1;
+// Distances: the data is written in its manual's unit (NATIVE); each bike shows
+// miles or kilometres (UNIT). Service keys and links stay in NATIVE.
+const NATIVE = D.unit, UNIT = BIKE.unit || NATIVE, OTHER = UNIT === 'mi' ? 'km' : 'mi';
+const conv = (n, from, to) => (from === to ? n : from === 'mi' ? n * 1.609344 : n / 1.609344);
 const ACT = { I: 'Inspect', C: 'Clean', R: 'Replace', A: 'Adjust', L: 'Lubricate' };
-const STEPS = M['intervals_' + UNIT], CYCLE = STEPS[STEPS.length - 1], EVERY = STEPS[1];
+const STEPS = M['intervals_' + NATIVE], CYCLE = STEPS[STEPS.length - 1], EVERY = STEPS[1];
 const GBY = {}; D.guides.forEach((gd) => { GBY[gd.item] = gd; });
 // supply row: [name, detail, page, kind, partNumber, tier, {p price, q qty, u url, src, note, stock}]
 const rowX = (r) => r[6] || {};
@@ -401,7 +404,12 @@ function milestoneFor(odo) {
 }
 let svcCol = store.get('svcCol', 1), svcAt = store.get('svcAt', null);
 const setSvc = (col, at) => { svcCol = col; svcAt = at; store.set('svcCol', col); store.set('svcAt', at); ; if (typeof view !== 'undefined' && view === 'service') setLink(); };
-const other = (n) => (UNIT === 'mi' ? `${(M.intervals_km?.[STEPS.indexOf(n)] ?? Math.round(n * KM)).toLocaleString()} km` : '');
+// A service distance in a unit: the manual's own figure where it gives one.
+const stepIn = (i, u) => M['intervals_' + u]?.[i] ?? Math.round(conv(STEPS[i], NATIVE, u) / 100) * 100;
+const dist = (n, u = UNIT) => { const i = STEPS.indexOf(n); return (i >= 0 ? stepIn(i, u) : Math.round(conv(n, NATIVE, u) / 100) * 100).toLocaleString(); };
+const colOf = (n) => (STEPS.includes(n) ? STEPS.indexOf(n) : STEPS.indexOf(((n - EVERY) % CYCLE) + EVERY));
+const odoNative = () => { const n = parseFloat(store.get('odo', '')); return isNaN(n) ? NaN : conv(n, UNIT, NATIVE); };
+const today = () => new Date().toISOString().slice(0, 10);
 function renderService() {
     const v = $('#v-service');
     const col = svcCol, label = svcAt || STEPS[col];
@@ -410,11 +418,11 @@ function renderService() {
     const items = dueItems(col);
     v.innerHTML = `
         <div class="svc-top">
-            <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${m.toLocaleString()}</b><span>${other(m)}</span></button>`).join('')}</div></div>
+            <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${stepIn(i, UNIT).toLocaleString()}</b><span>${stepIn(i, OTHER).toLocaleString()} ${OTHER}</span></button>`).join('')}</div></div>
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
-            <div class="box"><div class="bh"><h3 class="num">${label.toLocaleString()} ${UNIT}${svcAt ? ` = ${STEPS[col].toLocaleString()} ${UNIT} list` : ''}</h3><button type="button" id="clr">Clear</button></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item]; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}><span class="nm2">${esc(it.item)}${it.star ? ` ${it.star}` : ''}<small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small></span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+            <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button><button type="button" id="clr">Clear</button></span></div>
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done">${rec.o ? `<span class="num">${(+rec.o).toLocaleString()} ${esc(rec.u || UNIT)}</span>` : ''}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -423,14 +431,38 @@ function renderService() {
         <div class="legend"><span><b>*</b> dealer job unless you have the tools and data</span><span><b>**</b> Honda recommends a dealer</span><span>p. ${esc(M.page)}</span></div>
         ${sec('Guides', D.guides.length)}${guideCards(D.guides)}`;
     v.querySelectorAll('.ms button').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.col, null); renderService(); }; });
-    v.querySelectorAll('.chk input').forEach((c) => { c.onchange = () => { const d = store.get(key, {}); d[c.dataset.item] = c.checked; store.set(key, d); c.closest('.chk').classList.toggle('done', c.checked); if (hasShop) v.querySelector('#shopbox').innerHTML = shopHTML(items, d); }; });
+    // A tick records the day and the odometer, for a service history to hand over with the bike.
+    v.querySelectorAll('.chk input[type=checkbox]').forEach((c) => { c.onchange = () => {
+        const d = store.get(key, {}), odo = parseFloat(store.get('odo', ''));
+        if (c.checked) d[c.dataset.item] = { d: today(), ...(isNaN(odo) ? {} : { o: odo, u: UNIT }) }; else delete d[c.dataset.item];
+        store.set(key, d); renderService();
+    }; });
+    v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => { const d = store.get(key, {}); const r = typeof d[t.dataset.item] === 'object' ? d[t.dataset.item] : {}; d[t.dataset.item] = { ...r, d: t.value }; store.set(key, d); }; });
+    v.querySelector('#hist').onclick = exportHistory;
     v.querySelector('#clr').onclick = () => { store.set(key, {}); renderService(); };
     if (hasShop) v.querySelector('#copy').onclick = async (e) => {
         const sd = shopData(items, store.get(key, {}));
-        const txt = `${D.name} — ${label.toLocaleString()} ${UNIT} service\n` + (sd.tl.length ? '\nTOOLS\n' + sd.tl.map((id) => `- ${TOOLS[id].n}`).join('\n') + '\n' : '') + TIERS.map(([tk, name]) => { const rs = sd.open.filter((x) => x.r[5] === tk); return rs.length ? `\n${name.toUpperCase()}\n` + rs.map(({ r: [n, d, pg, , pn], job }) => `- ${n}${pn ? ' — Honda ' + pn : ''} (${d}) [${job}, p. ${pg}]`).join('\n') : ''; }).join('\n');
+        const txt = `${D.name} — ${dist(label)} ${UNIT} service\n` + (sd.tl.length ? '\nTOOLS\n' + sd.tl.map((id) => `- ${TOOLS[id].n}`).join('\n') + '\n' : '') + TIERS.map(([tk, name]) => { const rs = sd.open.filter((x) => x.r[5] === tk); return rs.length ? `\n${name.toUpperCase()}\n` + rs.map(({ r: [n, d, pg, , pn], job }) => `- ${n}${pn ? ' — Honda ' + pn : ''} (${d}) [${job}, p. ${pg}]`).join('\n') : ''; }).join('\n');
         try { await navigator.clipboard.writeText(txt); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Not copied'; }
         setTimeout(() => { e.target.textContent = 'Copy'; }, 1800);
     };
+}
+// Every ticked job on this bike, by service, as a spreadsheet (CSV).
+function exportHistory() {
+    const pre = `ct125:b:${BIKE.id}:chk:`, rows = [];
+    try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
+        const at = +k.slice(pre.length), done = JSON.parse(localStorage.getItem(k) || '{}'), col = colOf(at);
+        Object.entries(done).forEach(([job, r]) => { if (!r) return; const it = M.items.find((x) => x.item === job) || {}; const rec = typeof r === 'object' ? r : {};
+            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '']); });
+    }); } catch { /* private mode */ }
+    rows.sort((x, y) => x[0] - y[0] || String(x[4]).localeCompare(String(y[4])));
+    const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
+    const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Date (Hebrew)', 'Odometer', 'Unit', 'Manual page'];
+    const csv = [head, ...rows.map((r) => [BIKE.name || 'CT125', D.name, ...r.slice(1)])].map((r) => r.map(q).join(',')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv' }));
+    a.download = `${slug(BIKE.name || 'ct125')}-service-history.csv`; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 document.addEventListener('toggle', (e) => { if (e.target.id === 'toolsd') store.set('toolsOpen', e.target.open); }, true);
 
@@ -450,14 +482,14 @@ function renderTools() {
         <div class="tl-sum">
             <div><b class="num">${basic.filter((id) => ow[id]).length} / ${basic.length}</b><span>tools owned</span></div>
             <div><b class="num">${money(left.reduce((a, id) => a + toolPrice(id), 0))}</b><span>tools to buy</span></div>
-            <div><b class="num">${money(costs.reduce((a, c) => a + c.need, 0))}</b><span>parts, ${STEPS[0].toLocaleString()}–${CYCLE.toLocaleString()} ${UNIT}</span></div>
+            <div><b class="num">${money(costs.reduce((a, c) => a + c.need, 0))}</b><span>parts, ${stepIn(0, UNIT).toLocaleString()}–${stepIn(STEPS.length - 1, UNIT).toLocaleString()} ${UNIT}</span></div>
         </div>
         ${sec('Tools', 'tick what you own')}
-        <div class="box">${ids.map((id) => { const tt = TOOLS[id], n = need[id], on = !!ow[id]; return `<label class="trow ${on ? 'own' : ''}"><input type="checkbox" data-own="${id}" ${on ? 'checked' : ''}><span><b>${esc(tt.n)}</b>${tt.opt ? '<span class="tag2 ifbad">if needed</span>' : ''}<small>${esc(tt.d)}</small><small class="num">${[...n.cols].sort((a, b) => a - b).map((c) => STEPS[c].toLocaleString()).join(' · ')} ${UNIT} · ${[...n.jobs].map(esc).join(', ')}</small>${(tt.links || []).map(([l, u, p]) => `<small>${ext(u, esc(l) + (p != null ? ' · ' + money(p) : ''))}</small>`).join('')}</span><span class="num">${toolPrice(id) != null ? money(toolPrice(id)) : ''}</span></label>`; }).join('')}</div>
+        <div class="box">${ids.map((id) => { const tt = TOOLS[id], n = need[id], on = !!ow[id]; return `<label class="trow ${on ? 'own' : ''}"><input type="checkbox" data-own="${id}" ${on ? 'checked' : ''}><span><b>${esc(tt.n)}</b>${tt.opt ? '<span class="tag2 ifbad">if needed</span>' : ''}<small>${esc(tt.d)}</small><small class="num">${[...n.cols].sort((a, b) => a - b).map((c) => stepIn(c, UNIT).toLocaleString()).join(' · ')} ${UNIT} · ${[...n.jobs].map(esc).join(', ')}</small>${(tt.links || []).map(([l, u, p]) => `<small>${ext(u, esc(l) + (p != null ? ' · ' + money(p) : ''))}</small>`).join('')}</span><span class="num">${toolPrice(id) != null ? money(toolPrice(id)) : ''}</span></label>`; }).join('')}</div>
         ${sec('Supplies')}
         <div class="box">${stocks.map((r) => { const x = rowX(r), id = 'sup:' + r[0], on = !!ow[id]; return `<label class="trow ${on ? 'own' : ''}"><input type="checkbox" data-own="${esc(id)}" ${on ? 'checked' : ''}><span><b>${esc(r[0])}</b><small>${esc(x.note || '')}</small>${x.u ? `<small>${ext(x.u, esc(x.src))}</small>` : ''}</span><span class="num">${money(x.p)}</span></label>`; }).join('')}</div>
         ${sec('Parts cost by service', `prices ${priceNote()}, before shipping`)}
-        <div class="box"><table class="ctab"><thead><tr><th>Service</th><th>Replace</th><th>If inspections fail</th><th>New tools</th></tr></thead><tbody>${costs.map((c) => { const nt = (firstNew[c.col] || []).filter((id) => toolPrice(id) != null && !ow[id] && !TOOLS[id].opt); return `<tr><td><button type="button" class="linkbtn num" data-svc="${c.col}">${c.m.toLocaleString()} ${UNIT}</button></td><td class="num">${money(c.need)}</td><td class="num">+${money(c.ifbad)}</td><td>${nt.map((id) => `${esc(TOOLS[id].n)} <span class="num">${money(toolPrice(id))}</span>`).join('<br>')}</td></tr>`; }).join('')}</tbody></table></div>`;
+        <div class="box"><table class="ctab"><thead><tr><th>Service</th><th>Replace</th><th>If inspections fail</th><th>New tools</th></tr></thead><tbody>${costs.map((c) => { const nt = (firstNew[c.col] || []).filter((id) => toolPrice(id) != null && !ow[id] && !TOOLS[id].opt); return `<tr><td><button type="button" class="linkbtn num" data-svc="${c.col}">${stepIn(c.col, UNIT).toLocaleString()} ${UNIT}</button></td><td class="num">${money(c.need)}</td><td class="num">+${money(c.ifbad)}</td><td>${nt.map((id) => `${esc(TOOLS[id].n)} <span class="num">${money(toolPrice(id))}</span>`).join('<br>')}</td></tr>`; }).join('')}</tbody></table></div>`;
     v.querySelectorAll('[data-own]').forEach((c) => { c.onchange = () => { const o = owned(); o[c.dataset.own] = c.checked; store.set('ownTools', o); renderTools(); }; });
     v.querySelectorAll('[data-svc]').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.svc, null); show('service'); }; });
 }
@@ -689,41 +721,62 @@ const odoDigits = (n) => String(Math.max(0, Math.floor(+n || 0))).padStart(6, '0
 // Each wheel shows its digit with the neighbours peeking at the edges, like a drum.
 const odometer = (n) => `<span class="odometer" role="img" aria-label="${(+n || 0).toLocaleString()} ${UNIT}">${[...odoDigits(n)].map((d) => `<span class="wheel"><span>${(+d + 9) % 10}</span><span>${d}</span><span>${(+d + 1) % 10}</span></span>`).join('')}</span><span class="odo-unit">${UNIT}</span>`;
 let editing = false;
+// Menus in the site's own dropdown (the hub's language menu), not the OS one.
+const DD = {};
+const dropdown = (id, label, items, current, onPick, cls = '') => { DD[id] = onPick; return `<div class="custom-dropdown ${cls}" id="${id}" data-value="${esc(current)}"><button type="button" class="custom-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">${label}<span class="custom-dropdown-arrow" aria-hidden="true">▾</span></button><div class="custom-dropdown-menu" role="listbox">${items.map(([v, t]) => `<a href="#" class="custom-dropdown-item" role="option" data-value="${esc(v)}" aria-selected="${v === current}">${t}</a>`).join('')}</div></div>`; };
+const closeMenus = (except) => document.querySelectorAll('.custom-dropdown-menu.show').forEach((m) => { if (m !== except) { m.classList.remove('show'); m.previousElementSibling.setAttribute('aria-expanded', 'false'); } });
+document.addEventListener('click', (e) => {
+    const t = e.target.closest('.custom-dropdown-toggle');
+    if (t) { const m = t.nextElementSibling; closeMenus(m); const open = m.classList.toggle('show'); t.setAttribute('aria-expanded', String(open)); if (open) (m.querySelector('[aria-selected=true]') || m.querySelector('a'))?.focus(); return; }
+    const it = e.target.closest('.custom-dropdown-item');
+    if (it) { e.preventDefault(); const dd = it.closest('.custom-dropdown'); closeMenus(); dd.dataset.value = it.dataset.value; DD[dd.id]?.(it.dataset.value, dd, it); return; }
+    closeMenus();
+});
+document.addEventListener('keydown', (e) => {
+    const m = e.target.closest?.('.custom-dropdown-menu'); if (!m) return;
+    const list = [...m.querySelectorAll('a')], i = list.indexOf(e.target);
+    if (e.key === 'ArrowDown') { e.preventDefault(); list[Math.min(i + 1, list.length - 1)].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); list[Math.max(i - 1, 0)].focus(); }
+    if (e.key === 'Escape') { closeMenus(); m.previousElementSibling.focus(); }
+});
 function renderBike() {
     const el = $('#bike');
-    const pick = `<select id="bpick" aria-label="Bike">${bikes.map((b, i) => `<option value="${b.id}"${b.id === BIKE.id ? ' selected' : ''}>${esc(b.name || 'Bike ' + (i + 1))}</option>`).join('')}${BIKE.visit ? `<option value="${BIKE.id}" selected>${esc(MODEL.label)}</option>` : ''}<option value="new">+ Add new bike</option></select>`;
     const odo = store.get('odo', '');
+    const nameOf = (b, i) => b.name || (b.visit ? 'CT125' : 'Bike ' + (i + 1));
     el.classList.toggle('editing', editing);
-    el.innerHTML = editing ? `<span class="pic" role="img" aria-label="CT125"></span>
+    if (editing) {
+        el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
         <div class="plate">
             <input id="bname" type="text" placeholder="Name" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
-            <select id="byear" aria-label="Model year">${MODELS.map((m) => `<option value="${m.id}"${m.id === modelId ? ' selected' : ''}>${esc(m.label)}</option>`).join('')}</select>
+            ${dropdown('byear', esc(MODEL.label), MODELS.map((m) => [m.id, esc(m.label)]), modelId, (v, dd) => { dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = MODELS.find((m) => m.id === v).label; })}
         </div>
-        <label class="odo-edit"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="1" aria-label="Odometer" value="${esc(odo)}"><span>${UNIT}</span></label>
-        <span class="bike-tools"><button type="button" id="bsave" class="icon" title="Save" aria-label="Save">${ICON.floppy}</button>${bikes.length > 1 && !BIKE.visit ? '<button type="button" id="bdel">Remove</button>' : ''}</span>`
-        : `<span class="pic" role="img" aria-label="CT125"></span>
-        <div class="plate"><span class="bike-name">${esc(BIKE.name || (BIKE.visit ? 'CT125' : 'My bike'))}</span><span class="bike-year">${esc(MODEL.label)}</span></div>
+        <span class="odo-edit"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="1" aria-label="Odometer" value="${esc(odo)}">${dropdown('bunit', UNIT, [['mi', 'mi'], ['km', 'km']], UNIT, (v, dd) => {
+            // Switching the unit converts the reading in the field.
+            const f = $('#odo'), n = parseFloat(f.value), from = dd.dataset.from || UNIT;
+            if (!isNaN(n) && from !== v) f.value = Math.round(conv(n, from, v));
+            dd.dataset.from = v; dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = v;
+        }, 'unit-dd')}</span>
+        <span class="bike-tools"><button type="button" id="bsave" class="icon" title="Save" aria-label="Save">${ICON.floppy}</button>${bikes.length > 1 && !BIKE.visit ? '<button type="button" id="bdel">Remove</button>' : ''}</span>`;
+    } else {
+        el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
+        <div class="plate">${dropdown('bpick', `<span class="bike-name">${esc(nameOf(BIKE, bikes.indexOf(BIKE)))}</span>`, [...bikes.map((b, i) => [b.id, esc(nameOf(b, i))]), ...(BIKE.visit ? [[BIKE.id, esc(MODEL.label)]] : []), ['new', '+ Add new bike']], BIKE.id, (v) => {
+            if (v === BIKE.id) return;
+            if (v === 'new') { const id = 'b' + Date.now().toString(36); bikes.push({ id, name: '', model: modelId, unit: UNIT }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true); } else ls.set('ct125:bike', v);
+            history.replaceState(null, '', location.pathname); location.reload();
+        }, 'name-dd')}<span class="bike-year">${esc(MODEL.label)}</span></div>
         <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
-        <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button>${pick}</span>`;
-    if (!editing) {
+        <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button></span>`;
         $('#bedit').onclick = $('#odoview').onclick = () => { editing = true; renderBike(); ($('#bname').value ? $('#odo') : $('#bname')).focus(); };
-        $('#bpick').onchange = (e) => {
-            if (e.target.value === 'new') {
-                const id = 'b' + Date.now().toString(36);
-                bikes.push({ id, name: '', model: modelId }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true);
-            } else ls.set('ct125:bike', e.target.value);
-            location.hash = ''; location.reload();
-        };
         return;
     }
     const save = () => {
-        const name = $('#bname').value.trim(), year = $('#byear').value, n = $('#odo').value;
+        const name = $('#bname').value.trim(), year = $('#byear').dataset.value, unit = $('#bunit').dataset.value, n = $('#odo').value;
         if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
-        BIKE.name = name; const moved = year !== BIKE.model; BIKE.model = year; saveBikes();
-        if (moved) { location.hash = ''; location.reload(); return; }
-        store.set('odo', n);
+        const moved = year !== BIKE.model || unit !== UNIT;
+        BIKE.name = name; BIKE.model = year; BIKE.unit = unit; saveBikes(); store.set('odo', n);
+        if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
         editing = false; renderBike();
-        const k = parseInt(n, 10);
+        const k = odoNative();
         if (!isNaN(k)) {
             const m = milestoneFor(k), at = m.at > CYCLE ? m.at : null;
             if (m.col !== svcCol || at !== svcAt) { setSvc(m.col, at); if (view === 'service') renderService(); }
