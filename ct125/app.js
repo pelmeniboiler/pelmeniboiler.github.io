@@ -72,7 +72,9 @@ const saveBikes = () => ls.set('ct125:bikes', bikes);
 const ownerOf = (b) => (b.owners || []).at(-1)?.n || '';
 const possessive = (n) => (/s$/i.test(n) ? `${n}’` : `${n}’s`);
 // "W.S. Zhulkovsky’s 2022 JA55": the owner, the bike's year and its frame code.
-const bikeLine = (b, m) => [ownerOf(b) && possessive(ownerOf(b)), b.year ? `${b.year} ${m.code}` : m.label].filter(Boolean).join(' ');
+// (and if any earlier owner was a Charles, by any name, the bike remembers him)
+const CHUCK = /\b(charl(es|ie|ey|y)|chuck|chas|chaz|chip|carl(os|o)?|karl|karel|karol|carolus|karlo|kálmán)\b/i;
+const bikeLine = (b, m) => [ownerOf(b) && possessive(ownerOf(b)), b.year ? `${b.year} ${m.code}` : m.label].filter(Boolean).join(' ') + ((b.owners || []).slice(0, -1).some((w) => CHUCK.test(w.n)) ? ', formerly Chuck’s' : '');
 // Owners are kept in the order they owned the bike (by handover mileage, then date).
 const sortOwners = (ws) => ws.sort((x, y) => { const xo = parseFloat(x.o), yo = parseFloat(y.o); return (isNaN(xo) ? -1 : xo) - (isNaN(yo) ? -1 : yo) || String(x.d || '').localeCompare(String(y.d || '')); });
 const lockSym = (ro) => `<span class="sym" aria-hidden="true">${ro ? '🔒' : '🔓'}</span>`;
@@ -453,13 +455,21 @@ function renderService() {
     const byItems = [...new Set([...ws.map((w) => w.n), ...(ws.some((w) => inUnit(w) <= atU) ? [] : ['earlier owner'])])].map((n) => [n, esc(n)]).concat([['shop', 'a shop']]);
     const nowU = parseFloat(store.get('odo', '')), past = !isNaN(nowU) && atU + stepIn(1, UNIT) / 2 < nowU;
     v.innerHTML = `
-        ${ro ? `<p class="ro-note">${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>` : ''}
+        ${ro ? `<div class="ro-note"><p>${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>
+            ${recordChecks().length ? `<p><b>Worth a look</b></p><ul>${recordChecks().map((c) => `<li>${esc(c)}</li>`).join('')}</ul>` : ''}
+            <details><summary>What to check</summary><ul>
+                <li>Receipts dated on or just before the job, naming the part numbers listed.</li>
+                <li>Shop invoices showing the frame number (VIN) stamped on this bike.</li>
+                <li>Odometer photos reading close to the recorded mileage.</li>
+                <li>Mileage that climbs as the dates go on; gaps longer than a service interval deserve a question.</li>
+                <li>Photo fingerprints matching the ones on the printed record.</li>
+            </ul></details></div>` : ''}
         <div class="svc-top">
             <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${stepIn(i, UNIT).toLocaleString()}</b><span>${stepIn(i, OTHER).toLocaleString()} ${OTHER}</span></button>`).join('')}</div></div>
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
             <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button>${ro ? '' : '<button type="button" id="clr">Clear</button>'}</span></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}><input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? '' : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}><input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? `<small class="look">Look for: ${esc(lookFor(label, it.item, rec))}</small>` : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -539,6 +549,27 @@ const MEASURE = {
 };
 const ATTACH = { R: 'receipt', C: 'photo after cleaning', I: 'photo or reading', A: 'reading before and after', L: 'photo' };
 const box = '<span class="cb" aria-hidden="true"></span>';
+// "2022 Honda Trail125A · JA55": the bike's own year when known, else the manual's model.
+const modelLine = () => (BIKE.year ? `${BIKE.year} ${D.name.replace(/^\d{4}\+?\s*/, '')} · ${MODEL.code}` : `${D.name} · ${D.code}`);
+// Who did a job: what the record says, else whoever owned the bike at that service's mileage.
+const ownerInUnit = (w) => conv(parseFloat(w.o) || 0, w.u || UNIT, UNIT);
+const ownerAtMileage = (m) => [...(BIKE.owners || [])].reverse().find((w) => ownerInUnit(w) <= m)?.n || '';
+const doerOf = (at, r) => (r.by === 'shop' ? 'a shop' : r.by || ownerAtMileage(parseFloat(dist(at).replace(/,/g, ''))));
+const actAt = (at, job) => { const it = M.items.find((x) => x.item === job) || {}; return it.every ? 'L' : it.sched?.[colOf(at)] || ''; };
+const jobParts = (job, act) => (SUP[job]?.[act] || []).filter((r) => r[5] === 'need').map((r) => (r[4] ? `Honda ${r[4]}` : r[0].replace(/,.*$/, ''))).join(', ');
+// What a buyer should look for to back up one job.
+const lookFor = (at, job, r) => { const act = actAt(at, job), parts = act === 'R' ? jobParts(job, act) : ''; return `${ATTACH[act] || 'photo'}${parts ? ` naming ${parts}` : ''}${r.d ? `, dated on or before ${fmtDay(r.d)}` : ''}${MEASURE[job] ? '; a written reading' : ''}`; };
+// Things in a handed-over record worth a second look.
+function recordChecks() {
+    const recs = bikeRecords(), out = [], u = (r) => (r.o == null ? NaN : conv(+r.o, r.u || UNIT, UNIT));
+    const undated = recs.filter(([, , r]) => !r.d).length;
+    if (undated) out.push(`${undated} job${undated === 1 ? ' has' : 's have'} no date.`);
+    const dated = recs.filter(([, , r]) => r.d && !isNaN(u(r))).sort((x, y) => x[2].d.localeCompare(y[2].d));
+    for (let i = 1; i < dated.length; i++) if (u(dated[i][2]) < u(dated[i - 1][2]) - 1) { out.push(`The odometer goes down between ${fmtDay(dated[i - 1][2].d)} (${Math.round(u(dated[i - 1][2])).toLocaleString()} ${UNIT}) and ${fmtDay(dated[i][2].d)} (${Math.round(u(dated[i][2])).toLocaleString()} ${UNIT}).`); break; }
+    const now = parseFloat(store.get('odo', '')), withTicks = new Set(recs.map(([at]) => at));
+    if (!isNaN(now)) { const skipped = STEPS.filter((s, i) => stepIn(i, UNIT) <= now && !withTicks.has(s)).map((s) => `${dist(s)} ${UNIT}`); if (skipped.length) out.push(`Nothing recorded for the ${skipped.join(', ')} service${skipped.length === 1 ? '' : 's'}.`); }
+    return out;
+}
 const line = (w = '') => `<span class="blank${w ? ' ' + w : ''}"></span>`;
 // Service history as a document to print and hand over with the bike.
 async function openHistory() {
@@ -549,19 +580,19 @@ async function openHistory() {
     const partsFor = (job, act) => need(job, act).map((r) => (r[4] ? `Honda ${r[4]}` : r[0].replace(/,.*$/, ''))).join(', ');
     const oldPart = (job, act) => need(job, act).some((r) => r[3] === 'part' && !/gasket|O-ring|washer/i.test(r[0]));
     const odo = store.get('odo', ''), home = `${SITE}/ct125/`;
-    $('#hbody').innerHTML = `<header class="doc-head"><span class="doc-logo" role="img" aria-label="ש-Ж"></span><div><h1>Service record</h1><p>Printed ${esc(fmtDay(today()))}</p></div></header>
+    $('#hbody').innerHTML = `<header class="doc-head"><span class="doc-logo" id="hlogo" role="img" aria-label="ש-Ж"></span><div><h1>Service record</h1><p>Printed ${esc(fmtDay(today()))}</p></div></header>
         <dl class="doc-facts">
             <dt>Bike</dt><dd class="doc-name">${esc(BIKE.name || 'CT125')}</dd>
-            <dt>Model</dt><dd>${BIKE.year ? `${BIKE.year} · ` : ''}${esc(D.name)} · ${esc(D.code)}</dd>
+            <dt>Model</dt><dd>${esc(modelLine())}</dd>
             <dt>Odometer</dt><dd class="num">${odo !== '' ? `${(+odo).toLocaleString()} ${UNIT}` : line()}</dd>
             <dt>Frame no. (VIN)</dt><dd>${line('long')}</dd>
             <dt>Owner</dt><dd>${ownerOf(BIKE) ? esc(ownerOf(BIKE)) : line('long')}</dd>
             ${(BIKE.owners || []).length ? `<dt>Owners</dt><dd>${BIKE.owners.map((w) => `${esc(w.n)} · from ${esc(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${esc(w.u || UNIT)}` : ''}`).join('<br>')}</dd>` : ''}
         </dl>
         ${by.size ? [...by].map(([at, jobs]) => `<section class="doc-svc"><h2 class="num">${dist(at)} ${UNIT} service</h2>
-            <p class="doc-by">Done by ${box} owner ${box} shop ${line('long')}</p>
+            ${(() => { const who = [...new Set(jobs.map(([job, r]) => doerOf(at, r)))]; return who.every(Boolean) ? `<p class="doc-by">Done by ${esc(who.join(', '))}</p>` : `<p class="doc-by">Done by ${box} owner ${box} shop ${line('long')}</p>`; })()}
             <ol>${jobs.map(([job, r]) => { const act = actOf(at, job), parts = act === 'R' ? partsFor(job, act) : ''; return `<li>
-                <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span>${r.by ? ` · by ${esc(r.by === 'shop' ? 'a shop' : r.by)}` : ''}</p>
+                <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span>${doerOf(at, r) ? ` · by ${esc(doerOf(at, r))}` : ''}</p>
                 ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
                 <p class="doc-proof">${box} attached: ${esc(ATTACH[act] || 'photo')}${parts ? ` (${esc(parts)})` : ''}${act === 'R' && oldPart(job, act) ? ' · photo of the old part' : ''}</p>
                 ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8))).join(', ')}</span></p>` : ''}
@@ -578,6 +609,8 @@ async function openHistory() {
     document.body.classList.add('printing');
     $('#histwin').hidden = false; $('#histwin').scrollTop = 0; document.body.style.overflow = 'hidden';
     $('#hclose').focus({ preventScroll: true });
+    // The logo inline, in the text colour: printers skip background images, not SVG fills.
+    fetch('/logo/shzh.svg').then((r) => r.text()).then((t) => { $('#hlogo').innerHTML = t.replace(/<title>.*?<\/title>/s, '').replace(/#000000/g, 'currentColor').replace(/ width="\d+" height="\d+"/, ''); }).catch(() => {});
     const svg = await qrSvg(`${SITE}/ct125/#bike=${await packBike()}`);
     if (svg) $('#hqr').innerHTML = svg; else $('#hqr').remove();
 }
@@ -650,7 +683,7 @@ async function downloadBikeFile() {
     for (const rows of Object.values(p.h)) for (const r of rows) for (const h of r[4] || []) { const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
     let logo = ''; try { logo = (await (await fetch('/logo/shzh.svg')).text()).replace(/<title>.*?<\/title>/s, '').replace(/ width="\d+" height="\d+"/, ''); } catch { /* offline */ }
     const name = BIKE.name || 'CT125', q = (s) => esc(s);
-    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph, by]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}${by ? ` · by ${q(by === 'shop' ? 'a shop' : by)}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
+    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph, by]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}${doerOf(+at, { by }) ? ` · by ${q(doerOf(+at, { by }))}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
     const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${q(name)} · service record</title>
@@ -666,7 +699,7 @@ figure { margin: 8px 0; } figure img { display: block; max-width: 100%; max-heig
 footer { margin-top: 30px; padding-top: 12px; border-top: 3px double #000; }
 </style></head><body>
 <header>${logo}<div><h1>Service record</h1><p style="margin:0">Exported ${q(fmtDay(today()))}</p></div></header>
-<dl><dt>Bike</dt><dd class="name">${q(name)}</dd><dt>Model</dt><dd>${BIKE.year ? `${BIKE.year} · ` : ''}${q(D.name)} · ${q(D.code)}</dd>${(BIKE.owners || []).length ? `<dt>Owners</dt><dd>${BIKE.owners.map((w) => `${q(w.n)} · from ${q(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${q(w.u || UNIT)}` : ''}`).join('<br>')}</dd>` : ''}<dt>Odometer</dt><dd>${p.o !== '' ? `${(+p.o).toLocaleString()} ${UNIT}` : '—'}</dd><dt>Photos</dt><dd>${photos.size}</dd></dl>
+<dl><dt>Bike</dt><dd class="name">${q(name)}</dd><dt>Model</dt><dd>${q(modelLine())}</dd>${(BIKE.owners || []).length ? `<dt>Owners</dt><dd>${BIKE.owners.map((w) => `${q(w.n)} · from ${q(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${q(w.u || UNIT)}` : ''}`).join('<br>')}</dd>` : ''}<dt>Odometer</dt><dd>${p.o !== '' ? `${(+p.o).toLocaleString()} ${UNIT}` : '—'}</dd><dt>Photos</dt><dd>${photos.size}</dd></dl>
 ${services || '<p>Nothing ticked yet.</p>'}
 <footer><p>To take over this bike with its record and photos: open <b>${q(SITE.replace(/^https?:\/\//, ''))}/ct125/</b>, open the menu on the bike’s name, choose <b>Open bike file…</b> and pick this file. Each photo’s fingerprint can be checked against the printed service record.</p></footer>
 <script type="application/json" id="ct125-bike">${JSON.stringify(p).replace(/</g, '\\u003c')}</script>
@@ -727,7 +760,7 @@ function exportHistory() {
     try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
         const at = +k.slice(pre.length), done = JSON.parse(localStorage.getItem(k) || '{}'), col = colOf(at);
         Object.entries(done).forEach(([job, r]) => { if (!r) return; const it = M.items.find((x) => x.item === job) || {}; const rec = typeof r === 'object' ? r : {};
-            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', rec.by === 'shop' ? 'a shop' : rec.by || '']); });
+            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', doerOf(at, rec)]); });
     }); } catch { /* private mode */ }
     rows.sort((x, y) => x[0] - y[0] || String(x[4]).localeCompare(String(y[4])));
     const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
@@ -857,6 +890,29 @@ function zoomToBox(box) {
     vimg.style.width = (zoom * 100) + '%';
     requestAnimationFrame(() => { vs.scrollLeft = x * vimg.offsetWidth - (rect.width - w * vimg.offsetWidth) / 2; vs.scrollTop = y * vimg.offsetHeight - 8; });
 }
+// Everything in the app that cites a manual page: the other direction of every page link.
+let CITES = null;
+function citedBy(mp) {
+    if (!CITES) {
+        CITES = {};
+        const add = (pg, kind, v) => { if (!pg) return; const c = (CITES[pg] = CITES[pg] || { guides: new Set(), jobs: new Set(), torque: [], specs: [], codes: [], pages: new Set() }); kind === 'guides' || kind === 'jobs' || kind === 'pages' ? c[kind].add(v) : c[kind].push(v); };
+        D.guides.forEach((g) => { (g.pages || []).forEach((pg) => add(pg, 'guides', g.item)); g.steps.forEach(([, pg]) => add(pg, 'guides', g.item)); });
+        M.items.forEach((it) => add(it.ref, 'jobs', it.item));
+        Object.entries(SUP).forEach(([job, o]) => Object.values(o).forEach((rs) => rs.forEach((r) => add(r[2], 'jobs', job))));
+        D.torque.filter((r) => r[0] !== 'STANDARD').forEach((r) => add(r[8], 'torque', `${r[1]} ${r[4] ? r[4] + ' N·m' : ''}`.trim()));
+        D.specs.forEach((r) => add(r[5], 'specs', `${r[2]}: ${r[3] || r[4]}`));
+        ['pgmfi', 'abs'].forEach((s) => D.dtc[s].forEach((r) => add(s === 'abs' ? r[5] : r[3], 'codes', r[0])));
+        DTC_EXTRA.forEach((tb) => tb.rows.forEach((r) => add(r[3], 'codes', r[0])));
+        PAGES.forEach((q) => (q.r || []).forEach((pg) => add(pg, 'pages', q.mp)));
+    }
+    const c = CITES[mp]; if (!c) return '';
+    const part = (title, html) => (html ? `<p class="cite-h">${title}</p>${html}` : '');
+    const list = (xs, cap = 12) => (xs.length ? `<ul class="num">${xs.slice(0, cap).map((x) => `<li>${esc(x)}</li>`).join('')}${xs.length > cap ? `<li>and ${xs.length - cap} more</li>` : ''}</ul>` : '');
+    const body = part('Guides', c.guides.size ? `<div class="xref">${[...c.guides].map((g) => `<button type="button" class="gbtn" data-guide="${esc(g)}">${esc(g)}</button>`).join('')}</div>` : '')
+        + part('Service', list([...c.jobs])) + part('Torque', list(c.torque)) + part('Specs', list(c.specs)) + part('Fault codes', list(c.codes))
+        + part('Pages', c.pages.size ? `<div class="xref">${[...c.pages].map(pgBtn).join('')}</div>` : '');
+    return body ? `<h4>Cited by</h4>${body}` : '';
+}
 function openPage(n, figIdx) {
     n = +n; const p = BYP[n]; if (!p) return;
     cur = n; $('#viewer').hidden = false; document.body.style.overflow = 'hidden';
@@ -871,7 +927,8 @@ function openPage(n, figIdx) {
         ${p.f && p.f.length ? `<h4>Diagrams</h4>${p.f.map(fig).join('')}` : ''}
         ${p.tq && p.tq.length ? `<h4>Torque</h4><ul class="num">${p.tq.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
         ${p.n && p.n.length ? `<h4>Notes</h4><ul>${p.n.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-        ${(p.r || []).length ? `<h4>See also</h4><div class="xref">${p.r.map(pgBtn).join('')}</div>` : ''}`;
+        ${(p.r || []).length ? `<h4>See also</h4><div class="xref">${p.r.map(pgBtn).join('')}</div>` : ''}
+        ${citedBy(p.mp)}`;
     $('#vpanel').scrollTop = 0;
     if (hasPdf()) pageImg(n, 1800).then((u) => {
         if (cur !== n || !u) return;
@@ -906,6 +963,7 @@ document.addEventListener('keydown', (e) => {
 const CONF = { us24: '2024 US catalog', fiche: '2022 catalog', standard: 'standard Honda part', seller: 'listed for 2021-22', likely: 'likely, check diagram', check: 'confirm' };
 const NEEDT = { need: 'Replace', ifbad: 'If inspection fails', alt: 'Alternative' };
 function openGuide(name) {
+    if (!$('#viewer').hidden) closeViewer();
     const gd = GBY[name]; if (!gd) return;
     $('#gtitle').textContent = gd.item;
     const parts = gd.parts.length ? `<div class="plist2">${gd.parts.map((pt) => `<div class="pr ${pt.need || ''}"><span><b>${esc(pt.name)}</b>${pt.qty ? ` × ${esc(pt.qty)}` : ''}${NEEDT[pt.need] ? `<span class="tag2 ${pt.need}">${NEEDT[pt.need]}</span>` : ''}${pt.pn ? `<small class="num">Honda ${esc(pt.pn)}${CONF[pt.conf] ? ` <span class="${/likely|check/.test(pt.conf) ? 'flag' : ''}">${CONF[pt.conf]}</span>` : ''}${PRICE[pt.pn] != null ? ' · ' + money(PRICE[pt.pn]) : ''}</small>` : ''}${pt.note ? `<small>${esc(pt.note)}</small>` : ''}</span>${pt.pn && partUrl(pt.pn) ? ext(partUrl(pt.pn), 'Buy') : pt.url ? ext(pt.url, 'Buy') : ''}</div>`).join('')}</div>` : '';
