@@ -73,6 +73,8 @@ const ownerOf = (b) => (b.owners || []).at(-1)?.n || '';
 const possessive = (n) => (/s$/i.test(n) ? `${n}’` : `${n}’s`);
 // "W.S. Zhulkovsky’s 2022 JA55": the owner, the bike's year and its frame code.
 const bikeLine = (b, m) => [ownerOf(b) && possessive(ownerOf(b)), b.year ? `${b.year} ${m.code}` : m.label].filter(Boolean).join(' ');
+// Owners are kept in the order they owned the bike (by handover mileage, then date).
+const sortOwners = (ws) => ws.sort((x, y) => { const xo = parseFloat(x.o), yo = parseFloat(y.o); return (isNaN(xo) ? -1 : xo) - (isNaN(yo) ? -1 : yo) || String(x.d || '').localeCompare(String(y.d || '')); });
 const lockSym = (ro) => `<span class="sym" aria-hidden="true">${ro ? '🔒' : '🔓'}</span>`;
 // Where each kind of saved thing lives.
 const SCOPE = (k) => (/^(odo|svcCol|svcAt|chk:)/.test(k) ? `ct125:b:${BIKE.id}:` : /^pdf/.test(k) ? `ct125:m:${modelId}:` : 'ct125:') + k;
@@ -442,6 +444,14 @@ function renderService() {
     const key = 'chk:' + label;
     const done = store.get(key, {});
     const items = dueItems(col), ro = !!BIKE.ro;
+    // Who did each job. Services beyond the current owner's handover are theirs;
+    // earlier ones get a picker, defaulting to whoever owned the bike at that mileage.
+    const ws = BIKE.owners || [], cur = ws.at(-1), inUnit = (w) => conv(parseFloat(w.o) || 0, w.u || UNIT, UNIT);
+    const atU = parseFloat(dist(label).replace(/,/g, '')), handover = cur ? inUnit(cur) : 0;
+    const askBy = ws.length > 0 && atU <= handover;
+    const ownerAt = (m) => [...ws].reverse().find((w) => inUnit(w) <= m)?.n || 'earlier owner';
+    const byItems = [...new Set([...ws.map((w) => w.n), ...(ws.some((w) => inUnit(w) <= atU) ? [] : ['earlier owner'])])].map((n) => [n, esc(n)]).concat([['shop', 'a shop']]);
+    const nowU = parseFloat(store.get('odo', '')), past = !isNaN(nowU) && atU + stepIn(1, UNIT) / 2 < nowU;
     v.innerHTML = `
         ${ro ? `<p class="ro-note">${lockSym(true)} Read-only mode. To make changes, unlock the record in the ‘edit bike’ menu.</p>` : ''}
         <div class="svc-top">
@@ -449,7 +459,7 @@ function renderService() {
         </div>
         <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
             <div class="box"><div class="bh"><h3 class="num">${dist(label)} ${UNIT}${svcAt ? ` = ${dist(STEPS[col])} ${UNIT} list` : ''}</h3><span class="bh-tools"><button type="button" id="hist" title="Download this bike's service history">History</button>${ro ? '' : '<button type="button" id="clr">Clear</button>'}</span></div>
-                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}>${rec.o ? `<span class="num">${(+rec.o).toLocaleString()} ${esc(rec.u || UNIT)}</span>` : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? '' : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
+                ${items.map(({ it, a }, i) => { const on = !!done[it.item], rec = typeof done[it.item] === 'object' ? done[it.item] : {}; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}${ro ? ' disabled' : ''}><span class="nm2"><span class="jn">${esc(it.item)}${it.star ? ` ${it.star}` : ''}</span><small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small>${on ? `<span class="tick"><input type="date" class="tick-date" data-item="${esc(it.item)}" value="${esc(rec.d || '')}" aria-label="Date done"${ro ? ' disabled' : ''}><input type="number" class="tick-odo num" data-item="${esc(it.item)}" value="${rec.o ?? ''}" min="0" inputmode="numeric" aria-label="Odometer when done"${ro ? ' disabled' : ''}><span>${esc(rec.u || UNIT)}</span>${askBy ? (ro ? `<span>by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}</span>` : dropdown(`by${i}`, `by ${esc(rec.by === 'shop' ? 'a shop' : rec.by || ownerAt(atU))}`, byItems, rec.by || ownerAt(atU), (v) => { setRec(it.item, { by: v }); renderService(); }, 'by-dd')) : ''}${(rec.p || []).map((h) => `<button type="button" class="thumb" data-ph="${esc(h)}" data-item="${esc(it.item)}" title="Photo ${esc(h.slice(0, 8))}"><img alt="Photo ${esc(h.slice(0, 8))}"></button>`).join('')}${ro ? '' : `<button type="button" class="addph" data-item="${esc(it.item)}">+ photo</button>`}</span>` : ''}</span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
             ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
@@ -462,9 +472,13 @@ function renderService() {
     v.querySelectorAll('.chk input[type=checkbox]').forEach((c) => { c.onchange = () => {
         const d = store.get(key, {}), odo = parseFloat(store.get('odo', '')), had = (d[c.dataset.item] || {}).p || [];
         if (!c.checked && had.length && !confirm(`Untick and delete its ${had.length} photo${had.length === 1 ? '' : 's'}?`)) { c.checked = true; return; }
-        if (c.checked) d[c.dataset.item] = { d: today(), ...(isNaN(odo) ? {} : { o: odo, u: UNIT }) }; else { had.forEach((h) => photoDel(BIKE.id, h)); delete d[c.dataset.item]; }
+        // Ticking a service well behind the odometer is back-filling: its own mileage, a date to fill in, and who owned the bike then.
+        if (c.checked) d[c.dataset.item] = past ? { o: atU, u: UNIT, ...(askBy ? { by: ownerAt(atU) } : {}) } : { d: today(), ...(isNaN(odo) ? {} : { o: odo, u: UNIT }) }; else { had.forEach((h) => photoDel(BIKE.id, h)); delete d[c.dataset.item]; }
         store.set(key, d); renderService();
     }; });
+    function setRec(item, patch) { const d = store.get(key, {}); d[item] = { ...(typeof d[item] === 'object' ? d[item] : {}), ...patch }; store.set(key, d); }
+    v.querySelectorAll('.tick-odo').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => setRec(t.dataset.item, { o: t.value === '' ? undefined : +t.value, u: UNIT }); });
+    v.querySelectorAll('.by-dd').forEach((dd) => dd.addEventListener('click', (e) => e.preventDefault()));
     v.querySelectorAll('.tick-date').forEach((t) => { t.onclick = (e) => e.stopPropagation(); t.onchange = () => { const d = store.get(key, {}); const r = typeof d[t.dataset.item] === 'object' ? d[t.dataset.item] : {}; d[t.dataset.item] = { ...r, d: t.value }; store.set(key, d); }; });
     v.querySelector('#hist').onclick = openHistory;
     if (!ro) v.querySelector('#clr').onclick = () => { if (Object.values(store.get(key, {})).some((r) => r?.p?.length) && !confirm('Clear these ticks and their photos?')) return; Object.values(store.get(key, {})).forEach((r) => (r?.p || []).forEach((h) => photoDel(BIKE.id, h))); store.set(key, {}); renderService(); };
@@ -547,7 +561,7 @@ async function openHistory() {
         ${by.size ? [...by].map(([at, jobs]) => `<section class="doc-svc"><h2 class="num">${dist(at)} ${UNIT} service</h2>
             <p class="doc-by">Done by ${box} owner ${box} shop ${line('long')}</p>
             <ol>${jobs.map(([job, r]) => { const act = actOf(at, job), parts = act === 'R' ? partsFor(job, act) : ''; return `<li>
-                <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span></p>
+                <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span>${r.by ? ` · by ${esc(r.by === 'shop' ? 'a shop' : r.by)}` : ''}</p>
                 ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
                 <p class="doc-proof">${box} attached: ${esc(ATTACH[act] || 'photo')}${parts ? ` (${esc(parts)})` : ''}${act === 'R' && oldPart(job, act) ? ' · photo of the old part' : ''}</p>
                 ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8))).join(', ')}</span></p>` : ''}
@@ -587,7 +601,7 @@ const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso +
 // [job index, day, odometer, km?, [photo fingerprints]].
 function bikePayload() {
     const h = {};
-    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length) row.push(r.p); (h[at] = h[at] || []).push(row); });
+    bikeRecords().forEach(([at, job, r]) => { const j = M.items.findIndex((x) => x.item === job); if (j < 0) return; const row = [j, r.d ? dayOf(r.d) : null, r.o ?? null, r.u === 'km' ? 1 : 0]; if (r.p?.length || r.by) row.push(r.p?.length ? r.p : null); if (r.by) row.push(r.by); (h[at] = h[at] || []).push(row); });
     return { v: 1, n: BIKE.name, m: modelId, y: BIKE.year || null, w: BIKE.owners || [], u: UNIT, o: store.get('odo', ''), h };
 }
 const photoCount = (p) => Object.values(p.h || {}).reduce((a, rows) => a + rows.reduce((b, r) => b + (r[4] || []).length, 0), 0);
@@ -636,7 +650,7 @@ async function downloadBikeFile() {
     for (const rows of Object.values(p.h)) for (const r of rows) for (const h of r[4] || []) { const b = await photoGet(BIKE.id, h); if (b) photos.set(h, await blobURL(b)); }
     let logo = ''; try { logo = (await (await fetch('/logo/shzh.svg')).text()).replace(/<title>.*?<\/title>/s, '').replace(/ width="\d+" height="\d+"/, ''); } catch { /* offline */ }
     const name = BIKE.name || 'CT125', q = (s) => esc(s);
-    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
+    const services = Object.entries(p.h).sort((x, y) => x[0] - y[0]).map(([at, rows]) => `<section><h2>${q(dist(+at))} ${UNIT} service</h2><ol>${rows.map(([j, day, o, u, ph, by]) => { const it = M.items[j]; const act = it.every ? 'L' : it.sched?.[colOf(+at)]; return `<li><p><b>${q(it.item)}</b>${act ? ` · ${q(ACT[act].toLowerCase())}` : ''} · ${day != null ? q(fmtDay(isoOf(day))) : 'no date'}${o != null ? ` · ${(+o).toLocaleString()} ${u ? 'km' : 'mi'}` : ''}${by ? ` · by ${q(by === 'shop' ? 'a shop' : by)}` : ''}</p>${(ph || []).map((h) => photos.has(h) ? `<figure><img data-hash="${h}" src="${photos.get(h)}" alt="${q(it.item)}"><figcaption>fingerprint ${h.slice(0, 8)}</figcaption></figure>` : `<p class="miss">photo ${h.slice(0, 8)} is not on this device</p>`).join('')}</li>`; }).join('')}</ol></section>`).join('');
     const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${q(name)} · service record</title>
@@ -701,7 +715,7 @@ async function importBike(p, photos = null) {
         else { target = { id: 'b' + Date.now().toString(36), name: same ? copyName : p.n }; bikes.push(target); }
         Object.assign(target, { model, unit: p.u, year: p.y || undefined, owners: p.w || [], ro: $('#impro').getAttribute('aria-pressed') === 'true' }); delete target.visit; saveBikes();
         ls.set(`ct125:b:${target.id}:odo`, p.o ?? '');
-        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
+        Object.entries(p.h || {}).forEach(([at, rows]) => { const done = {}; rows.forEach(([j, day, o, u, ph, by]) => { if (!items[j]) return; done[items[j].item] = { ...(day != null ? { d: isoOf(day) } : {}), ...(o != null ? { o, u: u ? 'km' : 'mi' } : {}), ...(ph?.length ? { p: ph } : {}), ...(by ? { by } : {}) }; }); ls.set(`ct125:b:${target.id}:chk:${at}`, done); });
         for (const [h, blob] of ok) await photoPut(target.id, h, blob);
         ls.set('ct125:bike', target.id);
         history.replaceState(null, '', location.pathname); location.reload();
@@ -713,11 +727,11 @@ function exportHistory() {
     try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
         const at = +k.slice(pre.length), done = JSON.parse(localStorage.getItem(k) || '{}'), col = colOf(at);
         Object.entries(done).forEach(([job, r]) => { if (!r) return; const it = M.items.find((x) => x.item === job) || {}; const rec = typeof r === 'object' ? r : {};
-            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '']); });
+            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', rec.by === 'shop' ? 'a shop' : rec.by || '']); });
     }); } catch { /* private mode */ }
     rows.sort((x, y) => x[0] - y[0] || String(x[4]).localeCompare(String(y[4])));
     const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
-    const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Date (Hebrew)', 'Odometer', 'Unit', 'Manual page'];
+    const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Date (Hebrew)', 'Odometer', 'Unit', 'Manual page', 'Done by'];
     const csv = [head, ...rows.map((r) => [BIKE.name || 'CT125', D.name, ...r.slice(1)])].map((r) => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv' }));
@@ -1000,6 +1014,8 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowUp') { e.preventDefault(); list[Math.max(i - 1, 0)].focus(); }
     if (e.key === 'Escape') { closeMenus(); m.previousElementSibling.focus(); }
 });
+// One row of the owners table: name, date they took the bike, mileage then.
+const ownerRow = (w = {}) => `<div class="owner-row"><input type="text" class="ow-n" placeholder="Owner" aria-label="Owner" value="${esc(w.n || '')}" autocomplete="off"><input type="date" class="ow-d" aria-label="Took over on" value="${esc(w.d || '')}"><input type="number" class="ow-o num" aria-label="Odometer at handover" placeholder="${UNIT} at handover" min="0" value="${w.o ?? ''}"><button type="button" class="ow-x" aria-label="Remove owner">×</button></div>`;
 function renderBike() {
     const el = $('#bike');
     const odo = store.get('odo', '');
@@ -1010,8 +1026,8 @@ function renderBike() {
         <div class="plate">
             <input id="bname" type="text" placeholder="Name" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
             ${dropdown('byear', esc(BIKE.year ? `${BIKE.year} (${MODEL.code})` : MODEL.label), MODELS.flatMap((m) => m.years.map((y) => [`${m.id}:${y}`, `${y} (${m.code})`])), BIKE.year ? `${modelId}:${BIKE.year}` : '', (v, dd) => { dd.querySelector('.custom-dropdown-toggle').firstChild.textContent = dd.querySelector(`[data-value="${v}"]`).textContent; })}
-            <input id="bowner" type="text" placeholder="Owner" aria-label="Owner" value="${esc(ownerOf(BIKE))}" autocomplete="off">
-            ${(BIKE.owners || []).length ? `<small class="owners">${BIKE.owners.map((w) => `${esc(w.n)} from ${esc(fmtDay(w.d))}${w.o !== '' && w.o != null ? ` · ${(+w.o).toLocaleString()} ${esc(w.u || UNIT)}` : ''}`).join('<br>')}</small>` : ''}
+            <div class="owners-ed" id="owners">${(BIKE.owners || []).map(ownerRow).join('')}</div>
+            <button type="button" class="addowner" id="addowner">+ owner</button>
         </div>
         <span class="odo-edit"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="1" aria-label="Odometer" value="${esc(odo)}">${dropdown('bunit', UNIT, [['mi', 'mi'], ['km', 'km']], UNIT, (v, dd) => {
             // Switching the unit converts the reading in the field.
@@ -1036,17 +1052,14 @@ function renderBike() {
         return;
     }
     const save = () => {
-        const name = $('#bname').value.trim(), pick = $('#byear').dataset.value || `${modelId}:`, [year, yr] = pick.split(':'), unit = $('#bunit').dataset.value, n = $('#odo').value, owner = $('#bowner').value.trim();
+        const name = $('#bname').value.trim(), pick = $('#byear').dataset.value || `${modelId}:`, [year, yr] = pick.split(':'), unit = $('#bunit').dataset.value, n = $('#odo').value;
         if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
         const moved = year !== BIKE.model || unit !== UNIT;
         const roWas = !!BIKE.ro;
         BIKE.name = name; BIKE.model = year; BIKE.unit = unit; BIKE.ro = $('#bro').getAttribute('aria-pressed') === 'true';
         if (yr) BIKE.year = +yr;
-        // A new owner name starts a new entry, dated today at today's reading; the same day's entry is just corrected.
-        if (owner !== ownerOf(BIKE)) {
-            const ws = BIKE.owners = BIKE.owners || [], last = ws.at(-1);
-            if (!owner) ws.pop(); else if (last && last.d === today()) last.n = owner; else ws.push({ n: owner, d: today(), o: n, u: unit });
-        }
+        // The owners table, in ownership order. Handover readings are in the bike's unit.
+        BIKE.owners = sortOwners([...document.querySelectorAll('#owners .owner-row')].map((r) => ({ n: r.querySelector('.ow-n').value.trim(), d: r.querySelector('.ow-d').value, o: r.querySelector('.ow-o').value, u: unit })).filter((w) => w.n));
         saveBikes(); store.set('odo', n);
         if (roWas !== BIKE.ro && view === 'service') renderService();
         if (moved) { history.replaceState(null, '', location.pathname); location.reload(); return; }
@@ -1058,6 +1071,8 @@ function renderBike() {
         }
     };
     $('#bsave').onclick = save;
+    $('#addowner').onclick = () => { $('#owners').insertAdjacentHTML('beforeend', ownerRow({ d: today(), o: $('#odo').value })); $('#owners .owner-row:last-child .ow-n').focus(); };
+    $('#owners').onclick = (e) => { if (e.target.closest('.ow-x')) e.target.closest('.owner-row').remove(); };
     $('#bro').onclick = (e) => lockToggle(e.currentTarget);
     el.querySelectorAll('input').forEach((i) => { i.onkeydown = (e) => { if (e.key === 'Enter') save(); if (e.key === 'Escape') { editing = false; renderBike(); } }; });
     if ($('#bdel')) $('#bdel').onclick = async () => {
