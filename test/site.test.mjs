@@ -1178,6 +1178,23 @@ try {
         const inst = await page.evaluate(() => { const b = document.querySelector('#install'); b.click(); return { shown: !b.hidden, how: document.querySelector('#installhow').textContent }; });
         ok(inst.shown && /Install app|Home Screen/i.test(inst.how), `CT125: Install is offered at the top and says where to find it when the browser has no prompt (${inst.how})`);
 
+        // The 2023+ (JA65) year: km schedule with the oil filter, its own part numbers and prices, both code systems.
+        {
+            const p2 = await ctx.newPage();
+            await p2.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await p2.waitForSelector('#byear');
+            await p2.selectOption('#byear', '2023');
+            await p2.waitForFunction(() => /JA65/.test(document.querySelector('#byear').selectedOptions[0].textContent) && /2023/.test(document.querySelector('#sub').textContent));
+            await p2.click('.tabs [data-v=service]');
+            const y = await p2.evaluate(() => ({ unit: document.querySelector('.box .bh h3').textContent, filter: [...document.querySelectorAll('.chk .nm2')].some((n) => /oil filter$/i.test(n.firstChild.textContent.trim())), pn: document.querySelector('#shopbox')?.textContent.includes('15412-MGS-D21'), tools: !document.querySelector('.tabs [data-v=tools]').hidden, labels: [...document.querySelectorAll('#byear option')].map((o) => o.textContent).join(' / ') }));
+            await p2.click('.tabs [data-v=codes]');
+            const codes = await p2.evaluate(() => document.querySelectorAll('#v-codes .dt').length);
+            ok(/km/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && y.labels === '2020–2022 (JA55) / 2023+ (JA65)', `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
+            await p2.selectOption('#byear', '2021');
+            await p2.waitForFunction(() => /2021/.test(document.querySelector('#sub').textContent));
+            await p2.close();
+        }
+
         // No page of Honda's manual is ever served: a citation opens as text.
         await page.click('.chk .pg');
         const cite = await page.evaluate(() => ({ nopdf: document.querySelector('#viewer').classList.contains('nopdf'), load: !!document.querySelector('#vpanel [data-do=pick]'), img: !document.querySelector('#vimg').hidden }));

@@ -14,8 +14,8 @@
 // the household; a loaded manual belongs to its model year.
 
 const MODELS = [
-    { id: '2021', label: '2021', data: '/ct125/data/2021.json' },
-    { id: '2023', label: '2023–', data: '/ct125/data/2023.json' },
+    { id: '2021', label: '2020–2022 (JA55)', data: '/ct125/data/2021.json' },
+    { id: '2023', label: '2023+ (JA65)', data: '/ct125/data/2023.json' },
 ];
 
 // Referral links. Keyed by shop hostname; {url} is replaced by the encoded
@@ -69,6 +69,7 @@ const mp2p = (mp) => D.mp[mp];
 const pgBtn = (mp) => (mp2p(mp) ? `<button class="pg" data-open="${mp2p(mp)}" type="button">${esc(mp)}</button>` : `<span class="pg">${esc(mp)}</span>`);
 const partUrl = (pn) => (D.partStore ? D.partStore + pn : '');
 const priced = !!D.prices.on;
+const priceNote = () => `${fmtDate(D.prices.on)}${D.prices.src ? ', ' + D.prices.src : ''}`;
 // Shop lists (parts, supplies, tools) exist only where someone has compiled them.
 const hasShop = Object.keys(D.supplies).length + Object.keys(D.jobTools).length > 0;
 // Extra code tables a model may carry (the 2023 manual lists Korea's P-codes separately).
@@ -376,7 +377,7 @@ function shopHTML(items, done) {
     const ow = owned();
     tl.sort((x, y) => (!!ow[x]) - (!!ow[y]));
     const toBuy = tl.filter((id) => !ow[id] && toolPrice(id) != null && !TOOLS[id].opt), toBuyCost = toBuy.reduce((a, id) => a + toolPrice(id), 0);
-    const cost = !priced ? '' : `<div class="cost"><div><b class="num">${money(sum(rows, 'need'))}</b><span>parts</span></div><div><b class="num">+${money(sum(rows, 'ifbad'))}</b><span>if every inspection fails</span></div>${toBuy.length ? `<div><b class="num">${money(toBuyCost)}</b><span>tools not owned</span></div>` : ''}<p>Prices ${fmtDate(D.prices.on)}, before shipping.</p></div>`;
+    const cost = !priced ? '' : `<div class="cost"><div><b class="num">${money(sum(rows, 'need'))}</b><span>parts</span></div><div><b class="num">+${money(sum(rows, 'ifbad'))}</b><span>if every inspection fails</span></div>${toBuy.length ? `<div><b class="num">${money(toBuyCost)}</b><span>tools not owned</span></div>` : ''}<p>Prices ${priceNote()}, before shipping.</p></div>`;
     const pli = ({ r, job }) => { const [n, d, pg, kind, pn] = r, x = rowX(r); return `<li><span><span class="kind">${kind}</span><span class="job">${esc(job)}</span><br><b>${esc(n)}</b>${rowPrice(r)}<small>${esc(d)}</small>${pn ? `<small>${(partUrl(pn) ? ext(partUrl(pn), pn, 'num') : `<span class="num">${esc(pn)}</span>`)}</small>` : ''}${x.u ? `<small>${ext(x.u, esc((x.note ? x.note + ' · ' : '') + x.src))}</small>` : ''}${D.prices.warn[pn] ? `<small class="flag">${esc(D.prices.warn[pn])}</small>` : ''}</span>${pgBtn(pg)}</li>`; };
     const tools = tl.length ? `<details class="tier t-tool" id="toolsd"${store.get('toolsOpen', false) ? ' open' : ''}><summary class="th"><b>Tools · ${tl.length}</b><span>${toBuy.length ? `${toBuy.length} to buy · ${money(toBuyCost)}` : ''}</span></summary><ul>${tl.map((id) => { const tt = TOOLS[id], own = !!ow[id]; return `<li class="${own ? 'own' : ''}"><span><span class="job">${tmap[id].map(esc).join(' · ')}</span><br><b>${esc(tt.n)}</b><small>${esc(tt.d)}</small>${own ? '' : (tt.links || []).map(([l, u, p]) => `<small>${ext(u, esc(l) + (p != null ? ' · ' + money(p) : ''))}</small>`).join('')}</span>${tt.pg ? pgBtn(tt.pg) : '<span class="pgph"></span>'}</li>`; }).join('')}</ul></details>` : '';
     const tiers = TIERS.map(([tk, name]) => { const rs = open.filter((x) => x.r[5] === tk); return rs.length ? `<div class="tier t-${tk}"><div class="th"><b>${name}</b><span>${rs.length}</span></div><ul>${rs.map(pli).join('')}</ul></div>` : ''; }).join('');
@@ -445,7 +446,7 @@ function renderTools() {
         <div class="box">${ids.map((id) => { const tt = TOOLS[id], n = need[id], on = !!ow[id]; return `<label class="trow ${on ? 'own' : ''}"><input type="checkbox" data-own="${id}" ${on ? 'checked' : ''}><span><b>${esc(tt.n)}</b>${tt.opt ? '<span class="tag2 ifbad">if needed</span>' : ''}<small>${esc(tt.d)}</small><small class="num">${[...n.cols].sort((a, b) => a - b).map((c) => STEPS[c].toLocaleString()).join(' · ')} ${UNIT} · ${[...n.jobs].map(esc).join(', ')}</small>${(tt.links || []).map(([l, u, p]) => `<small>${ext(u, esc(l) + (p != null ? ' · ' + money(p) : ''))}</small>`).join('')}</span><span class="num">${toolPrice(id) != null ? money(toolPrice(id)) : ''}</span></label>`; }).join('')}</div>
         ${sec('Supplies')}
         <div class="box">${stocks.map((r) => { const x = rowX(r), id = 'sup:' + r[0], on = !!ow[id]; return `<label class="trow ${on ? 'own' : ''}"><input type="checkbox" data-own="${esc(id)}" ${on ? 'checked' : ''}><span><b>${esc(r[0])}</b><small>${esc(x.note || '')}</small>${x.u ? `<small>${ext(x.u, esc(x.src))}</small>` : ''}</span><span class="num">${money(x.p)}</span></label>`; }).join('')}</div>
-        ${sec('Parts cost by service', `prices ${fmtDate(D.prices.on)}, before shipping`)}
+        ${sec('Parts cost by service', `prices ${priceNote()}, before shipping`)}
         <div class="box"><table class="ctab"><thead><tr><th>Service</th><th>Replace</th><th>If inspections fail</th><th>New tools</th></tr></thead><tbody>${costs.map((c) => { const nt = (firstNew[c.col] || []).filter((id) => toolPrice(id) != null && !ow[id] && !TOOLS[id].opt); return `<tr><td><button type="button" class="linkbtn num" data-svc="${c.col}">${c.m.toLocaleString()} ${UNIT}</button></td><td class="num">${money(c.need)}</td><td class="num">+${money(c.ifbad)}</td><td>${nt.map((id) => `${esc(TOOLS[id].n)} <span class="num">${money(toolPrice(id))}</span>`).join('<br>')}</td></tr>`; }).join('')}</tbody></table></div>`;
     v.querySelectorAll('[data-own]').forEach((c) => { c.onchange = () => { const o = owned(); o[c.dataset.own] = c.checked; store.set('ownTools', o); renderTools(); }; });
     v.querySelectorAll('[data-svc]').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.svc, null); show('service'); }; });
@@ -585,7 +586,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ---------- guides ---------- */
-const CONF = { fiche: '2022 catalog', standard: 'standard Honda part', seller: 'listed for 2021-22', likely: 'likely, check diagram', check: 'confirm' };
+const CONF = { us24: '2024 US catalog', fiche: '2022 catalog', standard: 'standard Honda part', seller: 'listed for 2021-22', likely: 'likely, check diagram', check: 'confirm' };
 const NEEDT = { need: 'Replace', ifbad: 'If inspection fails', alt: 'Alternative' };
 function openGuide(name) {
     const gd = GBY[name]; if (!gd) return;
@@ -607,7 +608,7 @@ function openGuide(name) {
             ${block('Watch out for', list(gd.pitfalls))}
         </div>
         <div class="col">
-            ${block('Parts', parts + (parts && priced ? `<p class="sm">Prices ${fmtDate(D.prices.on)}.</p>` : ''))}
+            ${block('Parts', parts + (parts && priced ? `<p class="sm">Prices ${priceNote()}.</p>` : ''))}
             ${block('Tools', list(gd.tools))}
             ${block('Videos', vids)}
             ${block('Forum threads', fr)}
