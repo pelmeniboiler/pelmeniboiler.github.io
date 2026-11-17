@@ -54,7 +54,17 @@ if (!bikes) {
     } catch { /* private mode */ }
     ls.set('ct125:bikes', bikes);
 }
-const BIKE = bikes.find((b) => b.id === ls.get('ct125:bike')) || bikes[0];
+// Links. Everything a reader can open has an address in the hash:
+//   #year=2023&tab=specs&q=fork        a tab, with its search or filter text
+//   #year=2021&guide=valve-clearance    a guide
+//   #year=2021&page=2-16                a manual page (the reader's own PDF, or its summary)
+//   #tab=service&at=8000                a service in the checklist
+// "year" picks the model: one of the reader's bikes of that year if they have
+// one, otherwise the year is shown without touching their bikes.
+const LINK = Object.fromEntries(new URLSearchParams((location.hash || '').replace(/^#/, '')));
+const linkYear = MODELS.find((m) => m.id === LINK.year || m.label.toLowerCase().includes(`(${(LINK.year || '').toLowerCase()})`));
+let BIKE = bikes.find((b) => b.id === ls.get('ct125:bike')) || bikes[0];
+if (linkYear && linkYear.id !== BIKE.model) BIKE = bikes.find((b) => b.model === linkYear.id) || { id: 'visit-' + linkYear.id, name: '', model: linkYear.id, visit: true };
 const MODEL = MODELS.find((m) => m.id === BIKE.model) || MODELS[0];
 const modelId = MODEL.id;
 const saveBikes = () => ls.set('ct125:bikes', bikes);
@@ -322,7 +332,7 @@ function renderSearch() {
 function filtered(v, id, placeholder, draw) {
     if (!v.querySelector('#' + id)) {
         v.innerHTML = `<input class="filter" id="${id}" type="search" placeholder="${placeholder}" aria-label="Filter"><div class="view"></div>`;
-        v.querySelector('#' + id).addEventListener('input', draw);
+        v.querySelector('#' + id).addEventListener('input', () => { draw(); setLink(); });
     }
     const f = v.querySelector('#' + id).value.trim();
     return { cs: f ? concepts(f) : null, body: v.querySelector('.view') };
@@ -390,7 +400,7 @@ function milestoneFor(odo) {
     return { at: next, col: STEPS.indexOf(((next - EVERY) % CYCLE) + EVERY) };
 }
 let svcCol = store.get('svcCol', 1), svcAt = store.get('svcAt', null);
-const setSvc = (col, at) => { svcCol = col; svcAt = at; store.set('svcCol', col); store.set('svcAt', at); };
+const setSvc = (col, at) => { svcCol = col; svcAt = at; store.set('svcCol', col); store.set('svcAt', at); ; if (typeof view !== 'undefined' && view === 'service') setLink(); };
 const other = (n) => (UNIT === 'mi' ? `${(M.intervals_km?.[STEPS.indexOf(n)] ?? Math.round(n * KM)).toLocaleString()} km` : '');
 function renderService() {
     const v = $('#v-service');
@@ -563,8 +573,9 @@ function openPage(n, figIdx) {
         vimg.src = u; vimg.hidden = false;
     });
     $('#vclose').focus({ preventScroll: true });
+    setLink();
 }
-function closeViewer() { $('#viewer').hidden = true; if ($('#guide').hidden) document.body.style.overflow = ''; cur = null; }
+function closeViewer() { $('#viewer').hidden = true; if ($('#guide').hidden) document.body.style.overflow = ''; cur = null; setLink(); }
 $('#vclose').onclick = closeViewer;
 $('#vprev').onclick = () => cur > 1 && openPage(cur - 1);
 $('#vnext').onclick = () => cur < LAST && openPage(cur + 1);
@@ -617,24 +628,39 @@ function openGuide(name) {
         </div>`;
     $('#guide').hidden = false; $('#guide').scrollTop = 0; document.body.style.overflow = 'hidden';
     $('#gclose').focus({ preventScroll: true });
+    setLink();
 }
-function closeGuide() { $('#guide').hidden = true; if ($('#viewer').hidden) document.body.style.overflow = ''; }
+function closeGuide() { $('#guide').hidden = true; if ($('#viewer').hidden) document.body.style.overflow = ''; setLink(); }
 $('#gclose').onclick = closeGuide;
 
 /* ---------- wiring ---------- */
 const RENDER = { search: renderSearch, torque: renderTorque, specs: renderSpecs, service: renderService, tools: renderTools, codes: renderCodes, pages: renderPages };
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+// Keep the address bar pointing at what is on screen, so it can be copied.
+function setLink() {
+    const p = new URLSearchParams({ year: modelId });
+    if (!$('#guide').hidden && $('#gtitle').textContent) p.set('guide', slug($('#gtitle').textContent));
+    else if (cur) p.set('page', BYP[cur].mp);
+    else {
+        p.set('tab', view);
+        const f = view === 'search' ? $('#q').value.trim() : view === 'torque' ? $('#tf')?.value.trim() : view === 'specs' ? $('#sf')?.value.trim() : '';
+        if (f) p.set('q', f);
+        if (view === 'service') p.set('at', svcAt || STEPS[svcCol]);
+    }
+    history.replaceState(null, '', '#' + p.toString().replace(/\+/g, '%20'));
+}
 let view = 'search';
 function show(v) {
     view = v;
     document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-selected', b.dataset.v === v));
     document.querySelectorAll('section.view').forEach((s) => { s.hidden = s.id !== 'v-' + v; });
-    RENDER[v](); store.set('tab', v);
+    RENDER[v](); store.set('tab', v); setLink();
 }
 // The PDF came or went: redraw whatever is showing.
 function refresh() { RENDER[view](); if (cur) openPage(cur); }
 document.querySelectorAll('.tabs button').forEach((b) => { b.onclick = () => show(b.dataset.v); });
 let t;
-$('#q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => (view === 'search' ? renderSearch() : show('search')), 90); });
+$('#q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (view === 'search') { renderSearch(); setLink(); } else show('search'); }, 90); });
 document.addEventListener('click', (e) => {
     const act = e.target.closest('[data-do]');
     if (act) { e.preventDefault(); DO[act.dataset.do](act); return; }
@@ -652,42 +678,78 @@ $('#sub').textContent = `${D.name} · ${D.code}`;
 if (!Object.keys(TOOLS).length) $('.tabs [data-v=tools]').hidden = true;
 document.title = `CT125 Manual · ${D.name}`;
 /* ---------- my bike ---------- */
+// The bike reads like a nameplate: its name, its year, and an odometer. The
+// pencil turns the plate into fields; the floppy saves them. Other bikes, and
+// a new one, are in the menu beside it.
+const ICON = {
+    pencil: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 7l4 4M4 20l5-1" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    floppy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l3 3v15H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 3v6h8V3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12" y="4.5" width="2.5" height="3" fill="currentColor"/><rect x="7" y="13" width="10" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+};
+const odoDigits = (n) => String(Math.max(0, Math.floor(+n || 0))).padStart(6, '0').slice(-7);
+// Each wheel shows its digit with the neighbours peeking at the edges, like a drum.
+const odometer = (n) => `<span class="odometer" role="img" aria-label="${(+n || 0).toLocaleString()} ${UNIT}">${[...odoDigits(n)].map((d) => `<span class="wheel"><span>${(+d + 9) % 10}</span><span>${d}</span><span>${(+d + 1) % 10}</span></span>`).join('')}</span><span class="odo-unit">${UNIT}</span>`;
+let editing = false;
 function renderBike() {
     const el = $('#bike');
-    el.innerHTML = `<span class="pic" role="img" aria-label="CT125"></span>
-        ${bikes.length > 1 ? `<select id="bpick" aria-label="Bike">${bikes.map((b, i) => `<option value="${b.id}"${b.id === BIKE.id ? ' selected' : ''}>${esc(b.name || 'Bike ' + (i + 1))}</option>`).join('')}</select>` : ''}
-        <input id="bname" type="text" placeholder="My bike" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
-        <select id="byear" aria-label="Model year">${MODELS.map((m) => `<option value="${m.id}"${m.id === modelId ? ' selected' : ''}>${esc(m.label)}</option>`).join('')}</select>
-        <label class="odo"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="100" aria-label="Odometer" value="${esc(store.get('odo', ''))}"><span>${UNIT}</span></label>
-        <button type="button" id="badd">Add bike</button>
-        ${bikes.length > 1 ? '<button type="button" id="bdel">Remove</button>' : ''}`;
-    $('#bname').onchange = (e) => { BIKE.name = e.target.value.trim(); saveBikes(); renderBike(); };
-    $('#byear').onchange = (e) => { BIKE.model = e.target.value; saveBikes(); location.reload(); };
-    $('#odo').onchange = (e) => {
-        store.set('odo', e.target.value);
-        const n = parseInt(e.target.value, 10);
-        if (isNaN(n)) return;
-        // Redraw only when the due service changes: a redraw under the finger
-        // would swallow a tap on the checklist.
-        const m = milestoneFor(n), at = m.at > CYCLE ? m.at : null;
-        if (m.col === svcCol && at === svcAt) return;
-        setSvc(m.col, at); if (view === 'service') renderService();
+    const pick = `<select id="bpick" aria-label="Bike">${bikes.map((b, i) => `<option value="${b.id}"${b.id === BIKE.id ? ' selected' : ''}>${esc(b.name || 'Bike ' + (i + 1))}</option>`).join('')}${BIKE.visit ? `<option value="${BIKE.id}" selected>${esc(MODEL.label)}</option>` : ''}<option value="new">+ Add new bike</option></select>`;
+    const odo = store.get('odo', '');
+    el.classList.toggle('editing', editing);
+    el.innerHTML = editing ? `<span class="pic" role="img" aria-label="CT125"></span>
+        <div class="plate">
+            <input id="bname" type="text" placeholder="Name" aria-label="Bike name" value="${esc(BIKE.name)}" autocomplete="off">
+            <select id="byear" aria-label="Model year">${MODELS.map((m) => `<option value="${m.id}"${m.id === modelId ? ' selected' : ''}>${esc(m.label)}</option>`).join('')}</select>
+        </div>
+        <label class="odo-edit"><input id="odo" class="num" type="number" inputmode="numeric" min="0" step="1" aria-label="Odometer" value="${esc(odo)}"><span>${UNIT}</span></label>
+        <span class="bike-tools"><button type="button" id="bsave" class="icon" title="Save" aria-label="Save">${ICON.floppy}</button>${bikes.length > 1 && !BIKE.visit ? '<button type="button" id="bdel">Remove</button>' : ''}</span>`
+        : `<span class="pic" role="img" aria-label="CT125"></span>
+        <div class="plate"><span class="bike-name">${esc(BIKE.name || (BIKE.visit ? 'CT125' : 'My bike'))}</span><span class="bike-year">${esc(MODEL.label)}</span></div>
+        <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
+        <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button>${pick}</span>`;
+    if (!editing) {
+        $('#bedit').onclick = $('#odoview').onclick = () => { editing = true; renderBike(); ($('#bname').value ? $('#odo') : $('#bname')).focus(); };
+        $('#bpick').onchange = (e) => {
+            if (e.target.value === 'new') {
+                const id = 'b' + Date.now().toString(36);
+                bikes.push({ id, name: '', model: modelId }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true);
+            } else ls.set('ct125:bike', e.target.value);
+            location.hash = ''; location.reload();
+        };
+        return;
+    }
+    const save = () => {
+        const name = $('#bname').value.trim(), year = $('#byear').value, n = $('#odo').value;
+        if (BIKE.visit) { delete BIKE.visit; BIKE.id = 'b' + Date.now().toString(36); bikes.push(BIKE); ls.set('ct125:bike', BIKE.id); }
+        BIKE.name = name; const moved = year !== BIKE.model; BIKE.model = year; saveBikes();
+        if (moved) { location.hash = ''; location.reload(); return; }
+        store.set('odo', n);
+        editing = false; renderBike();
+        const k = parseInt(n, 10);
+        if (!isNaN(k)) {
+            const m = milestoneFor(k), at = m.at > CYCLE ? m.at : null;
+            if (m.col !== svcCol || at !== svcAt) { setSvc(m.col, at); if (view === 'service') renderService(); }
+        }
     };
-    $('#badd').onclick = () => {
-        const id = 'b' + Date.now().toString(36);
-        bikes.push({ id, name: '', model: modelId }); saveBikes(); ls.set('ct125:bike', id); location.reload();
-    };
-    if ($('#bpick')) $('#bpick').onchange = (e) => { ls.set('ct125:bike', e.target.value); location.reload(); };
+    $('#bsave').onclick = save;
+    el.querySelectorAll('input').forEach((i) => { i.onkeydown = (e) => { if (e.key === 'Enter') save(); if (e.key === 'Escape') { editing = false; renderBike(); } }; });
     if ($('#bdel')) $('#bdel').onclick = () => {
         if (!confirm(`Remove ${BIKE.name || 'this bike'} and its saved service history?`)) return;
         try { Object.keys(localStorage).filter((k) => k.startsWith(`ct125:b:${BIKE.id}:`)).forEach((k) => localStorage.removeItem(k)); } catch { /* private mode */ }
         bikes = bikes.filter((b) => b.id !== BIKE.id); saveBikes(); ls.set('ct125:bike', bikes[0].id); location.reload();
     };
 }
+if (ls.get('ct125:editNew', false)) { editing = true; ls.set('ct125:editNew', false); }
 renderBike();
 $('#foot').innerHTML = [...D.source.notes, Object.keys(REFS).length ? 'Shop links are referral links: buying through them supports this page at no cost to you.' : '', 'Not affiliated with Honda.'].filter(Boolean).map((s) => `<div>${esc(s)}</div>`).join('');
-show(RENDER[store.get('tab', 'search')] && !(store.get('tab') === 'tools' && !Object.keys(TOOLS).length) ? store.get('tab', 'search') : 'search');
+const okTab = (t) => RENDER[t] && !(t === 'tools' && !Object.keys(TOOLS).length);
+if (LINK.at && STEPS.includes(+LINK.at)) setSvc(STEPS.indexOf(+LINK.at), null);
+const startTab = okTab(LINK.tab) ? LINK.tab : okTab(store.get('tab', 'search')) ? store.get('tab', 'search') : 'search';
+if (LINK.q && startTab === 'search') $('#q').value = LINK.q;
+show(startTab);
+if (LINK.q && (startTab === 'torque' || startTab === 'specs')) { const f = $(startTab === 'torque' ? '#tf' : '#sf'); f.value = LINK.q; f.dispatchEvent(new Event('input')); }
+if (LINK.guide) { const g = D.guides.find((x) => slug(x.item) === slug(LINK.guide)); if (g) openGuide(g.item); }
+if (LINK.page && mp2p(LINK.page)) openPage(mp2p(LINK.page));
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
+window.addEventListener('hashchange', () => location.reload());
 // The manual the owner loaded last time.
 idb('readonly', (s) => s.get('pdf:' + modelId)).then((blob) => blob && openPdf(blob).then(refresh)).catch(() => {});
