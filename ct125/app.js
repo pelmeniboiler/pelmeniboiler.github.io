@@ -32,11 +32,8 @@ const out = (u) => { try { const t = REFS[new URL(u).hostname]; return t ? t.rep
 const ext = (u, label, cls = '') => `<a class="${cls}" href="${esc(out(u))}" target="_blank" rel="noopener${REFS[hostOf(u)] ? ' sponsored' : ''}">${label}</a>`;
 const hostOf = (u) => { try { return new URL(u).hostname; } catch { return ''; } };
 const money = (n) => '$' + n.toFixed(2);
-const fmtDate = (iso) => {
-    const d = new Date(iso + 'T12:00:00');
-    const f = (cal) => new Intl.DateTimeFormat('en-GB' + cal, { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
-    try { return `${new Intl.DateTimeFormat('en-u-ca-hebrew', { day: 'numeric', month: 'long', year: 'numeric' }).format(d)} (${f('')})`; } catch { return f(''); }
-};
+// Dates in the secular calendar: receipts, shops and buyers all use it. "17 Nov 2026".
+const fmtDate = (iso) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso + 'T12:00:00'));
 
 // Bikes. (The first version kept one unnamed bike per model year under
 // ct125:<model>:…; that is carried over once.)
@@ -533,7 +530,7 @@ function bikeRecords(id = BIKE.id) {
     const order = (j) => M.items.findIndex((x) => x.item === j);
     return out.sort((x, y) => x[0] - y[0] || order(x[1]) - order(y[1]));
 }
-const fmtDay = (iso) => { const s = fmtDate(iso); const m = s.match(/^(.*) \((.*)\)$/); return m ? `${m[1]} · ${m[2]}` : s; };
+const fmtDay = fmtDate;
 // Service history as a page to print: each service, its jobs and dates, and room to write.
 // What evidence backs each job: something to measure and write in, and what to attach.
 const MEASURE = {
@@ -558,7 +555,38 @@ const doerOf = (at, r) => (r.by === 'shop' ? 'a shop' : r.by || ownerAtMileage(p
 const actAt = (at, job) => { const it = M.items.find((x) => x.item === job) || {}; return it.every ? 'L' : it.sched?.[colOf(at)] || ''; };
 const jobParts = (job, act) => (SUP[job]?.[act] || []).filter((r) => r[5] === 'need').map((r) => (r[4] ? `Honda ${r[4]}` : r[0].replace(/,.*$/, ''))).join(', ');
 // What a buyer should look for to back up one job.
-const lookFor = (at, job, r) => { const act = actAt(at, job), parts = act === 'R' ? jobParts(job, act) : ''; return `${ATTACH[act] || 'photo'}${parts ? ` naming ${parts}` : ''}${r.d ? `, dated on or before ${fmtDay(r.d)}` : ''}${MEASURE[job] ? '; a written reading' : ''}`; };
+// What a photo of each job should show, so it proves the job and not just a purchase.
+const PHOTO = {
+    'Fuel line': 'the fuel hose and both quick-connect fittings, dry',
+    'Throttle operation': 'the throttle cable adjuster after setting',
+    'Air cleaner': 'the old element beside the new one',
+    'Crankcase breather': 'the drain tube after emptying',
+    'Spark plug': { R: 'the old plug’s electrode end, and the new plug’s gap with the gauge in it', I: 'the plug’s electrode end, and its gap with the gauge in it' },
+    'Valve clearance': 'the feeler gauge in the gap at each valve',
+    'Engine oil': 'the drained oil in the pan, and the dipstick after refilling',
+    'Engine oil filter': 'the old filter beside the new one, with the OUT-SIDE mark facing out',
+    'Engine oil strainer screen': 'the screen after cleaning',
+    'Engine oil centrifugal filter': 'the inside of the drive plate after cleaning',
+    'Engine idle speed': 'the rpm reading at idle',
+    'Evaporative emission': 'the canister and its hoses in place',
+    'Drive chain': 'a ruler at the chain’s slack midway between the sprockets',
+    'Drive chain slider': 'the slider’s wear surface',
+    'Brake fluid': 'both reservoir level windows',
+    'Brake pads wear': 'the pads’ wear grooves, front and rear',
+    'Brake system': 'the hoses and fittings at each caliper',
+    'Brake light switch': 'the brake light on, with the lever and with the pedal',
+    'Headlight aim': 'the beam on a wall',
+    'Clutch system': 'the clutch adjusting screw and lock nut after setting',
+    'Sidestand': 'the stand’s spring and pivot',
+    'Suspension': 'the fork tubes at the seals, and the rear shocks',
+    'Spark arrester': 'the screen after cleaning',
+    'Nuts, bolts, fasteners': 'the torque wrench set on the axle nuts',
+    'Wheels/tires': 'the gauge on each tire, and the tread',
+    'Steering head bearings': 'the stem nut and top bridge',
+};
+// The proof for one job: a receipt for parts it replaces, and a photo of the work itself.
+const proofOf = (at, job) => { const act = actAt(at, job), parts = act === 'R' ? jobParts(job, act) : ''; return [parts && `receipt naming ${parts}`, `photo of ${(typeof PHOTO[job] === 'object' ? PHOTO[job][act] : PHOTO[job]) || 'the work'}`].filter(Boolean).join(' · '); };
+const lookFor = (at, job, r) => `${proofOf(at, job)}${r.d ? `, dated on or before ${fmtDay(r.d)}` : ''}${MEASURE[job] ? '; a written reading' : ''}`;
 // Things in a handed-over record worth a second look.
 function recordChecks() {
     const recs = bikeRecords(), out = [], u = (r) => (r.o == null ? NaN : conv(+r.o, r.u || UNIT, UNIT));
@@ -594,7 +622,7 @@ async function openHistory() {
             <ol>${jobs.map(([job, r]) => { const act = actOf(at, job), parts = act === 'R' ? partsFor(job, act) : ''; return `<li>
                 <p class="doc-job"><b>${esc(job)}</b>${act ? ` · ${esc(ACT[act].toLowerCase())}` : ''} <span class="num">· ${r.d ? esc(fmtDay(r.d)) : `date ${line()}`}${r.o != null ? ` · ${(+r.o).toLocaleString()} ${esc(r.u || UNIT)}` : ''}</span>${doerOf(at, r) ? ` · by ${esc(doerOf(at, r))}` : ''}</p>
                 ${MEASURE[job] ? `<p class="doc-meas">Reading: ${esc(MEASURE[job]).replace(/_{4,}/g, (m) => line(m.length > 10 ? 'long' : ''))}</p>` : ''}
-                <p class="doc-proof">${box} attached: ${esc(ATTACH[act] || 'photo')}${parts ? ` (${esc(parts)})` : ''}${act === 'R' && oldPart(job, act) ? ' · photo of the old part' : ''}</p>
+                <p class="doc-proof">${box} attached: ${esc(proofOf(at, job))}</p>
                 ${r.p?.length ? `<p class="doc-meas">Photos in the bike file: <span class="num">${r.p.map((h) => esc(h.slice(0, 8))).join(', ')}</span></p>` : ''}
                 <p class="doc-note">Note ${line('fill')}</p>
             </li>`; }).join('')}</ol></section>`).join('') : '<p>Nothing ticked yet.</p>'}
@@ -760,11 +788,11 @@ function exportHistory() {
     try { Object.keys(localStorage).filter((k) => k.startsWith(pre)).forEach((k) => {
         const at = +k.slice(pre.length), done = JSON.parse(localStorage.getItem(k) || '{}'), col = colOf(at);
         Object.entries(done).forEach(([job, r]) => { if (!r) return; const it = M.items.find((x) => x.item === job) || {}; const rec = typeof r === 'object' ? r : {};
-            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.d ? fmtDate(rec.d) : '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', doerOf(at, rec)]); });
+            rows.push([at, dist(at), job, ACT[(it.every ? 'L' : it.sched?.[col])] || '', rec.d || '', rec.o != null ? rec.o : '', rec.o != null ? rec.u || UNIT : '', it.ref || '', doerOf(at, rec)]); });
     }); } catch { /* private mode */ }
     rows.sort((x, y) => x[0] - y[0] || String(x[4]).localeCompare(String(y[4])));
     const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
-    const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Date (Hebrew)', 'Odometer', 'Unit', 'Manual page', 'Done by'];
+    const head = ['Bike', 'Model', `Service (${UNIT})`, 'Job', 'Action', 'Date', 'Odometer', 'Unit', 'Manual page', 'Done by'];
     const csv = [head, ...rows.map((r) => [BIKE.name || 'CT125', D.name, ...r.slice(1)])].map((r) => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv' }));
