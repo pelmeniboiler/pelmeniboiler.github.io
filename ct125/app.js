@@ -189,12 +189,17 @@ async function shrinkPhoto(file) {
     c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
     return new Promise((r) => c.toBlob(r, 'image/jpeg', 0.82));
 }
-const pdf = { doc: null, n: 0, shift: store.get('pdfShift', 0), urls: new Map(), queue: Promise.resolve() };
+const pdf = { doc: null, n: 0, fp: '', known: null, shift: store.get('pdfShift', 0), urls: new Map(), queue: Promise.resolve() };
 const hasPdf = () => !!pdf.doc;
+// A PDF's fingerprint is the first 16 hex of its SHA-256. Copies of the manual the
+// index was made from are listed in the year's data, each with its page offset.
 async function openPdf(blob) {
     const lib = await import('/ct125/vendor/pdf.min.js');
     lib.GlobalWorkerOptions.workerSrc = '/ct125/vendor/pdf.worker.min.js';
-    pdf.doc = await lib.getDocument({ data: await blob.arrayBuffer() }).promise;
+    const bytes = await blob.arrayBuffer();
+    pdf.fp = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+    pdf.known = (D.source.files || []).find((f) => f.fp === pdf.fp) || null;
+    pdf.doc = await lib.getDocument({ data: bytes }).promise;
     pdf.n = pdf.doc.numPages;
     pdf.urls.forEach((u) => URL.revokeObjectURL(u)); pdf.urls.clear();
 }
@@ -226,13 +231,14 @@ const lazy = 'IntersectionObserver' in window ? new IntersectionObserver((seen) 
 const fillImages = (root) => root.querySelectorAll('img[data-pg]').forEach((img) => (lazy ? lazy.observe(img) : pageImg(+img.dataset.pg, +img.dataset.w).then((u) => { if (u) img.src = u; })));
 async function loadPdfFile(file) {
     await openPdf(file);
+    if (pdf.known) { pdf.shift = pdf.known.shift || 0; store.set('pdfShift', pdf.shift); }
     await idb('readwrite', (s) => s.put(file, 'pdf:' + modelId));
     store.set('pdfName', file.name);
     refresh();
 }
 async function forgetPdf() {
     await idb('readwrite', (s) => s.delete('pdf:' + modelId));
-    pdf.doc = null; pdf.n = 0; store.set('pdfName', null);
+    pdf.doc = null; pdf.n = 0; pdf.fp = ''; pdf.known = null; store.set('pdfName', null);
     refresh();
 }
 $('#pdfpick').onchange = (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) loadPdfFile(f).catch(() => alert('That file could not be read as a PDF.')); };
@@ -974,11 +980,11 @@ let installEvent = null;
 function renderPages() {
     const chs = [...new Set(PAGES.map((p) => p.ch))];
     const name = store.get('pdfName', null);
-    const off = hasPdf() && pdf.n !== D.source.pdfPages;
+    const off = hasPdf() && !pdf.known && pdf.n !== D.source.pdfPages;
     $('#v-pages').innerHTML = `
         <div class="bar">
             <button type="button" data-do="pick">${hasPdf() ? 'Change manual PDF' : 'Load your manual PDF'}</button>
-            ${hasPdf() ? `<span class="sm num">${esc(name || '')} · ${pdf.n} pages${off ? ` <span class="flag">${D.source.pdfPages} expected</span>` : ''}</span>
+            ${hasPdf() ? `<span class="sm num">${esc(name || '')} · ${pdf.n} pages · ${pdf.known ? '✓ indexed copy' : `fingerprint <span class="pdf-fp">${pdf.fp}</span>`}${off ? ` <span class="flag">${D.source.pdfPages} expected</span>` : ''}</span>
             <span class="bar"><span class="sm">Page offset</span><button type="button" data-do="shift" data-by="-1" aria-label="Offset down">−</button><b class="num">${pdf.shift}</b><button type="button" data-do="shift" data-by="1" aria-label="Offset up">+</button></span>
             <button type="button" data-do="forget">Remove</button>` : ''}
         </div>

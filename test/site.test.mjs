@@ -1417,6 +1417,23 @@ try {
         const shown = await page.waitForFunction(() => !document.querySelector('#vimg').hidden && document.querySelector('#vimg').naturalWidth > 1000, null, { timeout: 20000 }).then(() => true, () => false);
         const warn = await page.evaluate(() => !!document.querySelector('#v-pages .flag'));
         ok(again && shown && warn, `CT125: a loaded PDF renders pages, is remembered, and a wrong page count is flagged (remembered=${again}, shown=${shown}, flagged=${warn})`);
+        // A PDF whose fingerprint the year's data lists is recognised and gets its page offset.
+        {
+            await page.keyboard.press('Escape');
+            const fp = (await import('node:crypto')).createHash('sha256').update(pdfBytes).digest('hex').slice(0, 16);
+            const shown1 = await page.textContent('#v-pages .bar');
+            const fc = await browser.newContext({ serviceWorkers: 'block' });
+            await fc.route(/\/ct125\/data\/\d+\.json$/, async (r) => { const res = await r.fetch(); const d = await res.json(); d.source.files = [{ fp, shift: 2 }]; r.fulfill({ response: res, json: d }); });
+            const pf = await fc.newPage();
+            await pf.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await pf.click('.tabs [data-v=pages]');
+            await pf.setInputFiles('#pdfpick', { name: 'mine.pdf', mimeType: 'application/pdf', buffer: pdfBytes });
+            await pf.waitForFunction(() => /indexed copy/.test(document.querySelector('#v-pages .bar')?.textContent || ''), null, { timeout: 20000 }).catch(() => {});
+            const got = await pf.evaluate(() => ({ bar: document.querySelector('#v-pages .bar').textContent.replace(/\s+/g, ' '), flag: !!document.querySelector('#v-pages .flag') }));
+            await fc.close();
+            ok(shown1.includes(`fingerprint ${fp}`) && /✓ indexed copy/.test(got.bar) && /Page offset\s*−\s*2\s*\+/.test(got.bar) && !got.flag,
+                `CT125: a PDF shows its fingerprint, and a listed one is recognised with its page offset (${JSON.stringify({ fp, ...got })})`);
+        }
         await ctx.close();
     }
 
