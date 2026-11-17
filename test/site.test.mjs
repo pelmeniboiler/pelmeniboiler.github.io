@@ -1242,6 +1242,46 @@ try {
                 `CT125: a job's photo travels in the bike file, matches its fingerprint, and imports read-only (${JSON.stringify({ ro: imp.ro, ...got })})`);
         }
 
+        // Upload for 72 hours (Litterbox, mocked): the link names the file, and a fresh device fetches the photos
+        // and checks them against their fingerprints. Once the upload has expired, the link says so.
+        {
+            let uploaded = '', form = '';
+            const litter = async (route) => {
+                const req = route.request();
+                if (req.method() === 'POST') { form = req.postData() || ''; uploaded = form.slice(form.indexOf('<!DOCTYPE html>'), form.lastIndexOf('</html>') + 7); return route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, body: 'https://litter.catbox.moe/ab12cd.html' }); }
+                return uploaded && /ab12cd\.html$/.test(req.url()) ? route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'text/plain' }, body: uploaded }) : route.fulfill({ status: 404, headers: { 'access-control-allow-origin': '*' }, body: '' });
+            };
+            await page.context().route(/catbox\.moe/, litter);
+            await page.click('#bshare');
+            await page.waitForSelector('#shareup');
+            await page.click('#shareup');
+            const warn = await page.textContent('#sharebody');
+            await page.click('#upgo');
+            await page.waitForFunction(() => /online until/.test(document.querySelector('#sharebody')?.textContent || ''));
+            const url = await page.inputValue('#shareurl'), noUp = !(await page.$('#shareup'));
+            await page.click('#shareclose');
+            const other = await browser.newContext();
+            await other.route(/catbox\.moe/, litter);
+            const p7 = await other.newPage();
+            await p7.goto(url.replace('https://pelmeniboiler.github.io', BASE), { waitUntil: 'load' });
+            await p7.waitForSelector('#sharewin:not([hidden]) [data-imp=add]');
+            const imp = await p7.textContent('#sharebody');
+            await p7.click('[data-imp=add]');
+            await p7.waitForFunction(() => /🔒/.test(document.querySelector('.bike-year')?.textContent || ''));
+            await p7.click('.tabs [data-v=service]');
+            for (let i = 0; i < 7 && !(await p7.$('.thumb')); i++) await p7.click(`.ms button >> nth=${i}`);
+            await p7.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0, null, { timeout: 10000 }).catch(() => {});
+            const photo = await p7.evaluate(() => document.querySelector('.thumb img')?.naturalWidth > 0);
+            const p8 = await other.newPage();
+            await p8.goto(url.replace('https://pelmeniboiler.github.io', BASE).replace(/until=\d+/, 'until=1000000000'), { waitUntil: 'load' });
+            await p8.waitForSelector('#sharewin:not([hidden]) [data-imp]');
+            const gone = await p8.textContent('#sharebody');
+            await other.close();
+            await page.context().unroute(/catbox\.moe/);
+            ok(/Litterbox/.test(warn) && /can’t be taken down/.test(warn) && /time"\r?\n\r?\n72h/.test(form) && /&file=ab12cd\.html&until=\d+$/.test(url) && noUp && /matches its fingerprint/.test(imp) && photo && /online until/.test(gone) && !/matches/.test(gone),
+                `CT125: upload for 72 hours brings the photos along by link, and says when it has expired (${JSON.stringify({ url: url.slice(-40), noUp, photo, imp: imp.slice(0, 120), gone: gone.slice(0, 160) })})`);
+        }
+
         // Owners: an earlier owner can be added; back-filling an old service takes its mileage, leaves the date open,
         // and is credited to whoever owned the bike then. Services after the current owner's handover don't ask.
         {
