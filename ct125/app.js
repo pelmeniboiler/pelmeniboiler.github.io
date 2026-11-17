@@ -762,7 +762,7 @@ const photoSig = (p = bikePayload()) => Object.values(p.h || {}).flatMap((rows) 
 const liveUpload = () => { const u = store.get('up', null); return u && okFile(u.f) && u.until > Date.now() && u.sig === photoSig() ? u : null; };
 async function shareURL() { const u = liveUpload(); return `${SITE}/ct125/#bike=${await packBike()}${u ? `&file=${u.f}&until=${Math.floor(u.until / 1000)}` : ''}`; }
 function confirmUpload() {
-    shareWin('upload.bike', `<p>The bike file, with its photos, goes to Litterbox (litterbox.catbox.moe) for 72 hours. Until then anyone with the link can open it, and it can’t be taken down early.</p>
+    shareWin('upload.bike', `<p>The bike file, with its photos, goes to Litterbox (litterbox.catbox.moe) for 72 hours. Until then anyone with the link can open it, and it can’t be taken down early. Is this okay?</p>
         <div class="choices"><button type="button" id="upgo">Upload</button><button type="button" id="upno">Cancel</button></div>`);
     $('#upno').onclick = openShare;
     $('#upgo').onclick = async (e) => {
@@ -772,13 +772,13 @@ function confirmUpload() {
             const fd = new FormData();
             fd.append('reqtype', 'fileupload'); fd.append('time', '72h');
             fd.append('fileToUpload', new Blob([await bikeFileHtml()], { type: 'text/html' }), `${slug(BIKE.name || 'CT125')}-record.html`);
-            const r = await fetch(LITTER_API, { method: 'POST', body: fd }), t = (await r.text()).trim();
-            const f = t.startsWith(LITTER) ? t.slice(LITTER.length) : '';
-            if (!r.ok || !okFile(f)) throw new Error(t);
+            let r; try { r = await fetch(LITTER_API, { method: 'POST', body: fd }); } catch { throw new Error('This device couldn’t reach Litterbox. A blocker or the network may be stopping it.'); }
+            const t = (await r.text()).trim(), f = t.startsWith(LITTER) ? t.slice(LITTER.length) : '';
+            if (!r.ok || !okFile(f)) throw new Error(`Litterbox turned the upload down${t && t.length < 120 && !/</.test(t) ? `: “${t}”` : ''}.`);
             store.set('up', { f, until: Date.now() + 72 * 36e5, sig });
             openShare();
-        } catch {
-            shareWin('upload.bike', '<p>The upload didn’t go through. The bike file still works: download it and send it yourself.</p><div class="choices"><button type="button" id="upback">Back</button></div>');
+        } catch (err) {
+            shareWin('upload.bike', `<p>${esc(err.message)}</p><p>The bike file still works: download it and send it yourself.</p><div class="choices"><button type="button" id="upback">Back</button></div>`);
             $('#upback').onclick = openShare;
         }
     };
@@ -788,7 +788,7 @@ async function openShare() {
     const url = await shareURL();
     shareWin('share.bike', `<div class="qr" id="qr"></div>
         <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>
-        ${!nph ? '' : up ? `<p>Photos online until ${esc(fmtUntil(up.until))}. Anyone with the link can see them until then.</p>` : '<p>Photos don’t fit in a link or a QR code.<br>The link only contains the record and each photo’s fingerprint.<br>To share the bike with photos, use the bike file. Download it and send it however you like: AirDrop, email, a USB stick.</p>'}
+        ${!nph ? '' : up ? `<p>Photos online until ${esc(fmtUntil(up.until))}. Anyone with the link can see them until then.</p>` : '<p><b>Photos don’t fit in a link or a QR code.</b></p><p>The above link will only share the service record and the fingerprint of the photos.<br>To share the record with photos, use the bike file.</p><ul class="share-ways"><li>Download it and send it however you like.</li><li>Upload it to a third party with the button below, and share the new QR code.</li></ul>'}
         <div class="choices">${nph && !up ? '<button type="button" id="shareup">Upload for 72 hours</button>' : ''}<button type="button" id="sharefile">Download bike file${nph ? ` (record and ${nph} photo${nph === 1 ? '' : 's'})` : ''}</button></div>`);
     $('#sharefile').onclick = downloadBikeFile;
     if ($('#shareup')) $('#shareup').onclick = confirmUpload;
