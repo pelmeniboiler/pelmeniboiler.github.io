@@ -1241,6 +1241,29 @@ try {
                 `CT125: a job's photo travels in the bike file, matches its fingerprint, and imports read-only (${JSON.stringify({ ro: imp.ro, ...got })})`);
         }
 
+        // Owners: an earlier owner can be added; back-filling an old service takes its mileage, leaves the date open,
+        // and is credited to whoever owned the bike then. Services after the current owner's handover don't ask.
+        {
+            const o2 = await browser.newContext();
+            const p6 = await o2.newPage();
+            await p6.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await p6.waitForSelector('#bedit');
+            await p6.click('#bedit'); await p6.fill('#odo', '6971');
+            await p6.click('#addowner'); await p6.fill('.owner-row:last-child .ow-n', 'W.S. Zhulkovsky'); await p6.fill('.owner-row:last-child .ow-o', '1500');
+            await p6.click('#addowner'); await p6.fill('.owner-row:last-child .ow-n', 'J. Doe'); await p6.fill('.owner-row:last-child .ow-o', '0');
+            await p6.click('#bsave');
+            await p6.waitForFunction(() => /Zhulkovsky’s/.test(document.querySelector('.bike-year')?.textContent || ''));
+            await p6.click('.tabs [data-v=service]'); await p6.click('.ms button >> nth=0');
+            await p6.click('.chk input[type=checkbox] >> nth=0');
+            const old = await p6.evaluate(() => ({ odo: document.querySelector('.tick-odo').value, date: document.querySelector('.tick-date').value, by: document.querySelector('.by-dd .custom-dropdown-toggle')?.textContent.trim() }));
+            await p6.click('.ms button >> nth=2'); await p6.click('.chk input[type=checkbox] >> nth=0');
+            const fresh = await p6.evaluate(() => ({ pickers: document.querySelectorAll('.by-dd').length, date: document.querySelector('.tick-date').value }));
+            await p6.click('#bedit'); await p6.click('#bro'); await p6.click('#bsave');
+            const count = await p6.evaluate(() => document.querySelector('.owner-count')?.textContent);
+            await o2.close();
+            ok(count === '2 owners' && old.odo === '600' && old.date === '' && /J\. Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh, count })})`);
+        }
+
         // Tools owned counts every tool on the list, not only the priced ones.
         await page.click('.tabs [data-v=tools]');
         const tools = await page.evaluate(() => ({ shown: document.querySelector('.tl-sum b').textContent, rows: document.querySelector('#v-tools .box').querySelectorAll('.trow').length, opt: document.querySelector('#v-tools .box').querySelectorAll('.tag2').length }));
