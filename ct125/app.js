@@ -15,6 +15,7 @@
 
 const MODELS = [
     { id: '2021', label: '2021', data: '/ct125/data/2021.json' },
+    { id: '2023', label: '2023–', data: '/ct125/data/2023.json' },
 ];
 
 // Referral links. Keyed by shop hostname; {url} is replaced by the encoded
@@ -66,7 +67,13 @@ const PAGES = D.pages, BYP = {}; PAGES.forEach((p) => { BYP[p.p] = p; });
 const LAST = PAGES.length;
 const mp2p = (mp) => D.mp[mp];
 const pgBtn = (mp) => (mp2p(mp) ? `<button class="pg" data-open="${mp2p(mp)}" type="button">${esc(mp)}</button>` : `<span class="pg">${esc(mp)}</span>`);
-const partUrl = (pn) => D.partStore + pn;
+const partUrl = (pn) => (D.partStore ? D.partStore + pn : '');
+const priced = !!D.prices.on;
+// Shop lists (parts, supplies, tools) exist only where someone has compiled them.
+const hasShop = Object.keys(D.supplies).length + Object.keys(D.jobTools).length > 0;
+// Extra code tables a model may carry (the 2023 manual lists Korea's P-codes separately).
+const DTC_EXTRA = D.dtc.extra || [];
+const dtcTable = (sys) => (sys.startsWith('x') ? DTC_EXTRA[+sys.slice(1)].rows : D.dtc[sys]);
 
 /* ---------- the owner's own PDF ---------- */
 const idb = (mode, fn) => new Promise((res, rej) => {
@@ -220,6 +227,7 @@ PAGES.forEach((p) => {
 D.torque.forEach((r, i) => DOCS.push({ k: 'torque', i, f: [[norm(r[1]), 8], [norm(r[0]), 5], [norm(`torque ${r[3]} mm ${r[3]}mm ${r[7]}`), 2]] }));
 D.specs.forEach((r, i) => DOCS.push({ k: 'spec', i, f: [[norm(r[2]), 8], [norm(r[1]), 5], [norm(r[0] + ' spec specification'), 2], [norm(r[3] + ' ' + r[4]), 1]] }));
 D.dtc.pgmfi.forEach((r, i) => DOCS.push({ k: 'dtc', sys: 'pgmfi', i, f: [[norm('dtc ' + r[0] + ' code'), 9], [norm(r[1]), 6], [norm(r[2] + ' fi fuel injection mil check engine'), 2]] }));
+DTC_EXTRA.forEach((tb, t) => tb.rows.forEach((r, i) => DOCS.push({ k: 'dtc', sys: 'x' + t, i, f: [[norm('dtc ' + r[0] + ' code'), 9], [norm(r[1]), 6], [norm(r[2] + ' fi fuel injection mil check engine'), 2]] })));
 D.dtc.abs.forEach((r, i) => DOCS.push({ k: 'dtc', sys: 'abs', i, f: [[norm('dtc abs ' + r[0] + ' code'), 9], [norm(r[1]), 6], [norm(r[4] + ' abs indicator'), 2]] }));
 D.guides.forEach((gd, i) => DOCS.push({ k: 'guide', i, f: [[norm(gd.item + ' how to guide'), 10], [norm((gd.pages || []).flatMap((mp) => (BYP[mp2p(mp)] || {}).k || []).join(' , ')), 6], [norm(gd.why + ' ' + gd.when), 3], [norm(gd.steps.map((s) => s[0]).join(' ') + ' ' + gd.parts.map((p) => p.name + ' ' + p.pn).join(' ')), 2]] }));
 function search(q) {
@@ -257,7 +265,7 @@ function specRow(r, cs) {
     return `<div class="row"><div class="it">${hl(item, cs)}${cs ? `<div class="sm">${esc(grp.toLowerCase())}</div>` : ''}</div><div class="val">${std ? '<span class="lbl">Standard</span>' + specVal(std) : ''}</div><div class="lim">${lim ? '<span class="lbl">Limit</span>' + specVal(lim) : ''}</div><div class="pgc">${pgBtn(pg)}</div></div>`;
 }
 function dtcRow(sys, r, cs) {
-    if (sys === 'pgmfi') return `<div class="row"><div class="code num">${esc(r[0])}</div><div>${hl(r[1], cs)}</div><div class="sym sm">${esc(r[2])}</div><div>${pgBtn(r[3])}</div></div>`;
+    if (sys !== 'abs') return `<div class="row"><div class="code num">${esc(r[0])}</div><div>${hl(r[1], cs)}</div><div class="sym sm">${esc(r[2])}</div><div>${pgBtn(r[3])}</div></div>`;
     return `<div class="row"><div class="code num">${esc(r[0])}</div><div>${hl(r[1], cs)}<div class="sm">${[r[2] && 'at key-on check', r[3] && 'while riding'].filter(Boolean).join(', ')}</div></div><div class="sym sm">${esc(r[4])}</div><div>${pgBtn(r[5])}</div></div>`;
 }
 function pageCard(p, cs) {
@@ -301,7 +309,7 @@ function renderSearch() {
         if (k === 'page') html += sec('Pages', g.length) + `<div class="cards">${list.map((x) => pageCard(x.d.p, cs)).join('')}</div>${more}`;
         if (k === 'torque') html += sec('Torque', g.length) + `<div class="tbl tq">${list.map((x) => torqueRow(D.torque[x.d.i], cs)).join('')}</div>${more}`;
         if (k === 'spec') html += sec('Specs', g.length) + `<div class="tbl sp">${list.map((x) => specRow(D.specs[x.d.i], cs)).join('')}</div>${more}`;
-        if (k === 'dtc') html += sec('Fault codes', g.length) + `<div class="tbl sp dt">${list.map((x) => dtcRow(x.d.sys, D.dtc[x.d.sys][x.d.i], cs)).join('')}</div>${more}`;
+        if (k === 'dtc') html += sec('Fault codes', g.length) + `<div class="tbl sp dt">${list.map((x) => dtcRow(x.d.sys, dtcTable(x.d.sys)[x.d.i], cs)).join('')}</div>${more}`;
     }
     // Asked for a torque that has no entry of its own: the standard chart applies.
     if (/\b(torque|nm|n m)\b/i.test(q) && !groups.torque.length) html += sec('Standard torque', 'p. 1-12') + stdTorque();
@@ -368,8 +376,8 @@ function shopHTML(items, done) {
     const ow = owned();
     tl.sort((x, y) => (!!ow[x]) - (!!ow[y]));
     const toBuy = tl.filter((id) => !ow[id] && toolPrice(id) != null && !TOOLS[id].opt), toBuyCost = toBuy.reduce((a, id) => a + toolPrice(id), 0);
-    const cost = `<div class="cost"><div><b class="num">${money(sum(rows, 'need'))}</b><span>parts</span></div><div><b class="num">+${money(sum(rows, 'ifbad'))}</b><span>if every inspection fails</span></div>${toBuy.length ? `<div><b class="num">${money(toBuyCost)}</b><span>tools not owned</span></div>` : ''}<p>Prices ${fmtDate(D.prices.on)}, before shipping.</p></div>`;
-    const pli = ({ r, job }) => { const [n, d, pg, kind, pn] = r, x = rowX(r); return `<li><span><span class="kind">${kind}</span><span class="job">${esc(job)}</span><br><b>${esc(n)}</b>${rowPrice(r)}<small>${esc(d)}</small>${pn ? `<small>${ext(partUrl(pn), pn, 'num')}</small>` : ''}${x.u ? `<small>${ext(x.u, esc((x.note ? x.note + ' · ' : '') + x.src))}</small>` : ''}${D.prices.warn[pn] ? `<small class="flag">${esc(D.prices.warn[pn])}</small>` : ''}</span>${pgBtn(pg)}</li>`; };
+    const cost = !priced ? '' : `<div class="cost"><div><b class="num">${money(sum(rows, 'need'))}</b><span>parts</span></div><div><b class="num">+${money(sum(rows, 'ifbad'))}</b><span>if every inspection fails</span></div>${toBuy.length ? `<div><b class="num">${money(toBuyCost)}</b><span>tools not owned</span></div>` : ''}<p>Prices ${fmtDate(D.prices.on)}, before shipping.</p></div>`;
+    const pli = ({ r, job }) => { const [n, d, pg, kind, pn] = r, x = rowX(r); return `<li><span><span class="kind">${kind}</span><span class="job">${esc(job)}</span><br><b>${esc(n)}</b>${rowPrice(r)}<small>${esc(d)}</small>${pn ? `<small>${(partUrl(pn) ? ext(partUrl(pn), pn, 'num') : `<span class="num">${esc(pn)}</span>`)}</small>` : ''}${x.u ? `<small>${ext(x.u, esc((x.note ? x.note + ' · ' : '') + x.src))}</small>` : ''}${D.prices.warn[pn] ? `<small class="flag">${esc(D.prices.warn[pn])}</small>` : ''}</span>${pgBtn(pg)}</li>`; };
     const tools = tl.length ? `<details class="tier t-tool" id="toolsd"${store.get('toolsOpen', false) ? ' open' : ''}><summary class="th"><b>Tools · ${tl.length}</b><span>${toBuy.length ? `${toBuy.length} to buy · ${money(toBuyCost)}` : ''}</span></summary><ul>${tl.map((id) => { const tt = TOOLS[id], own = !!ow[id]; return `<li class="${own ? 'own' : ''}"><span><span class="job">${tmap[id].map(esc).join(' · ')}</span><br><b>${esc(tt.n)}</b><small>${esc(tt.d)}</small>${own ? '' : (tt.links || []).map(([l, u, p]) => `<small>${ext(u, esc(l) + (p != null ? ' · ' + money(p) : ''))}</small>`).join('')}</span>${tt.pg ? pgBtn(tt.pg) : '<span class="pgph"></span>'}</li>`; }).join('')}</ul></details>` : '';
     const tiers = TIERS.map(([tk, name]) => { const rs = open.filter((x) => x.r[5] === tk); return rs.length ? `<div class="tier t-${tk}"><div class="th"><b>${name}</b><span>${rs.length}</span></div><ul>${rs.map(pli).join('')}</ul></div>` : ''; }).join('');
     const doneB = fin.length ? `<div class="tier t-done"><div class="th"><b>Done</b><span>${fin.length}</span></div><ul>${fin.map(pli).join('')}</ul></div>` : '';
@@ -393,20 +401,20 @@ function renderService() {
         <div class="svc-top">
             <div class="field"><span class="lab">Service</span><div class="ms">${STEPS.map((m, i) => `<button type="button" class="num" data-col="${i}" aria-pressed="${!svcAt && i === col}"><b>${m.toLocaleString()}</b><span>${other(m)}</span></button>`).join('')}</div></div>
         </div>
-        <div class="svc-grid">
+        <div class="svc-grid"${hasShop ? '' : ' style="grid-template-columns:minmax(0,1fr)"'}>
             <div class="box"><div class="bh"><h3 class="num">${label.toLocaleString()} ${UNIT}${svcAt ? ` = ${STEPS[col].toLocaleString()} ${UNIT} list` : ''}</h3><button type="button" id="clr">Clear</button></div>
                 ${items.map(({ it, a }, i) => { const on = !!done[it.item]; return `<label class="chk ${on ? 'done' : ''}" for="c${i}"><input type="checkbox" id="c${i}" data-item="${esc(it.item)}" ${on ? 'checked' : ''}><span class="nm2">${esc(it.item)}${it.star ? ` ${it.star}` : ''}<small>${[it.every, it.regular && 'Also replace every ' + it.regular, it.note && M.notes[it.note]].filter(Boolean).map(esc).join(' · ')}</small></span><span class="side">${GBY[it.item] ? `<button type="button" data-guide="${esc(it.item)}">Guide</button>` : ''}<span class="act ${a}">${ACT[a]}</span>${it.ref ? pgBtn(it.ref) : '<span class="pgph"></span>'}</span></label>`; }).join('')}
             </div>
-            <div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
+            ${hasShop ? `<div class="box shop"><div class="bh"><h3>Parts &amp; tools</h3><button type="button" id="copy">Copy</button></div>
                 <div id="shopbox">${shopHTML(items, done)}</div>
-            </div>
+            </div>` : ''}
         </div>
         <div class="legend"><span><b>*</b> dealer job unless you have the tools and data</span><span><b>**</b> Honda recommends a dealer</span><span>p. ${esc(M.page)}</span></div>
         ${sec('Guides', D.guides.length)}${guideCards(D.guides)}`;
     v.querySelectorAll('.ms button').forEach((b) => { b.onclick = () => { setSvc(+b.dataset.col, null); renderService(); }; });
-    v.querySelectorAll('.chk input').forEach((c) => { c.onchange = () => { const d = store.get(key, {}); d[c.dataset.item] = c.checked; store.set(key, d); c.closest('.chk').classList.toggle('done', c.checked); v.querySelector('#shopbox').innerHTML = shopHTML(items, d); }; });
+    v.querySelectorAll('.chk input').forEach((c) => { c.onchange = () => { const d = store.get(key, {}); d[c.dataset.item] = c.checked; store.set(key, d); c.closest('.chk').classList.toggle('done', c.checked); if (hasShop) v.querySelector('#shopbox').innerHTML = shopHTML(items, d); }; });
     v.querySelector('#clr').onclick = () => { store.set(key, {}); renderService(); };
-    v.querySelector('#copy').onclick = async (e) => {
+    if (hasShop) v.querySelector('#copy').onclick = async (e) => {
         const sd = shopData(items, store.get(key, {}));
         const txt = `${D.name} — ${label.toLocaleString()} ${UNIT} service\n` + (sd.tl.length ? '\nTOOLS\n' + sd.tl.map((id) => `- ${TOOLS[id].n}`).join('\n') + '\n' : '') + TIERS.map(([tk, name]) => { const rs = sd.open.filter((x) => x.r[5] === tk); return rs.length ? `\n${name.toUpperCase()}\n` + rs.map(({ r: [n, d, pg, , pn], job }) => `- ${n}${pn ? ' — Honda ' + pn : ''} (${d}) [${job}, p. ${pg}]`).join('\n') : ''; }).join('\n');
         try { await navigator.clipboard.writeText(txt); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Not copied'; }
@@ -450,6 +458,7 @@ function renderCodes() {
         ${sec('Fuel injection', 'p. ' + esc(D.dtc.page))}
         <div class="tbl sp dt">${head}${D.dtc.pgmfi.map((r) => dtcRow('pgmfi', r)).join('')}</div>
         ${(D.dtc.notes?.pgmfi || []).map((t) => `<p class="sm">${esc(t)}</p>`).join('')}
+        ${DTC_EXTRA.map((tb, t) => sec(esc(tb.title), 'p. ' + esc(tb.page)) + `<div class="tbl sp dt">${head}${tb.rows.map((r) => dtcRow('x' + t, r)).join('')}</div>`).join('')}
         ${sec('ABS', 'p. ' + esc(D.dtc.abs_page))}
         <div class="tbl sp dt">${head}${D.dtc.abs.map((r) => dtcRow('abs', r)).join('')}</div>
         ${(D.dtc.notes?.abs || []).map((t) => `<p class="sm">${esc(t)}</p>`).join('')}`;
@@ -581,7 +590,7 @@ const NEEDT = { need: 'Replace', ifbad: 'If inspection fails', alt: 'Alternative
 function openGuide(name) {
     const gd = GBY[name]; if (!gd) return;
     $('#gtitle').textContent = gd.item;
-    const parts = gd.parts.length ? `<div class="plist2">${gd.parts.map((pt) => `<div class="pr ${pt.need || ''}"><span><b>${esc(pt.name)}</b>${pt.qty ? ` × ${esc(pt.qty)}` : ''}${NEEDT[pt.need] ? `<span class="tag2 ${pt.need}">${NEEDT[pt.need]}</span>` : ''}${pt.pn ? `<small class="num">Honda ${esc(pt.pn)}${CONF[pt.conf] ? ` <span class="${/likely|check/.test(pt.conf) ? 'flag' : ''}">${CONF[pt.conf]}</span>` : ''}${PRICE[pt.pn] != null ? ' · ' + money(PRICE[pt.pn]) : ''}</small>` : ''}${pt.note ? `<small>${esc(pt.note)}</small>` : ''}</span>${pt.pn ? ext(partUrl(pt.pn), 'Buy') : pt.url ? ext(pt.url, 'Buy') : ''}</div>`).join('')}</div>` : '';
+    const parts = gd.parts.length ? `<div class="plist2">${gd.parts.map((pt) => `<div class="pr ${pt.need || ''}"><span><b>${esc(pt.name)}</b>${pt.qty ? ` × ${esc(pt.qty)}` : ''}${NEEDT[pt.need] ? `<span class="tag2 ${pt.need}">${NEEDT[pt.need]}</span>` : ''}${pt.pn ? `<small class="num">Honda ${esc(pt.pn)}${CONF[pt.conf] ? ` <span class="${/likely|check/.test(pt.conf) ? 'flag' : ''}">${CONF[pt.conf]}</span>` : ''}${PRICE[pt.pn] != null ? ' · ' + money(PRICE[pt.pn]) : ''}</small>` : ''}${pt.note ? `<small>${esc(pt.note)}</small>` : ''}</span>${pt.pn && partUrl(pt.pn) ? ext(partUrl(pt.pn), 'Buy') : pt.url ? ext(pt.url, 'Buy') : ''}</div>`).join('')}</div>` : '';
     const links = (arr, fn) => (arr && arr.length ? `<div class="links">${arr.map(fn).join('')}</div>` : '');
     const vids = links(gd.videos, (v) => ext(v.url, `<b>${esc(v.title)}</b><small>${esc(v.by)}${v.note ? ' · ' + esc(v.note) : ''}</small>`));
     const fr = links(gd.forum, (f) => ext(f.url, `<b>${esc(f.title)}</b>${f.note ? `<small>${esc(f.note)}</small>` : ''}`));
@@ -598,7 +607,7 @@ function openGuide(name) {
             ${block('Watch out for', list(gd.pitfalls))}
         </div>
         <div class="col">
-            ${block('Parts', parts + (parts ? `<p class="sm">Prices ${fmtDate(D.prices.on)}.</p>` : ''))}
+            ${block('Parts', parts + (parts && priced ? `<p class="sm">Prices ${fmtDate(D.prices.on)}.</p>` : ''))}
             ${block('Tools', list(gd.tools))}
             ${block('Videos', vids)}
             ${block('Forum threads', fr)}
@@ -639,6 +648,7 @@ document.addEventListener('click', (e) => {
 });
 
 $('#sub').textContent = `${D.name} · ${D.code}`;
+if (!Object.keys(TOOLS).length) $('.tabs [data-v=tools]').hidden = true;
 document.title = `CT125 Manual · ${D.name}`;
 /* ---------- my bike ---------- */
 function renderBike() {
@@ -675,7 +685,7 @@ function renderBike() {
 }
 renderBike();
 $('#foot').innerHTML = [...D.source.notes, Object.keys(REFS).length ? 'Shop links are referral links: buying through them supports this page at no cost to you.' : '', 'Not affiliated with Honda.'].filter(Boolean).map((s) => `<div>${esc(s)}</div>`).join('');
-show(store.get('tab', 'search'));
+show(RENDER[store.get('tab', 'search')] && !(store.get('tab') === 'tools' && !Object.keys(TOOLS).length) ? store.get('tab', 'search') : 'search');
 const h = (location.hash || '').match(/^#p(\d{1,3})$/);
 if (h) openPage(+h[1]);
 // The manual the owner loaded last time.
