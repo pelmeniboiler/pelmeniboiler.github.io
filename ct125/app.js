@@ -483,7 +483,7 @@ async function openHistory() {
     const need = (job, act) => (SUP[job]?.[act] || []).filter((r) => r[5] === 'need');
     const partsFor = (job, act) => need(job, act).map((r) => (r[4] ? `Honda ${r[4]}` : r[0].replace(/,.*$/, ''))).join(', ');
     const oldPart = (job, act) => need(job, act).some((r) => r[3] === 'part' && !/gasket|O-ring|washer/i.test(r[0]));
-    const odo = store.get('odo', ''), home = `${location.origin}/ct125/`;
+    const odo = store.get('odo', ''), home = `${SITE}/ct125/`;
     $('#hbody').innerHTML = `<header class="doc-head"><span class="doc-logo" role="img" aria-label="ש-Ж"></span><div><h1>Service record</h1><p>Printed ${esc(fmtDay(today()))}</p></div></header>
         <dl class="doc-facts">
             <dt>Bike</dt><dd class="doc-name">${esc(BIKE.name || 'CT125')}</dd>
@@ -511,7 +511,7 @@ async function openHistory() {
     document.body.classList.add('printing');
     $('#histwin').hidden = false; $('#histwin').scrollTop = 0; document.body.style.overflow = 'hidden';
     $('#hclose').focus({ preventScroll: true });
-    const svg = await qrSvg(`${location.origin}/ct125/#bike=${await packBike()}`);
+    const svg = await qrSvg(`${SITE}/ct125/#bike=${await packBike()}`);
     if (svg) $('#hqr').innerHTML = svg; else $('#hqr').remove();
 }
 function closeHistory() { $('#histwin').hidden = true; document.body.classList.remove('printing'); document.body.style.overflow = ''; }
@@ -524,6 +524,9 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#his
 // A bike travels as a link: name, year, unit, odometer and every ticked job,
 // compressed into the hash (#bike=…). Opening it offers to add the bike, or to
 // overwrite the one with the same name, so it can keep two devices in step.
+// Links and QR codes that leave this device point at the public site, even
+// when the app was opened from a local copy or a test server.
+const SITE = /^https:$/.test(location.protocol) && !/^(localhost|127\.|\[::1\])/.test(location.hostname) ? location.origin : 'https://pelmeniboiler.github.io';
 const b64u = { to: (u8) => btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), from: (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0)) };
 const pipe = async (u8, stream) => new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer());
 const DAY0 = Date.UTC(2000, 0, 1), dayOf = (iso) => Math.round((Date.parse(iso + 'T00:00:00Z') - DAY0) / 864e5), isoOf = (n) => new Date(DAY0 + n * 864e5).toISOString().slice(0, 10);
@@ -543,7 +546,7 @@ const closeShare = () => { $('#sharewin').hidden = true; };
 $('#shareclose').onclick = closeShare;
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sharewin').hidden) closeShare(); });
 async function openShare() {
-    const url = `${location.origin}/ct125/#bike=${await packBike()}`;
+    const url = `${SITE}/ct125/#bike=${await packBike()}`;
     shareWin('share.bike', `<div class="qr" id="qr"></div>
         <div class="linkrow"><input id="shareurl" readonly value="${esc(url)}" aria-label="Link to this bike"><button type="button" id="sharecopy">Copy</button>${navigator.share ? '<button type="button" id="sharesend">Send</button>' : ''}</div>`);
     $('#shareurl').onfocus = (e) => e.target.select();
