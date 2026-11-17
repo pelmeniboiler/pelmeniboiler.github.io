@@ -1229,15 +1229,15 @@ try {
             await p5.waitForSelector('#bpick');
             await p5.setInputFiles('#bikefilepick', file);
             await p5.waitForSelector('#sharewin:not([hidden]) [data-imp=add]');
-            const imp = await p5.evaluate(() => ({ text: document.querySelector('#sharebody').textContent, ro: document.querySelector('#impro').checked }));
+            const imp = await p5.evaluate(() => ({ text: document.querySelector('#sharebody').textContent, ro: document.querySelector('#impro').getAttribute('aria-pressed') === 'true' }));
             await p5.click('[data-imp=add]');
-            await p5.waitForFunction(() => /read-only/.test(document.querySelector('.bike-year')?.textContent || ''));
+            await p5.waitForFunction(() => /🔒/.test(document.querySelector('.bike-year')?.textContent || ''));
             await p5.click('.tabs [data-v=service]');
             for (let i = 0; i < 7 && !(await p5.$('.thumb')); i++) await p5.click(`.ms button >> nth=${i}`);
             await p5.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0, null, { timeout: 10000 }).catch(() => {});
             const got = await p5.evaluate(() => ({ year: document.querySelector('.bike-year').textContent, locked: document.querySelectorAll('.chk input[type=checkbox]:disabled').length, photo: document.querySelector('.thumb img')?.naturalWidth > 0, add: document.querySelectorAll('.addph').length }));
             await other.close();
-            ok(/travels in the bike file/.test(note) && /matches its fingerprint/.test(imp.text) && imp.ro && /read-only/.test(got.year) && got.locked > 0 && got.photo && got.add === 0,
+            ok(/use the bike file/.test(note) && /matches its fingerprint/.test(imp.text) && imp.ro && /🔒/.test(got.year) && got.locked > 0 && got.photo && got.add === 0,
                 `CT125: a job's photo travels in the bike file, matches its fingerprint, and imports read-only (${JSON.stringify({ ro: imp.ro, ...got })})`);
         }
 
@@ -1256,15 +1256,15 @@ try {
             await p2.waitForSelector('#bedit');
             await p2.click('#bedit');
             const labels = await p2.evaluate(() => [...document.querySelectorAll('#byear .custom-dropdown-item')].map((o) => o.textContent).join(' / '));
-            await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2023"]'); await p2.click('#bsave');
+            await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2023:2024"]'); await p2.click('#bsave');
             await p2.waitForFunction(() => /JA65/.test(document.querySelector('.bike-year')?.textContent || '') && /2023/.test(document.querySelector('#sub').textContent));
             await p2.click('.tabs [data-v=service]');
             const y = await p2.evaluate(() => ({ unit: document.querySelector('.box .bh h3').textContent, filter: [...document.querySelectorAll('.chk .nm2')].some((n) => /oil filter$/i.test(n.firstChild.textContent.trim())), pn: document.querySelector('#shopbox')?.textContent.includes('15412-MGS-D21'), tools: !document.querySelector('.tabs [data-v=tools]').hidden }));
             y.labels = labels;
             await p2.click('.tabs [data-v=codes]');
             const codes = await p2.evaluate(() => document.querySelectorAll('#v-codes .dt').length);
-            ok(/^(12,000 km|7,500 mi)$/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && y.labels === '2020–2022 (JA55) / 2023+ (JA65)', `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
-            await p2.click('#bedit'); await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2021"]'); await p2.click('#bsave');
+            ok(/^(12,000 km|7,500 mi)$/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && /2022 \(JA55\) \/ 2023 \(JA65\)/.test(y.labels), `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
+            await p2.click('#bedit'); await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2021:2021"]'); await p2.click('#bsave');
             await p2.waitForFunction(() => /2021/.test(document.querySelector('#sub').textContent));
             await p2.close();
         }
