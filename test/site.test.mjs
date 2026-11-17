@@ -1162,15 +1162,29 @@ try {
 
         // A second bike keeps its own odometer and ticks; the first is untouched.
         await page.click('#bedit'); await page.fill('#bname', 'Red'); await page.click('#bsave');
-        await page.selectOption('#bpick', 'new');
+        await page.click('#bpick .custom-dropdown-toggle'); await page.click('#bpick .custom-dropdown-item[data-value="new"]');
         await page.waitForFunction(() => document.querySelector('#bike.editing') && document.querySelector('#odo').value === '');
         await page.click('#bsave');
-        await page.waitForFunction(() => document.querySelector('#bpick')?.options.length === 3);
-        const second = await page.evaluate(() => ({ ticks: document.querySelectorAll('.chk input:checked').length, names: [...document.querySelector('#bpick').options].map((o) => o.textContent) }));
-        await page.selectOption('#bpick', { label: 'Red' });
+        await page.waitForFunction(() => document.querySelectorAll('#bpick .custom-dropdown-item').length === 3);
+        const second = await page.evaluate(() => ({ ticks: document.querySelectorAll('.chk input:checked').length, names: [...document.querySelectorAll('#bpick .custom-dropdown-item')].map((o) => o.textContent) }));
+        await page.click('#bpick .custom-dropdown-toggle'); await page.click('#bpick .custom-dropdown-item >> text=Red');
         await page.waitForFunction(() => /^7,450/.test((document.querySelector('.odometer')?.getAttribute('aria-label') || '')));
         const first = await page.evaluate(() => ({ name: document.querySelector('.bike-name').textContent, ticks: document.querySelectorAll('.chk input:checked').length }));
         ok(second.ticks === 0 && first.name === 'Red' && first.ticks === 1, `CT125: each bike has its own name, odometer and ticks (${JSON.stringify({ second, first })})`);
+
+        // A tick is dated, and the bike can switch to kilometres: the reading converts and the service list leads with km.
+        {
+            const tick = await page.evaluate(() => document.querySelector('.chk .tick-date')?.value);
+            await page.click('#bedit'); await page.click('#bunit .custom-dropdown-toggle'); await page.click('#bunit .custom-dropdown-item[data-value="km"]');
+            const field = await page.inputValue('#odo');
+            await page.click('#bsave');
+            await page.waitForFunction(() => /km/.test(document.querySelector('.odometer')?.getAttribute('aria-label') || ''));
+            await page.click('.tabs [data-v=service]');
+            const km = await page.evaluate(() => ({ odo: document.querySelector('.odometer').getAttribute('aria-label'), first: document.querySelector('.ms button b').textContent, under: document.querySelector('.ms button span').textContent }));
+            ok(/^\d{4}-\d\d-\d\d$/.test(tick || '') && field === '11990' && /^11,990 km/.test(km.odo) && km.first === '1,000' && km.under === '600 mi', `CT125: ticks are dated; a bike can switch to km (${JSON.stringify({ tick, field, ...km })})`);
+            await page.click('#bedit'); await page.click('#bunit .custom-dropdown-toggle'); await page.click('#bunit .custom-dropdown-item[data-value="mi"]'); await page.click('#bsave');
+            await page.waitForFunction(() => /mi/.test(document.querySelector('.odometer')?.getAttribute('aria-label') || ''));
+        }
 
         // Tools owned counts every tool on the list, not only the priced ones.
         await page.click('.tabs [data-v=tools]');
@@ -1186,16 +1200,16 @@ try {
             await p2.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
             await p2.waitForSelector('#bedit');
             await p2.click('#bedit');
-            const labels = await p2.evaluate(() => [...document.querySelectorAll('#byear option')].map((o) => o.textContent).join(' / '));
-            await p2.selectOption('#byear', '2023'); await p2.click('#bsave');
+            const labels = await p2.evaluate(() => [...document.querySelectorAll('#byear .custom-dropdown-item')].map((o) => o.textContent).join(' / '));
+            await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2023"]'); await p2.click('#bsave');
             await p2.waitForFunction(() => /JA65/.test(document.querySelector('.bike-year')?.textContent || '') && /2023/.test(document.querySelector('#sub').textContent));
             await p2.click('.tabs [data-v=service]');
             const y = await p2.evaluate(() => ({ unit: document.querySelector('.box .bh h3').textContent, filter: [...document.querySelectorAll('.chk .nm2')].some((n) => /oil filter$/i.test(n.firstChild.textContent.trim())), pn: document.querySelector('#shopbox')?.textContent.includes('15412-MGS-D21'), tools: !document.querySelector('.tabs [data-v=tools]').hidden }));
             y.labels = labels;
             await p2.click('.tabs [data-v=codes]');
             const codes = await p2.evaluate(() => document.querySelectorAll('#v-codes .dt').length);
-            ok(/km/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && y.labels === '2020–2022 (JA55) / 2023+ (JA65)', `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
-            await p2.click('#bedit'); await p2.selectOption('#byear', '2021'); await p2.click('#bsave');
+            ok(/^(12,000 km|7,500 mi)$/.test(y.unit) && y.filter && y.pn && y.tools && codes === 3 && y.labels === '2020–2022 (JA55) / 2023+ (JA65)', `CT125: the 2023+ year has its km schedule, oil filter part, tools and both code tables (${JSON.stringify({ ...y, codes })})`);
+            await p2.click('#bedit'); await p2.click('#byear .custom-dropdown-toggle'); await p2.click('#byear .custom-dropdown-item[data-value="2021"]'); await p2.click('#bsave');
             await p2.waitForFunction(() => /2021/.test(document.querySelector('#sub').textContent));
             await p2.close();
         }
