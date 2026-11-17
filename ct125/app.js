@@ -1045,7 +1045,7 @@ function renderBike() {
             if (v === 'new') { const id = 'b' + Date.now().toString(36); bikes.push({ id, name: '', model: modelId, unit: UNIT }); saveBikes(); ls.set('ct125:bike', id); ls.set('ct125:editNew', true); } else ls.set('ct125:bike', v);
             history.replaceState(null, '', location.pathname); location.reload();
         }, 'name-dd')}<span class="bike-year">${esc(bikeLine(BIKE, MODEL))}${BIKE.ro ? ` ${lockSym(true)}` : ''}</span></div>
-        <button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>
+        <span class="odo-wrap"><button type="button" class="odo-view" id="odoview" title="Edit odometer">${odometer(odo)}</button>${BIKE.ro && (BIKE.owners || []).length ? `<span class="owner-count">${BIKE.owners.length} owner${BIKE.owners.length === 1 ? '' : 's'}</span>` : ''}</span>
         <span class="bike-tools"><button type="button" id="bedit" class="icon" title="Edit bike" aria-label="Edit bike">${ICON.pencil}</button><button type="button" id="bshare" class="icon" title="Share bike" aria-label="Share bike">${ICON.link}</button></span>`;
         $('#bshare').onclick = openShare;
         $('#bedit').onclick = $('#odoview').onclick = () => { editing = true; renderBike(); ($('#bname').value ? $('#odo') : $('#bname')).focus(); };

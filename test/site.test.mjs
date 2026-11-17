@@ -1258,8 +1258,10 @@ try {
             const old = await p6.evaluate(() => ({ odo: document.querySelector('.tick-odo').value, date: document.querySelector('.tick-date').value, by: document.querySelector('.by-dd .custom-dropdown-toggle')?.textContent.trim() }));
             await p6.click('.ms button >> nth=2'); await p6.click('.chk input[type=checkbox] >> nth=0');
             const fresh = await p6.evaluate(() => ({ pickers: document.querySelectorAll('.by-dd').length, date: document.querySelector('.tick-date').value }));
+            await p6.click('#bedit'); await p6.click('#bro'); await p6.click('#bsave');
+            const count = await p6.evaluate(() => document.querySelector('.owner-count')?.textContent);
             await o2.close();
-            ok(old.odo === '600' && old.date === '' && /J\. Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh })})`);
+            ok(count === '2 owners' && old.odo === '600' && old.date === '' && /J\. Doe/.test(old.by) && fresh.pickers === 0 && /^\d{4}-/.test(fresh.date), `CT125: owner history and who did each job (${JSON.stringify({ old, fresh, count })})`);
         }
 
         // Tools owned counts every tool on the list, not only the priced ones.
