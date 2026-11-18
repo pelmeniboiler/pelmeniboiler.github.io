@@ -1499,6 +1499,22 @@ try {
         ok(eb.every((x) => ratio(...x) >= 4.5), `Roundup: the editor's export buttons are readable (${eb.map((x) => ratio(...x).toFixed(1)).join(', ')})`);
     }
 
+    // A link to a window opens it: the clock link in the proportional-hours post, and arriving at /index.html#zman-clock-window.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage();
+        const isOpen = () => p.evaluate(() => { const w = document.getElementById('zman-clock-window'); return !!w && getComputedStyle(w).display !== 'none' && !w.classList.contains('init-closed'); });
+        await p.goto(`${BASE}/blog/you-should-sometimes-tell-time-using-proportional-hours.html`, { waitUntil: 'load' });
+        await p.waitForSelector('a[href="#zman-clock-window"]');
+        const before = await isOpen();
+        await p.click('a[href="#zman-clock-window"]'); await p.waitForTimeout(300);
+        const fromLink = await isOpen();
+        await p.goto(`${BASE}/index.html#zman-clock-window`, { waitUntil: 'load' }); await p.waitForTimeout(800);
+        const onArrival = await isOpen();
+        await c.close();
+        ok(!before && fromLink && onArrival, `Window links: the clock link opens shaon.zmanim, and so does arriving with its hash (${JSON.stringify({ before, fromLink, onArrival })})`);
+    }
+
     // Sofrut II: inline tags start and stop at the caret, notes for Claude stay out of the article,
     // one click publishes both files to GitHub (mocked), and pasted translation replies survive prose and fences.
     {

@@ -485,6 +485,19 @@ function setupStartMenu() {
     };
     const openAndFocus = (w) => { if (!w) return; openWindow(w, lastTranslations, lastLang); focusWindow(w); };
     const currentWindow = () => document.activeElement && document.activeElement.closest('.window');
+    // A link to a window (href="#zman-clock-window") opens it in place; so does
+    // arriving with that hash. The clock opens through its tray button, as C does.
+    const openById = (id) => {
+        const w = id && document.getElementById(id);
+        if (!w || !w.classList.contains('window')) return false;
+        if (id === 'zman-clock-window' && trayClockEl) { trayClockEl.click(); focusWindow(w); } else openAndFocus(w);
+        return true;
+    };
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest && e.target.closest('a[href^="#"]');
+        if (a && openById(decodeURIComponent(a.getAttribute('href').slice(1)))) e.preventDefault();
+    });
+    if (location.hash) { try { openById(decodeURIComponent(location.hash.slice(1))); } catch (_) { /* malformed hash */ } }
 
     const keysToggle = document.getElementById('keys-toggle');
     if (keysToggle) {

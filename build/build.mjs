@@ -1172,7 +1172,7 @@ async function generateZines(zineArticles, rootDir, assetVersion) {
         const bodies = articles.map((a) => `
     <article class="zine-article" id="${a.slug}">
         <p class="post-date">${formatDisplayDate(a.pubDate, lang)}</p>
-${a.html}
+${a.html.replace(/href="#([\w-]+-window)"/g, 'href="/index.html#$1"') /* a window (the clock) lives on the hub, not in the zine */}
         <hr>
     </article>`).join('\n');
 
