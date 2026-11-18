@@ -1525,7 +1525,7 @@ try {
         await p.fill('#title', 'Gear Test');
         const prefix = await p.inputValue('#prefix');
         await p.click('#dlg-props .chip[data-close]');
-        const tag = (name) => p.click(`#tb button[title${name === 'Note for Claude' ? '^' : ''}="${name}"]`);
+        const tag = (name) => p.click(`#tb button[title${name.startsWith('Note for') ? '^' : ''}="${name}"]`);
         await p.click('#doc'); await p.keyboard.type('E=mc');
         await tag('Superscript'); await p.keyboard.type('2'); await tag('Superscript'); await p.keyboard.type(' and ');
         await tag('Code'); await p.keyboard.type('ls'); await tag('Code'); await p.keyboard.type(' done');
@@ -1544,16 +1544,22 @@ try {
         const pub = await p.textContent('#pub-status');
         ok(/pull\/999/.test(pub) && tree && tree.tree.map((x) => x.path).join() === `blog/gear-test.html,localization/${prefix}.json` && calls.some((x) => /POST .*\/pulls$/.test(x)),
             `Sofrut II: publish puts both files in one commit and opens a pull request (${pub}; ${calls.length} calls)`);
-        await p.click('.menubar [data-act=translate]'); await p.selectOption('#mtpe-lang', 'he'); await p.click('#mk-prompt');
-        const src = JSON.parse((await p.inputValue('#prompt-out')).split('English source:\n')[1]).en;
-        await p.fill('#paste-in', 'Here you go!\n```json\n' + JSON.stringify({ he: Object.fromEntries(Object.entries(src).map(([k, v]) => [k, 'ע ' + v])) }) + '\n```');
-        await p.click('#validate'); const check = await p.textContent('#report'); await p.click('#merge');
-        await p.reload({ waitUntil: 'load' });
+        // A translator note on a phrase: kept out of the English, saved beside it, published with it, kept in the draft.
+        await p.evaluate(() => { const t = [...document.querySelectorAll('#doc p')].find((x) => /Back to prose/.test(x.textContent)).firstChild; const r = document.createRange(); r.setStart(t, 8); r.setEnd(t, 13); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+        await tag('Note for translators');
+        await p.fill('#ask-note', 'keep the pun'); await p.press('#ask-note', 'Enter');
         await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]');
-        const langs = Object.keys(JSON.parse(await p.inputValue('#out-json')));
+        const en2 = JSON.parse(await p.inputValue('#out-json')).en, notes = JSON.parse(await p.inputValue('#out-notes') || '{}');
+        await p.keyboard.press('Escape');
+        await p.click('.menubar .top:has-text("File")'); await p.click('[data-act=publish]');
+        await p.waitForFunction(() => /published|✗/.test(document.querySelector('#pub-status').textContent) && !/publishing/.test(document.querySelector('#pub-status').textContent), null, { timeout: 10000 });
+        const paths = tree.tree.map((x) => x.path);
+        await p.reload({ waitUntil: 'load' });
+        const kept = await p.evaluate(() => document.querySelectorAll('#doc span[data-tl]').length);
         await c.close();
-        ok(/keys present/.test(check) && /tags preserved/.test(check) && langs.includes('he') && errs.length === 0,
-            `Sofrut II: a fenced translation reply checks, merges and survives a reload (${JSON.stringify({ check: check.replace(/\s+/g, ' '), langs, errs })})`);
+        const noteKey = Object.keys(notes)[0];
+        ok(noteKey && notes[noteKey][0].text === 'prose' && notes[noteKey][0].note === 'keep the pun' && /Back to prose\./.test(en2[noteKey]) && !/data-tl|span/.test(JSON.stringify(en2)) && paths.includes(`localization/notes/${prefix}.json`) && kept === 1 && errs.length === 0,
+            `Sofrut II: a translator note stays out of the English, goes to localization/notes/ and is published with it (${JSON.stringify({ notes, paths, kept, errs })})`);
     }
 
     await browser.close();

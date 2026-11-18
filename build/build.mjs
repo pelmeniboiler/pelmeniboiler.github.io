@@ -373,7 +373,9 @@ async function main() {
 
     console.log('Determining languages...');
     const allLanguages = new Set();
-    Object.values(localizationData).forEach((fileContent) => {
+    // tl-status.json keys are post names (translation bookkeeping), not languages.
+    Object.entries(localizationData).forEach(([name, fileContent]) => {
+        if (name === 'tl-status') return;
         Object.keys(fileContent).forEach((langCode) => allLanguages.add(langCode));
     });
 

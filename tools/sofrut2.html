@@ -66,6 +66,8 @@
         /* A note for Claude: kept in the file as an HTML comment, never shown or translated. */
         #doc p[data-note] { border: 2px dashed var(--text-color); padding: 4px 8px; font-family: monospace; font-size: 14px; }
         #doc p[data-note]::before { content: '🤖 '; }
+        /* A translator note: shown here, kept out of the article, saved beside the English. */
+        #doc span[data-tl] { text-decoration: underline wavy; text-underline-offset: 3px; cursor: help; }
         #doc:empty::before { content: attr(data-empty); }
         #src { display: none; border: none; resize: none; padding: 10px; min-height: 320px; white-space: pre; font-family: monospace; font-size: 12px; background: var(--win-bg-color); color: var(--text-color); }
         .pane-doc.source #doc { display: none; } .pane-doc.source #src { display: block; }
@@ -131,7 +133,6 @@
                         <button type="button" data-act="files">Output files</button>
                     </div>
                 </div>
-                <div class="m"><button class="top" type="button" data-act="translate">Translate</button></div>
             </nav>
             <div class="tb" id="tb" role="toolbar" aria-label="Tags"></div>
             <div id="doc" contenteditable="true" spellcheck="true" data-empty="…"></div>
@@ -188,26 +189,9 @@
         <div class="field"><label>localization/<span id="out-json-name">…</span></label>
             <textarea class="out" id="out-json" readonly></textarea>
             <div class="bar"><button class="chip" type="button" data-copy="out-json">copy</button></div></div>
-    </div>
-</div>
-
-<!-- Translate: prompt out, reply back, check, merge -->
-<div class="dlg wide" id="dlg-translate" hidden role="dialog" aria-modal="true" aria-labelledby="tl-title">
-    <div class="title-bar"><span class="title" id="tl-title">文 translate</span><button class="close-btn" type="button" data-close>&times;</button></div>
-    <div class="body">
-        <div class="row">
-            <div class="field"><label for="mtpe-lang">language</label>
-                <select id="mtpe-lang"><option value="he">he</option><option value="ru">ru</option><option value="de">de</option><option value="ja">ja</option><option value="gt">gt</option></select></div>
-            <div class="field" style="flex: 2;"><label for="glossary">glossary</label><textarea id="glossary" rows="2" placeholder="English term = target term"></textarea></div>
-        </div>
-        <div class="bar"><input type="text" id="concept-term" placeholder="wikidata" style="max-width: 14em;" aria-label="term to look up"><button class="chip" type="button" id="concept-lookup">look up</button></div>
-        <div id="concept-result"></div>
-        <div class="bar"><button class="chip" type="button" id="mk-prompt">prompt</button><button class="chip" type="button" data-copy="prompt-out">copy</button></div>
-        <textarea class="out" id="prompt-out" readonly aria-label="prompt"></textarea>
-        <h2 class="sec">reply</h2>
-        <textarea class="out" id="paste-in" aria-label="reply"></textarea>
-        <div class="bar"><button class="chip" type="button" id="validate">check</button><button class="chip" type="button" id="merge">merge</button></div>
-        <div class="report" id="report" hidden></div>
+        <div class="field" id="notes-field" hidden><label>localization/notes/<span id="out-notes-name">…</span></label>
+            <textarea class="out" id="out-notes" readonly></textarea>
+            <div class="bar"><button class="chip" type="button" data-copy="out-notes">copy</button></div></div>
     </div>
 </div>
 
@@ -222,7 +206,6 @@
     const $ = (id) => document.getElementById(id);
     const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    const isGraflect = (c) => c >= 0xec70 && c <= 0xecef;
     const doc = $('doc'), src = $('src');
     const DRAFT = 'pelmeniboiler-sofrut2-draft', GH = 'pelmeniboiler-sofrut2-github';
     const ZW = '​'; // a foothold for the caret when a tag is started or left
@@ -306,7 +289,7 @@
     const FORMATS = ['B', 'STRONG', 'I', 'EM', 'S', 'U', 'CODE', 'KBD', 'SUB', 'SUP', 'INS', 'DEL', 'ABBR', 'TIME'];
     const INLINE = new Set([...FORMATS, 'A', 'BR', 'LI', 'TR', 'TD', 'TH', 'TBODY', 'THEAD', 'FIGCAPTION', 'IMG', 'UL', 'OL', 'SPAN']);
     const KEYED = ['data-key'];
-    const ATTRS = { A: ['href'], IMG: ['src', 'alt', 'data-alt-key'], IFRAME: ['src', 'title'], ABBR: ['title'], TIME: ['datetime'], SPAN: ['class'], P: ['data-key', 'data-note'], ASIDE: KEYED, BLOCKQUOTE: KEYED, UL: KEYED, OL: KEYED, TABLE: KEYED, FIGCAPTION: KEYED, H2: ['data-key', 'id'], H3: ['data-key', 'id'], H4: ['data-key', 'id'] };
+    const ATTRS = { SPAN: ['data-tl'], A: ['href'], IMG: ['src', 'alt', 'data-alt-key'], IFRAME: ['src', 'title'], ABBR: ['title'], TIME: ['datetime'], P: ['data-key', 'data-note'], ASIDE: KEYED, BLOCKQUOTE: KEYED, UL: KEYED, OL: KEYED, TABLE: KEYED, FIGCAPTION: KEYED, H2: ['data-key', 'id'], H3: ['data-key', 'id'], H4: ['data-key', 'id'] };
     // A paragraph can't hold a list, table or figure: lift those out.
     function lift(root) {
         for (const p of [...root.querySelectorAll(':scope > p')]) {
@@ -321,7 +304,7 @@
             if (el.tagName === 'STRIKE') { const s = document.createElement('s'); s.append(...el.childNodes); el.replaceWith(s); continue; }
             if (!BLOCKS.has(el.tagName) && !INLINE.has(el.tagName)) { unwrap(el); continue; }
             for (const a of [...el.attributes]) if (!(ATTRS[el.tagName] || []).includes(a.name)) el.removeAttribute(a.name);
-            if (el.tagName === 'SPAN' && el.className !== 'symbol') unwrap(el);
+            if (el.tagName === 'SPAN') { if (el.getAttribute('data-tl')) el.title = el.getAttribute('data-tl'); else { unwrap(el); continue; } }
             if (el.tagName === 'IFRAME' && !/^https:\/\//.test(el.getAttribute('src') || '')) el.remove();
         }
         if (final) {
@@ -422,6 +405,7 @@
         null,
         ['🔗', 'Link', link], ['🏞️', 'Image', image], ['🖼️', 'Figure with caption', figure], ['🎬', 'Video', video],
         null,
+        ['🌐', 'Note for translators (kept out of the article)', tlNote],
         ['🤖', 'Note for Claude (kept out of the article)', () => setBlock('p', true)],
     ];
     const TAG_OF = { Paragraph: 'p', Heading: 'h2', Subheading: 'h3', 'Minor heading': 'h4', Aside: 'aside', Quote: 'blockquote', 'Code block': 'pre', 'Bulleted list': 'ul', 'Numbered list': 'ol', Bold: 'b', Italic: 'i', Strikethrough: 's', 'Inserted (edit)': 'ins', 'Deleted (edit)': 'del', Code: 'code', Key: 'kbd', Subscript: 'sub', Superscript: 'sup', Abbreviation: 'abbr', Date: 'time', Link: 'a' };
@@ -440,6 +424,23 @@
         const v = await ask('🔗 link', [{ id: 'href', label: 'address', type: 'url', value: cur ? cur.getAttribute('href') : 'https://' }]); restore();
         if (!v || !v.href || v.href === 'https://') return;
         if (cur) cur.setAttribute('href', v.href); else toggleInline('a', { href: v.href });
+    }
+    // A translator note on a phrase: the selection, or the word at the caret.
+    // Inside a noted phrase, the button edits the note; an empty note removes it.
+    async function tlNote() {
+        restore();
+        const s = getSelection(), cur = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement).closest('span[data-tl]');
+        if (!cur && s.isCollapsed && s.modify) { s.modify('move', 'backward', 'word'); s.modify('extend', 'forward', 'word'); }
+        const keep = s.rangeCount ? s.getRangeAt(0).cloneRange() : null;
+        if (!cur && (!keep || keep.collapsed || !keep.toString().trim())) return;
+        const v = await ask('🌐 note for translators', [{ id: 'note', label: cur ? `"${cur.textContent}"` : `"${keep.toString().trim()}"`, value: cur ? cur.getAttribute('data-tl') : '' }]);
+        doc.focus(); if (!v) return;
+        if (cur) { if (v.note) { cur.setAttribute('data-tl', v.note); cur.title = v.note; } else unwrap(cur); return; }
+        if (!v.note) return;
+        // Trailing space from a word selection stays outside the note.
+        while (keep.toString().endsWith(' ') && keep.endOffset > 0 && keep.endContainer.nodeType === 3) keep.setEnd(keep.endContainer, keep.endOffset - 1);
+        const el = document.createElement('span'); el.setAttribute('data-tl', v.note); el.title = v.note;
+        el.append(keep.extractContents()); keep.insertNode(el);
     }
     async function abbr() {
         if (within(getSelection().anchorNode, 'ABBR')) return toggleInline('abbr');
@@ -486,7 +487,8 @@
         const n = getSelection().anchorNode; if (!n || !doc.contains(n)) return;
         const chain = []; for (let e = n.nodeType === 1 ? n : n.parentElement; e && e !== doc; e = e.parentElement) chain.push(({ strong: 'b', em: 'i' })[e.tagName.toLowerCase()] || e.tagName.toLowerCase());
         const note = !!(n.nodeType === 1 ? n : n.parentElement).closest('p[data-note]');
-        document.querySelectorAll('#tb button').forEach((b) => b.classList.toggle('on', b.dataset.i === String(TAGS.length - 1) ? note : !!b.dataset.tag && chain.includes(b.dataset.tag) && !(b.dataset.tag === 'p' && note)));
+        const tl = !!(n.nodeType === 1 ? n : n.parentElement).closest('span[data-tl]');
+        document.querySelectorAll('#tb button').forEach((b) => b.classList.toggle('on', b.dataset.i === String(TAGS.length - 1) ? note : b.dataset.i === String(TAGS.length - 2) ? tl : !!b.dataset.tag && chain.includes(b.dataset.tag) && !(b.dataset.tag === 'p' && note)));
     }
     document.addEventListener('selectionchange', markTags);
     const pretty = (html) => html.replace(/></g, '>\n<').replace(/\n(<\/?(?:b|i|s|u|strong|em|code|kbd|sub|sup|ins|del|abbr|time|a|br|span)\b)/g, '$1').replace(/(<\/(?:b|i|s|u|strong|em|code|kbd|sub|sup|ins|del|abbr|time|a|span)>)\n/g, '$1');
@@ -500,24 +502,23 @@
     const currentHtml = () => document.querySelector('.pane-doc').classList.contains('source') ? src.value : doc.innerHTML;
 
     // ---------- draft ----------
-    let translations = {};
     function save() {
-        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, slug: $('slug').value, prefix: $('prefix').value, date: $('date').value, author: $('author').value, kw: [...selectedKw], translations, glossary: $('glossary').value })); } catch (_) { /* full or blocked */ }
+        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, slug: $('slug').value, prefix: $('prefix').value, date: $('date').value, author: $('author').value, kw: [...selectedKw] })); } catch (_) { /* full or blocked */ }
     }
     function changed() {
         const words = (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim().match(/\S+/g) || []).length;
-        $('stats').textContent = `${doc.children.length} blocks · ${words} words${Object.keys(translations).length ? ` · ${Object.keys(translations).join(' ')}` : ''}`;
+        const notes = doc.querySelectorAll('span[data-tl]').length;
+        $('stats').textContent = `${doc.children.length} blocks · ${words} words${notes ? ` · ${notes} translator note${notes === 1 ? '' : 's'}` : ''}`;
         save();
     }
     ['title', 'slug', 'prefix', 'date', 'author'].forEach((id) => $(id).addEventListener('input', save));
-    $('glossary').addEventListener('input', save);
     try {
         const d = JSON.parse(localStorage.getItem(DRAFT));
         if (d) {
             doc.innerHTML = d.html || ''; clean(doc);
             $('title').value = d.title || ''; $('slug').value = d.slug || ''; $('prefix').value = d.prefix || '';
             if (d.date) $('date').value = d.date; if (d.author) $('author').value = d.author;
-            (d.kw || []).forEach((k) => addChip(k, true)); translations = d.translations || {}; $('glossary').value = d.glossary || '';
+            (d.kw || []).forEach((k) => addChip(k, true));
             if (d.slug) $('slug').dataset.touched = '1'; if (d.prefix) $('prefix').dataset.touched = '1';
         }
     } catch (_) { /* no draft */ }
@@ -527,13 +528,12 @@
         if (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim() && !confirm('Start a new article? This draft will be cleared.')) return;
         doc.innerHTML = '<p><br></p>'; src.value = '';
         ['title', 'slug', 'prefix'].forEach((id) => { $(id).value = ''; delete $(id).dataset.touched; });
-        [...selectedKw].forEach((k) => addChip(k, false)); translations = {}; $('glossary').value = '';
+        [...selectedKw].forEach((k) => addChip(k, false));
         $('date').valueAsDate = new Date(); $('pub-status').textContent = '';
         changed(); checkSlug(); showName(); openDlg('dlg-props');
     }
 
     // ---------- the two files ----------
-    let lastEn = {};
     function generate() {
         if (document.querySelector('.pane-doc').classList.contains('source')) toggleSource();
         clean(doc, true);
@@ -542,7 +542,13 @@
         const prefix = slugify($('prefix').value).replace(/-/g, '') || 'untitled';
         const author = $('author').value.trim() || 'Wendy Zhulkovsky';
         const iso = ($('date').valueAsDate || new Date()).toISOString().replace(/\.\d+Z$/, 'Z');
-        const en = {}, used = new Set(), body = [], nav = [];
+        const en = {}, notes = {}, used = new Set(), body = [], nav = [];
+        // A block's English without its translator notes; the notes go to their own file.
+        const textOf = (el, key) => {
+            const c = el.cloneNode(true);
+            c.querySelectorAll('span[data-tl]').forEach((s) => { (notes[key] = notes[key] || []).push({ text: s.textContent, note: s.getAttribute('data-tl') }); unwrap(s); });
+            return c.innerHTML.replace(/<br>\s*$/, '').trim();
+        };
         const mkId = (s) => { const b = slugify(s) || 'sec'; let id = b, i = 2; while (used.has(id)) id = `${b}-${i++}`; used.add(id); return id; };
         const n = { p: 0, aside: 0, quote: 0, list: 0, table: 0, cap: 0, alt: 0 };
         const taken = new Set([...doc.querySelectorAll('[data-key], [data-alt-key]')].flatMap((e) => [e.getAttribute('data-key'), e.getAttribute('data-alt-key')]).filter(Boolean));
@@ -554,13 +560,13 @@
         en[`${prefix}_nav_title`] = title;
         const I = '            ';
         for (const el of doc.children) {
-            const html = el.innerHTML.replace(/<br>\s*$/, '').trim(), text = el.textContent.trim();
-            const keyed = (tag, make) => { const key = keyFor(el, 'data-key', make); en[key] = html; body.push(`${I}<${tag} data-key="${key}"></${tag}>`); };
+            const text = el.textContent.trim();
+            const keyed = (tag, make) => { const key = keyFor(el, 'data-key', make); en[key] = textOf(el, key); body.push(`${I}<${tag} data-key="${key}"></${tag}>`); };
             if (el.hasAttribute('data-note')) { if (text) body.push(`${I}<!-- note for Claude: ${text.replace(/--/g, '—')} -->`); continue; }
             switch (el.tagName) {
                 case 'H2': case 'H3': case 'H4': { if (!text) break; const lv = el.tagName[1]; let id = el.id && !used.has(el.id) ? el.id : mkId(text); used.add(id);
                     const hk = keyFor(el, 'data-key', () => `${prefix}_h${lv}_${id}`);
-                    en[hk] = html; body.push(`${I}<h${lv} id="${id}" data-key="${hk}"></h${lv}>`);
+                    en[hk] = textOf(el, hk); body.push(`${I}<h${lv} id="${id}" data-key="${hk}"></h${lv}>`);
                     if (lv !== '4') { en[`${prefix}_nav_${id}`] = lv === '2' ? `<strong>&ensp;${text}</strong>` : `&emsp;&emsp;${text}`; nav.push(`                <li><a href="#${id}" data-key="${prefix}_nav_${id}"></a></li>`); }
                     break; }
                 case 'P': { const only = el.children.length === 1 && el.firstElementChild.tagName === 'IMG' && !text; if (only) body.push(`${I}${img(el.firstElementChild)}`); else if (text) keyed('p', () => `${prefix}_p${++n.p}`); break; }
@@ -572,7 +578,7 @@
                 case 'HR': body.push(`${I}<hr>`); break;
                 case 'IMG': body.push(`${I}${img(el)}`); break;
                 case 'IFRAME': body.push(`${I}<iframe width="560" height="315" src="${esc(el.getAttribute('src'))}" title="${esc(el.getAttribute('title') || 'Video')}" frameborder="0"\n${I}    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"\n${I}    allowfullscreen style="display: block; margin: 20px auto;"></iframe>`); break;
-                case 'FIGURE': { const im = el.querySelector('img'), cap = el.querySelector('figcaption'); if (!im) break; const k = cap ? keyFor(cap, 'data-key', () => `${prefix}_cap${++n.cap}`) : `${prefix}_cap${++n.cap}`; en[k] = cap ? cap.innerHTML.replace(/<br>\s*$/, '').trim() : '';
+                case 'FIGURE': { const im = el.querySelector('img'), cap = el.querySelector('figcaption'); if (!im) break; const k = cap ? keyFor(cap, 'data-key', () => `${prefix}_cap${++n.cap}`) : `${prefix}_cap${++n.cap}`; en[k] = cap ? textOf(cap, k) : '';
                     body.push(`${I}<figure>\n${I}    ${img(im)}\n${I}    <figcaption data-key="${k}"></figcaption>\n${I}</figure>`); break; }
             }
         }
@@ -625,19 +631,18 @@ ${body.join('\n')}
 
 </html>
 `;
-        lastEn = en;
-        const out = { en };
-        for (const [l, t] of Object.entries(translations)) out[l] = Object.fromEntries(Object.entries(t).filter(([k]) => k in en));
-        const json = JSON.stringify(out, null, 2) + '\n';
-        $('out-html').value = html; $('out-json').value = json;
-        $('out-html-name').textContent = `${slug}.html`; $('out-json-name').textContent = `${prefix}.json`;
+        const json = JSON.stringify({ en }, null, 2) + '\n';
+        const notesJson = Object.keys(notes).length ? JSON.stringify(notes, null, 2) + '\n' : '';
+        $('out-html').value = html; $('out-json').value = json; $('out-notes').value = notesJson;
+        $('out-html-name').textContent = `${slug}.html`; $('out-json-name').textContent = $('out-notes-name').textContent = `${prefix}.json`;
+        $('notes-field').hidden = !notesJson;
         changed();
-        return { html, json, slug, prefix, title };
+        return { html, json, notesJson, slug, prefix, title };
     }
     document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => { const el = $(btn.dataset.copy); el.select(); if (navigator.clipboard) navigator.clipboard.writeText(el.value).catch(() => {}); }));
     function download() {
         const f = generate();
-        for (const [name, text] of [[`${f.slug}.html`, f.html], [`${f.prefix}.json`, f.json]]) {
+        for (const [name, text] of [[`${f.slug}.html`, f.html], [`${f.prefix}.json`, f.json], ...(f.notesJson ? [[`${f.prefix}.notes.json`, f.notesJson]] : [])]) {
             const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
             a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
         }
@@ -677,7 +682,8 @@ ${body.join('\n')}
             // Both files in one commit.
             const tree = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: (await gh(`${R}/git/commits/${parent}`)).tree.sha, tree: [
                 { path: `blog/${f.slug}.html`, mode: '100644', type: 'blob', content: f.html },
-                { path: `localization/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.json }] }) });
+                { path: `localization/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.json },
+                ...(f.notesJson ? [{ path: `localization/notes/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.notesJson }] : [])] }) });
             const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `Post: ${f.title}`, tree: tree.sha, parents: [parent] }) });
             await gh(`${R}/git/refs/heads/${branch}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha }) });
             let url = commit.html_url || `https://github.com/${o}/${n}/commit/${commit.sha}`;
@@ -693,69 +699,12 @@ ${body.join('\n')}
         }
     }
 
-    // ---------- translate: prompt out, reply back, check, merge ----------
-    $('mk-prompt').addEventListener('click', () => {
-        generate();
-        const code = $('mtpe-lang').value, names = { he: 'Hebrew', ru: 'Russian', de: 'German', ja: 'Japanese', gt: 'Graflect' };
-        const glossary = $('glossary').value.trim(), lines = [];
-        lines.push(`You are localizing a personal blog article from English into ${names[code]} (code "${code}").`, 'Rules:',
-            '- Localize, do not translate. Avoid "translatese"; preserve the author\'s voice and register.',
-            '- Keep every HTML tag and entity (<br>, <span ...>, <strong>, &nbsp;, etc.) exactly where it is.',
-            '- Output ONLY valid JSON: the SAME keys as the input, values translated. No commentary.');
-        if (glossary) { lines.push('- Use these established terms for jargon (keep the English if you are unsure):'); glossary.split('\n').map((l) => l.trim()).filter(Boolean).forEach((l) => lines.push(`    · ${l}`)); }
-        if (code === 'gt') lines.push('- Graflect is a featural phonetic script in the Unicode Private Use Area (U+EC70–U+ECEF).', '  Render the ENGLISH pronunciation in Graflect. Use ONLY Graflect glyphs — never Latin/Cyrillic/other letters inside a Graflect word.');
-        lines.push('', `Output shape: { "${code}": { ...same keys, translated values... } }`, '', 'English source:', JSON.stringify({ en: lastEn }, null, 2));
-        $('prompt-out').value = lines.join('\n');
-    });
-    // Replies come wrapped in prose or ```json fences: take the outermost object.
-    function readPasted() {
-        const code = $('mtpe-lang').value, raw = $('paste-in').value, a = raw.indexOf('{'), b = raw.lastIndexOf('}');
-        if (a < 0 || b < a) return { error: '✗ no JSON object in the reply' };
-        let data; try { data = JSON.parse(raw.slice(a, b + 1)); } catch (e) { return { error: `✗ ${e.message}` }; }
-        return { code, table: data[code] || data };
-    }
-    $('validate').addEventListener('click', () => {
-        const report = $('report'); report.hidden = false;
-        if (!Object.keys(lastEn).length) generate();
-        const { error, code, table } = readPasted(); if (error) { report.innerHTML = `<span class="bad">${esc(error)}</span>`; return; }
-        const enKeys = Object.keys(lastEn), got = new Set(Object.keys(table));
-        const missing = enKeys.filter((k) => !got.has(k)), extra = [...got].filter((k) => !enKeys.includes(k)), tagMismatch = [], bad = new Set();
-        const tags = (s) => (String(s).match(/<\/?[a-z][a-z0-9]*/gi) || []).map((t) => t.toLowerCase()).sort().join();
-        enKeys.forEach((k) => {
-            if (table[k] == null) return;
-            if (tags(lastEn[k]) !== tags(table[k])) tagMismatch.push(k);
-            if (code === 'gt') String(table[k]).replace(/<[^>]*>/g, ' ').split(/\s+/).forEach((w) => { let g = false, o = false; for (const ch of w) { if (isGraflect(ch.charCodeAt(0))) g = true; else if (/\S/.test(ch)) o = true; } if (g && o) for (const ch of w) if (!isGraflect(ch.charCodeAt(0)) && /\S/.test(ch)) bad.add(ch); });
-        });
-        const line = (ok, good, what, list) => ok ? `<div class="ok">✓ ${good}</div>` : `<div class="bad">✗ ${what}</div><code>${esc(list.join(', '))}</code>`;
-        report.innerHTML = line(!missing.length, 'keys present', `missing ${missing.length}`, missing) + (extra.length ? line(false, '', `unexpected ${extra.length}`, extra) : '')
-            + line(!tagMismatch.length, 'tags preserved', 'tags differ', tagMismatch) + (code === 'gt' ? line(!bad.size, 'pure Graflect', 'stray glyphs', [...bad]) : '');
-    });
-    $('merge').addEventListener('click', () => {
-        const { error, code, table } = readPasted(); const report = $('report'); report.hidden = false;
-        if (error) { report.innerHTML = `<span class="bad">${esc(error)}</span>`; return; }
-        translations[code] = { ...(translations[code] || {}), ...table }; generate();
-        report.innerHTML = `<div class="ok">✓ ${code} → ${esc($('out-json-name').textContent)}</div>`;
-    });
-    const WD = 'https://www.wikidata.org/w/api.php', CONCEPT_LANGS = ['he', 'ja', 'de', 'ru'];
-    $('concept-lookup').addEventListener('click', async () => {
-        const term = $('concept-term').value.trim(), box = $('concept-result'); if (!term) return; box.textContent = '…';
-        try {
-            const s = await fetch(`${WD}?action=wbsearchentities&search=${encodeURIComponent(term)}&language=en&format=json&origin=*&limit=1`).then((r) => r.json());
-            const hit = s.search && s.search[0]; if (!hit) { box.textContent = '∅'; return; }
-            const e = await fetch(`${WD}?action=wbgetentities&ids=${hit.id}&props=labels&languages=${CONCEPT_LANGS.join('|')}&format=json&origin=*`).then((r) => r.json());
-            const labels = (e.entities[hit.id] && e.entities[hit.id].labels) || {};
-            box.innerHTML = `<b>${esc(hit.label)}</b> ${esc(hit.id)} ` + CONCEPT_LANGS.filter((l) => labels[l]).map((l) => `<button type="button" class="chip" data-t="${esc(labels[l].value)}">${l}: ${esc(labels[l].value)}</button>`).join(' ');
-            box.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { const g = $('glossary'); g.value = (g.value.trim() ? `${g.value.trim()}\n` : '') + `${term} = ${b.dataset.t}`; save(); }));
-        } catch (err) { box.textContent = `✗ ${err.message}`; }
-    });
-
     // ---------- menu actions ----------
     const ACTIONS = {
         new: newDoc, publish, download, github: openGithub,
         props: () => openDlg('dlg-props'),
         source: toggleSource,
         files: () => { generate(); openDlg('dlg-files'); },
-        translate: () => { generate(); openDlg('dlg-translate'); },
     };
     $('dlg-props').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) { save(); showName(); } });
 
