@@ -1515,6 +1515,28 @@ try {
         ok(!before && fromLink && onArrival, `Window links: the clock link opens shaon.zmanim, and so does arriving with its hash (${JSON.stringify({ before, fromLink, onArrival })})`);
     }
 
+    // The daylight figure: the north pole turns the axis through the year, dated in the Hebrew calendar.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/blog/you-should-sometimes-tell-time-using-proportional-hours.html`, { waitUntil: 'load' });
+        await p.waitForSelector('#zh-daylight .zh-knob');
+        const read = () => p.evaluate(() => ({ date: document.querySelector('#zh-daylight .zh-knob').getAttribute('aria-valuetext'), text: document.querySelector('#zh-daylight .zh-scene').textContent }));
+        const caption = await p.evaluate(() => !!document.querySelector('#zh-daylight')?.closest('figure')?.querySelector('figcaption'));
+        // Drag the pole to the far right of its track: the June solstice.
+        await p.$eval('#zh-daylight', (s) => s.scrollIntoView({ block: 'center' }));
+        const k = await p.$eval('#zh-daylight .zh-knob', (g) => { const r = g.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; });
+        const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
+        await p.mouse.move(k[0], k[1]); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
+        const june = await read();
+        await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');
+        const later = await read();
+        await c.close();
+        ok(!caption && /^\d+ (Sivan|Tamuz|Tammuz) 57\d\d$/.test(june.date) && /several weeks/.test(june.text) && /Stockholm.*18 h/.test(june.text)
+            && later.date !== june.date && !/several weeks/.test(later.text) && !errs.length,
+            `Daylight figure: dragging the pole to the right gives the June solstice, keys move the date (${JSON.stringify({ caption, june: june.date, later: later.date, errs })})`);
+    }
+
     // Sofrut II: inline tags start and stop at the caret, notes for Claude stay out of the article,
     // one click publishes both files to GitHub (mocked), and pasted translation replies survive prose and fences.
     {
