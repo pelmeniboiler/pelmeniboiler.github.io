@@ -75,7 +75,10 @@ export async function splitThemeCss(rootDir, { log = console.log } = {}) {
     const map = {};
     for (const [theme, text] of Object.entries(themes)) {
         // url(...) in the stylesheet is relative to /styles/; these live one level down.
-        const fixed = text.replace(/url\((['"]?)(?!data:|\/|https?:)/g, 'url($1../');
+        // (The check looks past an optional quote first: with the quote optional, a
+        // backtrack let url("data:…") through as url(../"data:…"), an invalid value
+        // that silently dropped every split theme's cursors.)
+        const fixed = text.replace(/url\((?!['"]?(?:data:|\/|https?:))(['"]?)/g, 'url($1../');
         const name = `${theme}-${crypto.createHash('sha1').update(fixed).digest('hex').slice(0, 8)}.css`;
         await fs.writeFile(path.join(dir, name), fixed);
         map[theme] = `/styles/themes/${name}`;
