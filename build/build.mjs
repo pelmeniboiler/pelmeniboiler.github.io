@@ -17,7 +17,7 @@ import { processImages, pictureize } from './images.mjs';
 import { buildEmoji, emojifyDocument, emojifySourceFiles, splitSprites } from './emoji.mjs';
 import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 import { splitThemeCss } from './css-split.mjs';
-import { bakeGraflectWords } from './graflect-words.mjs';
+import { bakeGraflectWords, bakeGtQueue } from './graflect-words.mjs';
 import { check as vaultCheck } from './vault-check.mjs';
 
 // Set once per build by main(): theme name → its split-out stylesheet URL.
@@ -309,6 +309,7 @@ async function main() {
 
     console.log('Teaching the Graflect dictionary the articles\' words...');
     await bakeGraflectWords(ROOT_DIR);
+    await bakeGtQueue(ROOT_DIR);
     const vaultFlags = await vaultCheck();
     console.log(`  → vault: ${vaultFlags.length ? `${vaultFlags.length} translation(s) to fix or approve (npm run vault:check)` : 'every translation follows it'}.`);
 

@@ -59,3 +59,20 @@ export async function bakeGraflectWords(rootDir, { log = console.log } = {}) {
     log(`  → Graflect dictionary: ${Object.keys(words).filter((w) => !(w in dict)).length} words learned from ${pairs.length} article lines${differ.length ? `; spelled differently in the articles: ${differ.join(', ')}` : ''}.`);
     return words;
 }
+
+// The Graflect queue (tools/gt.html): every English line that has no Graflect
+// yet, grouped by localization file. Coal is in progress, so it stays out.
+const QUEUE_SKIP = new Set(['tl-status', 'coal']);
+export async function bakeGtQueue(rootDir, { log = console.log } = {}) {
+    const locDir = path.join(rootDir, 'localization'), files = {};
+    for (const f of (await fs.readdir(locDir)).filter((n) => n.endsWith('.json')).sort()) {
+        const prefix = f.replace(/\.json$/, '');
+        if (QUEUE_SKIP.has(prefix)) continue;
+        let d; try { d = JSON.parse(await fs.readFile(path.join(locDir, f), 'utf8')); } catch { continue; }
+        if (!d || !d.en) continue;
+        const missing = Object.entries(d.en).filter(([k, v]) => String(v).trim() && !(d.gt && String(d.gt[k] || '').trim())).map(([key, en]) => ({ key, en }));
+        if (missing.length) files[prefix] = missing;
+    }
+    await fs.writeFile(path.join(rootDir, 'tools', 'gt-queue.json'), JSON.stringify({ files }));
+    log(`  → Graflect queue: ${Object.values(files).reduce((a, l) => a + l.length, 0)} lines missing in ${Object.keys(files).length} files.`);
+}

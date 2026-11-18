@@ -82,13 +82,12 @@
         }
 
         .transliterator-error-container {
-            color: #c62828;
-            background-color: #ffebee;
-            border: 1px solid #c62828;
+            color: var(--text-color);
+            background-color: var(--win-bg-color);
+            border: 2px solid var(--border-color);
             padding: 10px;
             margin-bottom: 15px;
             display: none;
-            border-radius: 4px;
         }
 
         .transliterator-file-loader {
@@ -339,6 +338,16 @@
             background-color: var(--text-color);
             color: var(--win-bg-color);
         }
+        /* --- Queue: lines with no Graflect yet --- */
+        .transliterator-queue-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 10px; }
+        .transliterator-queue-list button, .transliterator-publish button { padding: 6px 12px; }
+        .transliterator-or { margin: 14px 0 6px; }
+        .transliterator-latin { border-bottom: 2px dotted var(--text-color); }
+        .transliterator-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .transliterator-publish { margin-top: 15px; padding: 10px; border: 2px solid var(--border-color); }
+        .transliterator-publish[hidden], #skip-btn[hidden], .transliterator-queue[hidden] { display: none; }
+        .transliterator-publish input { font: inherit; padding: 4px 6px; border: 2px solid var(--border-color); background: var(--win-bg-color); color: var(--text-color); min-width: 0; flex: 1 1 14em; }
+        #queue-status { min-height: 1.4em; font-size: 0.95em; }
         .transliterator-input-grid .graflect {
              font-family: 'FairfaxHD', Garamond, serif; /* Ensure Graflect font is used */
         }
@@ -354,7 +363,14 @@
             <div id="error-container" class="transliterator-error-container"></div>
 
             <div id="file-loader-container" class="transliterator-file-loader">
-                <h3 class="transliterator-h3">Load Localization File</h3>
+                <div id="queue-box" class="transliterator-queue" hidden>
+                    <h3 class="transliterator-h3">Lines with no Graflect yet</h3>
+                    <p class="transliterator-p" id="queue-summary"></p>
+                    <div id="queue-list" class="transliterator-queue-list"></div>
+                    <p class="transliterator-p">Each line starts as a draft in SLUG from the dictionary. Words it doesn't know are left in ‹Latin›: fix them, or leave them to stay Latin (names).</p>
+                    <h3 class="transliterator-h3 transliterator-or">Or load a localization file</h3>
+                </div>
+                <h3 class="transliterator-h3" id="file-heading">Load Localization File</h3>
                 <p class="transliterator-p">Select or drag & drop your localization JSON file to begin.</p>
                 <input type="file" id="json-file-input" class="transliterator-file-input" accept=".json">
             </div>
@@ -425,12 +441,27 @@
                     </tr>
                 </table>
 
+                <p id="queue-status" aria-live="polite"></p>
                 <button id="submit-btn" class="normal-btn transliterator-submit-btn" style="margin-top: 15px;">Submit Segment</button>
+                <button id="skip-btn" class="normal-btn" style="margin-top: 8px;" hidden>Skip this line</button>
 
                 <div class="transliterator-progress-container">
                     <div id="progress-bar" class="transliterator-progress-bar"></div>
                 </div>
                 <div id="progress-label" class="transliterator-progress-label">0 / 0</div>
+
+                <div id="queue-publish" class="transliterator-publish" hidden>
+                    <h3 class="transliterator-h3"><span id="queue-done-count">0</span> line(s) done</h3>
+                    <div class="transliterator-row" id="gh-form">
+                        <input id="gh-token" type="password" placeholder="GitHub token (saved in this browser, shared with sofrut.ii)" autocomplete="off" aria-label="GitHub token">
+                        <input id="gh-repo" placeholder="owner/repository" aria-label="Repository">
+                    </div>
+                    <div class="transliterator-row" style="margin-top: 8px;">
+                        <button id="queue-publish-btn" class="normal-btn">Publish to GitHub</button>
+                        <button id="queue-download-btn" class="normal-btn">Download files</button>
+                    </div>
+                    <p id="queue-pub-status" aria-live="polite"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -438,6 +469,7 @@
     <div id="settings-module-placeholder"></div>
     <div id="start-menu-module-placeholder"></div>
 
+    <script src="/scripts/blog/demos/graflect-data.js"></script>
     <script>
     window.onload = () => {
         // --- DOM Elements ---
@@ -669,6 +701,12 @@
             graflectInput.dispatchEvent(new Event('input'));
             graflectInput.focus();
             submitBtn.textContent = 'Submit Segment';
+            if (queueMode) {
+                slugInput.value = draftSlug(segment.content);
+                convertSlugToGraflect();
+                slugInput.focus();
+                slugInput.setSelectionRange(0, 0);
+            }
         }
         
         function finalizeLineAndProceed() {
@@ -692,6 +730,7 @@
                  graflectTranslations[currentLineKey] = allLines[currentLineIndex].value;
             }
             
+            if (queueMode) saveQueue();
             currentLineIndex++;
             startNewLine();
         }
@@ -708,6 +747,7 @@
             graflectInput.placeholder = 'Done!';
             slugInput.placeholder = 'Done!';
             submitBtn.textContent = 'Copy JSON to Clipboard';
+            if (queueMode) { submitBtn.hidden = true; skipBtn.hidden = true; englishLineContainer.innerHTML = '<strong>All queued lines done.</strong> Publish them below.'; }
         }
 
         function updateOverallProgress() {
@@ -722,6 +762,7 @@
                 return;
             }
 
+            if (queueMode) learnFrom(textPartsToTranslate[currentTextPartIndex].content, graflectInput.value);
             transliteratedSegments.push(graflectInput.value);
             playSound();
             currentTextPartIndex++;
@@ -795,6 +836,21 @@
             let inputText = slugInput.value;
             let outputText = '';
             let i = 0;
+            if (queueMode) {
+                while (i < inputText.length) {
+                    const ch = inputText[i];
+                    if (ch === '‹') { const end = inputText.indexOf('›', i); const j = end < 0 ? inputText.length : end; outputText += inputText.slice(i + 1, j); i = j + 1; continue; }
+                    const letterAround = /\p{L}/u.test(inputText[i - 1] || '') || /\p{L}/u.test(inputText[i + 1] || '');
+                    if (/\s/.test(ch) || (/\d/.test(ch) && !letterAround)) { outputText += ch; i++; continue; }
+                    const key = sortedGraflectMapKeys.find((k) => k.trim() && inputText.startsWith(k, i));
+                    if (key) { outputText += graflectMap[key]; i += key.length; } else { outputText += ch; i++; }
+                }
+                graflectInput.value = outputText;
+                graflectInput.dispatchEvent(new Event('input'));
+                const latin = [...slugInput.value.matchAll(/‹([^›]*)›/g)].map((m) => m[1]);
+                queueStatus.textContent = latin.length ? `Left in Latin: ${latin.join(', ')}` : '';
+                return;
+            }
             while (i < inputText.length) {
                 let foundMatch = false;
                 for (const key of sortedGraflectMapKeys) {
@@ -814,6 +870,175 @@
             graflectInput.dispatchEvent(new Event('input'));
         }
 
+
+        // --- Queue: every English line with no Graflect yet (tools/gt-queue.json, written by the build) ---
+        const queueBox = document.getElementById('queue-box');
+        const queueList = document.getElementById('queue-list');
+        const queueSummary = document.getElementById('queue-summary');
+        const queueStatus = document.getElementById('queue-status');
+        const queuePublish = document.getElementById('queue-publish');
+        const queueDoneCount = document.getElementById('queue-done-count');
+        const queuePubStatus = document.getElementById('queue-pub-status');
+        const skipBtn = document.getElementById('skip-btn');
+        // graflect-data.js declares these at top level (not on window).
+        const SITE_WORDS = typeof defaultWordMap !== 'undefined' ? defaultWordMap : {};
+        const SITE_GRAPHEMES = typeof defaultGraphemeMap !== 'undefined' ? defaultGraphemeMap : {};
+        const QUEUE_KEY = 'pelmeniboiler-gt-queue', GH = 'pelmeniboiler-sofrut2-github', DICTS = 'graflectDictionaries';
+        let queueMode = false, queueData = null;
+        const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } };
+        const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) { /* full or blocked */ } };
+        // Finished lines, kept in this browser until published: { "file::key": graflect }.
+        const doneLines = () => readJSON(QUEUE_KEY, {});
+        function saveQueue() {
+            const done = doneLines();
+            for (const [k, v] of Object.entries(graflectTranslations)) if (k.includes('::') && v) done[k] = v;
+            writeJSON(QUEUE_KEY, done);
+            queueDoneCount.textContent = Object.keys(done).length;
+        }
+
+        // The dictionary: the site's (with the words learned from the articles), then this browser's own.
+        function activeDictionary() {
+            let dicts = readJSON(DICTS, []);
+            if (!Array.isArray(dicts) || !dicts.length) {
+                dicts = [{ name: "Wendy's Accent", author: 'Wendy Zhulkovsky', description: 'Default dictionary with common English words.', words: { ...SITE_WORDS }, graphemes: { ...SITE_GRAPHEMES } }];
+            }
+            const i = Math.min(+(localStorage.getItem(`${DICTS}_active_index`) || 0) || 0, dicts.length - 1);
+            return { dicts, i };
+        }
+        const words = { ...SITE_WORDS };
+        Object.assign(words, (() => { const { dicts, i } = activeDictionary(); return dicts[i].words || {}; })());
+        const lookup = (w) => { const k = w.toLowerCase().replace(/’/g, "'"); return words[k] ?? words[k.replace(/'/g, '')]; };
+        const toSlug = (g) => [...g].map((c) => slugMap[c] ?? c).join('');
+        function draftSlug(text) {
+            return text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
+        }
+        // A finished segment teaches the dictionary every word it didn't know (when the words line up).
+        function learnFrom(english, graflect) {
+            const ew = english.split(/\s+/).map((w) => w.replace(/[^A-Za-z']/g, '').toLowerCase()).filter(Boolean);
+            const gw = graflect.split(/\s+/).map((w) => [...w].filter((c) => c in slugMap).join('')).filter(Boolean);
+            if (!ew.length || ew.length !== gw.length) return;
+            const { dicts, i } = activeDictionary(); let added = 0;
+            ew.forEach((w, n) => { if (!(w in dicts[i].words) && gw[n]) { dicts[i].words[w] = gw[n]; words[w] = gw[n]; added++; } });
+            if (added) writeJSON(DICTS, dicts);
+        }
+
+        async function loadQueue() {
+            try {
+                const r = await fetch('/tools/gt-queue.json', { cache: 'no-cache' });
+                if (!r.ok) return;
+                queueData = (await r.json()).files || {};
+            } catch (_) { return; }
+            renderQueue();
+        }
+        function renderQueue() {
+            const done = doneLines();
+            const left = Object.fromEntries(Object.entries(queueData).map(([f, lines]) => [f, lines.filter((l) => !done[`${f}::${l.key}`])]).filter(([, l]) => l.length));
+            const total = Object.values(left).reduce((a, l) => a + l.length, 0);
+            queueSummary.textContent = total ? `${total} line(s) in ${Object.keys(left).length} file(s).` : 'Every line has Graflect.';
+            queueList.innerHTML = '';
+            const add = (label, files) => { const b = document.createElement('button'); b.className = 'normal-btn'; b.textContent = label; b.addEventListener('click', () => startQueue(files, left)); queueList.appendChild(b); };
+            Object.entries(left).forEach(([f, l]) => add(`${f} (${l.length})`, [f]));
+            if (Object.keys(left).length > 1) add(`All (${total})`, Object.keys(left));
+            queueBox.hidden = false;
+            queueDoneCount.textContent = Object.keys(done).length;
+            if (Object.keys(done).length) { queuePublish.hidden = false; transliteratorApp.after(queuePublish); }
+        }
+        function startQueue(files, left) {
+            queueMode = true;
+            allLines = files.flatMap((f) => left[f].map((l) => ({ key: `${f}::${l.key}`, value: l.en })));
+            existingTranslations = {}; graflectTranslations = {}; currentLineIndex = 0;
+            fileLoaderContainer.hidden = true;
+            slugInputToggle.checked = true; slugInputContainer.classList.remove('hidden');
+            slugToggle.checked = true; graflectInput.classList.add('slug-active');
+            skipBtn.hidden = false; queuePublish.hidden = false;
+            transliteratorApp.classList.add('active');
+            transliteratorApp.appendChild(queuePublish);
+            startNewLine();
+        }
+        skipBtn.addEventListener('click', () => { currentLineIndex++; startNewLine(); });
+
+        // --- Publishing: the done lines go into each localization file's "gt", and the
+        // staleness tracker records them, in one commit (a pull request unless sofrut.ii is set to direct). ---
+        const ghCfg = () => readJSON(GH, {});
+        const tokenInput = document.getElementById('gh-token'), repoInput = document.getElementById('gh-repo');
+        (() => { const c = ghCfg(); tokenInput.value = c.token || ''; repoInput.value = c.repo || 'pelmeniboiler/pelmeniboiler.github.io'; })();
+        const saveGh = () => { const c = ghCfg(); writeJSON(GH, { ...c, token: tokenInput.value.trim(), repo: repoInput.value.trim(), base: c.base || 'main', mode: c.mode || 'pr' }); };
+        tokenInput.addEventListener('change', saveGh); repoInput.addEventListener('change', saveGh);
+        const sha12 = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(s))))].map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 12);
+        function grouped() {
+            const g = {};
+            for (const [id, v] of Object.entries(doneLines())) { const [f, k] = id.split('::'); (g[f] ||= {})[k] = v; }
+            return g;
+        }
+        // Put the done lines into a file's text (keeping its English key order) and stamp the tracker.
+        async function merge(fileTexts, statusText) {
+            const out = {}, status = JSON.parse(statusText || '{}');
+            for (const [f, lines] of Object.entries(grouped())) {
+                const raw = fileTexts[f]; if (raw == null) continue;
+                const d = JSON.parse(raw), gt = { ...(d.gt || {}), ...lines };
+                d.gt = Object.fromEntries([...Object.keys(d.en).filter((k) => k in gt), ...Object.keys(gt).filter((k) => !(k in d.en))].map((k) => [k, gt[k]]));
+                out[`localization/${f}.json`] = JSON.stringify(d, null, 2) + (raw.endsWith('\n') ? '\n' : '');
+                for (const k of Object.keys(lines)) if (d.en[k] != null) ((status[f] ||= {})[k] ||= {}).gt = await sha12(d.en[k]);
+            }
+            const sorted = {};
+            for (const p of Object.keys(status).sort()) { sorted[p] = {}; for (const k of Object.keys(status[p]).sort()) sorted[p][k] = status[p][k]; }
+            out['localization/tl-status.json'] = JSON.stringify(sorted, null, 2) + '\n';
+            return out;
+        }
+        let publishing = false;
+        document.getElementById('queue-publish-btn').addEventListener('click', async () => {
+            if (publishing) return;
+            saveGh();
+            const c = ghCfg(), files = Object.keys(grouped());
+            if (!files.length) { queuePubStatus.textContent = 'Nothing done yet.'; return; }
+            if (!c.token) { queuePubStatus.textContent = 'Add a GitHub token first (it needs Contents and Pull requests: read and write).'; tokenInput.focus(); return; }
+            if (!/^[\w.-]+\/[\w.-]+$/.test(c.repo || '')) { queuePubStatus.textContent = 'The repository should look like owner/name.'; repoInput.focus(); return; }
+            publishing = true; queuePubStatus.textContent = 'publishing…';
+            const gh = async (path, opts = {}) => {
+                const r = await fetch(`https://api.github.com${path}`, { ...opts, headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) } });
+                const j = r.status === 204 ? null : await r.json().catch(() => null);
+                if (!r.ok) { const e = new Error((j && j.message) || `HTTP ${r.status}`); e.status = r.status; throw e; }
+                return j;
+            };
+            try {
+                const [o, n] = c.repo.split('/'), R = `/repos/${o}/${n}`, base = c.base || 'main';
+                const text = async (p) => { const j = await gh(`${R}/contents/${p}?ref=${encodeURIComponent(base)}`); return new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), (ch) => ch.charCodeAt(0))); };
+                const fileTexts = {}; for (const f of files) fileTexts[f] = await text(`localization/${f}.json`);
+                const out = await merge(fileTexts, await text('localization/tl-status.json'));
+                const count = Object.keys(doneLines()).length;
+                const branch = c.mode === 'direct' ? base : `graflect/${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '')}`;
+                let parent = (await gh(`${R}/git/ref/heads/${base}`)).object.sha;
+                if (branch !== base) await gh(`${R}/git/refs`, { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: parent }) });
+                const tree = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: (await gh(`${R}/git/commits/${parent}`)).tree.sha, tree: Object.entries(out).map(([path, content]) => ({ path, mode: '100644', type: 'blob', content })) }) });
+                const title = `Graflect: ${count} line(s) in ${files.join(', ')}`;
+                const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: title, tree: tree.sha, parents: [parent] }) });
+                await gh(`${R}/git/refs/heads/${branch}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha }) });
+                let url = commit.html_url || `https://github.com/${c.repo}/commit/${commit.sha}`;
+                if (branch !== base) { const pr = await gh(`${R}/pulls`, { method: 'POST', body: JSON.stringify({ title, head: branch, base, body: 'Written in the Graflect queue (tools/gt.html).' }) }); url = pr.html_url; }
+                writeJSON(QUEUE_KEY, {}); queueDoneCount.textContent = '0';
+                queuePubStatus.innerHTML = '';
+                const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = url.replace(/^https:\/\/github\.com\//, '');
+                queuePubStatus.append('published: ', a);
+            } catch (e) {
+                queuePubStatus.textContent = e.status === 401 ? '✗ GitHub refused the token'
+                    : e.status === 404 ? '✗ GitHub found no such repository or file, or the token can’t see it'
+                    : e.status === 403 ? '✗ the token isn’t allowed to do that (it needs Contents and Pull requests: read and write)'
+                    : e instanceof TypeError ? '✗ couldn’t reach GitHub' : `✗ ${e.message}`;
+            } finally { publishing = false; }
+        });
+        // Without GitHub: the same files, merged into the site's current copies, to save by hand.
+        document.getElementById('queue-download-btn').addEventListener('click', async () => {
+            const files = Object.keys(grouped());
+            if (!files.length) { queuePubStatus.textContent = 'Nothing done yet.'; return; }
+            const fileTexts = {}; for (const f of files) fileTexts[f] = await (await fetch(`/localization/${f}.json`, { cache: 'no-cache' })).text();
+            const out = await merge(fileTexts, await (await fetch('/localization/tl-status.json', { cache: 'no-cache' })).text());
+            for (const [p, content] of Object.entries(out)) {
+                const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type: 'application/json' })); a.download = p.split('/').pop(); a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            }
+            queuePubStatus.textContent = `Downloaded ${Object.keys(out).length} file(s) for localization/.`;
+        });
+        loadQueue();
 
         // --- Event Listeners ---
         submitBtn.addEventListener('click', handleSubmit);
@@ -906,6 +1131,7 @@
         });
 
         slugInput.addEventListener('input', convertSlugToGraflect);
+        slugInput.addEventListener('keydown', (e) => { if (queueMode && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitBtn.click(); } });
 
     };
     </script>

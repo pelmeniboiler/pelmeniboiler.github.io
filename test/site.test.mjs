@@ -1538,6 +1538,43 @@ try {
         ok(caught && learned > 1000, `Vault rules catch the wrong lines and pass the right ones; Graflect learned ${learned} words from the articles (${JSON.stringify({ bad, good })})`);
     }
 
+    // The Graflect queue: lines with no Graflect, drafted from the dictionary, published (mocked) as one commit.
+    {
+        const c = await browser.newContext({ viewport: { width: 1100, height: 900 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        let tree = null;
+        await c.route('https://api.github.com/**', async (route) => {
+            const req = route.request(), u = new URL(req.url());
+            const j = (o, s = 200) => route.fulfill({ status: s, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(o) });
+            if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
+            const m = u.pathname.match(/\/contents\/(.+)$/);
+            if (m) return j({ content: Buffer.from(await fs.readFile(path.join(ROOT, m[1]), 'utf-8'), 'utf8').toString('base64') });
+            if (/ref\/heads\/main$/.test(u.pathname)) return j({ object: { sha: 'base1' } });
+            if (/git\/refs$/.test(u.pathname)) return j({}, 201);
+            if (/git\/commits\/base1$/.test(u.pathname)) return j({ tree: { sha: 't0' } });
+            if (/git\/trees$/.test(u.pathname)) { tree = JSON.parse(req.postData()); return j({ sha: 't1' }); }
+            if (/git\/commits$/.test(u.pathname)) return j({ sha: 'c1' });
+            if (/git\/refs\/heads\//.test(u.pathname)) return j({});
+            if (/pulls$/.test(u.pathname)) return j({ html_url: 'https://github.com/x/y/pull/1' });
+            return j({ message: 'unexpected' }, 500);
+        });
+        await p.goto(`${BASE}/tools/gt.html`, { waitUntil: 'load' });
+        await p.waitForSelector('#queue-list button');
+        await p.click('#queue-list button:has-text("sunshine")');
+        const first = await p.evaluate(() => ({ slug: document.getElementById('slug-input').value, gt: document.getElementById('graflect-input').value, latin: document.getElementById('queue-status').textContent }));
+        let n = 0; while (await p.evaluate(() => !document.getElementById('submit-btn').hidden) && n < 40) { await p.click('#submit-btn'); n++; }
+        await p.fill('#gh-token', 'test-token'); await p.dispatchEvent('#gh-token', 'change');
+        await p.click('#queue-publish-btn'); await p.waitForFunction(() => /published|✗/.test(document.getElementById('queue-pub-status').textContent));
+        const committed = tree ? tree.tree.map((t) => t.path).sort() : [];
+        const sun = tree && JSON.parse(tree.tree.find((t) => t.path === 'localization/sunshine.json').content);
+        const left = await p.evaluate(() => localStorage.getItem('pelmeniboiler-gt-queue'));
+        await c.close();
+        ok(/[-]/.test(first.gt) && /‹[^›]+›/.test(first.slug) && /Left in Latin/.test(first.latin)
+            && JSON.stringify(committed) === JSON.stringify(['localization/sunshine.json', 'localization/tl-status.json'])
+            && sun && Object.keys(sun.gt).filter((k) => k.startsWith('sunshine_alt')).length === 8 && left === '{}' && !errs.length,
+            `Graflect queue: drafts lines in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ n, committed, left, errs })})`);
+    }
+
     // The daylight figure: the north pole turns the axis through the year, dated in the Hebrew calendar.
     {
         const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
