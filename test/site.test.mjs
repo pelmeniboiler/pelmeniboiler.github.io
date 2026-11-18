@@ -1449,6 +1449,56 @@ try {
         await ctx.close();
     }
 
+    // Roundup: page-level regressions found by a sweep of every page, theme and screen size.
+    {
+        const lum = (c) => { const m = c.match(/color\(srgb ([\d.e-]+) ([\d.e-]+) ([\d.e-]+)/); const v = m ? m.slice(1, 4).map(Number) : c.match(/[\d.]+/g).slice(0, 3).map((x) => x / 255); return v.map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)).reduce((s, x, i) => s + x * [0.2126, 0.7152, 0.0722][i], 0); };
+        const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+        const themed = async (theme, view = { viewport: { width: 1280, height: 800 } }) => { const c = await browser.newContext({ ...view, serviceWorkers: 'block' }); await c.addInitScript((t) => { localStorage.setItem('pelmeniboiler-theme', t); localStorage.setItem('pelmeniboiler-mode', 'lcd'); }, theme); return c; };
+        const phone = { viewport: { width: 412, height: 839 }, isMobile: true, hasTouch: true };
+
+        // The build puts its theme <script> after real stylesheet links only, never inside a script's text.
+        const c1 = await browser.newContext({ serviceWorkers: 'block' }); const errs = [];
+        for (const u of ['/tools/sofrut.html', '/tools/sofrut2.html']) { const p = await c1.newPage(); p.on('pageerror', (e) => errs.push(`${u}: ${e.message}`)); await p.goto(`${BASE}${u}`, { waitUntil: 'load' }); await p.close(); }
+        ok(errs.length === 0, `Roundup: sofrut tools load without script errors (${errs.join('; ') || 'none'})`);
+        // The zine fits its column on a phone.
+        const pz = await (await browser.newContext({ ...phone, serviceWorkers: 'block' })).newPage();
+        await pz.goto(`${BASE}/zine/en/`, { waitUntil: 'load' });
+        const zw = await pz.evaluate(() => document.documentElement.scrollWidth);
+        await pz.context().close(); await c1.close();
+        ok(zw <= 412, `Roundup: the zine's pictures fit a phone screen (page ${zw}px wide)`);
+        // Pages that once ran wider than a phone: Graflect text (its own word space now wraps) and three tools.
+        const pw2 = await browser.newContext({ ...phone, serviceWorkers: 'block' }); const widths = {};
+        for (const u of ['/blog/graflect.html', '/tools/gt.html', '/tools/editor.html', '/tools/definitionviewer.html']) { const p = await pw2.newPage(); await p.goto(`${BASE}${u}`, { waitUntil: 'load' }); widths[u] = await p.evaluate(() => Math.max(document.documentElement.scrollWidth, ...[...document.querySelectorAll('aside')].map((a) => a.scrollWidth - a.clientWidth + 412))); await p.close(); }
+        await pw2.close();
+        ok(Object.values(widths).every((w) => w <= 412), `Roundup: Graflect text and the tools fit a phone (${JSON.stringify(widths)})`);
+        // Right-to-left: the RSS menu opens inwards in Hebrew instead of widening the page.
+        const ph = await browser.newContext({ ...phone, serviceWorkers: 'block' }); await ph.addInitScript(() => localStorage.setItem('pelmeniboiler-lang', 'he'));
+        const pr = await ph.newPage(); await pr.goto(`${BASE}/`, { waitUntil: 'load' }); await pr.click('#blog-window .rss-btn'); await pr.waitForTimeout(300);
+        const rw = await pr.evaluate(() => { const r = document.querySelector('#blog-window .rss-dropdown-content').getBoundingClientRect(); return { sw: document.documentElement.scrollWidth, left: Math.round(r.left) }; });
+        await ph.close();
+        ok(rw.sw <= 412 && rw.left >= 0, `Roundup: the RSS menu stays on screen in Hebrew (${JSON.stringify(rw)})`);
+        // Moroz: title text readable on its frosted bar.
+        const cm = await themed('moroz'); const pm = await cm.newPage(); await pm.goto(`${BASE}/`, { waitUntil: 'load' });
+        const mz = await pm.evaluate(() => { const t = document.querySelector('.title-bar'); return [getComputedStyle(t).color, getComputedStyle(t).backgroundColor]; });
+        await cm.close();
+        ok(ratio(...mz) >= 3, `Roundup: Moroz title bars are readable (contrast ${ratio(...mz).toFixed(2)})`);
+        // WordArt: the launcher bar fits a phone.
+        const cw = await themed('wordart', phone); const pw = await cw.newPage(); await pw.goto(`${BASE}/`, { waitUntil: 'load' });
+        const ww = await pw.evaluate(() => document.querySelector('.start-menu').getBoundingClientRect().right);
+        await cw.close();
+        ok(ww <= 412, `Roundup: WordArt's launcher fits a phone (right edge ${Math.round(ww)}px)`);
+        // Funky: every random palette keeps title-bar text and body text readable.
+        const cf = await themed('funky'); const pf = await cf.newPage(); let worst = 99;
+        for (let i = 0; i < 30; i++) { await pf.goto(`${BASE}/`, { waitUntil: 'load' }); const [bar, text, bg] = await pf.evaluate(() => { const t = getComputedStyle(document.querySelector('.title-bar')); return [t.backgroundColor, getComputedStyle(document.body).color, getComputedStyle(document.body).backgroundColor].concat([t.color]); }).then((v) => [[v[3], v[0]], [v[1], v[2]]]).then(([a, b]) => [ratio(...a), ratio(...b), 0]); worst = Math.min(worst, bar, text); }
+        await cf.close();
+        ok(worst >= 3, `Roundup: Funky's random palettes stay readable (worst contrast over 30 draws ${worst.toFixed(2)})`);
+        // Editor: the two export buttons keep their own colours.
+        const ce = await browser.newContext({ serviceWorkers: 'block' }); const pe = await ce.newPage(); await pe.goto(`${BASE}/tools/editor.html`, { waitUntil: 'load' });
+        const eb = await pe.evaluate(() => ['export-button', 'json-button'].map((id) => { const c = getComputedStyle(document.getElementById(id)); return [c.color, c.backgroundColor]; }));
+        await ce.close();
+        ok(eb.every((x) => ratio(...x) >= 4.5), `Roundup: the editor's export buttons are readable (${eb.map((x) => ratio(...x).toFixed(1)).join(', ')})`);
+    }
+
     await browser.close();
     server.close();
 }
