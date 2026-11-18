@@ -91,6 +91,14 @@
     "bye_p1": "I hope you enjoyed hearing about the keyboard I made. Sorry if my writing is a bit stiff or awkward. I haven't read a book since last year. If you want to reach out to me, I'm on github at pelmeniboiler, discord at pelmeniboiler#8372, reddit at /u/pelmeniboiler and twitter at @pelmeniboiler."
   },
   "he": {
+    "sunshine_alt_cardboard_4": "כיסויי מקשים לבנים ופזורים, מסודרים בסידור ניסיוני על דף קרטון.",
+    "sunshine_alt_very_last": "תרשים של הפריסה המפוצלת הסופית: שני חצאים עם עמודות מוזזות, מקשי אגודל מוטים ופסי כף ארוכים מתחת.",
+    "sunshine_alt_cardboard_5": "לוח קרטון עם חורי מתגים מרובעים שנחתכו בפריסה המפוצלת והמוזזת בעמודות.",
+    "sunshine_alt_pcb4": "ה-PCB הירוק החשוף, עם תווית זהובה \"sunshine! (Test Type 000)\" ועם המקום לבקר.",
+    "sunshine_alt_pcb2": "כיתוב הדפסה על ה-PCB: \"This is a prototype board developed to test hypothetical ergonomic improvements for human-machine interfaces.\"",
+    "sunshine_alt_pcb3": "מבט מוטה על ה-PCB הריק, עם חורי מתגים ומסלולי נחושת.",
+    "sunshine_alt_pcb5": "תקריב של טביעות המתגים ומשטחי הלחמה על ה-PCB.",
+    "sunshine_alt_pcb6": "ציור הדפסה על ה-PCB של אדם מצויר מחייך עם שיער מתולתל, שנותן אגודל למעלה מעל מקלדת.",
     "sunshine_title": "sunshine",
     "sunwin_gallerynav_title": "◈ ניווט.מאמר",
     "sun_win_gallery_title": "▤ sunshine.article",
@@ -174,6 +182,14 @@
     "bye_p1": "אני מקווה שנהניתם לשמוע על המקלדת שהכנתי. סליחה אם הכתיבה שלי קצת נוקשה או מגושמת. לא קראתי ספר מאז השנה שעברה. אם אתם רוצים ליצור איתי קשר, אני ב-github ב-pelmeniboiler, בדיסקורד ב-pelmeniboiler#8372, ברדיט ב-/u/pelmeniboiler ובטוויטר ב-@pelmeniboiler."
   },
   "ru": {
+    "sunshine_alt_cardboard_4": "Россыпь белых колпачков клавиш, разложенных для примерки на листе картона.",
+    "sunshine_alt_very_last": "Схема финальной разделённой раскладки: две половины со смещёнными по колонкам клавишами, наклонными клавишами для больших пальцев и длинными полосами для ладоней внизу.",
+    "sunshine_alt_cardboard_5": "Картонная пластина с квадратными отверстиями под переключатели, вырезанными в разделённой раскладке со смещением колонок.",
+    "sunshine_alt_pcb4": "Чистая зелёная печатная плата с золотистой надписью «sunshine! (Test Type 000)» и посадочным местом контроллера.",
+    "sunshine_alt_pcb2": "Надпись шелкографией на печатной плате: «This is a prototype board developed to test hypothetical ergonomic improvements for human-machine interfaces.»",
+    "sunshine_alt_pcb3": "Вид под углом на незапаянную печатную плату с отверстиями под переключатели и дорожками.",
+    "sunshine_alt_pcb5": "Крупный план посадочных мест переключателей и контактных площадок на печатной плате.",
+    "sunshine_alt_pcb6": "Рисунок шелкографией на плате: улыбающийся мультяшный человек с кудрявыми волосами показывает большой палец вверх над клавиатурой.",
     "sunshine_title": "sunshine",
     "sunwin_gallerynav_title": "◈ навигация.статья",
     "sun_win_gallery_title": "▤ sunshine.статья",
@@ -257,6 +273,14 @@
     "bye_p1": "Надеюсь, вам было интересно узнать о клавиатуре, которую я сделала. Извините, если мой стиль письма немного суховат или неуклюж. Я не читала книг с прошлого года. Если вы хотите связаться со мной, я есть на github как pelmeniboiler, в discord как pelmeniboiler#8372, на reddit как /u/pelmeniboiler и в twitter как @pelmeniboiler."
   },
   "de": {
+    "sunshine_alt_cardboard_4": "Lose weiße Tastenkappen, in einer Probeanordnung auf einem Karton ausgelegt.",
+    "sunshine_alt_very_last": "Diagramm des endgültigen geteilten Layouts: zwei spaltenversetzte Hälften mit schräg gestellten Daumentasten und langen Handballenleisten darunter.",
+    "sunshine_alt_cardboard_5": "Eine Kartonplatte mit quadratischen Schalterlöchern, die im geteilten, spaltenversetzten Layout ausgeschnitten sind.",
+    "sunshine_alt_pcb4": "Die blanke grüne Platine mit einem goldenen Etikett „sunshine! (Test Type 000)“ und dem Footprint des Controllers.",
+    "sunshine_alt_pcb2": "Siebdruck-Text auf der Platine: „This is a prototype board developed to test hypothetical ergonomic improvements for human-machine interfaces.“",
+    "sunshine_alt_pcb3": "Schräger Blick auf die unbestückte Platine mit Schalterlöchern und Leiterbahnen.",
+    "sunshine_alt_pcb5": "Nahaufnahme der Schalter-Footprints und Lötpads der Platine.",
+    "sunshine_alt_pcb6": "Siebdruck-Zeichnung auf der Platine: eine grinsende Cartoon-Person mit lockigem Haar zeigt über einer Tastatur einen Daumen nach oben.",
     "sunshine_title": "sunshine",
     "sunwin_gallerynav_title": "◈ artikel.nav",
     "sun_win_gallery_title": "▤ sunshine.artikel",
@@ -340,6 +364,14 @@
     "bye_p1": "Ich hoffe, es hat euch gefallen, von der Tastatur zu hören, die ich gebaut habe. Entschuldigung, wenn mein Schreibstil etwas steif oder unbeholfen ist. Ich habe seit letztem Jahr kein Buch mehr gelesen. Wenn ihr mich erreichen wollt, bin ich auf Github unter pelmeniboiler, auf Discord unter pelmeniboiler#8372, auf Reddit unter /u/pelmeniboiler und auf Twitter unter @pelmeniboiler."
   },
   "ja": {
+    "sunshine_alt_cardboard_4": "段ボールの上に試し配置された、バラバラの白いキーキャップ。",
+    "sunshine_alt_very_last": "最終的な分割レイアウトの図：列ごとにずらした2つの半分に、傾いた親指キーと、その下の長いパームバーがある。",
+    "sunshine_alt_cardboard_5": "列をずらした分割レイアウトに合わせて、正方形のスイッチ穴が切り抜かれた段ボールの板。",
+    "sunshine_alt_pcb4": "金色の「sunshine! (Test Type 000)」ラベルとコントローラーのフットプリントがある、むき出しの緑の基板。",
+    "sunshine_alt_pcb2": "基板のシルクスクリーン文字：「This is a prototype board developed to test hypothetical ergonomic improvements for human-machine interfaces.」",
+    "sunshine_alt_pcb3": "部品を実装していない基板を斜めから見た図。スイッチ穴と配線が写っている。",
+    "sunshine_alt_pcb5": "基板のスイッチ用フットプリントとはんだパッドの接写。",
+    "sunshine_alt_pcb6": "基板のシルクスクリーンに描かれた、巻き毛でにやりと笑う漫画の人物。キーボードの上で親指を立てている。",
     "sunshine_title": "sunshine",
     "sunwin_gallerynav_title": "◈ 記事ナビ",
     "sun_win_gallery_title": "▤ sunshine.記事",
