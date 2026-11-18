@@ -25,5 +25,41 @@
     "history_h2_v7": "7 · Pelmeniboiler",
     "history_nav_v7": "<strong>&ensp;7 · Kislev 5787</strong>",
     "history_alt7": "The home page on 6 Kislev 5787."
+  },
+  "he": {
+    "history_alt1": "דף הבית ב-24 בטבת 5782.",
+    "history_alt2": "דף הבית ב-24 בשבט 5784.",
+    "history_alt3": "דף הבית ב-25 באייר 5785.",
+    "history_alt4": "דף הבית ב-27 בתמוז 5785.",
+    "history_alt5": "דף הבית ב-29 בחשוון 5786.",
+    "history_alt6": "דף הבית ב-26 בתמוז 5786.",
+    "history_alt7": "דף הבית ב-6 בכסלו 5787."
+  },
+  "ru": {
+    "history_alt1": "Главная страница 24 Тевета 5782.",
+    "history_alt2": "Главная страница 24 Швата 5784.",
+    "history_alt3": "Главная страница 25 Ияра 5785.",
+    "history_alt4": "Главная страница 27 Тамуза 5785.",
+    "history_alt5": "Главная страница 29 Хешвана 5786.",
+    "history_alt6": "Главная страница 26 Тамуза 5786.",
+    "history_alt7": "Главная страница 6 Кислева 5787."
+  },
+  "de": {
+    "history_alt1": "Die Startseite am 24. Tewet 5782.",
+    "history_alt2": "Die Startseite am 24. Schewat 5784.",
+    "history_alt3": "Die Startseite am 25. Ijjar 5785.",
+    "history_alt4": "Die Startseite am 27. Tammus 5785.",
+    "history_alt5": "Die Startseite am 29. Cheschwan 5786.",
+    "history_alt6": "Die Startseite am 26. Tammus 5786.",
+    "history_alt7": "Die Startseite am 6. Kislew 5787."
+  },
+  "ja": {
+    "history_alt1": "ホームページ（5782年テベト24日）。",
+    "history_alt2": "ホームページ（5784年シュヴァト24日）。",
+    "history_alt3": "ホームページ（5785年イヤル25日）。",
+    "history_alt4": "ホームページ（5785年タンムズ27日）。",
+    "history_alt5": "ホームページ（5786年ヘシュヴァン29日）。",
+    "history_alt6": "ホームページ（5786年タンムズ26日）。",
+    "history_alt7": "ホームページ（5787年キスレウ6日）。"
   }
 }
