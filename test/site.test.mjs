@@ -1525,10 +1525,13 @@ try {
         const caption = await p.evaluate(() => !!document.querySelector('#zh-daylight')?.closest('figure')?.querySelector('figcaption'));
         // Drag the pole to the far right of its track: the June solstice.
         await p.$eval('#zh-daylight', (s) => s.scrollIntoView({ block: 'center' }));
+        // LCD: on screen, it walks through the year by itself.
+        const w0 = (await read()).date; await p.waitForTimeout(1200); const w1 = (await read()).date;
         const k = await p.$eval('#zh-daylight .zh-knob', (g) => { const r = g.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; });
         const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
         await p.mouse.move(k[0], k[1]); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
         const june = await read();
+        await p.waitForTimeout(800); const held = (await read()).date === june.date; // grabbed: it stays put
         await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');
         const later = await read();
         // The hours figure: clock times wander through the year; proportional ones stay 0 / 6 / 12.
@@ -1539,7 +1542,9 @@ try {
         // E-ink: buttons appear and step the date; LCD: they don't.
         const lcdButtons = await p.$eval('.zh-steps[data-for="zh-hours"]', (e) => getComputedStyle(e).display);
         await p.evaluate(() => localStorage.setItem('pelmeniboiler-mode', 'eink')); await p.reload({ waitUntil: 'load' }); await p.waitForSelector('#zh-hours .zh-knob');
-        const e0 = await hours(); await p.click('.zh-steps[data-for="zh-hours"] button[data-step="30"]'); const e1 = await hours();
+        await p.$eval('#zh-hours', (s) => s.scrollIntoView({ block: 'center' }));
+        const e0 = await hours(); await p.waitForTimeout(800); const einkStill = (await hours()).date === e0.date;
+        await p.click('.zh-steps[data-for="zh-hours"] button[data-step="30"]'); const e1 = await hours();
         const einkButtons = await p.$eval('.zh-steps[data-for="zh-hours"]', (e) => getComputedStyle(e).display);
         await p.evaluate(() => localStorage.removeItem('pelmeniboiler-mode'));
         // The zine keeps the figures and drops their controls; the Time filter has its own icon.
@@ -1548,12 +1553,12 @@ try {
         await p.goto(`${BASE}/blog/index.html`, { waitUntil: 'load' });
         const timeIcon = await p.$eval('[data-keyword="Time"] .symbol', (s) => s.textContent.trim());
         await c.close();
-        ok(h0.noon && h1.noon && h0.noon !== h1.noon && h0.date !== h1.date && lcdButtons === 'none' && einkButtons === 'flex' && e0.date !== e1.date
+        ok(h0.noon && h1.noon && h0.noon !== h1.noon && h0.date !== h1.date && lcdButtons === 'none' && einkButtons === 'flex' && einkStill && e0.date !== e1.date
             && zine.figs === 2 && zine.controls === 0 && timeIcon === '⌛',
-            `Hours figure: midday moves through the year, e-ink buttons step the date, the zine drops the controls, Time has ⌛ (${JSON.stringify({ h0, h1, lcdButtons, einkButtons, e0: e0.date, e1: e1.date, zine, timeIcon })})`);
-        ok(!caption && /^\d+ (Sivan|Tamuz|Tammuz) 57\d\d$/.test(june.date) && /several weeks/.test(june.text) && /Stockholm.*18 h/.test(june.text)
+            `Hours figure: midday moves through the year, e-ink buttons step the date, the zine drops the controls, Time has ⌛ (${JSON.stringify({ h0, h1, lcdButtons, einkButtons, einkStill, e0: e0.date, e1: e1.date, zine, timeIcon })})`);
+        ok(!caption && w0 !== w1 && held && /^\d+ (Sivan|Tamuz|Tammuz) 57\d\d$/.test(june.date) && /several weeks/.test(june.text) && /Stockholm.*18 h/.test(june.text)
             && later.date !== june.date && !/several weeks/.test(later.text) && !errs.length,
-            `Daylight figure: dragging the pole to the right gives the June solstice, keys move the date (${JSON.stringify({ caption, june: june.date, later: later.date, errs })})`);
+            `Daylight figure: walks through the year until grabbed; dragging the pole right gives the June solstice; keys move the date (${JSON.stringify({ caption, w0, w1, held, june: june.date, later: later.date, errs })})`);
     }
 
     // Sofrut II: inline tags start and stop at the caret, notes for Claude stay out of the article,
