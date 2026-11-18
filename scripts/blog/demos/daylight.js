@@ -10,6 +10,8 @@
 //
 // Both are dragged (or focused and moved with the arrow keys, Page Up/Down for
 // a month, Home for today); in e-ink mode, buttons under each step the date.
+// In LCD mode, while on screen, each walks through the year a day at a time
+// until someone takes the handle. Never in e-ink, or with reduced motion.
 // Sun maths = scripts/zman-clock.js. The same code writes the static SVGs in
 // the post (for no-JS readers and the zine): node loads this file and calls
 // hoursFigure(date) and daylightFigure(date).
@@ -229,8 +231,18 @@
             if (n) step(n); else if (e.key === 'Home') set(today); else return;
             e.preventDefault();
         });
-        document.querySelectorAll(`.zh-steps[data-for="${id}"] button[data-step]`).forEach((b) => b.addEventListener('click', () => step(+b.dataset.step)));
+        document.querySelectorAll(`.zh-steps[data-for="${id}"] button[data-step]`).forEach((b) => b.addEventListener('click', () => { hold(); step(+b.dataset.step); }));
         set(today);
+        // The walk through the year, until someone takes over.
+        let onScreen = false;
+        const still = matchMedia('(prefers-reduced-motion: reduce)');
+        const walk = setInterval(() => {
+            if (onScreen && !document.hidden && !still.matches && document.documentElement.classList.contains('lcd-mode')) step(1);
+        }, 160);
+        function hold() { clearInterval(walk); }
+        if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(svg); else onScreen = true;
+        knob.addEventListener('pointerdown', hold);
+        knob.addEventListener('focus', hold);
     }
     function init() {
         // Pointer → the nearest date whose pole sits at that angle on the track.
