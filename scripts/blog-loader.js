@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterContainer.appendChild(allButton);
 
         const keywordIconMap = {
-            "Language": "▤", "Photos": "🖻", "Projects": "🗀", "Keyboards": "⌨", "Meta" : "♻", "Motorcycles": "🏍", "Time": "⌛"
+            "Language": "▤", "Photos": "🖻", "Projects": "🗀", "Keyboards": "⌨", "Meta" : "♻", "Motorcycles": "🏍", "Time": "⌛" // keep in step with KEYWORD_ICONS in build/build.mjs
         };
         keywords.forEach(keyword => {
             const button = document.createElement('button');
