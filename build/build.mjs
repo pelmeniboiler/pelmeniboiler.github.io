@@ -487,7 +487,7 @@ async function generateBlogManifest(processedPosts, localizationData, blogDir) {
     return manifestItems;
 }
 
-const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻', Motorcycles: '🏍' };
+const KEYWORD_ICONS = { Language: '▤', Photos: '🖻', Projects: '🗀', Keyboards: '⌨', Meta: '♻', Motorcycles: '🏍', Time: '⌛' }; // keep in step with scripts/blog-loader.js
 
 // Static markup for the blog.posts window's guts: the filter buttons and the post
 // cards. Shared by the hub (bakeBlogList) and the /blog/ folder page so both render
@@ -1035,6 +1035,8 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
             if (contentEl) {
                 const clone = contentEl.cloneNode(true);
                 clone.querySelectorAll('[id$="-placeholder"]').forEach((el) => el.remove());
+                // ...and anything marked as interactive-only (a figure's controls, "drag the …").
+                clone.querySelectorAll('[data-zine="drop"]').forEach((el) => el.remove());
                 zineArticles.push({
                     slug, lang,
                     title: stripHtml(titleKey && lookup(lang, titleKey)) || slug,

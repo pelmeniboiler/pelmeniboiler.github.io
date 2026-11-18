@@ -13,7 +13,8 @@
     "yssttuph_p3": "This gets tricky, but this is more or less how time was determined by some of the top civilizations of history. We all know the story since then, once we needed consistent time between locales for the sake of trains, for accurate measurement at sea, and other such things, time did have to change.",
     "yssttuph_p4": "But like, it can all be Unix Epoch underneath now. We don't lose any accuracy. It's like how customary units are defined in S.I. ones deep down.",
     "yssttuph_p5": "What we do lose is that time zones become the size of zip codes.",
-    "yssttuph_p6": "And also, in Jerusalem, hours become as long as 71 minutes, or as short as 50 minutes throughout the year.",
+    "yssttuph_p6": "Drag the North Pole to see how day time fluctuates over the year.",
+    "yssttuph_p6_eink": "Use the arrows to see how day time fluctuates over the year.",
     "yssttuph_p7": "This is not strictly useful for things like baking.",
     "yssttuph_p8": "However, it could be good for timing how much of your day you used doing something, or how much of your day is left. There's no rule that says you have to only use one system. With proportional hours, you'll always know where the sun is.",
     "yssttuph_p9": "Give it a try! <a href=\"#zman-clock-window\">🕰 shaon.zmanim</a>"

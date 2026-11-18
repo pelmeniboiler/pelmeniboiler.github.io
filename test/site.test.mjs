@@ -1531,7 +1531,26 @@ try {
         const june = await read();
         await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');
         const later = await read();
+        // The hours figure: clock times wander through the year; proportional ones stay 0 / 6 / 12.
+        const hours = () => p.evaluate(() => { const t = document.querySelector('#zh-hours .zh-scene').textContent; return { date: document.querySelector('#zh-hours .zh-knob').getAttribute('aria-valuetext'), noon: (t.match(/midday (\d+:\d\d)/) || [])[1] }; });
+        await p.focus('#zh-hours .zh-knob'); await p.keyboard.press('Home'); const h0 = await hours();
+        for (let i = 0; i < 6; i++) await p.keyboard.press('PageUp');
+        const h1 = await hours();
+        // E-ink: buttons appear and step the date; LCD: they don't.
+        const lcdButtons = await p.$eval('.zh-steps[data-for="zh-hours"]', (e) => getComputedStyle(e).display);
+        await p.evaluate(() => localStorage.setItem('pelmeniboiler-mode', 'eink')); await p.reload({ waitUntil: 'load' }); await p.waitForSelector('#zh-hours .zh-knob');
+        const e0 = await hours(); await p.click('.zh-steps[data-for="zh-hours"] button[data-step="30"]'); const e1 = await hours();
+        const einkButtons = await p.$eval('.zh-steps[data-for="zh-hours"]', (e) => getComputedStyle(e).display);
+        await p.evaluate(() => localStorage.removeItem('pelmeniboiler-mode'));
+        // The zine keeps the figures and drops their controls; the Time filter has its own icon.
+        await p.goto(`${BASE}/zine/en/index.html`, { waitUntil: 'load' });
+        const zine = await p.evaluate(() => ({ figs: document.querySelectorAll('.zine-article .zh-fig').length, controls: document.querySelectorAll('.zine-article [data-zine="drop"], .zine-article .zh-steps').length }));
+        await p.goto(`${BASE}/blog/index.html`, { waitUntil: 'load' });
+        const timeIcon = await p.$eval('[data-keyword="Time"] .symbol', (s) => s.textContent.trim());
         await c.close();
+        ok(h0.noon && h1.noon && h0.noon !== h1.noon && h0.date !== h1.date && lcdButtons === 'none' && einkButtons === 'flex' && e0.date !== e1.date
+            && zine.figs === 2 && zine.controls === 0 && timeIcon === '⌛',
+            `Hours figure: midday moves through the year, e-ink buttons step the date, the zine drops the controls, Time has ⌛ (${JSON.stringify({ h0, h1, lcdButtons, einkButtons, e0: e0.date, e1: e1.date, zine, timeIcon })})`);
         ok(!caption && /^\d+ (Sivan|Tamuz|Tammuz) 57\d\d$/.test(june.date) && /several weeks/.test(june.text) && /Stockholm.*18 h/.test(june.text)
             && later.date !== june.date && !/several weeks/.test(later.text) && !errs.length,
             `Daylight figure: dragging the pole to the right gives the June solstice, keys move the date (${JSON.stringify({ caption, june: june.date, later: later.date, errs })})`);
