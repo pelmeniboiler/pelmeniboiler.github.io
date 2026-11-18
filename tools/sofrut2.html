@@ -12,16 +12,20 @@
         /* Sofrut II: write a post the way it will look, then publish the two files
            the build wants (blog/<slug>.html + localization/<prefix>.json).
            Site rules apply: the theme's two colours only. */
-        body { overflow: auto; padding: 12px; box-sizing: border-box; }
+        body { overflow: auto; padding: 12px 12px 48px; box-sizing: border-box; }
         .forge { max-width: 960px; margin: 0 auto; }
-        .forge .window { position: relative; left: 0; top: 0; }
+        /* The article pane is not a .window: the site's window manager would make it draggable and closable. */
+        .sheet { position: relative; border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); }
+        .sheet > .title-bar { cursor: var(--cur-default); }
+        .sheet > .title-bar .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         @media (min-width: 900px) {
             html, body { height: 100%; }
-            body { overflow: hidden; padding: 10px; }
-            .forge { height: calc(100vh - 20px); }
+            body { overflow: hidden; padding: 10px 10px 40px; }
+            .forge { height: calc(100vh - 50px); }
             .pane-doc { display: flex; flex-direction: column; height: 100%; min-height: 0; }
             .pane-doc > .content { flex: 1; display: flex; flex-direction: column; min-height: 0; max-height: none; overflow: hidden; padding: 0; }
-            #doc, #src { flex: 1; min-height: 0; }
+            #doc-wrap, #src { flex: 1; min-height: 0; }
+            .pane-doc.source #doc-wrap { display: none; }
         }
         .pane-doc > .content { padding: 0; }
 
@@ -37,7 +41,8 @@
         }
         .menu { display: none; position: absolute; top: 100%; left: 0; min-width: 210px; background: var(--win-bg-color); border: 2px solid var(--text-color); padding: 2px 0; }
         .menubar .m.open > .menu { display: block; }
-        .menu button { display: block; width: 100%; text-align: left; }
+        .menu button { display: flex; justify-content: space-between; gap: 24px; width: 100%; text-align: left; }
+        .menu button kbd, .menu button .k { font: inherit; border: 0; padding: 0; background: none; min-width: 0; }
         .menu hr { border: 0; height: 2px; background: var(--text-color); margin: 2px 0; }
 
         /* Tag bar: one emoji per tag; the name is in the tooltip. */
@@ -50,7 +55,14 @@
         .tb .sep { width: 2px; background: var(--text-color); margin: 0 3px; }
 
         /* The page being written. Looks like an article. */
-        #doc { padding: 14px 18px; overflow: auto; min-height: 320px; outline: none; }
+        #doc-wrap { overflow: auto; display: flex; flex-direction: column; }
+        #doc { padding: 0 18px 14px; min-height: 320px; outline: none; flex: 1; overflow-wrap: anywhere; }
+        /* Title and description, as the post shows them; click to change. */
+        #doc-head { display: block; width: 100%; text-align: left; border: 0; background: none; color: inherit; font: inherit; padding: 14px 18px 4px; cursor: var(--cur-pointer); }
+        #doc-h1 { display: block; font-size: 2em; font-weight: bold; line-height: 1.2; }
+        #doc-desc { display: block; font-style: italic; margin-top: 8px; }
+        #doc-h1:empty::before { content: 'untitled'; } #doc-desc:empty { display: none; }
+        #doc, #src, input, textarea { caret-color: var(--text-color); }
         #doc > * { margin-top: 0; }
         #doc aside { border-left: 6px solid var(--text-color); padding: 6px 12px; margin: 12px 0; font-style: italic; }
         #doc blockquote { border-left: 2px solid var(--text-color); margin: 12px 0; padding: 2px 14px; }
@@ -70,7 +82,7 @@
         #doc span[data-tl] { text-decoration: underline wavy; text-underline-offset: 3px; cursor: help; }
         #doc:empty::before { content: attr(data-empty); }
         #src { display: none; border: none; resize: none; padding: 10px; min-height: 320px; white-space: pre; font-family: monospace; font-size: 12px; background: var(--win-bg-color); color: var(--text-color); }
-        .pane-doc.source #doc { display: none; } .pane-doc.source #src { display: block; }
+        .pane-doc.source #doc-wrap { display: none; } .pane-doc.source #src { display: block; }
         .status { display: flex; gap: 12px; flex-wrap: wrap; border-top: 2px solid var(--text-color); padding: 3px 8px; font-size: 13px; }
         .status a { color: inherit; }
 
@@ -78,14 +90,14 @@
         .dlg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow: auto; z-index: 80; background: var(--win-bg-color); color: var(--text-color); border: 2px solid var(--text-color); }
         .dlg[hidden] { display: none; }
         .dlg.wide { width: min(860px, calc(100vw - 32px)); }
-        .dlg .title-bar { display: flex; justify-content: space-between; align-items: center; cursor: default; }
+        .dlg .title-bar { display: flex; justify-content: space-between; align-items: center; cursor: var(--cur-default); }
         .dlg .close-btn { background: none; border: 0; color: inherit; font-size: 1.2rem; cursor: var(--cur-pointer, pointer); }
         .dlg .body { padding: 12px 14px; }
         .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
         .field label { font-weight: bold; font-size: 14px; }
         .row { display: flex; gap: 12px; flex-wrap: wrap; }
         .row .field { flex: 1; min-width: 140px; }
-        input[type="text"], input[type="password"], input[type="date"], input[type="url"], textarea, select {
+        input[type="text"], input[type="password"], input[type="url"], textarea, select, .datebtn {
             width: 100%; box-sizing: border-box; padding: 6px;
             border: 2px solid var(--text-color); background: var(--win-bg-color);
             color: var(--text-color); font-family: inherit; font-size: inherit;
@@ -99,22 +111,36 @@
             padding: 2px 8px; cursor: var(--cur-pointer, pointer); font-family: monospace; font-size: 13px;
         }
         .chip.on, .chip:hover, .chip:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
-        .report { border-left: 4px solid var(--text-color); padding: 4px 12px; margin-top: 8px; font-size: 13px; }
-        .report .bad { font-weight: bold; text-decoration: underline; }
-        .report .ok { font-weight: bold; }
-        h2.sec { border-bottom: 2px solid var(--text-color); padding-bottom: 4px; font-size: 1em; }
-        #slug-warn, #prefix-warn, #concept-result, .hint { font-size: 13px; }
+        .datebtn { text-align: left; cursor: var(--cur-pointer); }
+        #slug-warn, #prefix-warn, .hint { font-size: 13px; }
+        .shortcuts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; }
+        .shortcuts dt { font-family: monospace; } .shortcuts dd { margin: 0; }
+        /* The site's calendar (as in the CT125 manual), never the browser's. */
+        .cal { position: absolute; z-index: 90; width: 292px; padding: 8px; background: var(--win-bg-color); color: var(--text-color); border: 2px solid var(--text-color); }
+        .cal button { border: 1px solid transparent; background: none; color: inherit; padding: 0; font: inherit; cursor: var(--cur-pointer); }
+        .cal button:hover, .cal button:focus-visible { border-color: var(--text-color); outline: none; }
+        .cal-head { display: flex; align-items: center; gap: 2px; margin-bottom: 6px; }
+        .cal-head b { flex: 1; text-align: center; }
+        .cal-head button { width: 32px; height: 32px; font-size: 1.1rem; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .cal-dow { text-align: center; font-size: .78rem; font-weight: bold; padding: 2px 0; }
+        .cal-day { height: 36px; font-variant-numeric: tabular-nums; }
+        .cal-day.today { border: 1px dashed var(--text-color) !important; }
+        .cal .cal-day[aria-pressed="true"] { background: var(--text-color); color: var(--win-bg-color); border-color: var(--text-color); }
+        .cal-foot { display: flex; justify-content: space-between; margin-top: 6px; }
+        .cal-foot button { padding: 4px 10px; border-color: var(--text-color); }
     </style>
 </head>
 <body class="eink-mode light-mode">
 <div class="forge">
-    <div class="window pane-doc">
+    <div class="sheet pane-doc">
         <div class="title-bar"><span class="title">🖋 sofrut.ii · <span id="doc-name">untitled</span></span></div>
         <div class="content">
             <nav class="menubar" id="menubar" aria-label="Menu">
                 <div class="m"><button class="top" type="button" aria-haspopup="true">File</button>
                     <div class="menu" role="menu">
                         <button type="button" data-act="new">New…</button>
+                        <button type="button" data-act="save">Save draft <span class="k" data-keys="mod+S"></span></button>
                         <hr>
                         <button type="button" data-act="publish">Publish to GitHub</button>
                         <button type="button" data-act="download">Download files</button>
@@ -124,18 +150,26 @@
                 </div>
                 <div class="m"><button class="top" type="button" aria-haspopup="true">Edit</button>
                     <div class="menu" role="menu">
+                        <button type="button" data-act="undo">Undo <span class="k" data-keys="mod+Z"></span></button>
+                        <button type="button" data-act="redo">Redo <span class="k" data-keys="mod+shift+Z"></span></button>
+                        <hr>
                         <button type="button" data-act="props">Title &amp; tags…</button>
                     </div>
                 </div>
                 <div class="m"><button class="top" type="button" aria-haspopup="true">View</button>
                     <div class="menu" role="menu">
-                        <button type="button" data-act="source">Source</button>
+                        <button type="button" data-act="source">Source <span class="k" data-keys="mod+/"></span></button>
                         <button type="button" data-act="files">Output files</button>
+                        <hr>
+                        <button type="button" data-act="keys">Keyboard shortcuts</button>
                     </div>
                 </div>
             </nav>
             <div class="tb" id="tb" role="toolbar" aria-label="Tags"></div>
-            <div id="doc" contenteditable="true" spellcheck="true" data-empty="…"></div>
+            <div id="doc-wrap">
+                <button type="button" id="doc-head" title="Title &amp; tags"><span id="doc-h1"></span><span id="doc-desc"></span></button>
+                <div id="doc" contenteditable="true" spellcheck="true" data-empty="…"></div>
+            </div>
             <textarea id="src" spellcheck="false" aria-label="HTML source"></textarea>
             <div class="status"><span id="stats"></span><span id="pub-status" aria-live="polite"></span></div>
         </div>
@@ -147,12 +181,13 @@
     <div class="title-bar"><span class="title" id="props-title">▤ article</span><button class="close-btn" type="button" data-close>&times;</button></div>
     <div class="body">
         <div class="field"><label for="title">title</label><input type="text" id="title"></div>
+        <div class="field"><label for="desc">description</label><input type="text" id="desc"></div>
         <div class="row">
             <div class="field"><label for="slug">slug</label><input type="text" id="slug"><span id="slug-warn"></span></div>
             <div class="field"><label for="prefix">prefix</label><input type="text" id="prefix"><span id="prefix-warn"></span></div>
         </div>
         <div class="row">
-            <div class="field"><label for="date">date</label><input type="date" id="date"></div>
+            <div class="field"><label for="date">date</label><button type="button" class="datebtn" id="date" data-value=""></button></div>
             <div class="field"><label for="author">author</label><input type="text" id="author" value="Wendy Zhulkovsky"></div>
         </div>
         <div class="field"><label>keywords</label>
@@ -195,7 +230,13 @@
     </div>
 </div>
 
-<!-- Small questions: address, alt text, caption, expansion, date -->
+<!-- Keyboard shortcuts -->
+<div class="dlg" id="dlg-keys" hidden role="dialog" aria-modal="true" aria-labelledby="keys-title">
+    <div class="title-bar"><span class="title" id="keys-title">⌨ keys</span><button class="close-btn" type="button" data-close>&times;</button></div>
+    <div class="body"><dl class="shortcuts" id="keys-list"></dl></div>
+</div>
+
+<!-- Small questions: address, alt text, caption, expansion -->
 <div class="dlg" id="dlg-ask" hidden role="dialog" aria-modal="true" aria-labelledby="ask-title">
     <div class="title-bar"><span class="title" id="ask-title"></span><button class="close-btn" type="button" data-close>&times;</button></div>
     <form class="body" id="ask-form"><div id="ask-fields"></div><div class="bar"><button class="chip" type="submit">ok</button></div></form>
@@ -209,11 +250,21 @@
     const doc = $('doc'), src = $('src');
     const DRAFT = 'pelmeniboiler-sofrut2-draft', GH = 'pelmeniboiler-sofrut2-github';
     const ZW = '​'; // a foothold for the caret when a tag is started or left
+    const MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    // "mod+shift+Z" → "⌘⇧Z" on a Mac, "Ctrl+Shift+Z" elsewhere.
+    const keyLabel = (k) => k.split('+').map((p) => ({ mod: MAC ? '⌘' : 'Ctrl', shift: MAC ? '⇧' : 'Shift', alt: MAC ? '⌥' : 'Alt' })[p] || p).join(MAC ? '' : '+');
+    document.querySelectorAll('[data-keys]').forEach((k) => { k.textContent = keyLabel(k.dataset.keys); });
 
     // ---------- dialogs and menus ----------
-    let lastFocus = null;
-    function openDlg(id) { lastFocus = document.activeElement; closeMenus(); const d = $(id); d.hidden = false; (d.querySelector('input, select, textarea, button:not([data-close])') || d).focus(); }
-    function closeDlg(d) { d.hidden = true; if (lastFocus && document.contains(lastFocus)) lastFocus.focus(); }
+    let lastFocus = null, lastSel = null;
+    // A dialog remembers the editor's selection: focusing the editor again would otherwise drop it at the start.
+    function openDlg(id) { lastFocus = document.activeElement; lastSel = lastRange && lastRange.cloneRange(); closeMenus(); const d = $(id); d.hidden = false; (d.querySelector('input, select, textarea, button:not([data-close])') || d).focus(); }
+    function closeDlg(d) {
+        d.hidden = true;
+        if (!lastFocus || !document.contains(lastFocus)) return;
+        lastFocus.focus({ preventScroll: true });
+        if (lastFocus === doc && lastSel && doc.contains(lastSel.startContainer)) { const s = getSelection(); s.removeAllRanges(); s.addRange(lastSel); lastRange = lastSel.cloneRange(); }
+    }
     document.querySelectorAll('.dlg').forEach((d) => d.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeDlg(d); }));
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
@@ -229,16 +280,27 @@
         closeMenus(); ACTIONS[b.dataset.act]();
     });
     document.addEventListener('click', (e) => { if (!e.target.closest('.menubar')) closeMenus(); });
+    // Menus by keyboard: arrows move, Enter picks, Escape closes; F10 opens File.
+    $('menubar').addEventListener('keydown', (e) => {
+        const tops = [...document.querySelectorAll('.menubar .top')], m = e.target.closest('.m'), i = tops.indexOf(m && m.querySelector('.top'));
+        const items = m ? [...m.querySelectorAll('.menu button')] : [];
+        const openAt = (j) => { closeMenus(); const t = tops[(j + tops.length) % tops.length]; t.parentElement.classList.add('open'); (t.parentElement.querySelector('.menu button') || t).focus(); };
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (!m.classList.contains('open')) return openAt(i);
+            const k = items.indexOf(document.activeElement); items[(k + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus();
+        } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); openAt(i + (e.key === 'ArrowRight' ? 1 : -1)); }
+    });
 
     // ask([{ id, label, type, value }]) → values by id, or null if cancelled.
     function ask(title, fields) {
         return new Promise((resolve) => {
             $('ask-title').textContent = title;
-            $('ask-fields').innerHTML = fields.map((f) => `<div class="field"><label for="ask-${f.id}">${esc(f.label)}</label><input type="${f.type || 'text'}" id="ask-${f.id}" value="${esc(f.value || '')}" spellcheck="false"></div>`).join('');
+            $('ask-fields').innerHTML = fields.map((f) => `<div class="field"><label for="askf-${f.id}">${esc(f.label)}</label><input type="${f.type || 'text'}" id="askf-${f.id}" value="${esc(f.value || '')}" spellcheck="false"></div>`).join('');
             const d = $('dlg-ask'), form = $('ask-form');
             const done = (v) => { form.onsubmit = null; observer.disconnect(); if (!d.hidden) closeDlg(d); resolve(v); };
             const observer = new MutationObserver(() => { if (d.hidden) done(null); });
-            form.onsubmit = (e) => { e.preventDefault(); done(Object.fromEntries(fields.map((f) => [f.id, $(`ask-${f.id}`).value.trim()]))); };
+            form.onsubmit = (e) => { e.preventDefault(); done(Object.fromEntries(fields.map((f) => [f.id, $(`askf-${f.id}`).value.trim()]))); };
             openDlg('dlg-ask'); observer.observe(d, { attributes: true, attributeFilter: ['hidden'] });
         });
     }
@@ -263,8 +325,11 @@
         [...new Set(list.flatMap((p) => p.keywords || []))].sort().forEach((k) => addChip(k, selectedKw.has(k)));
         checkSlug();
     }).catch(() => {});
-    $('kw-add').addEventListener('click', () => { const v = $('kw-new').value.trim(); if (v) { addChip(v, true); $('kw-new').value = ''; save(); } });
-    $('title').addEventListener('input', () => {
+    // Keywords are a comma list in the page's <meta>: a comma can't be part of one.
+    const addKw = () => { $('kw-new').value.split(',').map((v) => v.trim()).filter(Boolean).forEach((v) => addChip(v, true)); $('kw-new').value = ''; save(); };
+    $('kw-add').addEventListener('click', addKw);
+    $('kw-new').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addKw(); } });
+    function autoFill() {
         if (!$('slug').dataset.touched) $('slug').value = slugify($('title').value);
         if (!$('prefix').dataset.touched) {
             const w = slugify($('title').value).split('-').filter(Boolean), base = w.length > 1 ? w.map((x) => x[0]).join('') : (w[0] || '');
@@ -272,16 +337,60 @@
             $('prefix').value = pre;
         }
         checkSlug(); showName();
-    });
+    }
+    $('title').addEventListener('input', autoFill);
     $('slug').addEventListener('input', () => { $('slug').dataset.touched = '1'; checkSlug(); });
     $('prefix').addEventListener('input', () => { $('prefix').dataset.touched = '1'; checkSlug(); });
     const slugTaken = () => { const s = slugify($('slug').value); return posts.some((p) => p.slug === s); };
     function checkSlug() {
-        $('slug-warn').textContent = slugTaken() ? '⚠ a post with this slug exists' : '';
+        $('slug-warn').textContent = !slugify($('slug').value) ? (($('title').value.trim() ? '⚠ needs Latin letters or digits' : '')) : slugTaken() ? '⚠ a post with this slug exists' : '';
         $('prefix-warn').textContent = usedPrefixes.has(slugify($('prefix').value).replace(/-/g, '')) ? '⚠ already used' : '';
     }
-    const showName = () => { $('doc-name').textContent = $('title').value.trim() || 'untitled'; };
-    $('date').valueAsDate = new Date();
+    const showName = () => { $('doc-name').textContent = $('title').value.trim() || 'untitled'; $('doc-h1').textContent = $('title').value.trim(); $('doc-desc').textContent = $('desc').value.trim(); };
+    $('desc').addEventListener('input', () => showName());
+
+    // ---------- dates: the site's own calendar ----------
+    const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const fmtDate = (iso) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(iso + 'T12:00:00'));
+    const dateVal = () => $('date').dataset.value || isoDay(new Date());
+    const setDate = (iso) => { $('date').dataset.value = iso || isoDay(new Date()); $('date').textContent = fmtDate($('date').dataset.value); };
+    setDate();
+    let cal = null;
+    function closeCalendar() { if (cal) { cal.el.remove(); const b = cal.btn; cal = null; b && b.focus({ preventScroll: true }); } }
+    // openCalendar(anchor, current ISO or '', onPick(iso)); onPick('') = cleared.
+    function openCalendar(btn, current, onPick, canClear = false) {
+        closeCalendar();
+        const sel = current ? new Date(current + 'T12:00:00') : null;
+        let focus = sel || new Date(), view = new Date(focus.getFullYear(), focus.getMonth(), 1);
+        const el = document.createElement('div');
+        el.className = 'cal'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Choose a date');
+        const draw = () => {
+            const y = view.getFullYear(), m = view.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate(), t = isoDay(new Date());
+            el.innerHTML = `<div class="cal-head"><button type="button" data-step="-12" aria-label="Previous year">«</button><button type="button" data-step="-1" aria-label="Previous month">‹</button><b>${new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(view)}</b><button type="button" data-step="1" aria-label="Next month">›</button><button type="button" data-step="12" aria-label="Next year">»</button></div>
+                <div class="cal-grid" role="grid">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => `<span class="cal-dow">${d}</span>`).join('')}${'<span></span>'.repeat(first)}${Array.from({ length: days }, (_, i) => { const iso = isoDay(new Date(y, m, i + 1)); return `<button type="button" class="cal-day${iso === t ? ' today' : ''}" data-iso="${iso}" aria-pressed="${iso === current}" tabindex="${iso === isoDay(focus) ? 0 : -1}">${i + 1}</button>`; }).join('')}</div>
+                <div class="cal-foot">${canClear ? '<button type="button" data-iso="">Clear</button>' : '<span></span>'}<button type="button" data-iso="${t}">Today</button></div>`;
+            el.querySelector('[tabindex="0"]')?.focus({ preventScroll: true });
+        };
+        el.addEventListener('mousedown', (e) => e.preventDefault());
+        el.addEventListener('click', (e) => {
+            e.stopPropagation(); e.preventDefault();
+            const st = e.target.closest('[data-step]'); if (st) { view = new Date(view.getFullYear(), view.getMonth() + +st.dataset.step, 1); focus = new Date(view); draw(); return; }
+            const d = e.target.closest('[data-iso]'); if (d) { const f = onPick; cal.btn = null; closeCalendar(); f(d.dataset.iso); }
+        });
+        el.addEventListener('keydown', (e) => {
+            const mv = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+            if (mv || e.key === 'PageUp' || e.key === 'PageDown') { e.preventDefault(); focus = mv ? new Date(focus.getFullYear(), focus.getMonth(), focus.getDate() + mv) : new Date(focus.getFullYear(), focus.getMonth() + (e.key === 'PageUp' ? -1 : 1), focus.getDate()); view = new Date(focus.getFullYear(), focus.getMonth(), 1); draw(); }
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeCalendar(); }
+        });
+        document.body.appendChild(el);
+        const r = btn.getBoundingClientRect();
+        el.style.left = `${scrollX + Math.max(8, Math.min(r.left, innerWidth - 300))}px`;
+        el.style.top = `${scrollY + (r.bottom + 4 + 320 > innerHeight - 48 && r.top > 330 ? r.top - 4 - 320 : r.bottom + 4)}px`; // clear of the launcher bar
+        cal = { el, btn };
+        draw();
+    }
+    document.addEventListener('mousedown', (e) => { if (cal && !cal.el.contains(e.target) && !cal.btn?.contains(e.target)) closeCalendar(); });
+    $('date').addEventListener('click', () => openCalendar($('date'), dateVal(), (iso) => { setDate(iso || isoDay(new Date())); save(); }));
 
     // ---------- the editor ----------
     // Allowed markup. Everything else is unwrapped; attributes other than these are dropped.
@@ -292,20 +401,33 @@
     const ATTRS = { SPAN: ['data-tl'], A: ['href'], IMG: ['src', 'alt', 'data-alt-key'], IFRAME: ['src', 'title'], ABBR: ['title'], TIME: ['datetime'], P: ['data-key', 'data-note'], ASIDE: KEYED, BLOCKQUOTE: KEYED, UL: KEYED, OL: KEYED, TABLE: KEYED, FIGCAPTION: KEYED, H2: ['data-key', 'id'], H3: ['data-key', 'id'], H4: ['data-key', 'id'] };
     // A paragraph can't hold a list, table or figure: lift those out.
     function lift(root) {
-        for (const p of [...root.querySelectorAll(':scope > p')]) {
+        for (const p of [...root.children].filter((c) => c.tagName === 'P')) {
             if (p.querySelector('ul, ol, table, figure, hr, pre, aside, blockquote, h2, h3, h4, iframe')) p.replaceWith(...p.childNodes);
         }
     }
     const unwrap = (el) => el.replaceWith(...el.childNodes);
+    // Gone entirely, never unwrapped: their text is not article text.
+    const DROP = new Set(['SCRIPT', 'STYLE', 'META', 'LINK', 'TITLE', 'NOSCRIPT', 'TEMPLATE', 'OBJECT', 'EMBED', 'SVG', 'MATH', 'CANVAS', 'VIDEO', 'AUDIO', 'FORM', 'INPUT', 'BUTTON', 'SELECT', 'TEXTAREA', 'HEAD']);
+    const safeUrl = (u) => /^(https?:|mailto:|\/|#|\.{0,2}\/?[\w-])/i.test((u || '').trim()) && !/^\s*(javascript|data|vbscript):/i.test(u || '');
+    // HTML from outside (source view, a stored draft) is cleaned in an inert template before it touches the page.
+    function importHtml(html) {
+        const t = document.createElement('template'); t.innerHTML = html;
+        clean(t.content);
+        doc.replaceChildren(...t.content.childNodes);
+        if (!doc.children.length) doc.innerHTML = '<p><br></p>';
+    }
     function clean(root, final) {
         for (const el of [...root.querySelectorAll('*')]) {
-            if (!el.isConnected) continue;
+            if (!root.contains(el)) continue;
+            if (DROP.has(el.tagName.toUpperCase())) { el.remove(); continue; }
             if (el.tagName === 'DIV' && el.parentNode === root) { const p = document.createElement('p'); p.append(...el.childNodes); el.replaceWith(p); continue; }
             if (el.tagName === 'STRIKE') { const s = document.createElement('s'); s.append(...el.childNodes); el.replaceWith(s); continue; }
             if (!BLOCKS.has(el.tagName) && !INLINE.has(el.tagName)) { unwrap(el); continue; }
             for (const a of [...el.attributes]) if (!(ATTRS[el.tagName] || []).includes(a.name)) el.removeAttribute(a.name);
             if (el.tagName === 'SPAN') { if (el.getAttribute('data-tl')) el.title = el.getAttribute('data-tl'); else { unwrap(el); continue; } }
             if (el.tagName === 'IFRAME' && !/^https:\/\//.test(el.getAttribute('src') || '')) el.remove();
+            if (el.tagName === 'A' && !safeUrl(el.getAttribute('href'))) el.removeAttribute('href');
+            if (el.tagName === 'IMG' && !safeUrl(el.getAttribute('src'))) el.remove();
         }
         if (final) {
             // The caret's footholds go, and with them tags left empty.
@@ -320,6 +442,18 @@
             for (const el of [...root.querySelectorAll(FORMATS.join(','))]) if (!el.textContent && !el.querySelector('img')) el.remove();
         }
         lift(root);
+        // A block inside a text block or inside formatting (pasted or typed source) is unwrapped,
+        // with a line break where it ended. Lists inside list items are fine.
+        const NEST = 'p,h2,h3,h4,pre,aside,blockquote,ul,ol,table,figure,hr,iframe';
+        for (const el of [...root.querySelectorAll(NEST)].reverse()) {
+            if (!root.contains(el) || el.parentNode === root) continue;
+            const up = el.parentElement;
+            if ((el.tagName === 'UL' || el.tagName === 'OL') && up.closest('li')) continue;
+            if (up.closest('td, th') && !/^(TABLE|FIGURE|IFRAME)$/.test(el.tagName)) { if (el.tagName === 'P') { if (el.nextSibling) el.after(document.createElement('br')); unwrap(el); } continue; }
+            if (el.tagName === 'HR' || el.tagName === 'IFRAME' || el.tagName === 'TABLE' || el.tagName === 'FIGURE') { if (up.closest('p,h2,h3,h4,aside,blockquote,li,td,th,b,i,s,u,em,strong,code,kbd,sub,sup,ins,del,abbr,time,a,span')) el.remove(); continue; }
+            if (el.nextSibling) el.after(document.createElement('br'));
+            unwrap(el);
+        }
         for (const n of [...root.childNodes]) {
             if (n.nodeType === 3 && n.data.replace(ZW, '').trim()) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
             else if (n.nodeType === 1 && !BLOCKS.has(n.tagName)) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
@@ -333,18 +467,29 @@
     const topBlock = () => { let n = getSelection().anchorNode; if (!n || !doc.contains(n)) n = lastRange && lastRange.startContainer; while (n && n.parentNode !== doc) n = n.parentNode; return n && n.nodeType === 1 ? n : null; };
     const caretAt = (node, offset) => { const r = document.createRange(); r.setStart(node, offset); r.collapse(true); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
     const placeCaret = (el) => { const r = document.createRange(); r.selectNodeContents(el); r.collapse(false); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    // The top-level blocks a selection touches (just the caret's block when collapsed).
+    function selectedBlocks() {
+        const s = getSelection(), r = s.rangeCount && doc.contains(s.anchorNode) ? s.getRangeAt(0) : lastRange;
+        if (!r || r.collapsed) { const b = topBlock(); return b ? [b] : []; }
+        return [...doc.children].filter((b) => r.intersectsNode(b));
+    }
     function setBlock(tag, note) {
         restore();
-        let b = topBlock();
-        if (!b) { b = document.createElement('p'); b.innerHTML = '<br>'; doc.append(b); }
-        if (['UL', 'OL', 'TABLE', 'FIGURE', 'HR', 'IMG', 'IFRAME'].includes(b.tagName)) return;
-        // The same block again turns it back into a paragraph.
-        const same = note ? b.hasAttribute('data-note') : b.tagName === tag.toUpperCase() && !b.hasAttribute('data-note');
-        const n = document.createElement(same ? 'p' : tag);
-        if (note && !same) n.setAttribute('data-note', '');
-        if (b.dataset.key && !note) n.dataset.key = b.dataset.key;
-        n.append(...b.childNodes); if (!n.childNodes.length) n.innerHTML = '<br>';
-        b.replaceWith(n); placeCaret(n);
+        let blocks = selectedBlocks();
+        if (!blocks.length) { const b = document.createElement('p'); b.innerHTML = '<br>'; doc.append(b); blocks = [b]; }
+        blocks = blocks.filter((b) => !['UL', 'OL', 'TABLE', 'FIGURE', 'HR', 'IMG', 'IFRAME'].includes(b.tagName));
+        if (!blocks.length) return;
+        // The same block again turns it back into a paragraph (all of them, if all already are).
+        const same = blocks.every((b) => (note ? b.hasAttribute('data-note') : b.tagName === tag.toUpperCase() && !b.hasAttribute('data-note')));
+        let last = null;
+        for (const b of blocks) {
+            const n = document.createElement(same ? 'p' : tag);
+            if (note && !same) n.setAttribute('data-note', '');
+            if (b.dataset.key && !note) n.dataset.key = b.dataset.key;
+            n.append(...b.childNodes); if (!n.childNodes.length) n.innerHTML = '<br>';
+            b.replaceWith(n); last = n;
+        }
+        if (blocks.length === 1) placeCaret(last);
     }
     function insertBlock(html) {
         restore();
@@ -369,12 +514,37 @@
             const el = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
             el.textContent = ZW; r.insertNode(el); caretAt(el.firstChild, 1); return;
         }
+        // Across paragraphs (or list items, cells), each gets its own tag: one tag
+        // can't hold two paragraphs.
+        const parts = piecesOf(r);
+        if (parts.length > 1) {
+            const ins = parts.map((x) => within(x.startContainer, T));
+            if (ins.every((e, i) => e && e === within(parts[i].endContainer, T))) { ins.forEach((e) => e.isConnected && unwrap(e)); return; }
+            parts.reverse().forEach((x) => wrapRange(x, tag, attrs));
+            return;
+        }
         if (inside && inside === within(r.endContainer, T)) { unwrap(inside); return; }
+        const el = wrapRange(r, tag, attrs);
+        const sel = document.createRange(); sel.selectNodeContents(el); s.removeAllRanges(); s.addRange(sel);
+    }
+    function wrapRange(r, tag, attrs = {}) {
         const el = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
         el.append(r.extractContents());
-        [...el.querySelectorAll('*')].filter((x) => matches(x, T)).forEach(unwrap);
+        [...el.querySelectorAll('*')].filter((x) => matches(x, tag.toUpperCase())).forEach(unwrap);
         r.insertNode(el);
-        const sel = document.createRange(); sel.selectNodeContents(el); s.removeAllRanges(); s.addRange(sel);
+        return el;
+    }
+    // A selection split at the edges of the text blocks it crosses.
+    const LEAVES = 'p,h2,h3,h4,aside,blockquote,pre,li,td,th,figcaption';
+    function piecesOf(r) {
+        const leaves = [...doc.querySelectorAll(LEAVES)].filter((el) => r.intersectsNode(el) && !el.querySelector(LEAVES));
+        if (leaves.length < 2) return [r];
+        return leaves.map((leaf) => {
+            const x = document.createRange(); x.selectNodeContents(leaf);
+            if (leaf.contains(r.startContainer)) x.setStart(r.startContainer, r.startOffset);
+            if (leaf.contains(r.endContainer)) x.setEnd(r.endContainer, r.endOffset);
+            return x;
+        }).filter((x) => !x.collapsed && x.toString().trim());
     }
     function removeFormats() {
         restore();
@@ -392,26 +562,30 @@
 
     // The tag bar. Each button names its tag in a tooltip.
     const TAGS = [
-        ['📃', 'Paragraph', () => setBlock('p')], ['🔠', 'Heading', () => setBlock('h2')], ['🔤', 'Subheading', () => setBlock('h3')], ['🔡', 'Minor heading', () => setBlock('h4')],
-        ['💭', 'Aside', () => setBlock('aside')], ['💬', 'Quote', () => setBlock('blockquote')], ['🖥️', 'Code block', () => setBlock('pre')],
-        ['📋', 'Bulleted list', () => listCmd('insertUnorderedList')], ['🔢', 'Numbered list', () => listCmd('insertOrderedList')],
-        ['〰️', 'Divider', () => insertBlock('<hr><p><br></p>')], ['📊', 'Table', () => insertBlock('<table><tbody><tr><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td></tr></tbody></table><p><br></p>')],
+        ['📃', 'Paragraph', () => setBlock('p'), 'mod+alt+0'], ['🔠', 'Heading', () => setBlock('h2'), 'mod+alt+2'], ['🔤', 'Subheading', () => setBlock('h3'), 'mod+alt+3'], ['🔡', 'Minor heading', () => setBlock('h4'), 'mod+alt+4'],
+        ['💭', 'Aside', () => setBlock('aside'), 'mod+alt+A'], ['💬', 'Quote', () => setBlock('blockquote'), 'mod+alt+Q'], ['🖥️', 'Code block', () => setBlock('pre'), 'mod+alt+C'],
+        ['📋', 'Bulleted list', () => listCmd('insertUnorderedList'), 'mod+shift+8'], ['🔢', 'Numbered list', () => listCmd('insertOrderedList'), 'mod+shift+7'],
+        ['〰️', 'Divider', () => insertBlock('<hr><p><br></p>'), 'mod+alt+H'], ['📊', 'Table', () => insertBlock('<table><tbody><tr><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td></tr></tbody></table><p><br></p>')],
         null,
-        ['🅱️', 'Bold', () => toggleInline('b')], ['🪶', 'Italic', () => toggleInline('i')], ['❌', 'Strikethrough', () => toggleInline('s')],
+        ['🅱️', 'Bold', () => toggleInline('b'), 'mod+B'], ['🪶', 'Italic', () => toggleInline('i'), 'mod+I'], ['❌', 'Strikethrough', () => toggleInline('s'), 'mod+shift+X'],
         ['➕', 'Inserted (edit)', () => toggleInline('ins')], ['🗑️', 'Deleted (edit)', () => toggleInline('del')],
-        ['💻', 'Code', () => toggleInline('code')], ['⌨️', 'Key', () => toggleInline('kbd')],
-        ['⬇️', 'Subscript', () => toggleInline('sub')], ['⬆️', 'Superscript', () => toggleInline('sup')],
-        ['🏷️', 'Abbreviation', abbr], ['📅', 'Date', timeTag], ['🧽', 'Remove formatting', removeFormats],
+        ['💻', 'Code', () => toggleInline('code'), 'mod+E'], ['⌨️', 'Key', () => toggleInline('kbd'), 'mod+alt+K'],
+        ['⬇️', 'Subscript', () => toggleInline('sub'), 'mod+,'], ['⬆️', 'Superscript', () => toggleInline('sup'), 'mod+.'],
+        ['🏷️', 'Abbreviation', abbr], ['📅', 'Date', timeTag, 'mod+alt+D'], ['🧽', 'Remove formatting', removeFormats, 'mod+\\'],
         null,
-        ['🔗', 'Link', link], ['🏞️', 'Image', image], ['🖼️', 'Figure with caption', figure], ['🎬', 'Video', video],
+        ['🔗', 'Link', link, 'mod+K'], ['🏞️', 'Image', image], ['🖼️', 'Figure with caption', figure], ['🎬', 'Video', video],
         null,
-        ['🌐', 'Note for translators (kept out of the article)', tlNote],
-        ['🤖', 'Note for Claude (kept out of the article)', () => setBlock('p', true)],
+        ['🌐', 'Note for translators (kept out of the article)', tlNote, 'mod+alt+T'],
+        ['🤖', 'Note for Claude (kept out of the article)', () => setBlock('p', true), 'mod+alt+N'],
     ];
+    // A shortcut's key, matched on the key's code so Alt/Option combinations work on a Mac too.
+    const codeOf = (k) => ({ ',': 'Comma', '.': 'Period', '/': 'Slash', '\\': 'Backslash' })[k] || (/^\d$/.test(k) ? `Digit${k}` : `Key${k.toUpperCase()}`);
+    const matchKeys = (e, keys) => { const parts = keys.split('+'), k = parts.pop(); return (MAC ? e.metaKey : e.ctrlKey) && !(MAC ? e.ctrlKey : e.metaKey) && e.shiftKey === parts.includes('shift') && e.altKey === parts.includes('alt') && e.code === codeOf(k); };
     const TAG_OF = { Paragraph: 'p', Heading: 'h2', Subheading: 'h3', 'Minor heading': 'h4', Aside: 'aside', Quote: 'blockquote', 'Code block': 'pre', 'Bulleted list': 'ul', 'Numbered list': 'ol', Bold: 'b', Italic: 'i', Strikethrough: 's', 'Inserted (edit)': 'ins', 'Deleted (edit)': 'del', Code: 'code', Key: 'kbd', Subscript: 'sub', Superscript: 'sup', Abbreviation: 'abbr', Date: 'time', Link: 'a' };
-    $('tb').innerHTML = TAGS.map((t, i) => (t ? `<button type="button" data-i="${i}" title="${esc(t[1])}" aria-label="${esc(t[1])}"${TAG_OF[t[1]] ? ` data-tag="${TAG_OF[t[1]]}"` : ''}>${t[0]}</button>` : '<span class="sep"></span>')).join('');
+    $('tb').innerHTML = TAGS.map((t, i) => (t ? `<button type="button" data-i="${i}" data-name="${esc(t[1].replace(/ \(.*$/, ''))}" title="${esc(t[1])}${t[3] ? ` · ${esc(keyLabel(t[3]))}` : ''}" aria-label="${esc(t[1])}"${t[3] ? ` aria-keyshortcuts="${esc(t[3].replace('mod', MAC ? 'Meta' : 'Control').replace('alt', 'Alt').replace('shift', 'Shift'))}"` : ''}${TAG_OF[t[1]] ? ` data-tag="${TAG_OF[t[1]]}"` : ''}>${t[0]}</button>` : '<span class="sep"></span>')).join('');
     $('tb').addEventListener('mousedown', (e) => { if (e.target.closest('button')) e.preventDefault(); }); // keep the selection
-    $('tb').addEventListener('click', async (e) => { const b = e.target.closest('button'); if (!b) return; await TAGS[+b.dataset.i][2](); clean(doc); changed(); markTags(); });
+    async function runTag(i) { snap(); await TAGS[i][2](); clean(doc); changed(); markTags(); }
+    $('tb').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) runTag(+b.dataset.i); });
     function listCmd(cmd) {
         restore();
         const s = getSelection(), collapsed = s.isCollapsed, an = s.anchorNode, ao = s.anchorOffset;
@@ -422,7 +596,7 @@
         const s = getSelection(), cur = within(s.anchorNode || (lastRange && lastRange.startContainer), 'A');
         if (cur && s.isCollapsed) { const t = document.createTextNode(ZW); cur.after(t); caretAt(t, 1); return; }
         const v = await ask('🔗 link', [{ id: 'href', label: 'address', type: 'url', value: cur ? cur.getAttribute('href') : 'https://' }]); restore();
-        if (!v || !v.href || v.href === 'https://') return;
+        if (!v || !v.href || v.href === 'https://' || !safeUrl(v.href)) return;
         if (cur) cur.setAttribute('href', v.href); else toggleInline('a', { href: v.href });
     }
     // A translator note on a phrase: the selection, or the word at the caret.
@@ -431,7 +605,8 @@
         restore();
         const s = getSelection(), cur = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement).closest('span[data-tl]');
         if (!cur && s.isCollapsed && s.modify) { s.modify('move', 'backward', 'word'); s.modify('extend', 'forward', 'word'); }
-        const keep = s.rangeCount ? s.getRangeAt(0).cloneRange() : null;
+        let keep = s.rangeCount ? s.getRangeAt(0).cloneRange() : null;
+        if (keep && !keep.collapsed) keep = piecesOf(keep)[0] || keep; // one phrase, inside one block
         if (!cur && (!keep || keep.collapsed || !keep.toString().trim())) return;
         const v = await ask('🌐 note for translators', [{ id: 'note', label: cur ? `"${cur.textContent}"` : `"${keep.toString().trim()}"`, value: cur ? cur.getAttribute('data-tl') : '' }]);
         doc.focus(); if (!v) return;
@@ -447,10 +622,22 @@
         const v = await ask('🏷️ abbreviation', [{ id: 'title', label: 'stands for' }]); restore();
         if (v && v.title) toggleInline('abbr', { title: v.title });
     }
-    async function timeTag() {
-        if (within(getSelection().anchorNode, 'TIME')) return toggleInline('time');
-        const v = await ask('📅 date', [{ id: 'dt', label: 'date', type: 'date', value: new Date().toISOString().slice(0, 10) }]); restore();
-        if (v && v.dt) toggleInline('time', { datetime: v.dt });
+    function timeTag() {
+        restore();
+        const s = getSelection(), cur = within(s.anchorNode, 'TIME');
+        let keep = s.rangeCount ? s.getRangeAt(0).cloneRange() : null;
+        if (keep && !keep.collapsed) keep = piecesOf(keep)[0] || keep;
+        const anchor = document.querySelector('#tb [data-tag="time"]');
+        return new Promise((resolve) => openCalendar(anchor, cur ? cur.getAttribute('datetime') : '', (iso) => {
+            doc.focus(); if (keep) { s.removeAllRanges(); s.addRange(keep); }
+            if (cur) { if (iso) cur.setAttribute('datetime', iso); else unwrap(cur); }
+            else if (iso && keep) {
+                const el = document.createElement('time'); el.setAttribute('datetime', iso);
+                if (keep.collapsed) { el.textContent = fmtDate(iso); keep.insertNode(el); const t = document.createTextNode(ZW); el.after(t); caretAt(t, 1); }
+                else { el.append(keep.extractContents()); keep.insertNode(el); }
+            }
+            clean(doc); changed(); resolve();
+        }, !!cur));
     }
     async function image() {
         const v = await ask('🏞️ image', [{ id: 'src', label: 'address', value: '/photos/' }, { id: 'alt', label: 'description' }]);
@@ -467,7 +654,8 @@
     }
     // Keys: Tab moves between table cells and grows the table; ⌘/Ctrl B and I use the switches.
     doc.addEventListener('keydown', (e) => {
-        if ((e.metaKey || e.ctrlKey) && !e.altKey && ['b', 'i'].includes(e.key.toLowerCase())) { e.preventDefault(); toggleInline(e.key.toLowerCase()); changed(); markTags(); return; }
+        const i = TAGS.findIndex((t) => t && t[3] && matchKeys(e, t[3]));
+        if (i >= 0) { e.preventDefault(); runTag(i); return; }
         if (e.key !== 'Tab') return;
         const a = getSelection().anchorNode, cell = a && (a.nodeType === 1 ? a : a.parentElement).closest('td, th');
         if (!cell || !doc.contains(cell)) return;
@@ -477,7 +665,39 @@
         if (!next && !e.shiftKey) { const row = cell.parentElement.cloneNode(true); row.querySelectorAll('td, th').forEach((c) => { c.innerHTML = '<br>'; if (c.tagName === 'TH') { const d = document.createElement('td'); d.innerHTML = '<br>'; c.replaceWith(d); } }); cell.closest('tbody, table').append(row); next = row.firstElementChild; }
         if (next) placeCaret(next);
     });
-    doc.addEventListener('paste', () => setTimeout(() => { clean(doc); changed(); }));
+    doc.addEventListener('paste', () => { snap(); setTimeout(() => { clean(doc); changed(); }); });
+    // Anywhere on the page: undo/redo (ours, see below), save, source.
+    document.addEventListener('keydown', (e) => {
+        if (e.target.closest && e.target.closest('.dlg input, .dlg textarea')) return;
+        if (matchKeys(e, 'mod+Z') || matchKeys(e, 'mod+shift+Z') || (!MAC && matchKeys(e, 'mod+Y'))) {
+            if (document.activeElement === src) return; // the textarea keeps its own undo
+            e.preventDefault(); (matchKeys(e, 'mod+Z') ? undo : redo)();
+        } else if (matchKeys(e, 'mod+S')) { e.preventDefault(); ACTIONS.save(); }
+        else if (matchKeys(e, 'mod+/')) { e.preventDefault(); toggleSource(); }
+    });
+    // The browser's own undo can't see the changes the tag bar makes, so the editor keeps its own:
+    // a snapshot before each tag, paste or change of view, and every pause in typing.
+    const past = [], future = [];
+    const pathOf = (n) => { const p = []; while (n && n !== doc) { p.unshift([...n.parentNode.childNodes].indexOf(n)); n = n.parentNode; } return n === doc ? p : null; };
+    const nodeAt = (p) => { let n = doc; for (const i of p || []) { n = n && n.childNodes[i]; } return n; };
+    function state() {
+        const s = getSelection(), r = s.rangeCount && doc.contains(s.anchorNode) ? s.getRangeAt(0) : null;
+        return { html: doc.innerHTML, a: r && [pathOf(r.startContainer), r.startOffset], b: r && [pathOf(r.endContainer), r.endOffset] };
+    }
+    function snap() { const st = state(); if (!past.length || past[past.length - 1].html !== st.html) { past.push(st); if (past.length > 200) past.shift(); } future.length = 0; }
+    function apply(st) {
+        doc.innerHTML = st.html; doc.focus();
+        try { const a = nodeAt(st.a && st.a[0]), b = nodeAt(st.b && st.b[0]); if (a && b) { const r = document.createRange(); r.setStart(a, Math.min(st.a[1], a.length ?? a.childNodes.length)); r.setEnd(b, Math.min(st.b[1], b.length ?? b.childNodes.length)); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } catch (_) { /* layout changed */ }
+        changed(); markTags();
+    }
+    function undo() { const cur = state(); while (past.length && past[past.length - 1].html === cur.html) past.pop(); if (!past.length) return; future.push(cur); apply(past.pop()); }
+    function redo() { if (!future.length) return; past.push(state()); apply(future.pop()); }
+    let typing = null;
+    doc.addEventListener('beforeinput', (e) => {
+        if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') { e.preventDefault(); (e.inputType === 'historyUndo' ? undo : redo)(); return; }
+        if (!typing) snap();
+        clearTimeout(typing); typing = setTimeout(() => { typing = null; }, 700);
+    });
     doc.addEventListener('input', (e) => {
         if (e.inputType === 'insertParagraph') { const b = topBlock(); if (b && b.hasAttribute('data-note') && b.previousElementSibling?.hasAttribute('data-note') && !b.textContent.replace(new RegExp(ZW, 'g'), '').trim()) b.removeAttribute('data-note'); }
         changed();
@@ -494,7 +714,8 @@
     const pretty = (html) => html.replace(/></g, '>\n<').replace(/\n(<\/?(?:b|i|s|u|strong|em|code|kbd|sub|sup|ins|del|abbr|time|a|br|span)\b)/g, '$1').replace(/(<\/(?:b|i|s|u|strong|em|code|kbd|sub|sup|ins|del|abbr|time|a|span)>)\n/g, '$1');
     function toggleSource() {
         const pane = document.querySelector('.pane-doc');
-        if (pane.classList.contains('source')) { doc.innerHTML = src.value; clean(doc); } else { clean(doc, true); src.value = pretty(doc.innerHTML); }
+        snap();
+        if (pane.classList.contains('source')) importHtml(src.value); else { clean(doc, true); src.value = pretty(doc.innerHTML); }
         pane.classList.toggle('source');
         changed();
     }
@@ -503,7 +724,7 @@
 
     // ---------- draft ----------
     function save() {
-        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, slug: $('slug').value, prefix: $('prefix').value, date: $('date').value, author: $('author').value, kw: [...selectedKw] })); } catch (_) { /* full or blocked */ }
+        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, desc: $('desc').value, slug: $('slug').value, prefix: $('prefix').value, date: dateVal(), author: $('author').value, kw: [...selectedKw] })); } catch (_) { /* full or blocked */ }
     }
     function changed() {
         const words = (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim().match(/\S+/g) || []).length;
@@ -511,25 +732,26 @@
         $('stats').textContent = `${doc.children.length} blocks · ${words} words${notes ? ` · ${notes} translator note${notes === 1 ? '' : 's'}` : ''}`;
         save();
     }
-    ['title', 'slug', 'prefix', 'date', 'author'].forEach((id) => $(id).addEventListener('input', save));
+    ['title', 'desc', 'slug', 'prefix', 'author'].forEach((id) => $(id).addEventListener('input', save));
     try {
         const d = JSON.parse(localStorage.getItem(DRAFT));
         if (d) {
-            doc.innerHTML = d.html || ''; clean(doc);
-            $('title').value = d.title || ''; $('slug').value = d.slug || ''; $('prefix').value = d.prefix || '';
-            if (d.date) $('date').value = d.date; if (d.author) $('author').value = d.author;
+            importHtml(d.html || '');
+            $('title').value = d.title || ''; $('desc').value = d.desc || ''; $('slug').value = d.slug || ''; $('prefix').value = d.prefix || '';
+            if (/^\d{4}-\d\d-\d\d$/.test(d.date || '')) setDate(d.date); if (d.author) $('author').value = d.author;
             (d.kw || []).forEach((k) => addChip(k, true));
             if (d.slug) $('slug').dataset.touched = '1'; if (d.prefix) $('prefix').dataset.touched = '1';
+            if (d.title && (!d.slug || !d.prefix)) autoFill();
         }
     } catch (_) { /* no draft */ }
     if (!doc.children.length) doc.innerHTML = '<p><br></p>';
     showName();
     function newDoc() {
         if (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim() && !confirm('Start a new article? This draft will be cleared.')) return;
-        doc.innerHTML = '<p><br></p>'; src.value = '';
-        ['title', 'slug', 'prefix'].forEach((id) => { $(id).value = ''; delete $(id).dataset.touched; });
+        snap(); doc.innerHTML = '<p><br></p>'; src.value = '';
+        ['title', 'desc', 'slug', 'prefix'].forEach((id) => { $(id).value = ''; delete $(id).dataset.touched; });
         [...selectedKw].forEach((k) => addChip(k, false));
-        $('date').valueAsDate = new Date(); $('pub-status').textContent = '';
+        setDate(); $('pub-status').textContent = '';
         changed(); checkSlug(); showName(); openDlg('dlg-props');
     }
 
@@ -541,7 +763,7 @@
         const slug = slugify($('slug').value) || 'untitled';
         const prefix = slugify($('prefix').value).replace(/-/g, '') || 'untitled';
         const author = $('author').value.trim() || 'Wendy Zhulkovsky';
-        const iso = ($('date').valueAsDate || new Date()).toISOString().replace(/\.\d+Z$/, 'Z');
+        const iso = `${dateVal()}T00:00:00Z`, desc = $('desc').value.trim();
         const en = {}, notes = {}, used = new Set(), body = [], nav = [];
         // A block's English without its translator notes; the notes go to their own file.
         const textOf = (el, key) => {
@@ -556,8 +778,10 @@
         const keyFor = (el, attr, make) => { let k = el.getAttribute(attr); if (!k || seen.has(k)) { do { k = make(); } while (taken.has(k) || seen.has(k)); } seen.add(k); return k; };
         const img = (el) => { const k = keyFor(el, 'data-alt-key', () => `${prefix}_alt${++n.alt}`); en[k] = el.getAttribute('alt') || ''; return `<img src="${esc(el.getAttribute('src') || '')}" alt="${esc(en[k])}" data-alt-key="${k}" class="article-image" style="max-height: 300px;">`; };
         en[`${prefix}_win_gallery_title`] = `▤ ${prefix}.article`;
-        en[`${prefix}_title`] = title;
-        en[`${prefix}_nav_title`] = title;
+        en[`${prefix}_title`] = esc(title); // text, not markup: the site puts these in with innerHTML
+        en[`${prefix}_nav_title`] = esc(title);
+        // The description is the italic first paragraph (the blog list and translations read it from there).
+        if (desc) en[`${prefix}_desc`] = `<i>${esc(desc)}</i>`;
         const I = '            ';
         for (const el of doc.children) {
             const text = el.textContent.trim();
@@ -593,7 +817,7 @@
     <meta charset="UTF-8">
     <meta name="eink-compatibility" content="optimized">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="${esc([...selectedKw].join(', '))}">
+    <meta name="keywords" content="${esc([...selectedKw].join(', '))}">${desc ? `\n    <meta name="description" content="${esc(desc)}">` : ''}
     <meta name="author" content="${esc(author)}">
     <meta name="pubDate" content="${iso}">
     <meta name="translation-source" content="${prefix}">
@@ -619,7 +843,7 @@ ${nav.join('\n')}
         <div class="title-bar"><span class="title" data-key="${prefix}_win_gallery_title">▤ ${prefix}.article</span><button
                 class="close-btn">&times;</button></div>
         <article class="content">
-            <h1 id="title" data-key="${prefix}_title"></h1>
+            <h1 id="title" data-key="${prefix}_title"></h1>${desc ? `\n${I}<p data-key="${prefix}_desc"></p>` : ''}
 ${body.join('\n')}
         </article>
     </main>
@@ -659,12 +883,15 @@ ${body.join('\n')}
         closeDlg($('dlg-github'));
     });
     $('gh-forget').addEventListener('click', () => { const c = ghCfg(); delete c.token; try { localStorage.setItem(GH, JSON.stringify(c)); } catch (_) { /* blocked */ } $('gh-token').value = ''; });
+    let publishing = false;
     async function publish() {
+        if (publishing) return;
         const c = ghCfg();
         if (!c.token) { openGithub(); return; }
-        if (!$('title').value.trim()) { openDlg('dlg-props'); return; }
+        if (!$('title').value.trim() || !slugify($('slug').value) || !slugify($('prefix').value)) { openDlg('dlg-props'); checkSlug(); return; }
+        if (!/^[\w.-]+\/[\w.-]+$/.test(c.repo || '')) { openGithub(); return; }
         if (slugTaken() && !confirm('A post with this slug already exists. Publishing replaces its files. Continue?')) return;
-        const status = $('pub-status'); status.textContent = 'publishing…';
+        const status = $('pub-status'); status.textContent = 'publishing…'; publishing = true;
         const gh = async (path, opts = {}) => {
             const r = await fetch(`https://api.github.com${path}`, { ...opts, headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) } });
             const j = r.status === 204 ? null : await r.json().catch(() => null);
@@ -695,8 +922,11 @@ ${body.join('\n')}
             }
             status.innerHTML = `published: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(url.replace(/^https:\/\/github\.com\//, ''))}</a>`;
         } catch (e) {
-            status.textContent = e.status === 401 ? '✗ GitHub refused the token' : `✗ ${e.message}`;
-        }
+            status.textContent = e.status === 401 ? '✗ GitHub refused the token'
+                : e.status === 404 ? '✗ GitHub found no such repository or branch, or the token can’t see it (File → GitHub settings)'
+                : e.status === 403 ? '✗ the token isn’t allowed to do that (it needs Contents and Pull requests: read and write)'
+                : e instanceof TypeError ? '✗ couldn’t reach GitHub' : `✗ ${e.message}`;
+        } finally { publishing = false; }
     }
 
     // ---------- menu actions ----------
@@ -705,15 +935,27 @@ ${body.join('\n')}
         props: () => openDlg('dlg-props'),
         source: toggleSource,
         files: () => { generate(); openDlg('dlg-files'); },
+        undo, redo,
+        save: () => { save(); const st = $('pub-status'); if (!publishing) { st.textContent = 'draft saved'; setTimeout(() => { if (st.textContent === 'draft saved') st.textContent = ''; }, 1500); } },
+        keys: () => {
+            const rows = TAGS.filter((x) => x && x[3]).map((x) => [x[3], x[1].replace(/ \(.*$/, '')]).concat([['mod+Z', 'Undo'], ['mod+shift+Z', 'Redo'], ['mod+S', 'Save draft'], ['mod+/', 'Source'], ['Tab', 'Next table cell (adds a row at the end)'], ['Escape', 'Close a dialog, menu or calendar'], ['F10', 'Menus (then arrows)']]);
+            $('keys-list').innerHTML = rows.map(([k, n]) => `<dt>${esc(/\+/.test(k) ? keyLabel(k) : k)}</dt><dd>${esc(n)}</dd>`).join('');
+            openDlg('dlg-keys');
+        },
     };
+    document.addEventListener('keydown', (e) => { if (e.key === 'F10') { e.preventDefault(); const t = document.querySelector('.menubar .top'); t.parentElement.classList.add('open'); t.parentElement.querySelector('.menu button').focus(); } });
     $('dlg-props').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) { save(); showName(); } });
+    $('doc-head').addEventListener('click', () => openDlg('dlg-props'));
 
     changed();
     // A blank draft starts with its title.
     if (!$('title').value.trim() && !doc.textContent.trim()) openDlg('dlg-props');
 })();
 </script>
-<!-- The site's own monochrome emoji (as everywhere else), not the device's colour set. It leaves the editable article alone. -->
-<script src="/scripts/emoji.js" defer></script>
+<!-- The site's own parts, as on every page: themes (Funky and Zikit are set at run time), cursors, the launcher,
+     and monochrome emoji. The window manager only handles .window, and letter keys ignore typing. -->
+<div id="settings-module-placeholder"></div>
+<div id="start-menu-module-placeholder"></div>
+<script src="/scripts/module-loader.js" defer></script>
 </body>
 </html>

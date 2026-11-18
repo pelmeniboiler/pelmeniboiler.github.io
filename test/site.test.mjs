@@ -1541,7 +1541,7 @@ try {
         await p.fill('#title', 'Gear Test');
         const prefix = await p.inputValue('#prefix');
         await p.click('#dlg-props .chip[data-close]');
-        const tag = (name) => p.click(`#tb button[title${name.startsWith('Note for') ? '^' : ''}="${name}"]`);
+        const tag = (name) => p.click(`#tb button[data-name="${name}"]`);
         await p.click('#doc'); await p.keyboard.type('E=mc');
         await tag('Superscript'); await p.keyboard.type('2'); await tag('Superscript'); await p.keyboard.type(' and ');
         await tag('Code'); await p.keyboard.type('ls'); await tag('Code'); await p.keyboard.type(' done');
@@ -1563,7 +1563,7 @@ try {
         // A translator note on a phrase: kept out of the English, saved beside it, published with it, kept in the draft.
         await p.evaluate(() => { const t = [...document.querySelectorAll('#doc p')].find((x) => /Back to prose/.test(x.textContent)).firstChild; const r = document.createRange(); r.setStart(t, 8); r.setEnd(t, 13); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
         await tag('Note for translators');
-        await p.fill('#ask-note', 'keep the pun'); await p.press('#ask-note', 'Enter');
+        await p.fill('#askf-note', 'keep the pun'); await p.press('#askf-note', 'Enter');
         await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]');
         const en2 = JSON.parse(await p.inputValue('#out-json')).en, notes = JSON.parse(await p.inputValue('#out-notes') || '{}');
         await p.keyboard.press('Escape');
@@ -1576,6 +1576,81 @@ try {
         const noteKey = Object.keys(notes)[0];
         ok(noteKey && notes[noteKey][0].text === 'prose' && notes[noteKey][0].note === 'keep the pun' && /Back to prose\./.test(en2[noteKey]) && !/data-tl|span/.test(JSON.stringify(en2)) && paths.includes(`localization/notes/${prefix}.json`) && kept === 1 && errs.length === 0,
             `Sofrut II: a translator note stays out of the English, goes to localization/notes/ and is published with it (${JSON.stringify({ notes, paths, kept, errs })})`);
+    }
+
+    // Sofrut II, round two: description, the site's calendar (never the browser's), shortcuts, undo,
+    // source view that can't run code, themed cursors, and a sheet the window manager leaves alone.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        await c.addInitScript(() => { localStorage.setItem('pelmeniboiler-theme', 'moroz'); localStorage.setItem('pelmeniboiler-mode', 'lcd'); });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('dialog', (d) => d.accept());
+        await p.goto(`${BASE}/tools/sofrut2.html`, { waitUntil: 'load' });
+        await p.waitForSelector('#dlg-props:not([hidden])');
+        const native = await p.evaluate(() => document.querySelectorAll('input[type=date], input[type=time], input[type=datetime-local]').length);
+        await p.fill('#title', 'Calendar Test'); await p.fill('#desc', 'A "quoted" <description>');
+        await p.click('#date'); await p.waitForSelector('.cal');
+        await p.click('.cal [data-step="-1"]'); await p.click('.cal .cal-day >> nth=14');
+        const picked = await p.getAttribute('#date', 'data-value'), dateText = await p.textContent('#date');
+        await p.click('#dlg-props .chip[data-close]');
+        const mod = await p.evaluate(() => (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? 'Meta' : 'Control'));
+        await p.click('#doc'); await p.keyboard.type('Water is H');
+        await p.keyboard.press(`${mod}+Comma`); await p.keyboard.type('2'); await p.keyboard.press(`${mod}+Comma`); await p.keyboard.type('O on ');
+        await p.click('#tb button[data-name="Date"]'); await p.waitForSelector('.cal'); await p.click('.cal-foot button:has-text("Today")');
+        await p.keyboard.type(' and ');
+        await p.keyboard.press(`${mod}+KeyB`); await p.keyboard.type('bold'); await p.keyboard.press(`${mod}+KeyB`);
+        await p.keyboard.press(`${mod}+Alt+Digit2`);
+        const afterKeys = await p.$eval('#doc', (d) => d.innerHTML.replace(/\u200B/g, '').replace(/&nbsp;/g, ' '));
+        await p.keyboard.press(`${mod}+KeyZ`);
+        const afterUndo = await p.$eval('#doc', (d) => d.innerHTML);
+        await p.keyboard.press(`${mod}+Shift+KeyZ`);
+        const afterRedo = await p.$eval('#doc', (d) => d.innerHTML);
+        // Source view: a would-be script and an image error handler must never run.
+        await p.evaluate(() => { window.__ran = 0; });
+        await p.keyboard.press(`${mod}+Slash`);
+        await p.fill('#src', '<p>safe</p><img src="x" onerror="window.__ran=1"><script>window.__ran=2<\/script><style>p{}</style><a href="javascript:window.__ran=3">x</a>');
+        await p.keyboard.press(`${mod}+Slash`); await p.waitForTimeout(300);
+        const ran = await p.evaluate(() => window.__ran), cleaned = await p.$eval('#doc', (d) => d.innerHTML);
+        await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]');
+        const html = await p.inputValue('#out-html'), en = JSON.parse(await p.inputValue('#out-json')).en;
+        await p.keyboard.press('Escape');
+        const look = await p.evaluate(() => {
+            const cur = (el) => { const v = getComputedStyle(el).cursor; return v.startsWith('url') ? decodeURIComponent((v.match(/fill%3D'([^']+)'/) || [])[1] || '') : v; };
+            return { doc: cur(document.querySelector('#doc')) || 'svg', dlgBar: getComputedStyle(document.querySelector('#dlg-props .title-bar')).cursor.slice(0, 3), body: cur(document.body), sheetIsWindow: document.querySelector('.pane-doc').classList.contains('window') };
+        });
+        await c.close();
+        ok(native === 0 && /^\d{4}-\d\d-15$/.test(picked) && /15 /.test(dateText) && html.includes(`<meta name="pubDate" content="${picked}T00:00:00Z">`),
+            `Sofrut II: dates come from the site's calendar, never the browser's (${JSON.stringify({ native, picked, dateText })})`);
+        ok(html.includes('<meta name="description" content="A &quot;quoted&quot; &lt;description&gt;">') && en.ct_desc === '<i>A &quot;quoted&quot; &lt;description&gt;</i>' && /data-key="ct_title"><\/h1>\s*<p data-key="ct_desc">/.test(html),
+            `Sofrut II: the description is the meta description and the italic first paragraph (${JSON.stringify(en.ct_desc)})`);
+        ok(/H<sub>2<\/sub>O on <time datetime="\d{4}-\d\d-\d\d">\d+ \w+ \d{4}<\/time>/.test(afterKeys) && /<b>bold<\/b>/.test(afterKeys) && /^<h2>/.test(afterKeys) && /^<p>/.test(afterUndo) && /^<h2>/.test(afterRedo),
+            `Sofrut II: shortcuts, the 📅 tag and undo/redo work (${JSON.stringify({ afterKeys: afterKeys.slice(0, 160), undo: afterUndo.slice(0, 12), redo: afterRedo.slice(0, 12) })})`);
+        ok(ran === 0 && !/script|style|onerror|javascript:/i.test(cleaned) && /safe/.test(cleaned),
+            `Sofrut II: HTML from source view is cleaned before it can run (${JSON.stringify({ ran, cleaned })})`);
+        ok(look.doc && /17303F/i.test(look.body) && look.dlgBar === 'url' && !look.sheetIsWindow && errs.length === 0,
+            `Sofrut II: themed cursors everywhere, no plain OS arrow on dialog title bars (${JSON.stringify({ ...look, errs })})`);
+    }
+
+    // Sofrut II, found by trying to break it: formatting across paragraphs, dialogs keeping the selection
+    // (links, abbreviations), and blocks nested by broken source.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/tools/sofrut2.html`, { waitUntil: 'load' }); await p.waitForSelector('#dlg-props:not([hidden])');
+        await p.fill('#title', 'Break Test'); await p.click('#dlg-props .chip[data-close]');
+        const tag = (n) => p.click(`#tb button[data-name="${n}"]`);
+        const sel = (a, ai, z, zi) => p.evaluate(([a, ai, z, zi]) => { const ps = [...document.querySelectorAll('#doc > *')]; const tn = (el) => document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode(); const r = document.createRange(); r.setStart(tn(ps[a]), ai); r.setEnd(tn(ps[z]), zi); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }, [a, ai, z, zi]);
+        await p.click('#doc'); await p.keyboard.type('the GRA says to read the manual'); await p.keyboard.press('Enter'); await p.keyboard.type('Second paragraph here.');
+        await sel(0, 4, 0, 7); await tag('Abbreviation'); await p.fill('#askf-title', 'Vilna Gaon'); await p.press('#askf-title', 'Enter');
+        await p.evaluate(() => { const w = document.createTreeWalker(document.querySelector('#doc p'), NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode()) && !n.data.includes('manual')); const i = n.data.indexOf('manual'), r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 6); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+        await tag('Link'); await p.fill('#askf-href', 'https://example.com/m'); await p.press('#askf-href', 'Enter');
+        await p.evaluate(() => { const ps = document.querySelectorAll('#doc > p'), r = document.createRange(); r.setStart(ps[0], 0); r.setEnd(document.createTreeWalker(ps[1], NodeFilter.SHOW_TEXT).nextNode(), 6); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+        await tag('Italic');
+        const across = await p.$eval('#doc', (d) => d.innerHTML.replace(/​/g, ''));
+        await p.keyboard.press('Control+Slash'); await p.fill('#src', '<h2><b>head<p>para</p></b></h2><aside><p>one</p><p>two</p></aside>'); await p.keyboard.press('Control+Slash');
+        const nested = await p.$eval('#doc', (d) => d.innerHTML);
+        await c.close();
+        ok(/<abbr title="Vilna Gaon">GRA<\/abbr>/.test(across) && /<a href="https:\/\/example.com\/m">manual<\/a>/.test(across) && (across.match(/<i>/g) || []).length === 2 && /<\/i><\/p><p><i>/.test(across) && !/<(p|h2)\b[^>]*>[^<]*<(b|i)>[^<]*<p>/.test(nested) && /<aside>one<br>two<\/aside>/.test(nested) && errs.length === 0,
+            `Sofrut II: formatting across paragraphs, dialogs keep the selection, nested blocks unwrapped (${JSON.stringify({ across: across.slice(0, 220), nested })})`);
     }
 
     await browser.close();
