@@ -16,6 +16,7 @@
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs",
     "vault:check": "node build/vault-check.mjs",
+    "gt:eval": "node build/gt-eval.mjs",
     "preview": "python3 -m http.server 8000 --directory _site",
     "clean": "rm -rf _site"
   },
