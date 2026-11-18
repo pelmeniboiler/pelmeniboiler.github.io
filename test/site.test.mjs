@@ -1515,6 +1515,29 @@ try {
         ok(!before && fromLink && onArrival, `Window links: the clock link opens shaon.zmanim, and so does arriving with its hash (${JSON.stringify({ before, fromLink, onArrival })})`);
     }
 
+    // The vault: a translation that makes the author a man, adds a dash she didn't write, drops her
+    // semicolon, or misnames a settled term is caught; a faithful one isn't.
+    {
+        const { judge, loadRules } = await import('../build/vault-check.mjs');
+        const rules = await loadRules();
+        const rulesOf = (lang, en, t) => judge(rules, lang, en, t).map((h) => h.rule).sort();
+        const bad = {
+            masc: rulesOf('ru', 'I was sure.', 'Я был уверен.'),
+            mascHe: rulesOf('he', "I'm glad.", 'אני שמח.'),
+            dash: rulesOf('de', 'Motorcycles are great, mostly.', 'Motorräder sind toll — meistens.'),
+            semi: rulesOf('ja', 'It works; mostly.', 'うまくいきます。だいたいは。'),
+            term: rulesOf('de', 'The Great Escape', 'Die große Flucht'),
+            claude: rulesOf('ru', 'Claude', 'Клод'),
+        };
+        const good = [rulesOf('ru', 'I was sure.', 'Я была уверена.'), rulesOf('he', "I'm glad.", 'אני שמחה.'), rulesOf('de', 'The Great Escape', 'Gesprengte Ketten'), rulesOf('ru', 'Washington', 'Вашингтон')];
+        const caught = bad.masc.includes('author-feminine') && bad.mascHe.includes('author-feminine') && bad.dash.includes('no-new-dash')
+            && bad.semi.includes('keep-semicolons') && bad.term.some((r) => r.startsWith('term:')) && bad.claude.includes('claude-latin') && good.every((g) => g.length === 0);
+        // ...and the Graflect dictionary ships the words learned from her articles.
+        const gd = await fs.readFile(path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), 'utf-8');
+        const learned = Object.keys(JSON.parse((gd.match(/const articleWordMap = (\{.*\});/) || [, '{}'])[1])).length;
+        ok(caught && learned > 1000, `Vault rules catch the wrong lines and pass the right ones; Graflect learned ${learned} words from the articles (${JSON.stringify({ bad, good })})`);
+    }
+
     // The daylight figure: the north pole turns the axis through the year, dated in the Hebrew calendar.
     {
         const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });

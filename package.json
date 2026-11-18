@@ -15,6 +15,7 @@
     "fonts": "python3 build/fonts.py && python3 build/font-slices.py",
     "cursors": "node build/generate-cursors.mjs",
     "tl:auto": "node build/tl-auto.mjs",
+    "vault:check": "node build/vault-check.mjs",
     "preview": "python3 -m http.server 8000 --directory _site",
     "clean": "rm -rf _site"
   },

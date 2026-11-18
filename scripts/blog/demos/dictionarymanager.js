@@ -124,6 +124,11 @@ class DictionaryManager {
                 if (!newDict.graphemes || Object.keys(newDict.graphemes).length === 0) {
                     newDict.graphemes = { ...defaultGraphemeMap };
                 }
+                // The default dictionary keeps learning from the articles: add words it
+                // doesn't have yet, never overwriting the ones already there (or edited).
+                if (newDict.name === "Wendy's Accent" && newDict.words) {
+                    for (const [w, g] of Object.entries(defaultWordMap)) if (!(w in newDict.words)) newDict.words[w] = g;
+                }
                 return newDict;
             });
             this.activeDictionaryIndex = storedIndex ? parseInt(storedIndex, 10) : 0;

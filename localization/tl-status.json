@@ -465,6 +465,90 @@
       "ja": "317ff4d93121",
       "gt": "317ff4d93121"
     },
+    "dv_alt_bad_breakfast": {
+      "he": "4628b6658257",
+      "ru": "4628b6658257",
+      "de": "4628b6658257",
+      "ja": "4628b6658257"
+    },
+    "dv_alt_basil_gondola_misha": {
+      "he": "b31d39c4d6f4",
+      "ru": "b31d39c4d6f4",
+      "de": "b31d39c4d6f4",
+      "ja": "b31d39c4d6f4"
+    },
+    "dv_alt_burger": {
+      "he": "53be6d7e0b44",
+      "ru": "53be6d7e0b44",
+      "de": "53be6d7e0b44",
+      "ja": "53be6d7e0b44"
+    },
+    "dv_alt_cherries": {
+      "he": "95fa70d31a23",
+      "ru": "95fa70d31a23",
+      "de": "95fa70d31a23",
+      "ja": "95fa70d31a23"
+    },
+    "dv_alt_gokart": {
+      "he": "e2b7fa30a1cd",
+      "ru": "e2b7fa30a1cd",
+      "de": "e2b7fa30a1cd",
+      "ja": "e2b7fa30a1cd"
+    },
+    "dv_alt_gondola_tv": {
+      "he": "49d4701e3561",
+      "ru": "49d4701e3561",
+      "de": "49d4701e3561",
+      "ja": "49d4701e3561"
+    },
+    "dv_alt_goth": {
+      "he": "bb953e4c0f30",
+      "ru": "bb953e4c0f30",
+      "de": "bb953e4c0f30",
+      "ja": "bb953e4c0f30"
+    },
+    "dv_alt_north_strip": {
+      "he": "ff77796408b5",
+      "ru": "ff77796408b5",
+      "de": "ff77796408b5",
+      "ja": "ff77796408b5"
+    },
+    "dv_alt_plane": {
+      "he": "57f8e5f8b61d",
+      "ru": "57f8e5f8b61d",
+      "de": "57f8e5f8b61d",
+      "ja": "57f8e5f8b61d"
+    },
+    "dv_alt_scooter": {
+      "he": "a08349fad299",
+      "ru": "a08349fad299",
+      "de": "a08349fad299",
+      "ja": "a08349fad299"
+    },
+    "dv_alt_sign": {
+      "he": "4f84fd7480c0",
+      "ru": "4f84fd7480c0",
+      "de": "4f84fd7480c0",
+      "ja": "4f84fd7480c0"
+    },
+    "dv_alt_vegas": {
+      "he": "630fca3a3821",
+      "ru": "630fca3a3821",
+      "de": "630fca3a3821",
+      "ja": "630fca3a3821"
+    },
+    "dv_alt_vic": {
+      "he": "e1ea128bda81",
+      "ru": "e1ea128bda81",
+      "de": "e1ea128bda81",
+      "ja": "e1ea128bda81"
+    },
+    "dv_alt_wheel": {
+      "he": "0f229e2a7015",
+      "ru": "0f229e2a7015",
+      "de": "0f229e2a7015",
+      "ja": "0f229e2a7015"
+    },
     "dv_h1": {
       "he": "c70ef86edf55",
       "ru": "c70ef86edf55",
@@ -964,6 +1048,138 @@
     }
   },
   "epark": {
+    "ep_alt_004elizabeth_park": {
+      "he": "16323beddb30",
+      "ru": "16323beddb30",
+      "de": "16323beddb30",
+      "ja": "16323beddb30"
+    },
+    "ep_alt_014elizabeth_park": {
+      "he": "6c65eb72ec3c",
+      "ru": "6c65eb72ec3c",
+      "de": "6c65eb72ec3c",
+      "ja": "6c65eb72ec3c"
+    },
+    "ep_alt_015elizabeth_park": {
+      "he": "bab16acf44b3",
+      "ru": "bab16acf44b3",
+      "de": "bab16acf44b3",
+      "ja": "bab16acf44b3"
+    },
+    "ep_alt_aaah": {
+      "he": "52c31897b2ef",
+      "ru": "52c31897b2ef",
+      "de": "52c31897b2ef",
+      "ja": "52c31897b2ef"
+    },
+    "ep_alt_bee": {
+      "he": "5984bfbb620a",
+      "ru": "5984bfbb620a",
+      "de": "5984bfbb620a",
+      "ja": "5984bfbb620a"
+    },
+    "ep_alt_bee2": {
+      "he": "89704a97134e",
+      "ru": "89704a97134e",
+      "de": "89704a97134e",
+      "ja": "89704a97134e"
+    },
+    "ep_alt_bee3": {
+      "he": "4fcd8e9e3086",
+      "ru": "4fcd8e9e3086",
+      "de": "4fcd8e9e3086",
+      "ja": "4fcd8e9e3086"
+    },
+    "ep_alt_bee4": {
+      "he": "fa22a440a38c",
+      "ru": "fa22a440a38c",
+      "de": "fa22a440a38c",
+      "ja": "fa22a440a38c"
+    },
+    "ep_alt_flowers": {
+      "he": "345e9eb5e963",
+      "ru": "345e9eb5e963",
+      "de": "345e9eb5e963",
+      "ja": "345e9eb5e963"
+    },
+    "ep_alt_flowers3": {
+      "he": "ac0ced78bd22",
+      "ru": "ac0ced78bd22",
+      "de": "ac0ced78bd22",
+      "ja": "ac0ced78bd22"
+    },
+    "ep_alt_freckle": {
+      "he": "25b7432f006f",
+      "ru": "25b7432f006f",
+      "de": "25b7432f006f",
+      "ja": "25b7432f006f"
+    },
+    "ep_alt_patch2": {
+      "he": "a393473e46f0",
+      "ru": "a393473e46f0",
+      "de": "a393473e46f0",
+      "ja": "a393473e46f0"
+    },
+    "ep_alt_patch5": {
+      "he": "a16ee85e3c5a",
+      "ru": "a16ee85e3c5a",
+      "de": "a16ee85e3c5a",
+      "ja": "a16ee85e3c5a"
+    },
+    "ep_alt_poke": {
+      "he": "ee0a36d9e460",
+      "ru": "ee0a36d9e460",
+      "de": "ee0a36d9e460",
+      "ja": "ee0a36d9e460"
+    },
+    "ep_alt_rbush": {
+      "he": "941122b0aa2c",
+      "ru": "941122b0aa2c",
+      "de": "941122b0aa2c",
+      "ja": "941122b0aa2c"
+    },
+    "ep_alt_red": {
+      "he": "11202e985463",
+      "ru": "11202e985463",
+      "de": "11202e985463",
+      "ja": "11202e985463"
+    },
+    "ep_alt_rose": {
+      "he": "7f2b2f69e624",
+      "ru": "7f2b2f69e624",
+      "de": "7f2b2f69e624",
+      "ja": "7f2b2f69e624"
+    },
+    "ep_alt_square": {
+      "he": "7499c4b1df7a",
+      "ru": "7499c4b1df7a",
+      "de": "7499c4b1df7a",
+      "ja": "7499c4b1df7a"
+    },
+    "ep_alt_whanging": {
+      "he": "ba7c61227885",
+      "ru": "ba7c61227885",
+      "de": "ba7c61227885",
+      "ja": "ba7c61227885"
+    },
+    "ep_alt_ybush": {
+      "he": "d100b670cb63",
+      "ru": "d100b670cb63",
+      "de": "d100b670cb63",
+      "ja": "d100b670cb63"
+    },
+    "ep_alt_yellow": {
+      "he": "674a8b7490b2",
+      "ru": "674a8b7490b2",
+      "de": "674a8b7490b2",
+      "ja": "674a8b7490b2"
+    },
+    "ep_alt_yummy": {
+      "he": "62bbd4814266",
+      "ru": "62bbd4814266",
+      "de": "62bbd4814266",
+      "ja": "62bbd4814266"
+    },
     "ep_h1": {
       "he": "a4e5df7d11d0",
       "ru": "a4e5df7d11d0",
@@ -2527,6 +2743,50 @@
       "ja": "f06a6fe28825"
     }
   },
+  "history": {
+    "history_alt1": {
+      "he": "96ed4670daeb",
+      "ru": "96ed4670daeb",
+      "de": "96ed4670daeb",
+      "ja": "96ed4670daeb"
+    },
+    "history_alt2": {
+      "he": "71eebadb60c7",
+      "ru": "71eebadb60c7",
+      "de": "71eebadb60c7",
+      "ja": "71eebadb60c7"
+    },
+    "history_alt3": {
+      "he": "abfa1ff2a15c",
+      "ru": "abfa1ff2a15c",
+      "de": "abfa1ff2a15c",
+      "ja": "abfa1ff2a15c"
+    },
+    "history_alt4": {
+      "he": "be6a45040a92",
+      "ru": "be6a45040a92",
+      "de": "be6a45040a92",
+      "ja": "be6a45040a92"
+    },
+    "history_alt5": {
+      "he": "51954be609a8",
+      "ru": "51954be609a8",
+      "de": "51954be609a8",
+      "ja": "51954be609a8"
+    },
+    "history_alt6": {
+      "he": "83032ae9c75b",
+      "ru": "83032ae9c75b",
+      "de": "83032ae9c75b",
+      "ja": "83032ae9c75b"
+    },
+    "history_alt7": {
+      "he": "b9c20f1faa3f",
+      "ru": "b9c20f1faa3f",
+      "de": "b9c20f1faa3f",
+      "ja": "b9c20f1faa3f"
+    }
+  },
   "index": {
     "applib_demos_h4": {
       "he": "70e98dd0cf71",
@@ -3674,6 +3934,54 @@
       "de": "30a6642b9e60",
       "ja": "30a6642b9e60",
       "gt": "30a6642b9e60"
+    },
+    "sunshine_alt_cardboard_4": {
+      "he": "7cc3076f0fff",
+      "ru": "7cc3076f0fff",
+      "de": "7cc3076f0fff",
+      "ja": "7cc3076f0fff"
+    },
+    "sunshine_alt_cardboard_5": {
+      "he": "532a88bc9d38",
+      "ru": "532a88bc9d38",
+      "de": "532a88bc9d38",
+      "ja": "532a88bc9d38"
+    },
+    "sunshine_alt_pcb2": {
+      "he": "9bdd97b3717f",
+      "ru": "9bdd97b3717f",
+      "de": "9bdd97b3717f",
+      "ja": "9bdd97b3717f"
+    },
+    "sunshine_alt_pcb3": {
+      "he": "08a8e5992ef2",
+      "ru": "08a8e5992ef2",
+      "de": "08a8e5992ef2",
+      "ja": "08a8e5992ef2"
+    },
+    "sunshine_alt_pcb4": {
+      "he": "b19783a5d9f9",
+      "ru": "b19783a5d9f9",
+      "de": "b19783a5d9f9",
+      "ja": "b19783a5d9f9"
+    },
+    "sunshine_alt_pcb5": {
+      "he": "6d2afe370ea0",
+      "ru": "6d2afe370ea0",
+      "de": "6d2afe370ea0",
+      "ja": "6d2afe370ea0"
+    },
+    "sunshine_alt_pcb6": {
+      "he": "e83dc728e5c9",
+      "ru": "e83dc728e5c9",
+      "de": "e83dc728e5c9",
+      "ja": "e83dc728e5c9"
+    },
+    "sunshine_alt_very_last": {
+      "he": "c53eeb5f0558",
+      "ru": "c53eeb5f0558",
+      "de": "c53eeb5f0558",
+      "ja": "c53eeb5f0558"
     },
     "sunshine_h1": {
       "he": "6186ed0f5ba1",
