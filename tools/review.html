@@ -17,7 +17,7 @@
         .desk { max-width: 860px; margin: 0 auto; }
         .sheet { position: relative; border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); }
         .sheet > .title-bar { cursor: var(--cur-default); }
-        .sheet > .content { padding: 12px; }
+        .sheet > .content { padding: 12px; max-height: none; overflow: visible; }
         .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); margin-bottom: 12px; }
         .bar select, .bar input, .q textarea { font: inherit; color: var(--text-color); background: var(--win-bg-color); border: 2px solid var(--border-color); padding: 4px 6px; box-sizing: border-box; }
         .bar button, .q button, .line > button { font: inherit; color: var(--text-color); background: var(--win-bg-color); border: 2px solid var(--border-color); padding: 4px 10px; cursor: var(--cur-pointer); }
@@ -92,7 +92,7 @@
 
     async function load() {
         let index = [];
-        try { index = await (await fetch('/tools/reviews/index.json', { cache: 'no-cache' })).json(); } catch (_) { /* none yet */ }
+        try { index = await (await fetch('/localization/reviews/index.json', { cache: 'no-cache' })).json(); } catch (_) { /* none yet */ }
         if (!index.length) { $('status').textContent = 'No reviews yet.'; return; }
         $('pick-article').innerHTML = index.map((r) => `<option value="${esc(r.article)}">${esc(r.title)} (round ${r.round}, ${r.open} open)</option>`).join('');
         const wanted = new URLSearchParams(location.search).get('article');
@@ -100,7 +100,7 @@
         await open($('pick-article').value);
     }
     async function open(article) {
-        review = await (await fetch(`/tools/reviews/${encodeURIComponent(article)}.json`, { cache: 'no-cache' })).json();
+        review = await (await fetch(`/localization/reviews/${encodeURIComponent(article)}.json`, { cache: 'no-cache' })).json();
         shown = shown || [...review.langs];
         $('langs').innerHTML = review.langs.map((l) => `<button data-lang="${l}" aria-pressed="${shown.includes(l)}">${LANG[l] || l}</button>`).join(' ');
         render();
@@ -131,9 +131,9 @@
             const qs = (byKey[key] || []).filter((q) => q.lang === '*' || shown.includes(q.lang));
             const mine = d.asks.filter((x) => x.key === key);
             if (onlyOpen && !qs.some((q) => q.status !== 'settled') && !mine.length) return '';
-            const tls = shown.filter((l) => line[l]).map((l) => `<div class="tl" lang="${l}"${l === 'he' ? ' dir="rtl"' : ''}><span class="lang" lang="en">${l}</span><span class="text">${line[l].text}</span>${line[l].back ? `<p class="back" lang="en" dir="ltr">↩ ${esc(line[l].back)}</p>` : ''}</div>`).join('');
+            const tls = shown.filter((l) => line[l]).map((l) => `<div class="tl" lang="${l}"${l === 'he' ? ' dir="rtl"' : ''}><span class="lang" lang="en">${l}</span> <span class="text">${line[l].text}</span>${line[l].back ? `<p class="back" lang="en" dir="ltr">↩ ${esc(line[l].back)}</p>` : ''}</div>`).join('');
             const asks = mine.map((x) => `<div class="q"><span class="state">your question, ready to send</span><p class="ask">${esc(x.lang === '*' ? 'All languages' : LANG[x.lang] || x.lang)}: ${esc(x.text)}</p></div>`).join('');
-            return `<article class="line" data-key="${esc(key)}"><div class="en" lang="en">${line.en}</div><span class="key">${esc(key)}</span>${tls}${qs.map((q) => questionHtml(q, d)).join('')}${asks}<button data-ask="${esc(key)}">💬 Ask about this line</button></article>`;
+            return `<article class="line" data-line="${esc(key)}"><div class="en" lang="en">${line.en}</div><span class="key">${esc(key)}</span>${tls}${qs.map((q) => questionHtml(q, d)).join('')}${asks}<button data-ask="${esc(key)}">💬 Ask about this line</button></article>`;
         }).join('');
         $('lines').innerHTML = html || '<p>No open questions.</p>';
         counts();

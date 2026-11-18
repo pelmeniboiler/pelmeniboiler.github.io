@@ -35,7 +35,7 @@ async function reviews() {
 
 /** Copy the reviews into the built site for tools/review.html, with an index. */
 export async function stageReviews(rootDir) {
-    const out = path.join(rootDir, 'tools', 'reviews'), index = [];
+    const out = path.join(rootDir, 'localization', 'reviews'), index = [];
     await fs.mkdir(out, { recursive: true });
     for (const f of await reviews()) {
         const r = await read(path.join(DIR, f));
