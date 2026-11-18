@@ -276,7 +276,7 @@
     --bg-color: var(--theme-bg-color); --win-bg-color: var(--theme-bg-color); --text-color: var(--theme-text-color); --border-color: var(--theme-border-color); --inv-bg-color: var(--theme-border-color); --inv-text-color: var(--theme-bg-color); --link-hover-bg: var(--theme-accent-color); --link-hover-color: var(--theme-bg-color);
 }
 :root.funky-mode {
-    --bg-color: var(--theme-bg-color, #b1de75); --win-bg-color: var(--theme-bg-color, #b1de75); --text-color: var(--theme-text-color, #b000b5); --border-color: var(--theme-border-color, #eb01a5); --inv-bg-color: var(--theme-border-color, #eb01a5); --inv-text-color: var(--theme-bg-color, #b1de75); --link-hover-bg: var(--theme-accent-color, #fa6607); --link-hover-color: var(--theme-bg-color, #b1de75);
+    --bg-color: var(--theme-bg-color, #b1de75); --win-bg-color: var(--theme-bg-color, #b1de75); --text-color: var(--theme-text-color, #7d0082); --border-color: var(--theme-border-color, #a3007a); --inv-bg-color: var(--theme-border-color, #a3007a); --inv-text-color: var(--theme-bg-color, #b1de75); --link-hover-bg: var(--theme-accent-color, #9a3d00); --link-hover-color: var(--theme-bg-color, #b1de75);
 }
 /* Zikit (זיקית — "chameleon"): palette derived at runtime from the key colours of
    a gallery photo (settings.js). The fallbacks below are a neutral resting state
@@ -950,7 +950,7 @@ textarea::-webkit-scrollbar-thumb {
 .rss-dropdown-content {
     display: none;
     position: absolute;
-    right: 0;
+    inset-inline-end: 0; /* the button's outer edge, mirrored in right-to-left pages */
     top: 100%;
     background-color: var(--win-bg-color);
     color: var(--text-color); /* not the title bar's inverted text */
@@ -1086,7 +1086,8 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
                 inset 0 1px 0 color-mix(in srgb, #ffffff 55%, transparent);
 }
 :root.moroz-mode .title-bar {
-    background-color: color-mix(in srgb, var(--inv-bg-color) 62%, transparent);
+    /* Deepened towards the text colour so the pale title reads; still a little frosted. */
+    background-color: color-mix(in srgb, color-mix(in srgb, var(--inv-bg-color) 65%, var(--text-color)) 88%, transparent);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 }
@@ -1356,7 +1357,7 @@ details.inline-details .details-content p:last-child { margin-bottom: 0; }
 }
 :root.wordart-mode a { color: #d81b9a; font-weight: bold; }
 :root.wordart-mode #tray, :root.wordart-mode .start-menu {
-    border: 4px ridge #F1C40F; border-radius: 4px; background-color: #fff;
+    border: 4px ridge #F1C40F; border-radius: 4px; background-color: #fff; box-sizing: border-box;
     box-shadow: 4px 4px 0 #8E44AD;
 }
 

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/logo/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor</title>
     <style>
         /* General Body and Layout */
@@ -24,6 +26,11 @@
             position: sticky; 
             top: 20px; 
             align-self: flex-start;
+        }
+        /* Narrow screens: the preview goes under the editor instead of squeezing beside it. */
+        @media (max-width: 760px) {
+            body { flex-direction: column; padding: 12px; }
+            #editor-container, #preview-container { min-width: 0; max-width: none; position: static; flex-basis: auto; }
         }
 
         /* Toolbar Styling */
@@ -53,9 +60,9 @@
 
 
         /* Special Buttons */
-        #export-button, #json-button { color: white; border: none; font-weight: bold; }
-        #export-button { background-color: #006400; } #export-button:hover:not(:disabled) { background-color: #005000; }
-        #json-button { background-color: #0052cc; } #json-button:hover:not(:disabled) { background-color: #0041a3; }
+        #toolbar #export-button, #toolbar #json-button { color: white; border: none; font-weight: bold; }
+        #toolbar #export-button { background-color: #006400; } #toolbar #export-button:hover:not(:disabled) { background-color: #005000; }
+        #toolbar #json-button { background-color: #0052cc; } #toolbar #json-button:hover:not(:disabled) { background-color: #0041a3; }
 
         /* Editor Area */
         #editor { 

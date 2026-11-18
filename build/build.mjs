@@ -353,6 +353,9 @@ async function main() {
     console.log('Generating zines...');
     await generateZines(zineArticles, ROOT_DIR, assetVersion);
 
+    console.log('Letting Graflect text wrap...');
+    await wrapGraflectSpaces(ROOT_DIR);
+
     console.log('Stamping canonical links on legacy article pages...');
     await injectLegacyCanonicals(processedPosts, BLOG_DIR);
 
@@ -863,7 +866,8 @@ async function inlineThemeLoader(rootDir) {
     await fs.writeFile(loaderPath, filled);
     const code = filled.replace(/<\/script/gi, '<\\/script');
     // ...and have each page link the active theme's sheet right after the main one.
-    const MAIN_CSS = /(<link\b[^>]*\bhref="[^"]*pelmeni2025\.css[^"]*"[^>]*>)(?!<script>window\.pbThemeLink)/g;
+    // A script may hold such a <link> as text (sofrut's export template): skip whole scripts.
+    const MAIN_CSS = /(<script\b[^>]*>[\s\S]*?<\/script>)|(<link\b[^>]*\bhref="[^"]*pelmeni2025\.css[^"]*"[^>]*>)(?!<script>window\.pbThemeLink)/g;
     const TAG = /<script\b[^>]*\bsrc="[^"]*\/?scripts\/theme-loader\.js[^"]*"[^>]*><\/script>/g;
     let n = 0;
     const walk = async (dir) => {
@@ -875,7 +879,7 @@ async function inlineThemeLoader(rootDir) {
             if (!TAG.test(html)) continue;
             TAG.lastIndex = 0;
             await fs.writeFile(full, html.replace(TAG, () => `<script>${code}</script>`)
-                .replace(MAIN_CSS, (m) => `${m}<script>window.pbThemeLink&&pbThemeLink()</script>`));
+                .replace(MAIN_CSS, (m, script) => (script ? m : `${m}<script>window.pbThemeLink&&pbThemeLink()</script>`)));
             n += 1;
         }
     };
@@ -1121,6 +1125,33 @@ async function generateLanguagePages(processedPosts, localizationData, blogDir, 
 }
 
 /**
+ * Graflect writes its word space as U+EC71, a private-use character browsers
+ * treat as a letter, so a line of Graflect can only wrap at ordinary spaces
+ * and runs off narrow screens. Add a <wbr> after each one in the page text of
+ * the blog and zine output (never in scripts, styles, titles or attributes).
+ */
+async function wrapGraflectSpaces(rootDir) {
+    const SKIP = /(<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>|<title\b[\s\S]*?<\/title>|<textarea\b[\s\S]*?<\/textarea>|<[^>]*>)/i;
+    let n = 0;
+    const walk = async (dir) => {
+        for (const ent of await fs.readdir(dir, { withFileTypes: true }).catch(() => [])) {
+            const full = path.join(dir, ent.name);
+            if (ent.isDirectory()) { await walk(full); continue; }
+            if (!ent.name.endsWith('.html')) continue;
+            const html = await fs.readFile(full, 'utf-8');
+            if (!html.includes('\uEC71')) continue;
+            const parts = html.split(SKIP);
+            for (let i = 0; i < parts.length; i += 2) parts[i] = parts[i].replace(/\uEC71(?!<wbr>)/g, '\uEC71<wbr>');
+            await fs.writeFile(full, parts.join(''));
+            n += 1;
+        }
+    };
+    await walk(path.join(rootDir, 'blog'));
+    await walk(path.join(rootDir, 'zine'));
+    console.log(`  → ${n} page(s).`);
+}
+
+/**
  * Emit one "zine" per language at /zine/<lang>/: the whole blog, oldest-first,
  * as a single clean document. On screen it's a simple scrollable page; printed
  * (via the print stylesheet + the page-break rules below) it becomes a booklet.
@@ -1161,6 +1192,9 @@ ${a.html}
         .zine-cover img { width: 120px; height: 120px; }
         .zine nav ol { text-align: start; }
         .zine-article { margin-top: 3em; }
+        .zine-article picture { display: block; }
+        .zine-article img, .zine-article video, .zine-article iframe, .zine-article svg { max-width: 100%; height: auto; }
+        .zine-article pre, .zine-article table { display: block; max-width: 100%; overflow-x: auto; }
     </style>
 </head>
 <body class="eink-mode light-mode">

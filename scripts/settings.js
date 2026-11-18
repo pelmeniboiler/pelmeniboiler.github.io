@@ -537,14 +537,31 @@ function setupSettings() {
             const randomHue = () => Math.floor(Math.random() * 360);
             const baseHue = randomHue();
             const accentHue = (baseHue + 150) % 360;
-            const bgLightness = 20 + Math.random() * 60;
-            const textLightness = bgLightness > 50 ? 15 : 85;
+            // Random hues, but every pair that carries text is checked for real
+            // (WCAG) contrast against the background: HSL lightness alone lies,
+            // a "light" blue is darker than a "dark" yellow.
+            const lumOf = (h, s, l) => {
+                s /= 100; l /= 100;
+                const k = (n) => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+                return [0, 8, 4].map((n) => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1)))
+                    .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
+                    .reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i], 0);
+            };
+            const ratio = (x, y) => (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+            const light = Math.random() < 0.5;
+            const bgLightness = light ? 68 + Math.random() * 20 : 10 + Math.random() * 20;
+            const bgLum = lumOf(baseHue, 50, bgLightness);
+            // From a starting lightness, move away from the background until it reads.
+            const readable = (hue, sat, start) => { let l = start; while (ratio(lumOf(hue, sat, l), bgLum) < 4.5 && l > 0 && l < 100) l += light ? -2 : 2; return Math.max(0, Math.min(100, l)); };
+            const textLightness = readable(baseHue, 15, light ? 18 : 82);
+            const barLightness = readable(accentHue, 80, light ? 38 : 66);
+            const accentLightness = readable(accentHue, 70, light ? 42 : 62);
 
             // Set CSS custom properties for the funky theme.
             docEl.style.setProperty('--theme-bg-color', `hsl(${baseHue}, 50%, ${bgLightness}%)`);
             docEl.style.setProperty('--theme-text-color', `hsl(${baseHue}, 15%, ${textLightness}%)`);
-            docEl.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, 70%)`);
-            docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, 55%)`);
+            docEl.style.setProperty('--theme-border-color', `hsl(${accentHue}, 80%, ${barLightness}%)`);
+            docEl.style.setProperty('--theme-accent-color', `hsl(${accentHue}, 70%, ${accentLightness}%)`);
             applyDynamicCursors(`hsl(${baseHue}, 15%, ${textLightness}%)`, `hsl(${baseHue}, 50%, ${bgLightness}%)`);
             localStorage.setItem(LAST_COLOR_THEME_KEY, theme);
         } else if (theme === 'zikit') {
