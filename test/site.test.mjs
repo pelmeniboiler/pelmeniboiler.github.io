@@ -1550,9 +1550,9 @@ try {
         await p.$eval('#zh-daylight', (s) => s.scrollIntoView({ block: 'center' }));
         // LCD: on screen, it walks through the year by itself.
         const w0 = (await read()).date; await p.waitForTimeout(1200); const w1 = (await read()).date;
-        const k = await p.$eval('#zh-daylight .zh-knob', (g) => { const r = g.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; });
         const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
-        await p.mouse.move(k[0], k[1]); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
+        // hover() waits for the walking handle to hold still between steps, so the press lands on it.
+        await p.locator('#zh-daylight .zh-knob').hover(); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
         const june = await read();
         await p.waitForTimeout(800); const held = (await read()).date === june.date; // grabbed: it stays put
         await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');
