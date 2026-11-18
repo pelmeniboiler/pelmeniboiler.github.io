@@ -1499,6 +1499,63 @@ try {
         ok(eb.every((x) => ratio(...x) >= 4.5), `Roundup: the editor's export buttons are readable (${eb.map((x) => ratio(...x).toFixed(1)).join(', ')})`);
     }
 
+    // Sofrut II: inline tags start and stop at the caret, notes for Claude stay out of the article,
+    // one click publishes both files to GitHub (mocked), and pasted translation replies survive prose and fences.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('dialog', (d) => d.accept());
+        let tree = null; const calls = [];
+        await c.route('https://api.github.com/**', async (route) => {
+            const req = route.request(), u = new URL(req.url()); calls.push(`${req.method()} ${u.pathname}`);
+            const j = (o, s = 200) => route.fulfill({ status: s, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(o) });
+            if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
+            if (/ref\/heads\/main$/.test(u.pathname)) return j({ object: { sha: 'base1' } });
+            if (/ref\/heads\/sofrut\//.test(u.pathname)) return j({ message: 'Not Found' }, 404);
+            if (/git\/refs$/.test(u.pathname)) return j({}, 201);
+            if (/git\/commits\/base1$/.test(u.pathname)) return j({ tree: { sha: 'tree0' } });
+            if (/git\/trees$/.test(u.pathname)) { tree = JSON.parse(req.postData()); return j({ sha: 'tree1' }, 201); }
+            if (/git\/commits$/.test(u.pathname)) return j({ sha: 'c1', html_url: 'https://github.com/o/r/commit/c1' }, 201);
+            if (/git\/refs\/heads\//.test(u.pathname)) return j({});
+            if (/\/pulls$/.test(u.pathname)) return j({ html_url: 'https://github.com/pelmeniboiler/pelmeniboiler.github.io/pull/999' }, 201);
+            return j({ message: 'unexpected' }, 500);
+        });
+        await p.goto(`${BASE}/tools/sofrut2.html`, { waitUntil: 'load' });
+        await p.waitForFunction(() => document.querySelectorAll('#kw-pool .chip').length > 0, null, { timeout: 5000 }).catch(() => {});
+        const startsWithProps = await p.isVisible('#dlg-props');
+        await p.fill('#title', 'Gear Test');
+        const prefix = await p.inputValue('#prefix');
+        await p.click('#dlg-props .chip[data-close]');
+        const tag = (name) => p.click(`#tb button[title${name === 'Note for Claude' ? '^' : ''}="${name}"]`);
+        await p.click('#doc'); await p.keyboard.type('E=mc');
+        await tag('Superscript'); await p.keyboard.type('2'); await tag('Superscript'); await p.keyboard.type(' and ');
+        await tag('Code'); await p.keyboard.type('ls'); await tag('Code'); await p.keyboard.type(' done');
+        await p.keyboard.press('Enter'); await tag('Note for Claude'); await p.keyboard.type('pun on Zen and the Art');
+        await p.keyboard.press('Enter'); await p.keyboard.type('Back to prose.');
+        await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]');
+        const html = await p.inputValue('#out-html'), json = JSON.parse(await p.inputValue('#out-json'));
+        await p.keyboard.press('Escape');
+        const en = Object.values(json.en).join(' | ');
+        ok(startsWithProps && prefix !== 'gt' && /E=mc<sup>2<\/sup> and <code>ls<\/code> done/.test(en) && /Back to prose\./.test(en) && !/pun on Zen/.test(en) && html.includes('<!-- note for Claude: pun on Zen and the Art -->'),
+            `Sofrut II: tags start and stop at the caret, a note for Claude stays out of the article (${JSON.stringify({ startsWithProps, prefix, en })})`);
+        await p.click('.menubar .top:has-text("File")'); await p.click('[data-act=publish]');
+        await p.waitForSelector('#dlg-github:not([hidden])'); await p.fill('#gh-token', 'github_pat_test'); await p.click('#gh-save');
+        await p.click('.menubar .top:has-text("File")'); await p.click('[data-act=publish]');
+        await p.waitForFunction(() => /published|✗/.test(document.querySelector('#pub-status').textContent), null, { timeout: 10000 });
+        const pub = await p.textContent('#pub-status');
+        ok(/pull\/999/.test(pub) && tree && tree.tree.map((x) => x.path).join() === `blog/gear-test.html,localization/${prefix}.json` && calls.some((x) => /POST .*\/pulls$/.test(x)),
+            `Sofrut II: publish puts both files in one commit and opens a pull request (${pub}; ${calls.length} calls)`);
+        await p.click('.menubar [data-act=translate]'); await p.selectOption('#mtpe-lang', 'he'); await p.click('#mk-prompt');
+        const src = JSON.parse((await p.inputValue('#prompt-out')).split('English source:\n')[1]).en;
+        await p.fill('#paste-in', 'Here you go!\n```json\n' + JSON.stringify({ he: Object.fromEntries(Object.entries(src).map(([k, v]) => [k, 'ע ' + v])) }) + '\n```');
+        await p.click('#validate'); const check = await p.textContent('#report'); await p.click('#merge');
+        await p.reload({ waitUntil: 'load' });
+        await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]');
+        const langs = Object.keys(JSON.parse(await p.inputValue('#out-json')));
+        await c.close();
+        ok(/keys present/.test(check) && /tags preserved/.test(check) && langs.includes('he') && errs.length === 0,
+            `Sofrut II: a fenced translation reply checks, merges and survives a reload (${JSON.stringify({ check: check.replace(/\s+/g, ' '), langs, errs })})`);
+    }
+
     await browser.close();
     server.close();
 }
