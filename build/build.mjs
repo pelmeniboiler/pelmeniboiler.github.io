@@ -17,6 +17,8 @@ import { processImages, pictureize } from './images.mjs';
 import { buildEmoji, emojifyDocument, emojifySourceFiles, splitSprites } from './emoji.mjs';
 import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 import { splitThemeCss } from './css-split.mjs';
+import { bakeGraflectWords } from './graflect-words.mjs';
+import { check as vaultCheck } from './vault-check.mjs';
 
 // Set once per build by main(): theme name → its split-out stylesheet URL.
 let THEME_CSS = {};
@@ -39,7 +41,7 @@ const OUT_DIR = path.join(SRC_DIR, '_site');
 const ROOT_DIR = OUT_DIR;
 
 // Not part of the site: tooling, repo metadata, notes.
-const NOT_SITE = new Set(['_site', 'node_modules', 'build', 'test', 'package.json', 'package-lock.json',
+const NOT_SITE = new Set(['_site', 'node_modules', 'build', 'test', 'vault', 'package.json', 'package-lock.json',
     'LICENSE', 'plan.md', 'graflect-plan.md', 'README.md', 'CLAUDE.md']);
 // Output of older in-place builds that may still be lying around in a working
 // tree. Never copy it: the build regenerates all of it in /_site.
@@ -304,6 +306,11 @@ async function main() {
 
     console.log('Splitting the stylesheet per theme...');
     THEME_CSS = await splitThemeCss(ROOT_DIR);
+
+    console.log('Teaching the Graflect dictionary the articles\' words...');
+    await bakeGraflectWords(ROOT_DIR);
+    const vaultFlags = await vaultCheck();
+    console.log(`  → vault: ${vaultFlags.length ? `${vaultFlags.length} translation(s) to fix or approve (npm run vault:check)` : 'every translation follows it'}.`);
 
     await fs.mkdir(RSS_OUTPUT_DIR, { recursive: true });
 

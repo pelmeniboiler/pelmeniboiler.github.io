@@ -1,0 +1,11 @@
+[
+  {"id": "claude-latin", "lang": "*", "say": "Claude is spelled the way Anthropic spells it, in Latin letters.", "forbid": "Клод|קלוד|クロード"},
+  {"id": "author-feminine", "lang": "ru", "say": "The author is a woman: feminine past tense and short adjectives in the first person.", "forbid": "\\b[Яя]\\s+(?:(?:не|уже|ещё|тоже|так|почти|бы|только|всегда|никогда|сам)\\s+)*(?:[а-яё]+л(?:ся)?|уверен|рад|готов|должен|согласен|знаком|сам)\\b"},
+  {"id": "author-feminine", "lang": "he", "say": "The author is a woman: feminine present tense and adjectives in the first person.", "forbid": "אני\\s+(?:(?:לא|די|כל כך|ממש|גם|עדיין|תמיד|באמת|כבר)\\s+)*(?:חושב|בטוח|יודע|אוהב|מרגיש|צריך|זוכר|מבין|יכול|משתמש|כותב|עובד|קורא|מתכוון|שמח|רגיל|מתעניין|מעדיף|ממליץ|מסכים|נהנה|מוכן|עייף)\\b"},
+  {"id": "address-informal", "lang": "ru", "say": "Generic \"you\" is ты, not вы.", "forbid": "\\b(?:[Вв]ы|[Вв]ам|[Вв]ас|[Вв]ами|[Вв]аш(?:а|е|его|ей|ему|ем|и|их|ими|им|у)?)\\b"},
+  {"id": "address-informal", "lang": "de", "say": "Generic \"you\" is du (or man), not Sie.", "forbid": "(?<![.!?:]\\s|^|[„\"«(])\\b(?:Sie|Ihnen|Ihr[a-z]*)\\b"},
+  {"id": "polite-form", "lang": "ja", "say": "です/ます with 私; no plain-form sentence endings.", "forbid": "(?:だ|である|だよ|だね|じゃん|僕|俺)[。！？]?(?=[。！？]|$)"},
+  {"id": "no-new-dash", "lang": "*", "say": "No dashes she didn't write (Russian copula dashes are grammar, not style: approve them in ok.json).", "added": "—–"},
+  {"id": "keep-semicolons", "lang": "*", "say": "Her semicolons stay.", "kept": ";", "same": "；"},
+  {"id": "keep-parentheses", "lang": "*", "say": "Her parentheses stay.", "kept": "(", "same": "（"}
+]

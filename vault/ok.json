@@ -1,0 +1,65 @@
+{
+ "keep-parentheses": [
+  "coal:ch_modal_chloe_note1_ctx:de",
+  "coal:ch_modal_chloe_note1_ctx:he",
+  "coal:ch_modal_chloe_note1_ctx:ja",
+  "coal:ch_modal_chloe_note1_ctx:ru",
+  "coal:ch_modal_veritas_note2_post:he",
+  "coal:ch_modal_veritas_note2_post:ja",
+  "coal:ch_modal_veritas_note8_ctx:de",
+  "coal:ch_modal_veritas_note8_ctx:he",
+  "coal:ch_modal_veritas_note8_ctx:ja",
+  "coal:ch_modal_veritas_note8_ctx:ru",
+  "graflect_ipa:example_r_in_rope:de",
+  "graflect_ipa:example_r_in_rope:he",
+  "graflect_ipa:example_r_in_rope:ja",
+  "graflect_ipa:example_r_in_rope:ru",
+  "lang:lang_p20:de",
+  "lang:lang_p20:ja",
+  "lang:lang_p20:ru"
+ ],
+ "address-informal": [
+  "coal:ch_modal_chloe_p1:de",
+  "coal:ch_modal_veritas_note11_post:ru",
+  "coal:ch_modal_veritas_note1_post:ru",
+  "coal:ch_modal_veritas_note2_post:ru",
+  "coal:ch_modal_veritas_note6_post:ru",
+  "coal:ch_modal_veritas_p1:de",
+  "coal:ch_post2_body:ru"
+ ],
+ "no-new-dash": [
+  "coal:ch_modal_chloe_note1_ctx:ru",
+  "coal:ch_modal_chloe_note3_post:ru",
+  "coal:ch_modal_veritas_note12_post:ru",
+  "coal:ch_modal_veritas_note2_ctx:ru",
+  "coal:ch_modal_veritas_note3_ctx:ru",
+  "coal:ch_modal_veritas_note4_ctx:ru",
+  "coal:ch_modal_veritas_note4_post:ru",
+  "coal:ch_modal_veritas_note5_ctx:ru",
+  "coal:ch_modal_veritas_note5_post:ru",
+  "coal:ch_modal_veritas_note7_ctx:ru",
+  "coal:ch_modal_veritas_note9_post:ru",
+  "coal:ch_post8_body:ru",
+  "graflect_ipa:guide_p1:ru",
+  "graflect_ipa:guide_p_tool:ru",
+  "lang:lang_p6:ru",
+  "sunshine:intro_p3:ru",
+  "sunshine:keymap_p1:ru",
+  "sunshine:objectives_h4_phalanges:ru",
+  "sunshine:objectives_p3:ru",
+  "sunshine:plans_p3:ru",
+  "tbns:tbns_p11:ru",
+  "tbns:tbns_p12:ru",
+  "tbns:tbns_p9:ru"
+ ],
+ "polite-form": [
+  "coal:ch_post1_body:ja"
+ ],
+ "keep-semicolons": [
+  "lang:lang_h2_tldr:he",
+  "lang:lang_h2_tldr:ja",
+  "lang:lang_h2_tldr:ru",
+  "lang:lang_nav_tldr:he",
+  "lang:lang_nav_tldr:ja"
+ ]
+}
