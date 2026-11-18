@@ -1536,6 +1536,11 @@ try {
         const gd = await fs.readFile(path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), 'utf-8');
         const learned = Object.keys(JSON.parse((gd.match(/const articleWordMap = (\{.*\});/) || [, '{}'])[1])).length;
         ok(caught && learned > 1000, `Vault rules catch the wrong lines and pass the right ones; Graflect learned ${learned} words from the articles (${JSON.stringify({ bad, good })})`);
+        // The Graflect grader: leave one article out, score against her own Graflect. The dictionary is the floor.
+        const ev = await import('../build/gt-eval.mjs');
+        const rows = await ev.evaluate(ev.dictionarySystem(await ev.graflectData()));
+        const right = rows.reduce((a, r) => a + r.right, 0), words = rows.reduce((a, r) => a + r.words, 0);
+        ok(rows.length >= 8 && right / words >= 0.6, `Graflect grader: the dictionary spells ${(100 * right / words).toFixed(0)}% of held-out words as she does, over ${rows.length} articles`);
     }
 
     // The Graflect queue: lines with no Graflect, drafted from the dictionary, published (mocked) as one commit.
