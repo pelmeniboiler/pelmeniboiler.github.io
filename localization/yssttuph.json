@@ -11,7 +11,6 @@
     "yssttuph_nav_time-time-could-you-be-mine": "&emsp;&emsp;Time, time, could you be mine?",
     "yssttuph_p2": "So, what if instead the day began not at some range between 4:00 AM and 8:00 AM, but at 0? What if it ends at 12? That's called Proportional Hours, the Fahrenheit of time.",
     "yssttuph_p3": "This gets tricky, but this is more or less how time was determined by some of the top civilizations of history. We all know the story since then, once we needed consistent time between locales for the sake of trains, for accurate measurement at sea, and other such things, time did have to change.",
-    "yssttuph_cap1": "One day in Jerusalem, 21 June, divided two ways. Both make twelve hours; they disagree on when the day starts and ends.",
     "yssttuph_p4": "But like, it can all be Unix Epoch underneath now. We don't lose any accuracy. It's like how customary units are defined in S.I. ones deep down.",
     "yssttuph_p5": "What we do lose is that time zones become the size of zip codes.",
     "yssttuph_cap2": "21 June. The further north, the longer the summer day, and the longer each of its twelve hours.",
