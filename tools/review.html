@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Translation review</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        /* Translating together, in rounds (build/review.mjs explains the loop).
+           Each line: her English, the translation, and a literal back-translation.
+           Each question: options with reasons, her pick or her own version, and a
+           thread that carries the rounds. The theme's two colours only. */
+        body { overflow: auto; padding: 12px 12px 56px; box-sizing: border-box; }
+        .desk { max-width: 860px; margin: 0 auto; }
+        .sheet { position: relative; border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); }
+        .sheet > .title-bar { cursor: var(--cur-default); }
+        .sheet > .content { padding: 12px; max-height: none; overflow: visible; }
+        .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); margin-bottom: 12px; }
+        .bar select, .bar input, .q textarea { font: inherit; color: var(--text-color); background: var(--win-bg-color); border: 2px solid var(--border-color); padding: 4px 6px; box-sizing: border-box; }
+        .bar button, .q button, .line > button { font: inherit; color: var(--text-color); background: var(--win-bg-color); border: 2px solid var(--border-color); padding: 4px 10px; cursor: var(--cur-pointer); }
+        .bar button[aria-pressed="true"], .q .opt[aria-pressed="true"] { background: var(--text-color); color: var(--win-bg-color); }
+        .bar .grow { flex: 1; }
+        .line { padding: 10px 0 14px; border-bottom: 2px solid var(--border-color); }
+        .line .en { font-weight: bold; margin-bottom: 6px; }
+        .line .key { font-family: monospace; font-size: 0.8em; }
+        .tl { margin: 6px 0 0 1.2em; }
+        .tl .lang { font-family: monospace; font-size: 0.8em; margin-inline-end: 0.5em; }
+        .tl .back { font-size: 0.85em; font-style: italic; margin: 2px 0 0; }
+        .q { margin: 10px 0 0 1.2em; padding: 8px 10px; border: 2px solid var(--border-color); }
+        .q.settled { border-style: dashed; }
+        .q .ask { margin: 0 0 4px; font-weight: bold; }
+        .q .why, .q .note-why { margin: 0 0 6px; font-size: 0.9em; }
+        .q .opts { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+        .q .opt { text-align: start; }
+        .q .opt small { display: block; font-size: 0.8em; }
+        .q textarea { width: 100%; min-height: 2.4em; margin-top: 4px; resize: vertical; }
+        .q .thread { margin: 6px 0; padding: 0; list-style: none; font-size: 0.9em; }
+        .q .thread li { margin: 2px 0; }
+        .q .state { font-family: monospace; font-size: 0.8em; float: inline-end; }
+        .line > button { margin: 8px 0 0 1.2em; font-size: 0.9em; }
+        #status { min-height: 1.4em; }
+        details.gh { width: 100%; }
+        details.gh .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+        details.gh input { flex: 1 1 14em; min-width: 0; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+<div class="desk">
+    <section class="sheet" aria-labelledby="review-title">
+        <div class="title-bar"><span class="title" id="review-title">✎ review.translations</span></div>
+        <div class="content">
+            <div class="bar">
+                <label for="pick-article">Article</label>
+                <select id="pick-article"></select>
+                <span id="langs" role="group" aria-label="Languages"></span>
+                <span class="grow"></span>
+                <button id="only-open" aria-pressed="false">Only lines with questions</button>
+            </div>
+            <div class="bar">
+                <span id="counts" class="grow"></span>
+                <button id="send">Send to Claude</button>
+                <details class="gh">
+                    <summary>GitHub (shared with sofrut.ii)</summary>
+                    <div class="row">
+                        <input id="gh-token" type="password" placeholder="GitHub token" autocomplete="off" aria-label="GitHub token">
+                        <input id="gh-repo" placeholder="owner/repository" aria-label="Repository">
+                    </div>
+                </details>
+            </div>
+            <p id="status" aria-live="polite"></p>
+            <div id="lines"></div>
+        </div>
+    </section>
+</div>
+<script>
+(() => {
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const LANG = { ru: 'Русский', he: 'עברית', de: 'Deutsch', ja: '日本語' };
+    const GH = 'pelmeniboiler-sofrut2-github';
+    const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } };
+    const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) { /* full or blocked */ } };
+    let review = null, shown = null, onlyOpen = false;
+    // Her unsent answers, per article and round: { answers: { qid: { pick, own, note } }, asks: [{ key, lang, text }] }.
+    const draftKey = () => `pelmeniboiler-review-${review.article}-r${review.round}`;
+    const draft = () => readJSON(draftKey(), { answers: {}, asks: [] });
+    const saveDraft = (d) => { writeJSON(draftKey(), d); counts(); };
+
+    async function load() {
+        let index = [];
+        try { index = await (await fetch('/localization/reviews/index.json', { cache: 'no-cache' })).json(); } catch (_) { /* none yet */ }
+        if (!index.length) { $('status').textContent = 'No reviews yet.'; return; }
+        $('pick-article').innerHTML = index.map((r) => `<option value="${esc(r.article)}">${esc(r.title)} (round ${r.round}, ${r.open} open)</option>`).join('');
+        const wanted = new URLSearchParams(location.search).get('article');
+        if (wanted && index.some((r) => r.article === wanted)) $('pick-article').value = wanted;
+        await open($('pick-article').value);
+    }
+    async function open(article) {
+        review = await (await fetch(`/localization/reviews/${encodeURIComponent(article)}.json`, { cache: 'no-cache' })).json();
+        shown = shown || [...review.langs];
+        $('langs').innerHTML = review.langs.map((l) => `<button data-lang="${l}" aria-pressed="${shown.includes(l)}">${LANG[l] || l}</button>`).join(' ');
+        render();
+    }
+
+    function questionHtml(q, d) {
+        const a = d.answers[q.id] || {};
+        const thread = q.thread.length ? `<ul class="thread">${q.thread.map((t) => `<li><b>${t.who === 'claude' ? 'Claude' : 'You'}</b> (round ${t.round}): ${esc(t.text)}</li>`).join('')}</ul>` : '';
+        const label = q.lang === '*' ? 'All languages' : (LANG[q.lang] || q.lang);
+        if (q.status === 'settled') {
+            return `<div class="q settled" data-id="${q.id}"><span class="state">settled</span><p class="ask">${esc(label)}: ${esc(q.ask)}</p><details><summary>How we settled it</summary>${thread}</details></div>`;
+        }
+        const picked = a.pick ?? null;
+        const opts = q.options.map((o, i) => `<button class="opt" data-pick="${i}" aria-pressed="${picked === i}">${esc(o.text)}${i === q.pick ? ' (in the draft now)' : ''}${o.why ? `<small>${esc(o.why)}</small>` : ''}</button>`).join('');
+        const state = (a.pick != null || a.own || a.note) ? 'your answer is ready to send' : (q.status === 'answered' ? 'sent, waiting for Claude' : 'open');
+        return `<div class="q" data-id="${q.id}"><span class="state">${state}</span>
+            <p class="ask">${esc(label)}: ${esc(q.ask)}</p>${q.why ? `<p class="why">${esc(q.why)}</p>` : ''}
+            ${opts ? `<div class="opts" role="group" aria-label="Options">${opts}</div>` : ''}${thread}
+            <textarea data-field="own" placeholder="Or write your own version" aria-label="Your own version">${esc(a.own || '')}</textarea>
+            <textarea data-field="note" placeholder="Anything to tell Claude" aria-label="Note to Claude">${esc(a.note || '')}</textarea></div>`;
+    }
+    function render() {
+        const d = draft();
+        $('review-title').textContent = `✎ review.translations · ${review.title} · round ${review.round}`;
+        const byKey = {};
+        for (const q of review.questions) (byKey[q.key] ||= []).push(q);
+        const html = Object.entries(review.lines).map(([key, line]) => {
+            const qs = (byKey[key] || []).filter((q) => q.lang === '*' || shown.includes(q.lang));
+            const mine = d.asks.filter((x) => x.key === key);
+            if (onlyOpen && !qs.some((q) => q.status !== 'settled') && !mine.length) return '';
+            const tls = shown.filter((l) => line[l]).map((l) => `<div class="tl" lang="${l}"${l === 'he' ? ' dir="rtl"' : ''}><span class="lang" lang="en">${l}</span> <span class="text">${line[l].text}</span>${line[l].back ? `<p class="back" lang="en" dir="ltr">↩ ${esc(line[l].back)}</p>` : ''}</div>`).join('');
+            const asks = mine.map((x) => `<div class="q"><span class="state">your question, ready to send</span><p class="ask">${esc(x.lang === '*' ? 'All languages' : LANG[x.lang] || x.lang)}: ${esc(x.text)}</p></div>`).join('');
+            return `<article class="line" data-line="${esc(key)}"><div class="en" lang="en">${line.en}</div><span class="key">${esc(key)}</span>${tls}${qs.map((q) => questionHtml(q, d)).join('')}${asks}<button data-ask="${esc(key)}">💬 Ask about this line</button></article>`;
+        }).join('');
+        $('lines').innerHTML = html || '<p>No open questions.</p>';
+        counts();
+    }
+    function counts() {
+        const d = draft(), open = review.questions.filter((q) => q.status === 'open').length;
+        const ready = Object.values(d.answers).filter((a) => a.pick != null || a.own || a.note).length + d.asks.length;
+        $('counts').textContent = `${open} open · ${ready} answer(s) ready to send`;
+    }
+
+    // --- answering ---
+    $('lines').addEventListener('click', (e) => {
+        const opt = e.target.closest('.opt');
+        if (opt) {
+            const id = opt.closest('.q').dataset.id, d = draft(), a = d.answers[id] ||= {}, i = +opt.dataset.pick;
+            a.pick = a.pick === i ? null : i; saveDraft(d); render(); return;
+        }
+        const ask = e.target.closest('[data-ask]');
+        if (ask) {
+            const text = prompt('Your question or comment about this line:'); if (!text || !text.trim()) return;
+            const lang = shown.length === 1 ? shown[0] : '*';
+            const d = draft(); d.asks.push({ key: ask.dataset.ask, lang, text: text.trim() }); saveDraft(d); render();
+        }
+    });
+    $('lines').addEventListener('input', (e) => {
+        const f = e.target.dataset.field; if (!f) return;
+        const id = e.target.closest('.q').dataset.id, d = draft(); (d.answers[id] ||= {})[f] = e.target.value; saveDraft(d);
+    });
+    $('langs').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-lang]'); if (!b) return;
+        const l = b.dataset.lang; shown = shown.includes(l) ? shown.filter((x) => x !== l) : [...shown, l];
+        if (!shown.length) shown = [l];
+        b.setAttribute('aria-pressed', shown.includes(l)); open(review.article);
+    });
+    $('only-open').addEventListener('click', (e) => { onlyOpen = !onlyOpen; e.currentTarget.setAttribute('aria-pressed', onlyOpen); render(); });
+    $('pick-article').addEventListener('change', (e) => open(e.target.value));
+
+    // --- sending: her answers go into vault/reviews/<article>.json, committed straight to the branch (no pull request) ---
+    const ghCfg = () => readJSON(GH, {});
+    (() => { const c = ghCfg(); $('gh-token').value = c.token || ''; $('gh-repo').value = c.repo || 'pelmeniboiler/pelmeniboiler.github.io'; })();
+    const saveGh = () => { const c = ghCfg(); writeJSON(GH, { ...c, token: $('gh-token').value.trim(), repo: $('gh-repo').value.trim(), base: c.base || 'main', mode: c.mode || 'pr' }); };
+    $('gh-token').addEventListener('change', saveGh); $('gh-repo').addEventListener('change', saveGh);
+
+    function withAnswers(r, d) {
+        const out = JSON.parse(JSON.stringify(r));
+        for (const q of out.questions) {
+            const a = d.answers[q.id];
+            if (!a || (a.pick == null && !a.own && !a.note) || q.status === 'settled') continue;
+            q.answer = { pick: a.pick ?? null, own: a.own || '', note: a.note || '' };
+            q.status = 'answered';
+            const said = [a.pick != null ? `I pick: ${q.options[a.pick].text}` : '', a.own ? `My version: ${a.own}` : '', a.note || ''].filter(Boolean).join(' · ');
+            q.thread.push({ who: 'wendy', round: out.round, text: said });
+        }
+        d.asks.forEach((x, i) => out.questions.push({ id: `w${out.round}-${Date.now().toString(36)}-${i}`, key: x.key, lang: x.lang, ask: x.text, options: [], pick: null, status: 'answered', thread: [{ who: 'wendy', round: out.round, text: x.text }] }));
+        return out;
+    }
+    let sending = false;
+    $('send').addEventListener('click', async () => {
+        if (sending || !review) return;
+        saveGh();
+        const c = ghCfg(), d = draft();
+        if (!Object.values(d.answers).some((a) => a.pick != null || a.own || a.note) && !d.asks.length) { $('status').textContent = 'Nothing to send yet.'; return; }
+        if (!c.token) { $('status').textContent = 'Add a GitHub token first (under GitHub).'; document.querySelector('details.gh').open = true; $('gh-token').focus(); return; }
+        sending = true; $('status').textContent = 'sending…';
+        const gh = async (p, opts = {}) => {
+            const r = await fetch(`https://api.github.com${p}`, { ...opts, headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) } });
+            const j = r.status === 204 ? null : await r.json().catch(() => null);
+            if (!r.ok) { const e = new Error((j && j.message) || `HTTP ${r.status}`); e.status = r.status; throw e; }
+            return j;
+        };
+        try {
+            const [o, n] = c.repo.split('/'), R = `/repos/${o}/${n}`, base = c.base || 'main', file = `vault/reviews/${review.article}.json`;
+            const cur = await gh(`${R}/contents/${file}?ref=${encodeURIComponent(base)}`);
+            const remote = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(cur.content.replace(/\n/g, '')), (ch) => ch.charCodeAt(0))));
+            if (remote.round !== review.round) { $('status').textContent = `Claude has replied since (round ${remote.round}). Your answers are kept; reload to see the new round.`; return; }
+            const next = withAnswers(remote, d);
+            const parent = (await gh(`${R}/git/ref/heads/${base}`)).object.sha;
+            const tree = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: (await gh(`${R}/git/commits/${parent}`)).tree.sha, tree: [{ path: file, mode: '100644', type: 'blob', content: JSON.stringify(next, null, 1) + '\n' }] }) });
+            const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `Review: ${review.article}, round ${review.round} answers`, tree: tree.sha, parents: [parent] }) });
+            await gh(`${R}/git/refs/heads/${base}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha }) });
+            review = next; saveDraft({ answers: {}, asks: [] }); render();
+            $('status').textContent = 'Sent. Tell Claude, and the next round will come back here.';
+        } catch (e) {
+            $('status').textContent = e.status === 401 ? '✗ GitHub refused the token'
+                : e.status === 404 ? '✗ GitHub found no such repository or file, or the token can’t see it'
+                : e.status === 403 ? '✗ the token isn’t allowed to do that (it needs Contents: read and write)'
+                : e instanceof TypeError ? '✗ couldn’t reach GitHub' : `✗ ${e.message}`;
+        } finally { sending = false; }
+    });
+    load();
+})();
+</script>
+<div id="settings-module-placeholder"></div>
+<div id="start-menu-module-placeholder"></div>
+<script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>

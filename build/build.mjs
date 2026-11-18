@@ -19,6 +19,7 @@ import { ariaDocument, ariaSourceFiles } from './aria.mjs';
 import { splitThemeCss } from './css-split.mjs';
 import { bakeGraflectWords, bakeGtQueue } from './graflect-words.mjs';
 import { check as vaultCheck } from './vault-check.mjs';
+import { stageReviews } from './review.mjs';
 
 // Set once per build by main(): theme name → its split-out stylesheet URL.
 let THEME_CSS = {};
@@ -311,6 +312,8 @@ async function main() {
     await bakeGraflectWords(ROOT_DIR);
     await bakeGtQueue(ROOT_DIR);
     const vaultFlags = await vaultCheck();
+    const reviewIndex = await stageReviews(ROOT_DIR);
+    if (reviewIndex.length) console.log(`  → translation reviews: ${reviewIndex.map((r) => `${r.article} (round ${r.round}, ${r.open} open)`).join(', ')}.`);
     console.log(`  → vault: ${vaultFlags.length ? `${vaultFlags.length} translation(s) to fix or approve (npm run vault:check)` : 'every translation follows it'}.`);
 
     await fs.mkdir(RSS_OUTPUT_DIR, { recursive: true });

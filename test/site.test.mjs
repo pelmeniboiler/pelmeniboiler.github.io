@@ -1580,6 +1580,42 @@ try {
             `Graflect queue: drafts lines in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ n, committed, left, errs })})`);
     }
 
+    // Translation review: lines with back-translations, questions with options; her answers go back as one commit.
+    {
+        const c = await browser.newContext({ viewport: { width: 1000, height: 900 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        p.on('dialog', (d) => d.accept('Is this the right word for tyres?'));
+        let tree = null;
+        const reviewFile = await fs.readFile(path.join(process.cwd(), 'vault/reviews/ct125.json'), 'utf-8');
+        await c.route('https://api.github.com/**', async (route) => {
+            const req = route.request(), u = new URL(req.url());
+            const j = (o, s = 200) => route.fulfill({ status: s, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(o) });
+            if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
+            if (/\/contents\/vault\/reviews\/ct125\.json/.test(u.pathname)) return j({ content: Buffer.from(reviewFile, 'utf8').toString('base64') });
+            if (/ref\/heads\/main$/.test(u.pathname) && req.method() === 'GET') return j({ object: { sha: 'base1' } });
+            if (/git\/commits\/base1$/.test(u.pathname)) return j({ tree: { sha: 't0' } });
+            if (/git\/trees$/.test(u.pathname)) { tree = JSON.parse(req.postData()); return j({ sha: 't1' }); }
+            if (/git\/commits$/.test(u.pathname)) return j({ sha: 'c1' });
+            if (/git\/refs\/heads\/main$/.test(u.pathname)) return j({});
+            return j({ message: 'unexpected' }, 500);
+        });
+        await p.goto(`${BASE}/tools/review.html?article=ct125`, { waitUntil: 'load' });
+        await p.waitForSelector('.line .back');
+        const shown = await p.evaluate(() => ({ lines: document.querySelectorAll('.line').length, backs: document.querySelectorAll('.back').length, qs: document.querySelectorAll('.q[data-id]').length, en: document.querySelector('.line .en').textContent }));
+        const firstQ = await p.$eval('.q[data-id]', (q) => q.dataset.id);
+        await p.click(`.q[data-id="${firstQ}"] .opt[data-pick="1"]`);
+        await p.fill(`.q[data-id="${firstQ}"] textarea[data-field="note"]`, 'This one, please.');
+        await p.click('.line [data-ask]');
+        await p.click('details.gh summary'); await p.fill('#gh-token', 'test-token'); await p.dispatchEvent('#gh-token', 'change');
+        await p.click('#send'); await p.waitForFunction(() => /Sent|✗/.test(document.getElementById('status').textContent));
+        const sent = tree && JSON.parse(tree.tree[0].content);
+        const q = sent && sent.questions.find((x) => x.id === firstQ), asked = sent && sent.questions.at(-1);
+        await c.close();
+        ok(shown.lines > 20 && shown.backs > 40 && shown.qs > 5 && shown.en.trim() && tree && tree.tree[0].path === 'vault/reviews/ct125.json'
+            && q.status === 'answered' && q.answer.pick === 1 && q.thread.at(-1).who === 'wendy' && asked.thread[0].text === 'Is this the right word for tyres?' && !errs.length,
+            `Translation review: shows lines, back-translations and questions; sends her pick, note and new question as one commit (${JSON.stringify({ shown: { ...shown, en: undefined }, errs })})`);
+    }
+
     // The daylight figure: the north pole turns the axis through the year, dated in the Hebrew calendar.
     {
         const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
