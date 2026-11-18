@@ -373,6 +373,8 @@
         start();
     }
     document.getElementById('tray-clock')?.addEventListener('click', openClock);
+    // Arriving at …#zman-clock-window (a link from an article or the zine) opens the clock.
+    if (location.hash === '#zman-clock-window') openClock();
     win.querySelector('.close-btn')?.addEventListener('click', stop);
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) stop();
