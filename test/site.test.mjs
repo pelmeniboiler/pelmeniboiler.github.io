@@ -1293,6 +1293,18 @@ try {
                 `CT125: upload for 72 hours brings the photos along by link, and says when it has expired (${JSON.stringify({ url: url.slice(-40), noUp, photo, imp: imp.slice(0, 120), gone: gone.slice(0, 160) })})`);
         }
 
+        // On a phone the share window stays centred and whole (the site's phone layout pins .window to the corner).
+        {
+            const ph = await browser.newContext({ viewport: { width: 412, height: 839 }, isMobile: true, hasTouch: true });
+            const pp = await ph.newPage();
+            await pp.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await pp.click('#bshare');
+            await pp.waitForSelector('#shareurl');
+            const r = await pp.evaluate(() => { const b = document.querySelector('#sharewin').getBoundingClientRect(); return [b.left, b.top, b.right, b.bottom].map(Math.round); });
+            await ph.close();
+            ok(r[0] >= 0 && r[1] >= 0 && r[2] <= 412 && r[3] <= 839, `CT125: the share window fits a phone screen (${r})`);
+        }
+
         // Owners: an earlier owner can be added; back-filling an old service takes its mileage, leaves the date open,
         // and is credited to whoever owned the bike then. Services after the current owner's handover don't ask.
         {
