@@ -152,6 +152,8 @@
         [aria-expanded="true"] > .custom-dropdown-arrow::before { content: '🞃'; }
         /* share bike: a small window over the page */
         .share-win { position: fixed; top: 50%; left: 50%; right: auto; bottom: auto; transform: translate(-50%, -50%); width: min(440px, calc(100vw - 32px)); height: auto; max-height: calc(100vh - 32px); overflow: auto; z-index: 70; background: var(--win-bg-color); border: 2px solid var(--text-color); }
+        /* The site's phone layout pins every .window to the top-left; this one stays centred. */
+        @media (max-width: 768px) { #sharewin.share-win { left: 50% !important; top: 50% !important; width: calc(100vw - 32px) !important; max-width: 440px !important; margin: 0; z-index: 70 !important; } }
         .share-win .title-bar { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: var(--text-color); color: var(--bg-color); }
         .share-win .close-btn { background: none; border: 0; color: inherit; font-size: 1.3rem; padding: 0 4px; }
         .share-win .content { max-height: none; height: auto; overflow: visible; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
