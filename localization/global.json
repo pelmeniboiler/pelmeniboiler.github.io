@@ -116,7 +116,7 @@
     "win_music_title": "<span class=\"symbol\">𝄆</span> музыка.ogg",
     "win_logo_title": "<span class=\"symbol\">❈</span> лого.canvas",
     "ss_exit_title": "◈ выход.screensaver",
-    "ss_exit_hint": "щёлкните или нажмите любую клавишу для выхода",
+    "ss_exit_hint": "щёлкни или нажми любую клавишу, чтобы выйти",
     "win_about_title": "<span class=\"symbol\">ℹ</span> о.user",
     "win_certs_title": "<span class=\"symbol\">Ⓒ</span> сертификаты.certificates",
     "win_settings_title": "<span class=\"symbol\"><span class=\"symbol\">⚙</span> </span> настройки.settings",
