@@ -459,7 +459,7 @@ html.emoji-pending .symbol { font-family: sans-serif; }
 .keys-list dd { white-space: nowrap; }
 .keys-list dd { margin: 0; }
 /* A keycap: the heavier bottom edge does what a shadow would, in the theme's own colour. */
-kbd { font: inherit; font-size: .85em; line-height: 1.3; display: inline-block; min-width: 1.7em; padding: .2em .4em 0; box-sizing: border-box; text-align: center; vertical-align: .05em; border: 1px solid var(--text-color); border-bottom-width: 3px; background-color: var(--win-bg-color); color: var(--text-color); }
+kbd { font: inherit; font-size: .85em; text-indent: 0; line-height: 1.3; display: inline-block; min-width: 1.7em; padding: .2em .4em 0; box-sizing: border-box; text-align: center; vertical-align: .05em; border: 1px solid var(--text-color); border-bottom-width: 3px; background-color: var(--win-bg-color); color: var(--text-color); }
 /* Letter keys switched off: struck through, the one place a list says "no". */
 .keys-off { text-decoration: line-through; }
 
@@ -953,6 +953,7 @@ textarea::-webkit-scrollbar-thumb {
     right: 0;
     top: 100%;
     background-color: var(--win-bg-color);
+    color: var(--text-color); /* not the title bar's inverted text */
     border: 2px solid var(--border-color);
     min-width: 160px;
     z-index: var(--z-dropdown);
