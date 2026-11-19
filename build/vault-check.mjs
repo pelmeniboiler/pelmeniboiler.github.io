@@ -11,8 +11,9 @@
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
-const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LOC = path.join(ROOT, 'localization');
 const read = async (p, d) => { try { return JSON.parse(await fs.readFile(p, 'utf8')); } catch { return d; } };
 // \b that knows Cyrillic and Hebrew letters (JavaScript's \b only knows ASCII).
@@ -61,7 +62,7 @@ export async function check() {
     return flags;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const flags = await check();
     for (const f of flags) console.log(`${f.id}  [${f.rule}] ${f.hit}\n    ${f.text.slice(0, 160)}`);
     console.log(flags.length ? `\n${flags.length} to fix or approve (vault/ok.json).` : 'Every translation follows the vault.');

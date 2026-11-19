@@ -842,7 +842,9 @@
                     if (ch === '‹') { const end = inputText.indexOf('›', i); const j = end < 0 ? inputText.length : end; outputText += inputText.slice(i + 1, j); i = j + 1; continue; }
                     const letterAround = /\p{L}/u.test(inputText[i - 1] || '') || /\p{L}/u.test(inputText[i + 1] || '');
                     if (/\s/.test(ch) || (/\d/.test(ch) && !letterAround)) { outputText += ch; i++; continue; }
-                    const key = sortedGraflectMapKeys.find((k) => k.trim() && inputText.startsWith(k, i));
+                    // She writes rr and rä as two glyphs, and joins wī only for the word "we".
+                    const joinedOk = (k) => (k !== 'rr' && k !== 'rä' && k !== 'wī') || (k === 'wī' && !/\p{L}/u.test(inputText[i - 1] || '') && !/\p{L}/u.test(inputText[i + 2] || ''));
+                    const key = sortedGraflectMapKeys.find((k) => k.trim() && inputText.startsWith(k, i) && joinedOk(k));
                     if (key) { outputText += graflectMap[key]; i += key.length; } else { outputText += ch; i++; }
                 }
                 graflectInput.value = outputText;
@@ -910,7 +912,9 @@
         const lookup = (w) => { const k = w.toLowerCase().replace(/’/g, "'"); return words[k] ?? words[k.replace(/'/g, '')]; };
         const toSlug = (g) => [...g].map((c) => slugMap[c] ?? c).join('');
         function draftSlug(text) {
-            return text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
+            const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
+            // "the" before a vowel is dhi, as she writes it.
+            return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=[aeiouxæäáōõöīüē4])/gu, '$1dhi$2');
         }
         // A finished segment teaches the dictionary every word it didn't know (when the words line up).
         function learnFrom(english, graflect) {

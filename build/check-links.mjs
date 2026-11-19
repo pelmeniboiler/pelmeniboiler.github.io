@@ -11,10 +11,11 @@
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 
 // The built site (npm run build), not the sources.
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '_site');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '_site');
 const SITE = 'https://pelmeniboiler.github.io';
 const SKIP_DIRS = new Set(['node_modules', '.git', '.github', '.claude', 'test']);
 const CHECK_EXTERNAL = process.argv.includes('--external');

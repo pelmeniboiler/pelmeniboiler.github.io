@@ -4,8 +4,10 @@
 #   python3 build/g2p/pretrain.py cmudict.dict g2p.pt --small      # a smaller model a CPU can train in an hour or so
 #   python3 build/g2p/pretrain.py cmudict.dict g2p.pt --tiny       # a smoke test on a CPU
 #
-# On the P40: if PyTorch says "no kernel image is available", the installed build has dropped
-# Pascal (sm_61); install a CUDA 12.6 build instead (pip install torch --index-url https://download.pytorch.org/whl/cu126).
+# On the P40 (sm_61): the cu118 build works (pip install torch --index-url https://download.pytorch.org/whl/cu118).
+# On driver 537.13 the cu126 build failed with cudaErrorDevicesUnavailable; newer builds may have dropped Pascal.
+# With two GPUs, pick the P40: CUDA_DEVICE_ORDER=PCI_BUS_ID and CUDA_VISIBLE_DEVICES=<its index>.
+# On Windows the command is python, not python3. P40 timing: 20 epochs ≈ 10 minutes, 65% of held-out words exact.
 import os, sys, random, torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu

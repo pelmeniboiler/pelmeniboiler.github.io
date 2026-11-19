@@ -9,10 +9,10 @@ def slug(phones):
     while i < len(ph):
         p, nxt = ph[i], (ph[i + 1] if i + 1 < len(ph) else '')
         if p == 'T' and nxt == 'R': out.append('c'); i += 1; continue          # trip → crip (t before r is c)
+        if p == 'D' and nxt == 'R': out.append('j'); i += 1; continue          # dream → jrīm (d before r is j, and the r stays)
         if p == 'EH' and nxt == 'R' and (i + 2 == len(ph) or ph[i + 2] not in V_SET): out.append('4'); i += 2; continue  # where → w4, pair → p4 (the air sound carries the r); very stays verī
         if p == 'NG' and nxt == 'G': out.append('ng'); i += 2; continue        # english → ingliš
         if p == 'Y' and nxt == 'UW': out.append('yü'); i += 2; continue
-        if p == 'AE' and nxt in ('N', 'M'): out.append('ä'); i += 1; continue   # man → män
         if p in ('AO', 'AA') and nxt == 'R': out.append('ō' if p == 'AO' else 'á'); i += 1; continue
         if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph) and i > 0 and ph[i - 1] == 'B': i += 1; continue  # table → tēbl, but people → pīpxl
         out.append(C.get(p) or V.get(p, '?')); i += 1

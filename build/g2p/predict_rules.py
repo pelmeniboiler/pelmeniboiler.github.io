@@ -1,19 +1,24 @@
 # build/g2p/predict_rules.py — a Graflect system for the grader, no model:
 #   1. words she has written in the training articles (as build/graflect-words.mjs learns them),
-#   2. else CMUdict through her rules (cmu2slug.py),
+#      and words she leaves in Latin there (names, labels) stay Latin,
+#   2. else CMUdict through her rules (cmu2slug_lib.py),
 #   3. else the English word, left in Latin.
-# Usage: npm run gt:eval -- --cmd "python3 build/g2p/predict_rules.py path/to/cmudict.dict"
+#   Then "the" before a vowel becomes dhi, as she writes it.
+# Usage (on Windows: python, and npm.cmd from PowerShell):
+#   npm run gt:eval -- --cmd "python3 build/g2p/predict_rules.py path/to/cmudict.dict"
 import json, os, re, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
 
 def strip(s): return re.sub(r'&\w+;', ' ', re.sub(r'<[^>]+>', ' ', s))
 def sentences(s): return re.split(r'[.!?;:]+\s', strip(s))
-def is_glyph(c): return 0xE000 <= ord(c) <= 0xF8FF
+WORD = re.compile(r"[A-Za-z][A-Za-z'’]*")
+VOWELS = tuple('aeiouxæäáōõöīüē4')
 
 def learn(lines):
-    """Her spellings from aligned training lines (SLUG), kept when 60% of occurrences agree."""
-    votes = collections.defaultdict(collections.Counter)
+    """Her spellings from aligned training lines (SLUG), kept when 60% of occurrences agree,
+    and the words she leaves in Latin more often than she spells them."""
+    votes, latin = collections.defaultdict(collections.Counter), collections.Counter()
     for l in lines:
         es, gs = sentences(l['en']), sentences(l['slug'])
         if len(es) != len(gs): es, gs = [strip(l['en'])], [strip(l['slug'])]
@@ -23,29 +28,44 @@ def learn(lines):
             for a, b in zip(ew, gw):
                 a = re.sub(r"[^A-Za-z']", '', a).lower(); b = re.sub(r'[^\wÀ-ɏ4]', '', b)
                 if a and b: votes[a][b] += 1
-    out = {}
+        # Latin she kept: English words that appear as-is in her Graflect line.
+        kept = {w.lower() for w in re.findall(r'[A-Za-z]{2,}', re.sub(r'<[^>]+>|&\w+;', ' ', l['gt']))}
+        for w in WORD.findall(strip(l['en'])):
+            if w.lower() in kept: latin[w.lower()] += 1
+    hers = {}
     for w, c in votes.items():
         b, n = c.most_common(1)[0]
-        if n / sum(c.values()) >= 0.6: out[w] = b
-    return out
+        if n / sum(c.values()) >= 0.6: hers[w] = b
+    keep_latin = {w for w, n in latin.items() if n >= sum(votes[w].values())}
+    return hers, keep_latin
+
+def spell_line(en, spell):
+    """Spell the words of one English line (outside tags and entities), then her context rules."""
+    out = ''.join(p if re.match(r'<[^>]+>|&#?\w+;', p) else WORD.sub(spell, p) for p in re.split(r'(<[^>]+>|&#?\w+;)', en))
+    # "the" before a vowel is dhi (12 of 15 times in her articles).
+    return re.sub(r'(?<![^\W\d_])dhx(\s+)(?=[' + ''.join(VOWELS) + '])', r'dhi\1', out)
+
+def speller(hers, keep_latin, cmu=None, guessed=None):
+    def spell(m):
+        w = m.group(0); k = w.lower().replace('’', "'")
+        if k in keep_latin: return '‹' + w + '›'
+        if k in hers: return hers[k]
+        if k.replace("'", '') in hers: return hers[k.replace("'", '')]
+        if cmu is not None and k in cmu: return slug(cmu[k])
+        if guessed and guessed.get(k): return guessed[k]
+        return '‹' + w + '›'
+    return spell
 
 def main():
     cmu = load_cmu(sys.argv[1])
     train = [json.loads(l) for l in open(os.environ['TRAIN'], encoding='utf-8') if l.strip()]
-    hers = learn(train)
-    def word(m):
-        w = m.group(0); k = w.lower().replace('’', "'")
-        if k in hers: return hers[k]
-        if k.replace("'", '') in hers: return hers[k.replace("'", '')]
-        if k in cmu: return slug(cmu[k])
-        return '‹' + w + '›'
+    hers, keep_latin = learn(train)
+    spell = speller(hers, keep_latin, cmu)
     with open(os.environ['OUT'], 'w', encoding='utf-8') as out:
         for l in open(os.environ['TEST'], encoding='utf-8'):
             if not l.strip(): continue
             t = json.loads(l)
-            # Words outside tags and entities only; ‹Latin› stays Latin in the grader too.
-            s = ''.join(p if re.match(r'<[^>]+>|&#?\w+;', p) else re.sub(r"[A-Za-z][A-Za-z'’]*", word, p) for p in re.split(r'(<[^>]+>|&#?\w+;)', t['en']))
-            out.write(json.dumps({'id': t['id'], 'slug': s}, ensure_ascii=False) + '\n')
+            out.write(json.dumps({'id': t['id'], 'slug': spell_line(t['en'], spell)}, ensure_ascii=False) + '\n')
 
 if __name__ == '__main__':
     main()
