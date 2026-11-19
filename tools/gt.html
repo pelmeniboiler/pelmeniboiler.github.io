@@ -930,7 +930,8 @@
             return out;
         };
         function draftSlug(text) {
-            const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
+            // The ending of a dotted name (system.settings, music.ogg) stays English, as in every translation.
+            const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w, i, s) => { if (s[i - 1] === '.' && /[A-Za-z0-9]/.test(s[i - 2] || '')) return `‹${w}›`; const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
             // "the" before a vowel (or a Latin name starting with one) is dhī, as she writes it.
             // ...and "have to" is hæf tü.
             return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=(?:<[^>]+>)*(?:[aeiouxæäáōõöīüē4]|‹[AEIOUaeiou]))/gu, '$1dhī$2').replace(/(^|[^\p{L}])hæv(\s+)(?=tü(?!\p{L}))/gu, '$1hæf$2');

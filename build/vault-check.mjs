@@ -2,9 +2,10 @@
 //
 //   npm run vault:check            list what breaks a rule in vault/rules.json
 //
-// A rule either forbids a pattern in a language, or compares punctuation with
+// A rule either forbids a pattern in a language, compares punctuation with
 // the English it was translated from ("added": don't introduce it; "kept": don't
-// drop it). Approved exceptions live in vault/ok.json as "file:key:lang" under
+// drop it), or ("ending") keeps the English ending of a dotted name like
+// system.settings. Rules with "gt": true also check Graflect. Approved exceptions live in vault/ok.json as "file:key:lang" under
 // the rule's id, so a flag is either fixed or consciously accepted. Terms in
 // vault/terms.json are checked too: where the English uses one, each
 // translation must use its agreed form.
@@ -32,6 +33,13 @@ export function judge(rules, lang, en, raw) {
         else if (r.forbid) { const m = t.match(re(r.forbid)); if (m) hit = m.join(', '); }
         else if (r.added && count(t, r.added) > count(e, r.added)) hit = `${r.added} not in the English`;
         else if (r.kept && count(e, r.kept) > count(t, r.kept + (r.same || ''))) hit = `${r.kept} dropped`;
+        else if (r.ending) {
+            // name.ending, not a web address (www.x, x.com, en.wikipedia.org) or an initialism (U.S., P.S.)
+            const gone = [...e.matchAll(/(?<![\w.])([A-Za-z][\w-]+)\.([a-z]{2,})(?![\w.])/g)]
+                .filter((m) => m[1] !== 'www' && !/^(?:com|org|net|io|htm|html|php|gov|edu)$/i.test(m[2]))
+                .filter((m) => !t.includes(`.${m[2]}`)).map((m) => m[0]);
+            if (gone.length) hit = `${gone.join(', ')}: keep the ending in English`;
+        }
         if (hit) hits.push({ rule: r.id, hit, text: t });
     }
     return hits;
@@ -51,11 +59,12 @@ export async function check() {
         if (!d || !d.en) continue;
         const name = file.replace(/\.json$/, '');
         for (const [lang, values] of Object.entries(d)) {
-            if (lang === 'en' || lang === 'gt' || typeof values !== 'object') continue;
+            if (lang === 'en' || typeof values !== 'object') continue;
+            const these = lang === 'gt' ? rules.filter((r) => r.gt) : rules;
             for (const [key, raw] of Object.entries(values)) {
                 if (d.en[key] == null) continue;
                 const id = `${name}:${key}:${lang}`;
-                for (const h of judge(rules, lang, d.en[key], raw)) if (!(ok[h.rule] || []).includes(id)) flags.push({ id, ...h });
+                for (const h of judge(these, lang, d.en[key], raw)) if (!(ok[h.rule] || []).includes(id)) flags.push({ id, ...h });
             }
         }
     }

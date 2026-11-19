@@ -50,7 +50,7 @@
     "music_h5": "עיבוד לפסנתר מאת אנדרה ווילס,<br>בעיבוד שלי לביצוע רגוע יותר.",
     "win_blog_title": "<span class=\"symbol\">📓</span> בלוג.posts",
     "win_applib_title": "<span class=\"symbol\">🗀</span> יישומים.library",
-    "applib_demos_h4": "הדגמות.articles",
+    "applib_demos_h4": "מאמר.demos",
     "subscribe": "הירשמו לעדכוני RSS."
   },
   "ru": {
@@ -75,9 +75,9 @@
     "music_play_btn": "<span class=\"symbol\">▶</span>",
     "music_h4": "Композитор: Джо Мик, Исполнитель: The Tornados.",
     "music_h5": "Фортепианная аранжировка Андре Уилса,<br>адаптированная мной для более спокойного исполнения.",
-    "win_blog_title": "<span class=\"symbol\">📓</span> блог.записи",
+    "win_blog_title": "<span class=\"symbol\">📓</span> блог.posts",
     "win_applib_title": "<span class=\"symbol\">🗀</span> приложения.library",
-    "applib_demos_h4": "демо.articles",
+    "applib_demos_h4": "статья.demos",
     "subscribe": "Подписаться на RSS-ленту."
   },
   "ja": {
@@ -102,9 +102,9 @@
     "music_play_btn": "<span class=\"symbol\">▶</span>",
     "music_h4": "作曲: ジョー・ミーク (演奏: ザ・トルネイドース)",
     "music_h5": "ピアノ編曲：アンドレ・ウィルス、<br>穏やかな演奏になるよう私が編曲しました。",
-    "win_blog_title": "<span class=\"symbol\">📓</span> ブログ.投稿",
+    "win_blog_title": "<span class=\"symbol\">📓</span> ブログ.posts",
     "win_applib_title": "<span class=\"symbol\">🗀</span> アプリ.library",
-    "applib_demos_h4": "デモ.articles",
+    "applib_demos_h4": "記事.demos",
     "subscribe": "RSSフィードを購読"
   },
   "de": {
@@ -129,7 +129,7 @@
     "music_play_btn": "<span class=\"symbol\">▶</span>",
     "music_h4": "Komposition: Joe Meek, gespielt von The Tornados.",
     "music_h5": "Klavierarrangement von André Wils,<br>von mir für eine ruhigere Darbietung adaptiert.",
-    "win_blog_title": "<span class=\"symbol\">📓</span> blog.beiträge",
+    "win_blog_title": "<span class=\"symbol\">📓</span> blog.posts",
     "win_applib_title": "<span class=\"symbol\">🗀</span> programme.library",
     "applib_demos_h4": "article.demos",
     "subscribe": "RSS-Feed abonnieren."
