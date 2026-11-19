@@ -1586,7 +1586,13 @@ try {
         const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
         p.on('dialog', (d) => d.accept('Is this the right word for tyres?'));
         let tree = null;
-        const reviewFile = await fs.readFile(path.join(process.cwd(), 'vault/reviews/ct125.json'), 'utf-8');
+        // A fixture, so the test doesn't depend on how far the real review has got: CT125 with every question open.
+        const fixture = JSON.parse(await fs.readFile(path.join(process.cwd(), 'vault/reviews/ct125.json'), 'utf-8'));
+        fixture.round = 1;
+        for (const q of fixture.questions) { q.status = 'open'; delete q.answer; q.thread = q.thread.filter((t) => t.who === 'claude').slice(0, 1); }
+        const reviewFile = JSON.stringify(fixture);
+        await c.route(`${BASE}/localization/reviews/**`, (route) => route.fulfill({ status: 200, contentType: 'application/json',
+            body: route.request().url().endsWith('index.json') ? JSON.stringify([{ article: 'ct125', title: fixture.title, round: 1, open: fixture.questions.length }]) : reviewFile }));
         await c.route('https://api.github.com/**', async (route) => {
             const req = route.request(), u = new URL(req.url());
             const j = (o, s = 200) => route.fulfill({ status: s, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(o) });

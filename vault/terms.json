@@ -1,7 +1,11 @@
 {
- "Claude": { "en": "Claude", "ru": "Claude", "he": "Claude", "de": "Claude", "ja": "Claude" },
- "The Great Escape (1963)": { "en": "The Great Escape", "ru": "Большой побег", "he": "הבריחה הגדולה", "de": "Gesprengte Ketten", "ja": "大脱走", "why": "de: the chains are a motorcycle's too" },
- "Zen and the Art of Motorcycle Maintenance": { "en": "art of motorcycle maintenance", "ru": "искусство ухода за мотоциклом", "he": "ואמנות אחזקת האופנוע", "de": "die Kunst, ein Motorrad zu warten", "ja": "オートバイ修理技術" },
- "On Any Sunday (1971)": { "de": "Teufelskerle auf heißen Feuerstühlen", "ja": "栄光のライダー", "src": "fernsehserien.de/filme/teufelskerle-auf-heissen-feuerstuehlen, eiga.com/movie/42724" },
- "IKEA effect": { "en": "IKEA effect", "ru": "эффект IKEA", "he": "אפקט IKEA", "de": "IKEA-Effekt", "ja": "IKEA効果" }
+ "Claude": {"en": "Claude", "ru": "Claude", "he": "Claude", "de": "Claude", "ja": "Claude"},
+ "The Great Escape (1963)": {"en": "The Great Escape", "ru": "Большой побег", "he": "הבריחה הגדולה", "de": "Gesprengte Ketten", "ja": "大脱走", "why": "de: the chains are a motorcycle's too"},
+ "Zen and the Art of Motorcycle Maintenance": {"en": "art of motorcycle maintenance", "ru": "искусство ухода за мотоциклом", "he": "ואמנות אחזקת האופנוע", "de": "die Kunst, ein Motorrad zu warten", "ja": "オートバイ修理技術"},
+ "On Any Sunday (1971)": {"en": "On Any Sunday", "ru": "On Any Sunday", "he": "On Any Sunday", "de": "On Any Sunday", "ja": "On Any Sunday", "why": "keeps the Sunday callback; release titles (de Teufelskerle auf heißen Feuerstühlen, ja 栄光のライダー) verified but not used", "src": "fernsehserien.de/filme/teufelskerle-auf-heissen-feuerstuehlen, eiga.com/movie/42724"},
+ "IKEA effect": {"en": "IKEA effect", "ru": "эффект IKEA", "he": "אפקט IKEA", "de": "IKEA-Effekt", "ja": "IKEA効果"},
+ "Z.A.M.M.": {"en": "Z.A.M.M.", "ru": "«Дзен…»", "he": "זן ואמנות", "de": "„Zen und die Kunst …“", "ja": "『禅とオートバイ修理技術』"},
+ "shtuyot": {"en": "shtuyot", "ru": "штуйот", "he": "שטויות", "de": "Schtujot", "ja": "どうでもいい話", "why": "her Hebrew word stays hers in ru and de"},
+ "Super Cub": {"en": "Super Cub", "ru": "Super Cub", "he": "Super Cub", "de": "Super Cub", "ja": "スーパーカブ"},
+ "LLM": {"en": "LLM", "he": "LLM"}
 }
