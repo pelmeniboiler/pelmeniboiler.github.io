@@ -837,16 +837,7 @@
             let outputText = '';
             let i = 0;
             if (queueMode) {
-                while (i < inputText.length) {
-                    const ch = inputText[i];
-                    if (ch === '‹') { const end = inputText.indexOf('›', i); const j = end < 0 ? inputText.length : end; outputText += inputText.slice(i + 1, j); i = j + 1; continue; }
-                    const letterAround = /\p{L}/u.test(inputText[i - 1] || '') || /\p{L}/u.test(inputText[i + 1] || '');
-                    if (/\s/.test(ch) || (/\d/.test(ch) && !letterAround)) { outputText += ch; i++; continue; }
-                    // She writes rr and rä as two glyphs, and joins wī only for the word "we".
-                    const joinedOk = (k) => (k !== 'rr' && k !== 'rä' && k !== 'wī') || (k === 'wī' && !/\p{L}/u.test(inputText[i - 1] || '') && !/\p{L}/u.test(inputText[i + 2] || ''));
-                    const key = sortedGraflectMapKeys.find((k) => k.trim() && inputText.startsWith(k, i) && joinedOk(k));
-                    if (key) { outputText += graflectMap[key]; i += key.length; } else { outputText += ch; i++; }
-                }
+                outputText = slugToGlyphs(inputText);
                 graflectInput.value = outputText;
                 graflectInput.dispatchEvent(new Event('input'));
                 const latin = [...slugInput.value.matchAll(/‹([^›]*)›/g)].map((m) => m[1]);
@@ -910,11 +901,39 @@
         const words = { ...SITE_WORDS };
         Object.assign(words, (() => { const { dicts, i } = activeDictionary(); return dicts[i].words || {}; })());
         const lookup = (w) => { const k = w.toLowerCase().replace(/’/g, "'"); return words[k] ?? words[k.replace(/'/g, '')]; };
-        const toSlug = (g) => [...g].map((c) => slugMap[c] ?? c).join('');
+        // SLUG → glyphs in queue mode, the same rules as build/gt-eval.mjs: longest match; "·" marks a
+        // boundary where two glyphs would otherwise read as one (r·r is two r glyphs, rr the trilled r);
+        // "yu" is typed for yü; the space glyph is ␣; ‹Latin› stays Latin; spaces and lone digits pass.
+        const QUEUE_KEYS = [...sortedGraflectMapKeys.filter((k) => k.trim()), 'yu', '␣'].sort((a, b) => b.length - a.length);
+        const glyphOf = (k) => (k === 'yu' ? graflectMap['yü'] : k === '␣' ? graflectMap[' '] : graflectMap[k]);
+        function slugToGlyphs(text) {
+            let out = '', i = 0;
+            while (i < text.length) {
+                const ch = text[i];
+                if (ch === '‹') { const end = text.indexOf('›', i); const j = end < 0 ? text.length : end; out += text.slice(i + 1, j); i = j + 1; continue; }
+                if (ch === '·') { i++; continue; }
+                const letterAround = /\p{L}/u.test(text[i - 1] || '') || /\p{L}/u.test(text[i + 1] || '');
+                if (/\s/.test(ch) || (/\d/.test(ch) && !letterAround)) { out += ch; i++; continue; }
+                const key = QUEUE_KEYS.find((k) => text.startsWith(k, i));
+                if (key) { out += glyphOf(key); i += key.length; } else { out += ch; i++; }
+            }
+            return out;
+        }
+        // Glyphs → SLUG for drafts, marking boundaries so the draft converts back to exactly these glyphs.
+        const toSlug = (g) => {
+            let out = '', prev = null;
+            for (const c of g) {
+                const u = slugMap[c] === ' ' ? '␣' : (slugMap[c] ?? c);
+                if (prev && slugMap[c] && slugToGlyphs(prev[1] + u) !== prev[0] + c) out += '·';
+                out += u; prev = slugMap[c] ? [c, u] : null;
+            }
+            return out;
+        };
         function draftSlug(text) {
             const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
-            // "the" before a vowel is dhi, as she writes it.
-            return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=[aeiouxæäáōõöīüē4])/gu, '$1dhi$2');
+            // "the" before a vowel is dhī, as she writes it.
+            // ...and "have to" is hæf tü.
+            return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=[aeiouxæäáōõöīüē4])/gu, '$1dhī$2').replace(/(^|[^\p{L}])hæv(\s+)(?=tü(?!\p{L}))/gu, '$1hæf$2');
         }
         // A finished segment teaches the dictionary every word it didn't know (when the words line up).
         function learnFrom(english, graflect) {

@@ -2,7 +2,7 @@
  "article": "graflect-1",
  "kind": "graflect",
  "title": "Graflect proofreading",
- "round": 1,
+ "round": 2,
  "langs": [
   "gt"
  ],
@@ -1281,10 +1281,10 @@
     {
      "who": "claude",
      "round": 1,
-     "text": "dhx before a consonant, dhi before a vowel (the build and the queue do this for you)."
+     "text": "dhx before a consonant, dhī before a vowel (the build and the queue do this for you)."
     }
    ],
-   "why": "dhx before a consonant, dhi before a vowel (the build and the queue do this for you)."
+   "why": "dhx before a consonant, dhī before a vowel (the build and the queue do this for you)."
   },
   {
    "id": "g2",
@@ -1303,12 +1303,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: änd    · The CMUdict stuff is crazy. \"uhnd\"? Who says and like that? Ohhh... if you say it fast you say it xnd... what!!! what do we do? In this case it's definitely xnd. but if I said \"and\" in many cases it's änd! I guess in a phrase where it's like cookies and cream, cherries and pie, etc, it's xnd!"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept änd. You’re right: unstressed, it shrinks to xnd, as in “cookies and cream” and “cherries and pie”. That’s a context word, like “a”, so xnd there is never flagged."
     }
    ],
    "why": "You always write änd; CMUdict through your rules says xnd. Keep yours unless it was a slip.",
@@ -1362,12 +1367,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fōr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fōr everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: fōr.",
@@ -1394,12 +1404,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: with    · My accent says with, not widh. CMUdict wrong again."
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept with."
     }
    ],
    "why": "You always write with; CMUdict through your rules says widh. Keep yours unless it was a slip.",
@@ -1426,12 +1441,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: wxz    · wáz is more how you'd say wozniack than was…"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept wxz."
     }
    ],
    "why": "You always write wxz; CMUdict through your rules says wáz. Keep yours unless it was a slip.",
@@ -1458,12 +1478,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: hæv    · I may say \"hæf\" in the case of like \"have to\""
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept hæv, and “have to” is now hæf tü in the queue’s drafts and in the systems."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: hæv.",
@@ -1490,12 +1515,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīlī    · Accent =! cmudict again"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept rīlī."
     }
    ],
    "why": "You always write rīlī; CMUdict through your rules says rilī. Keep yours unless it was a slip.",
@@ -1549,12 +1579,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: yir · if anything it's more like yir"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: yir everywhere, and in the dictionary."
     }
    ],
    "why": "You always write yr; CMUdict through your rules says yōr. Keep yours unless it was a slip.",
@@ -1581,12 +1616,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: bīkxz    · accent disagreement again"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept bīkxz."
     }
    ],
    "why": "You always write bīkxz; CMUdict through your rules says bikáz. Keep yours unless it was a slip.",
@@ -1640,12 +1680,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: wir"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: wir everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: wr.",
@@ -1699,12 +1744,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: lēngwij    · accent"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept lēngwij."
     }
    ],
    "why": "You always write lēngwij; CMUdict through your rules says længwxj. Keep yours unless it was a slip.",
@@ -1735,12 +1785,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: difrent   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: difrent everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: difrxnt.",
@@ -1767,12 +1822,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: æksent    · CMUdict crazy for this one, Not even close, baby!"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept æksent."
     }
    ],
    "why": "You always write æksent; CMUdict through your rules says xksent. Keep yours unless it was a slip.",
@@ -1799,12 +1859,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kxlr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: kxlr everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: kxlr.",
@@ -1831,12 +1896,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dikšin4ī    · cmudict using e wrong here. pathetic!"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept dikšin4ī."
     }
    ],
    "why": "You always write dikšin4ī; CMUdict through your rules says dikšxnerī. Keep yours unless it was a slip.",
@@ -1863,12 +1933,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: lōkxlxzēšxn    · not a slip, but cmudict was right here"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: lōkxlxzēšxn everywhere, and in the dictionary."
     }
    ],
    "why": "You always write lōkxlaizēšin; CMUdict through your rules says lōkxlxzēšxn. Keep yours unless it was a slip.",
@@ -1895,12 +1970,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: lēngwijiz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept lēngwijiz."
     }
    ],
    "why": "You always write lēngwijiz; CMUdict through your rules says længwxjxz. Keep yours unless it was a slip.",
@@ -1931,12 +2011,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xspešlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: xspešlī everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: xspešlī.",
@@ -1963,12 +2048,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: yur   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: yür everywhere, and in the dictionary."
     }
    ],
    "why": "You always write yr; CMUdict through your rules says yur. Keep yours unless it was a slip.",
@@ -1995,12 +2085,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: wxzint    · wozzint? another cmudict L"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept wxzint."
     }
    ],
    "why": "You always write wxzint; CMUdict through your rules says wázxnt. Keep yours unless it was a slip.",
@@ -2027,12 +2122,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ivencüxlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept ivencüxlī."
     }
    ],
    "why": "You always write ivencüxlī; CMUdict through your rules says ivencxwxlī. Keep yours unless it was a slip.",
@@ -2059,12 +2159,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: bitwīn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: bitwīn everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: bitwīn.",
@@ -2091,12 +2196,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: owr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: owr everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ár; CMUdict through your rules says owr. Keep yours unless it was a slip.",
@@ -2123,12 +2233,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sxb    · cmudict W !!! "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sxb everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sxm; CMUdict through your rules says sxb. Keep yours unless it was a slip.",
@@ -2155,12 +2270,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sfīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept sfīr."
     }
    ],
    "why": "You always write sfīr; CMUdict through your rules says sfir. Keep yours unless it was a slip.",
@@ -2191,12 +2311,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xvēlibxl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: xvēlibxl everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: xvēlxbl.",
@@ -2223,12 +2348,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: cränzlitxrēšxn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: cränzlitxrēšxn everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways.",
@@ -2255,12 +2385,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: igzämpxl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: igzämpxl everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: igzämpxl.",
@@ -2287,12 +2422,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīkwair   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīkwair everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: rīkwair.",
@@ -2319,12 +2459,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: evrīthīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: evrīthīng everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: evrīthīng.",
@@ -2351,12 +2496,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prfikt   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prfikt."
     }
    ],
    "why": "You always write prfikt; CMUdict through your rules says prfekt. Keep yours unless it was a slip.",
@@ -2383,12 +2533,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rō   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rō everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: rō.",
@@ -2415,12 +2570,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dh4   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: dh4 everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: dh4.",
@@ -2451,12 +2611,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: 4īx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: 4īx everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: erīx.",
@@ -2483,12 +2648,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fōkis   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fōkis everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: fōkxs.",
@@ -2515,12 +2685,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kaindx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept kaindx."
     }
    ],
    "why": "You always write kaindx; CMUdict through your rules says kindx. Keep yours unless it was a slip.",
@@ -2547,12 +2722,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rescránt   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept rescránt."
     }
    ],
    "why": "You always write rescránt; CMUdict through your rules says restránt. Keep yours unless it was a slip.",
@@ -2579,12 +2759,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prtikyülr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prtikyülr."
     }
    ],
    "why": "You always write prtikyülr; CMUdict through your rules says prtikyxlr. Keep yours unless it was a slip.",
@@ -2615,12 +2800,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: increstīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: increstīng everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: incrxstīng.",
@@ -2647,12 +2837,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dītēl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept dītēl."
     }
    ],
    "why": "You always write dītēl; CMUdict through your rules says ditēl. Keep yours unless it was a slip.",
@@ -2683,12 +2878,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ritin   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ritin everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: ritxn.",
@@ -2715,12 +2915,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fálōīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fálōīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write fálōwīng; CMUdict through your rules says fálōīng. Keep yours unless it was a slip.",
@@ -2747,12 +2952,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: līngk   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: līngk everywhere, and in the dictionary."
     }
    ],
    "why": "You always write līnk; CMUdict through your rules says līngk. Keep yours unless it was a slip.",
@@ -2783,12 +2993,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: p4xgræf   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: p4xgræf everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: pærxgræf.",
@@ -2819,12 +3034,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: bxin   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: bxin everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: bxtxn.",
@@ -2851,12 +3071,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: cärnzlitrēt   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: cärnzlitrēt everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways.",
@@ -2883,12 +3108,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: klīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept klīr."
     }
    ],
    "why": "You always write klīr; CMUdict through your rules says klir. Keep yours unless it was a slip.",
@@ -2915,12 +3145,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dilibretlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept dilibretlī."
     }
    ],
    "why": "You always write dilibretlī; CMUdict through your rules says dilibrxtlī. Keep yours unless it was a slip.",
@@ -2951,12 +3186,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: praiōrxtaizd   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: praiōrxtaizd everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: praiōrxtaizd.",
@@ -2983,12 +3223,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: yüžüxlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept yüžüxlī."
     }
    ],
    "why": "You always write yüžüxlī; CMUdict through your rules says yüžxwxlī. Keep yours unless it was a slip.",
@@ -3019,12 +3264,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xprōprīit   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: xprōprīit everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: xprōprīxt.",
@@ -3051,12 +3301,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīplēs   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīplēs everywhere, and in the dictionary."
     }
    ],
    "why": "You always write riplēs; CMUdict through your rules says rīplēs. Keep yours unless it was a slip.",
@@ -3087,12 +3342,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ábvīis   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ábvīis everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: ábvīxs.",
@@ -3123,12 +3383,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: yīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: yīr everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: yir.",
@@ -3155,12 +3420,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xnyüzxbl    · Wow. Goat CMUdict. I had a crazy L here."
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: xnyüzxbl everywhere, and in the dictionary."
     }
    ],
    "why": "You always write yünyüzibl; CMUdict through your rules says xnyüzxbl. Keep yours unless it was a slip.",
@@ -3187,12 +3457,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: twentī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: twentī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write cwentī; CMUdict through your rules says twentī. Keep yours unless it was a slip.",
@@ -3219,12 +3494,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: thänkfxlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept thänkfxlī."
     }
    ],
    "why": "You always write thänkfxlī; CMUdict through your rules says thængkfxlī. Keep yours unless it was a slip.",
@@ -3251,12 +3531,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: eksplēn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept eksplēn."
     }
    ],
    "why": "You always write eksplēn; CMUdict through your rules says iksplēn. Keep yours unless it was a slip.",
@@ -3287,12 +3572,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: spxsifik   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: spxsifik everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: spxsifik.",
@@ -3319,12 +3609,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: aidīxz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: aidīxz everywhere, and in the dictionary."
     }
    ],
    "why": "You have written it 2 ways. CMUdict through your rules: aidīxz.",
@@ -3351,12 +3646,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: Email-sencrik"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Fixed the r: sencrik, in both places. “Email” stays as you wrote it in each line (Latin in one, īmēl in the other)."
     }
    ],
    "why": "You have written it 2 ways.",
@@ -3383,12 +3683,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīzálvīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīzálvīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rizálvīng; CMUdict through your rules says rīzálvīng. Keep yours unless it was a slip.",
@@ -3415,12 +3720,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sīngxl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sīngxl everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sīnggxl; CMUdict through your rules says sīngxl. Keep yours unless it was a slip.",
@@ -3447,12 +3757,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sxbskripšxn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sxbskripšxn everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sxmskripšin; CMUdict through your rules says sxbskripšxn. Keep yours unless it was a slip.",
@@ -3479,12 +3794,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rxpēšis   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept rxpēšis."
     }
    ],
    "why": "You always write rxpēšis; CMUdict through your rules says rxpæšis. Keep yours unless it was a slip.",
@@ -3511,12 +3831,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: sēlzwumin"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sēlzwumin everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sēlzwxmin; CMUdict through your rules says sēlzwumxn. Keep yours unless it was a slip.",
@@ -3543,12 +3868,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dowst   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: dowst everywhere, and in the dictionary."
     }
    ],
    "why": "You always write dowsd; CMUdict through your rules says dowst. Keep yours unless it was a slip.",
@@ -3575,12 +3905,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: k4xmel   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept k4xmel."
     }
    ],
    "why": "You always write k4xmel; CMUdict through your rules says kerxmxl. Keep yours unless it was a slip.",
@@ -3607,12 +3942,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: skejulīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: skejulīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write skejxlīng; CMUdict through your rules says skejulīng. Keep yours unless it was a slip.",
@@ -3639,12 +3979,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: vīikxlz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept vīikxlz."
     }
    ],
    "why": "You always write vīikxlz; CMUdict through your rules says vīhikxlz. Keep yours unless it was a slip.",
@@ -3671,12 +4016,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīmaindīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīmaindīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rimaindīng; CMUdict through your rules says rīmaindīng. Keep yours unless it was a slip.",
@@ -3703,12 +4053,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prisižin   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prisižin."
     }
    ],
    "why": "You always write prisižin; CMUdict through your rules says prīsižxn. Keep yours unless it was a slip.",
@@ -3735,12 +4090,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: wxmin   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept wxmin."
     }
    ],
    "why": "You always write wxmin; CMUdict through your rules says wumxn. Keep yours unless it was a slip.",
@@ -3767,12 +4127,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: pür   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: pür everywhere, and in the dictionary."
     }
    ],
    "why": "You always write pur; CMUdict through your rules says pür. Keep yours unless it was a slip.",
@@ -3799,12 +4164,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: gxnx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept gxnx."
     }
    ],
    "why": "You always write gxnx; CMUdict through your rules says gánx. Keep yours unless it was a slip.",
@@ -3831,12 +4201,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: vaibrxnt   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: vaibrxnt everywhere, and in the dictionary."
     }
    ],
    "why": "You always write vaibrent; CMUdict through your rules says vaibrxnt. Keep yours unless it was a slip.",
@@ -3863,12 +4238,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: intrmīdīit   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: intrmīdīit everywhere, and in the dictionary."
     }
    ],
    "why": "You always write intrmīdixt; CMUdict through your rules says intrmīdīit. Keep yours unless it was a slip.",
@@ -3895,12 +4275,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: intræktīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: intræktīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write incræktīng; CMUdict through your rules says intræktīng. Keep yours unless it was a slip.",
@@ -3927,12 +4312,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: intrmīdīx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: intrmīdīx everywhere, and in the dictionary."
     }
    ],
    "why": "You always write intrmīdix; CMUdict through your rules says intrmīdīx. Keep yours unless it was a slip.",
@@ -3959,12 +4349,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xpīrins   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept xpīrins."
     }
    ],
    "why": "You always write xpīrins; CMUdict through your rules says xpirxns. Keep yours unless it was a slip.",
@@ -3991,12 +4386,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fxngkī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fxngkī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write fxnkī; CMUdict through your rules says fxngkī. Keep yours unless it was a slip.",
@@ -4023,12 +4423,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: laisenzīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept laisenzīng."
     }
    ],
    "why": "You always write laisenzīng; CMUdict through your rules says laisxnsīng. Keep yours unless it was a slip.",
@@ -4055,12 +4460,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: laisxnz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept laisxnz."
     }
    ],
    "why": "You always write laisxnz; CMUdict through your rules says laisxns. Keep yours unless it was a slip.",
@@ -4087,12 +4497,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: yüziz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept yüziz."
     }
    ],
    "why": "You always write yüziz; CMUdict through your rules says yüsxz. Keep yours unless it was a slip.",
@@ -4119,12 +4534,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fánts   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fánts everywhere, and in the dictionary."
     }
    ],
    "why": "You always write fánds; CMUdict through your rules says fánts. Keep yours unless it was a slip.",
@@ -4151,12 +4571,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: selekšin   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept selekšin."
     }
    ],
    "why": "You always write selekšin; CMUdict through your rules says sxlekšxn. Keep yours unless it was a slip.",
@@ -4183,12 +4608,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rimembr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rimembr everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rīmemr; CMUdict through your rules says rimembr. Keep yours unless it was a slip.",
@@ -4215,12 +4645,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dikšin4īz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept dikšin4īz."
     }
    ],
    "why": "You always write dikšin4īz; CMUdict through your rules says dikšxnerīz. Keep yours unless it was a slip.",
@@ -4247,12 +4682,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xpīrz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept xpīrz."
     }
    ],
    "why": "You always write xpīrz; CMUdict through your rules says xpirz. Keep yours unless it was a slip.",
@@ -4279,12 +4719,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: mæpīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: mæpīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write mæpīngg; CMUdict through your rules says mæpīng. Keep yours unless it was a slip.",
@@ -4311,12 +4756,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sxbskraib   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sxbskraib everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sxmskraib; CMUdict through your rules says sxbskraib. Keep yours unless it was a slip.",
@@ -4343,12 +4793,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kraitīrīx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept kraitīrīx."
     }
    ],
    "why": "You always write kraitīrīx; CMUdict through your rules says kraitirīx. Keep yours unless it was a slip.",
@@ -4375,12 +4830,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: vižyuxli"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: vižyüxlī, with yü (your yu) and lī like your other -ly words. Tell me if the plain final i was meant."
     }
    ],
    "why": "You always write vižüxlī; CMUdict through your rules says vižwxlī. Keep yours unless it was a slip.",
@@ -4407,12 +4867,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prōvaidīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prōvaidīng."
     }
    ],
    "why": "You always write prōvaidīng; CMUdict through your rules says prxvaidīng. Keep yours unless it was a slip.",
@@ -4439,12 +4904,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: imprüvment   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept imprüvment."
     }
    ],
    "why": "You always write imprüvment; CMUdict through your rules says imprüvmxnt. Keep yours unless it was a slip.",
@@ -4471,12 +4941,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: tōrdz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept tōrdz."
     }
    ],
    "why": "You always write tōrdz; CMUdict through your rules says txwōrdz. Keep yours unless it was a slip.",
@@ -4503,12 +4978,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: eksplxnēšxnz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: eksplxnēšxnz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write iksplēšinz; CMUdict through your rules says eksplxnēšxnz. Keep yours unless it was a slip.",
@@ -4535,12 +5015,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: vōkæbyülerī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept vōkæbyülerī."
     }
    ],
    "why": "You always write vōkæbyülerī; CMUdict through your rules says vōkæbyxlerī. Keep yours unless it was a slip.",
@@ -4567,12 +5052,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kævīáts   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept kævīáts."
     }
    ],
    "why": "You always write kævīáts; CMUdict through your rules says kēvīæts. Keep yours unless it was a slip.",
@@ -4599,12 +5089,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sīrīislī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept sīrīislī."
     }
    ],
    "why": "You always write sīrīislī; CMUdict through your rules says sirīxslī. Keep yours unless it was a slip.",
@@ -4631,12 +5126,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ikscrīmlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept ikscrīmlī."
     }
    ],
    "why": "You always write ikscrīmlī; CMUdict through your rules says ekscrīmlī. Keep yours unless it was a slip.",
@@ -4663,12 +5163,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: skripts   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: skripts everywhere, and in the dictionary."
     }
    ],
    "why": "You always write skrips; CMUdict through your rules says skripts. Keep yours unless it was a slip.",
@@ -4695,12 +5200,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: ækcyuxl"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ækcyüxl everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ækcüxl; CMUdict through your rules says ækcxwxl. Keep yours unless it was a slip.",
@@ -4727,12 +5237,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: enjinīrīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept enjinīrīng."
     }
    ],
    "why": "You always write enjinīrīng; CMUdict through your rules says enjxnirīng. Keep yours unless it was a slip.",
@@ -4759,12 +5274,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prōvaidid   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prōvaidid."
     }
    ],
    "why": "You always write prōvaidid; CMUdict through your rules says prxvaidid. Keep yours unless it was a slip.",
@@ -4791,12 +5311,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kyürīis   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept kyürīis."
     }
    ],
    "why": "You always write kyürīis; CMUdict through your rules says kyurīxs. Keep yours unless it was a slip.",
@@ -4823,12 +5348,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: b4īr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept b4īr."
     }
    ],
    "why": "You always write b4īr; CMUdict through your rules says bærīr. Keep yours unless it was a slip.",
@@ -4855,12 +5385,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: iksp4imentxl"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: iksp4imentxl everywhere, and in the dictionary."
     }
    ],
    "why": "You always write eksperimentxl; CMUdict through your rules says iksperimentxl. Keep yours unless it was a slip.",
@@ -4887,12 +5422,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: eksplxnēšxn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: eksplxnēšxn everywhere, and in the dictionary."
     }
    ],
    "why": "You always write eksplēšin; CMUdict through your rules says eksplxnēšxn. Keep yours unless it was a slip.",
@@ -4919,12 +5459,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: mitikyülxslī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept mitikyülxslī."
     }
    ],
    "why": "You always write mitikyülxslī; CMUdict through your rules says mxtikyxlxslī. Keep yours unless it was a slip.",
@@ -4951,12 +5496,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: tügedhr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept tügedhr."
     }
    ],
    "why": "You always write tügedhr; CMUdict through your rules says txgedhr. Keep yours unless it was a slip.",
@@ -4983,12 +5533,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: imīdīxt   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: imīdīxt everywhere, and in the dictionary."
     }
    ],
    "why": "You always write imīdiit; CMUdict through your rules says imīdīxt. Keep yours unless it was a slip.",
@@ -5015,12 +5570,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fīnggrz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept fīnggrz."
     }
    ],
    "why": "You always write fīnggrz; CMUdict through your rules says fīngrz. Keep yours unless it was a slip.",
@@ -5068,12 +5628,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rædhr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rædhr everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rädhr; CMUdict through your rules says rædhr. Keep yours unless it was a slip.",
@@ -5100,12 +5665,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xdišxnxlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: xdišxnxlī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write áldhō; CMUdict through your rules says xdišxnxlī. Keep yours unless it was a slip.",
@@ -5132,12 +5702,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: eksept   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept eksept."
     }
    ],
    "why": "You always write eksept; CMUdict through your rules says iksept. Keep yours unless it was a slip.",
@@ -5164,12 +5739,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sálv   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sálv everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sálvd; CMUdict through your rules says sálv. Keep yours unless it was a slip.",
@@ -5196,12 +5776,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: wīrd"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: wīrd everywhere, and in the dictionary."
     }
    ],
    "why": "You always write w4d; CMUdict through your rules says wird. Keep yours unless it was a slip.",
@@ -5228,12 +5813,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: implõīd   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept implõīd."
     }
    ],
    "why": "You always write implõīd; CMUdict through your rules says emplõīd. Keep yours unless it was a slip.",
@@ -5260,12 +5850,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ræšxnælz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ræšxnælz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write räšxnälz; CMUdict through your rules says ræšxnælz. Keep yours unless it was a slip.",
@@ -5292,12 +5887,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ikspirīxnsiz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ikspirīxnsiz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ekspīriinsiz; CMUdict through your rules says ikspirīxnsiz. Keep yours unless it was a slip.",
@@ -5324,12 +5924,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: thīrīz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept thīrīz."
     }
    ],
    "why": "You always write thīrīz; CMUdict through your rules says thirīz. Keep yours unless it was a slip.",
@@ -5356,12 +5961,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fxlänjīz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fxlänjīz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write fälänjīz; CMUdict through your rules says fxlänjīz. Keep yours unless it was a slip.",
@@ -5388,12 +5998,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ekseptid    · but sometimes I would say ækseptid, like \"he was accepted to yale\""
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept ekseptid; ækseptid when you stress it (“accepted to Yale”) is fine and won’t be flagged."
     }
    ],
    "why": "You always write ekseptid; CMUdict through your rules says ækseptid. Keep yours unless it was a slip.",
@@ -5420,12 +6035,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: inēbl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept inēbl."
     }
    ],
    "why": "You always write inēbl; CMUdict through your rules says enēbl. Keep yours unless it was a slip.",
@@ -5452,12 +6072,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fīnggr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept fīnggr."
     }
    ],
    "why": "You always write fīnggr; CMUdict through your rules says fīngr. Keep yours unless it was a slip.",
@@ -5484,12 +6109,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: láwnjrī"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: láwnjrī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write lándrī; CMUdict through your rules says lánjrī. Keep yours unless it was a slip.",
@@ -5516,12 +6146,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: miriid   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept miriid."
     }
    ],
    "why": "You always write miriid; CMUdict through your rules says mirīxd. Keep yours unless it was a slip.",
@@ -5548,12 +6183,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prōtōtaip   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prōtōtaip."
     }
    ],
    "why": "You always write prōtōtaip; CMUdict through your rules says prōtxtaip. Keep yours unless it was a slip.",
@@ -5580,12 +6220,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "My version: hxnjridz"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: hxnjridz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write hxndridz; CMUdict through your rules says hxnjrxdz. Keep yours unless it was a slip.",
@@ -5612,12 +6257,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: figrd   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept figrd."
     }
    ],
    "why": "You always write figrd; CMUdict through your rules says figyrd. Keep yours unless it was a slip.",
@@ -5644,12 +6294,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ekspīriins   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept ekspīriins."
     }
    ],
    "why": "You always write ekspīriins; CMUdict through your rules says ikspirīxns. Keep yours unless it was a slip.",
@@ -5676,12 +6331,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: krxntlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: krxntlī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write kerentlī; CMUdict through your rules says krxntlī. Keep yours unless it was a slip.",
@@ -5708,12 +6368,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: aidhr    · either either "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Both are yours (either / either), so neither is flagged."
     }
    ],
    "why": "You always write aidhr; CMUdict through your rules says īdhr. Keep yours unless it was a slip.",
@@ -5740,12 +6405,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ekspensiv   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept ekspensiv."
     }
    ],
    "why": "You always write ekspensiv; CMUdict through your rules says ikspensiv. Keep yours unless it was a slip.",
@@ -5772,12 +6442,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: vidīō   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: vidīō everywhere, and in the dictionary."
     }
    ],
    "why": "You always write vidiō; CMUdict through your rules says vidīō. Keep yours unless it was a slip.",
@@ -5804,12 +6479,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīzálvd   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīzálvd everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rizálvd; CMUdict through your rules says rīzálvd. Keep yours unless it was a slip.",
@@ -5836,12 +6516,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept rīr."
     }
    ],
    "why": "You always write rīr; CMUdict through your rules says rir. Keep yours unless it was a slip.",
@@ -5868,12 +6553,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: kyurētid    · why is yu becoming y and u separately instead of the yu glyph ? whenever i type yu i mean "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: kyürētid. From now on, yu in SLUG means the yü glyph everywhere: the queue, the grader and the proofreader."
     }
    ],
    "why": "You always write kyürētid; CMUdict through your rules says kyurētid. Keep yours unless it was a slip.",
@@ -5900,12 +6590,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ikskyüsiz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ikskyüsiz everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ekskyüziz; CMUdict through your rules says ikskyüsiz. Keep yours unless it was a slip.",
@@ -5932,12 +6627,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sádrīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sádrīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sáldrīng; CMUdict through your rules says sádrīng. Keep yours unless it was a slip.",
@@ -5964,12 +6664,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: dītēlz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept dītēlz."
     }
    ],
    "why": "You always write dītēlz; CMUdict through your rules says ditēlz. Keep yours unless it was a slip.",
@@ -5996,12 +6701,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: hevīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: hevīr everywhere, and in the dictionary."
     }
    ],
    "why": "You always write hevir; CMUdict through your rules says hevīr. Keep yours unless it was a slip.",
@@ -6028,12 +6738,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: putīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept putīng."
     }
    ],
    "why": "You always write putīng; CMUdict through your rules says pxtīng. Keep yours unless it was a slip.",
@@ -6060,12 +6775,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: iksīdīnglī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: iksīdīnglī everywhere, and in the dictionary."
     }
    ],
    "why": "You always write eksīdīnglī; CMUdict through your rules says iksīdīnglī. Keep yours unless it was a slip.",
@@ -6092,12 +6812,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: lánggr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept lánggr."
     }
    ],
    "why": "You always write lánggr; CMUdict through your rules says lángr. Keep yours unless it was a slip.",
@@ -6124,12 +6849,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ikspirīxnsīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ikspirīxnsīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ekspīriinsīng; CMUdict through your rules says ikspirīxnsīng. Keep yours unless it was a slip.",
@@ -6156,12 +6886,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prīvīxs   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: prīvīxs everywhere, and in the dictionary."
     }
    ],
    "why": "You always write prīviis; CMUdict through your rules says prīvīxs. Keep yours unless it was a slip.",
@@ -6188,12 +6923,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: durīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: durīng everywhere, and in the dictionary."
     }
    ],
    "why": "You always write dürīng; CMUdict through your rules says durīng. Keep yours unless it was a slip.",
@@ -6220,12 +6960,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: mīdīx   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: mīdīx everywhere, and in the dictionary."
     }
    ],
    "why": "You always write mīdix; CMUdict through your rules says mīdīx. Keep yours unless it was a slip.",
@@ -6252,12 +6997,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prxfešxnxl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: prxfešxnxl everywhere, and in the dictionary."
     }
    ],
    "why": "You always write prōfešinxl; CMUdict through your rules says prxfešxnxl. Keep yours unless it was a slip.",
@@ -6284,12 +7034,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rīlīs   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: rīlīs everywhere, and in the dictionary."
     }
    ],
    "why": "You always write rilīs; CMUdict through your rules says rīlīs. Keep yours unless it was a slip.",
@@ -6316,12 +7071,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: seprit   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept seprit."
     }
    ],
    "why": "You always write seprit; CMUdict through your rules says seprēt. Keep yours unless it was a slip.",
@@ -6348,12 +7108,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: rowtid   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept rowtid."
     }
    ],
    "why": "You always write rowtid; CMUdict through your rules says rütid. Keep yours unless it was a slip.",
@@ -6380,12 +7145,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: injõīd   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept injõīd."
     }
    ],
    "why": "You always write injõīd; CMUdict through your rules says enjõīd. Keep yours unless it was a slip.",
@@ -6412,12 +7182,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: elxmxnts   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: elxmxnts everywhere, and in the dictionary."
     }
    ],
    "why": "You always write eliments; CMUdict through your rules says elxmxnts. Keep yours unless it was a slip.",
@@ -6444,12 +7219,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: yīrz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept yīrz."
     }
    ],
    "why": "You always write yīrz; CMUdict through your rules says yirz. Keep yours unless it was a slip.",
@@ -6476,12 +7256,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: fxngkšxn   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: fxngkšxn everywhere, and in the dictionary."
     }
    ],
    "why": "You always write fxnkšin; CMUdict through your rules says fxngkšxn. Keep yours unless it was a slip.",
@@ -6508,12 +7293,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: injõī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept injõī."
     }
    ],
    "why": "You always write injõī; CMUdict through your rules says enjõī. Keep yours unless it was a slip.",
@@ -6540,12 +7330,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prītend   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: prītend everywhere, and in the dictionary."
     }
    ],
    "why": "You always write pritend; CMUdict through your rules says prītend. Keep yours unless it was a slip.",
@@ -6572,12 +7367,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: ekscrīmist   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: ekscrīmist everywhere, and in the dictionary."
     }
    ],
    "why": "You always write ikscrīmist; CMUdict through your rules says ekscrīmist. Keep yours unless it was a slip.",
@@ -6604,12 +7404,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: disprit   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: disprit everywhere, and in the dictionary."
     }
    ],
    "why": "You always write dispret; CMUdict through your rules says disprit. Keep yours unless it was a slip.",
@@ -6636,12 +7441,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xjresiz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept xjresiz."
     }
    ],
    "why": "You always write xjresiz; CMUdict through your rules says æjresiz. Keep yours unless it was a slip.",
@@ -6668,12 +7478,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: æjres   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: æjres everywhere, and in the dictionary."
     }
    ],
    "why": "You always write xjres; CMUdict through your rules says æjres. Keep yours unless it was a slip.",
@@ -6700,12 +7515,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prtikyülrlī   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prtikyülrlī."
     }
    ],
    "why": "You always write prtikyülrlī; CMUdict through your rules says pártikyxlrlī. Keep yours unless it was a slip.",
@@ -6732,12 +7552,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: naidhr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept naidhr."
     }
    ],
    "why": "You always write naidhr; CMUdict through your rules says nīdhr. Keep yours unless it was a slip.",
@@ -6764,12 +7589,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: árinj   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept árinj."
     }
    ],
    "why": "You always write árinj; CMUdict through your rules says ōrxnj. Keep yours unless it was a slip.",
@@ -6796,12 +7626,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: webpēj   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept webpēj."
     }
    ],
    "why": "You always write webpēj; CMUdict through your rules says webpij. Keep yours unless it was a slip.",
@@ -6828,12 +7663,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: inēblīng   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept inēblīng."
     }
    ],
    "why": "You always write inēblīng; CMUdict through your rules says enēbxlīng. Keep yours unless it was a slip.",
@@ -6860,12 +7700,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: xnklīr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept xnklīr."
     }
    ],
    "why": "You always write xnklīr; CMUdict through your rules says xnklir. Keep yours unless it was a slip.",
@@ -6892,12 +7737,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: prefrensiz   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept prefrensiz."
     }
    ],
    "why": "You always write prefrensiz; CMUdict through your rules says prefrxnsiz. Keep yours unless it was a slip.",
@@ -6924,12 +7774,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: sxbskraibr   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: sxbskraibr everywhere, and in the dictionary."
     }
    ],
    "why": "You always write sxmskraibr; CMUdict through your rules says sxbskraibr. Keep yours unless it was a slip.",
@@ -6956,12 +7811,17 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "I pick: vælyüibl   "
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept vælyüibl."
     }
    ],
    "why": "You always write vælyüibl; CMUdict through your rules says vælyxbl. Keep yours unless it was a slip.",
@@ -6978,12 +7838,17 @@
    "ask": "dhī, not dhi",
    "options": [],
    "pick": null,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "wendy",
      "round": 1,
      "text": "dhī, not dhi"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: dhī before a vowel, all 42 in the articles, and in the queue’s drafts and the systems."
     }
    ]
   }
