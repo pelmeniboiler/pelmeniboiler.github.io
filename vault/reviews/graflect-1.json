@@ -1303,9 +1303,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write änd; CMUdict through your rules says xnd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: änd    · The CMUdict stuff is crazy. \"uhnd\"? Who says and like that? Ohhh... if you say it fast you say it xnd... what!!! what do we do? In this case it's definitely xnd. but if I said \"and\" in many cases it's änd! I guess in a phrase where it's like cookies and cream, cherries and pie, etc, it's xnd!"
+    }
+   ],
+   "why": "You always write änd; CMUdict through your rules says xnd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "The CMUdict stuff is crazy. \"uhnd\"? Who says and like that? Ohhh... if you say it fast you say it xnd... what!!! what do we do? In this case it's definitely xnd. but if I said \"and\" in many cases it's änd! I guess in a phrase where it's like cookies and cream, cherries and pie, etc, it's xnd!"
+   }
   },
   {
    "id": "g3",
@@ -1351,9 +1362,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: fōr."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fōr   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: fōr.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g5",
@@ -1372,9 +1394,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write with; CMUdict through your rules says widh. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: with    · My accent says with, not widh. CMUdict wrong again."
+    }
+   ],
+   "why": "You always write with; CMUdict through your rules says widh. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "My accent says with, not widh. CMUdict wrong again."
+   }
   },
   {
    "id": "g6",
@@ -1393,9 +1426,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write wxz; CMUdict through your rules says wáz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: wxz    · wáz is more how you'd say wozniack than was…"
+    }
+   ],
+   "why": "You always write wxz; CMUdict through your rules says wáz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "wáz is more how you'd say wozniack than was…"
+   }
   },
   {
    "id": "g7",
@@ -1414,9 +1458,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: hæv."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: hæv    · I may say \"hæf\" in the case of like \"have to\""
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: hæv.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "I may say \"hæf\" in the case of like \"have to\""
+   }
   },
   {
    "id": "g8",
@@ -1435,9 +1490,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rīlī; CMUdict through your rules says rilī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīlī    · Accent =! cmudict again"
+    }
+   ],
+   "why": "You always write rīlī; CMUdict through your rules says rilī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "Accent =! cmudict again"
+   }
   },
   {
    "id": "g9",
@@ -1483,9 +1549,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yr; CMUdict through your rules says yōr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: yir · if anything it's more like yir"
+    }
+   ],
+   "why": "You always write yr; CMUdict through your rules says yōr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "yir",
+    "note": "if anything it's more like yir"
+   }
   },
   {
    "id": "g11",
@@ -1504,9 +1581,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write bīkxz; CMUdict through your rules says bikáz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: bīkxz    · accent disagreement again"
+    }
+   ],
+   "why": "You always write bīkxz; CMUdict through your rules says bikáz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "accent disagreement again"
+   }
   },
   {
    "id": "g12",
@@ -1552,9 +1640,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: wr."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: wir"
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: wr.",
+   "answer": {
+    "pick": null,
+    "own": "wir",
+    "note": ""
+   }
   },
   {
    "id": "g14",
@@ -1600,9 +1699,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write lēngwij; CMUdict through your rules says længwxj. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: lēngwij    · accent"
+    }
+   ],
+   "why": "You always write lēngwij; CMUdict through your rules says længwxj. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "accent"
+   }
   },
   {
    "id": "g16",
@@ -1625,9 +1735,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: difrxnt."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: difrent   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: difrxnt.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g17",
@@ -1646,9 +1767,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write æksent; CMUdict through your rules says xksent. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: æksent    · CMUdict crazy for this one, Not even close, baby!"
+    }
+   ],
+   "why": "You always write æksent; CMUdict through your rules says xksent. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "CMUdict crazy for this one, Not even close, baby!"
+   }
   },
   {
    "id": "g18",
@@ -1667,9 +1799,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: kxlr."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kxlr   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: kxlr.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g19",
@@ -1688,9 +1831,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dikšin4ī; CMUdict through your rules says dikšxnerī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dikšin4ī    · cmudict using e wrong here. pathetic!"
+    }
+   ],
+   "why": "You always write dikšin4ī; CMUdict through your rules says dikšxnerī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "cmudict using e wrong here. pathetic!"
+   }
   },
   {
    "id": "g20",
@@ -1709,9 +1863,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write lōkxlaizēšin; CMUdict through your rules says lōkxlxzēšxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: lōkxlxzēšxn    · not a slip, but cmudict was right here"
+    }
+   ],
+   "why": "You always write lōkxlaizēšin; CMUdict through your rules says lōkxlxzēšxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": "not a slip, but cmudict was right here"
+   }
   },
   {
    "id": "g21",
@@ -1730,9 +1895,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write lēngwijiz; CMUdict through your rules says længwxjxz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: lēngwijiz   "
+    }
+   ],
+   "why": "You always write lēngwijiz; CMUdict through your rules says længwxjxz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g22",
@@ -1755,9 +1931,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: xspešlī."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xspešlī   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: xspešlī.",
+   "answer": {
+    "pick": 2,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g23",
@@ -1776,9 +1963,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yr; CMUdict through your rules says yur. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: yur   "
+    }
+   ],
+   "why": "You always write yr; CMUdict through your rules says yur. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g24",
@@ -1797,9 +1995,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write wxzint; CMUdict through your rules says wázxnt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: wxzint    · wozzint? another cmudict L"
+    }
+   ],
+   "why": "You always write wxzint; CMUdict through your rules says wázxnt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "wozzint? another cmudict L"
+   }
   },
   {
    "id": "g25",
@@ -1818,9 +2027,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ivencüxlī; CMUdict through your rules says ivencxwxlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ivencüxlī   "
+    }
+   ],
+   "why": "You always write ivencüxlī; CMUdict through your rules says ivencxwxlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g26",
@@ -1839,9 +2059,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: bitwīn."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: bitwīn   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: bitwīn.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g27",
@@ -1860,9 +2091,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ár; CMUdict through your rules says owr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: owr   "
+    }
+   ],
+   "why": "You always write ár; CMUdict through your rules says owr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g28",
@@ -1881,9 +2123,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sxm; CMUdict through your rules says sxb. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sxb    · cmudict W !!! "
+    }
+   ],
+   "why": "You always write sxm; CMUdict through your rules says sxb. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": "cmudict W !!! "
+   }
   },
   {
    "id": "g29",
@@ -1902,9 +2155,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sfīr; CMUdict through your rules says sfir. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sfīr   "
+    }
+   ],
+   "why": "You always write sfīr; CMUdict through your rules says sfir. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g30",
@@ -1927,9 +2191,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: xvēlxbl."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xvēlibxl   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: xvēlxbl.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g31",
@@ -1948,9 +2223,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: cränzlitxrēšxn   "
+    }
+   ],
+   "why": "You have written it 2 ways.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g32",
@@ -1969,9 +2255,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: igzämpxl."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: igzämpxl   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: igzämpxl.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g33",
@@ -1990,9 +2287,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: rīkwair."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīkwair   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: rīkwair.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g34",
@@ -2011,9 +2319,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: evrīthīng."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: evrīthīng   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: evrīthīng.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g35",
@@ -2032,9 +2351,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prfikt; CMUdict through your rules says prfekt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prfikt   "
+    }
+   ],
+   "why": "You always write prfikt; CMUdict through your rules says prfekt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g36",
@@ -2053,9 +2383,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: rō."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rō   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: rō.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g37",
@@ -2074,9 +2415,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: dh4."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dh4   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: dh4.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g38",
@@ -2099,9 +2451,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: erīx."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: 4īx   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: erīx.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g39",
@@ -2120,9 +2483,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: fōkxs."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fōkis   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: fōkxs.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g40",
@@ -2141,9 +2515,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kaindx; CMUdict through your rules says kindx. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kaindx   "
+    }
+   ],
+   "why": "You always write kaindx; CMUdict through your rules says kindx. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g41",
@@ -2162,9 +2547,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rescránt; CMUdict through your rules says restránt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rescránt   "
+    }
+   ],
+   "why": "You always write rescránt; CMUdict through your rules says restránt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g42",
@@ -2183,9 +2579,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prtikyülr; CMUdict through your rules says prtikyxlr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prtikyülr   "
+    }
+   ],
+   "why": "You always write prtikyülr; CMUdict through your rules says prtikyxlr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g43",
@@ -2208,9 +2615,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: incrxstīng."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: increstīng   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: incrxstīng.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g44",
@@ -2229,9 +2647,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dītēl; CMUdict through your rules says ditēl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dītēl   "
+    }
+   ],
+   "why": "You always write dītēl; CMUdict through your rules says ditēl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g45",
@@ -2254,9 +2683,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: ritxn."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ritin   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: ritxn.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g46",
@@ -2275,9 +2715,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fálōwīng; CMUdict through your rules says fálōīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fálōīng   "
+    }
+   ],
+   "why": "You always write fálōwīng; CMUdict through your rules says fálōīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g47",
@@ -2296,9 +2747,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write līnk; CMUdict through your rules says līngk. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: līngk   "
+    }
+   ],
+   "why": "You always write līnk; CMUdict through your rules says līngk. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g48",
@@ -2321,9 +2783,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: pærxgræf."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: p4xgræf   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: pærxgræf.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g49",
@@ -2346,9 +2819,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: bxtxn."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: bxin   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: bxtxn.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g50",
@@ -2367,9 +2851,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: cärnzlitrēt   "
+    }
+   ],
+   "why": "You have written it 2 ways.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g51",
@@ -2388,9 +2883,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write klīr; CMUdict through your rules says klir. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: klīr   "
+    }
+   ],
+   "why": "You always write klīr; CMUdict through your rules says klir. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g52",
@@ -2409,9 +2915,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dilibretlī; CMUdict through your rules says dilibrxtlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dilibretlī   "
+    }
+   ],
+   "why": "You always write dilibretlī; CMUdict through your rules says dilibrxtlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g53",
@@ -2434,9 +2951,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: praiōrxtaizd."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: praiōrxtaizd   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: praiōrxtaizd.",
+   "answer": {
+    "pick": 2,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g54",
@@ -2455,9 +2983,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yüžüxlī; CMUdict through your rules says yüžxwxlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: yüžüxlī   "
+    }
+   ],
+   "why": "You always write yüžüxlī; CMUdict through your rules says yüžxwxlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g55",
@@ -2480,9 +3019,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: xprōprīxt."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xprōprīit   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: xprōprīxt.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g56",
@@ -2501,9 +3051,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write riplēs; CMUdict through your rules says rīplēs. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīplēs   "
+    }
+   ],
+   "why": "You always write riplēs; CMUdict through your rules says rīplēs. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g57",
@@ -2526,9 +3087,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: ábvīxs."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ábvīis   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: ábvīxs.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g58",
@@ -2551,9 +3123,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: yir."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: yīr   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: yir.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g59",
@@ -2572,9 +3155,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yünyüzibl; CMUdict through your rules says xnyüzxbl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xnyüzxbl    · Wow. Goat CMUdict. I had a crazy L here."
+    }
+   ],
+   "why": "You always write yünyüzibl; CMUdict through your rules says xnyüzxbl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": "Wow. Goat CMUdict. I had a crazy L here."
+   }
   },
   {
    "id": "g60",
@@ -2593,9 +3187,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write cwentī; CMUdict through your rules says twentī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: twentī   "
+    }
+   ],
+   "why": "You always write cwentī; CMUdict through your rules says twentī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g61",
@@ -2614,9 +3219,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write thänkfxlī; CMUdict through your rules says thængkfxlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: thänkfxlī   "
+    }
+   ],
+   "why": "You always write thänkfxlī; CMUdict through your rules says thængkfxlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g62",
@@ -2635,9 +3251,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eksplēn; CMUdict through your rules says iksplēn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: eksplēn   "
+    }
+   ],
+   "why": "You always write eksplēn; CMUdict through your rules says iksplēn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g63",
@@ -2660,9 +3287,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: spxsifik."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: spxsifik   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: spxsifik.",
+   "answer": {
+    "pick": 2,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g64",
@@ -2681,9 +3319,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways. CMUdict through your rules: aidīxz."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: aidīxz   "
+    }
+   ],
+   "why": "You have written it 2 ways. CMUdict through your rules: aidīxz.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g65",
@@ -2702,9 +3351,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You have written it 2 ways."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: Email-sencrik"
+    }
+   ],
+   "why": "You have written it 2 ways.",
+   "answer": {
+    "pick": null,
+    "own": "Email-sencrik",
+    "note": ""
+   }
   },
   {
    "id": "g66",
@@ -2723,9 +3383,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rizálvīng; CMUdict through your rules says rīzálvīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīzálvīng   "
+    }
+   ],
+   "why": "You always write rizálvīng; CMUdict through your rules says rīzálvīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g67",
@@ -2744,9 +3415,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sīnggxl; CMUdict through your rules says sīngxl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sīngxl   "
+    }
+   ],
+   "why": "You always write sīnggxl; CMUdict through your rules says sīngxl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g68",
@@ -2765,9 +3447,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sxmskripšin; CMUdict through your rules says sxbskripšxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sxbskripšxn   "
+    }
+   ],
+   "why": "You always write sxmskripšin; CMUdict through your rules says sxbskripšxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g69",
@@ -2786,9 +3479,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rxpēšis; CMUdict through your rules says rxpæšis. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rxpēšis   "
+    }
+   ],
+   "why": "You always write rxpēšis; CMUdict through your rules says rxpæšis. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g70",
@@ -2807,9 +3511,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sēlzwxmin; CMUdict through your rules says sēlzwumxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: sēlzwumin"
+    }
+   ],
+   "why": "You always write sēlzwxmin; CMUdict through your rules says sēlzwumxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "sēlzwumin",
+    "note": ""
+   }
   },
   {
    "id": "g71",
@@ -2828,9 +3543,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dowsd; CMUdict through your rules says dowst. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dowst   "
+    }
+   ],
+   "why": "You always write dowsd; CMUdict through your rules says dowst. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g72",
@@ -2849,9 +3575,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write k4xmel; CMUdict through your rules says kerxmxl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: k4xmel   "
+    }
+   ],
+   "why": "You always write k4xmel; CMUdict through your rules says kerxmxl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g73",
@@ -2870,9 +3607,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write skejxlīng; CMUdict through your rules says skejulīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: skejulīng   "
+    }
+   ],
+   "why": "You always write skejxlīng; CMUdict through your rules says skejulīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g74",
@@ -2891,9 +3639,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vīikxlz; CMUdict through your rules says vīhikxlz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: vīikxlz   "
+    }
+   ],
+   "why": "You always write vīikxlz; CMUdict through your rules says vīhikxlz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g75",
@@ -2912,9 +3671,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rimaindīng; CMUdict through your rules says rīmaindīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīmaindīng   "
+    }
+   ],
+   "why": "You always write rimaindīng; CMUdict through your rules says rīmaindīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g76",
@@ -2933,9 +3703,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prisižin; CMUdict through your rules says prīsižxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prisižin   "
+    }
+   ],
+   "why": "You always write prisižin; CMUdict through your rules says prīsižxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g77",
@@ -2954,9 +3735,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write wxmin; CMUdict through your rules says wumxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: wxmin   "
+    }
+   ],
+   "why": "You always write wxmin; CMUdict through your rules says wumxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g78",
@@ -2975,9 +3767,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write pur; CMUdict through your rules says pür. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: pür   "
+    }
+   ],
+   "why": "You always write pur; CMUdict through your rules says pür. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g79",
@@ -2996,9 +3799,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write gxnx; CMUdict through your rules says gánx. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: gxnx   "
+    }
+   ],
+   "why": "You always write gxnx; CMUdict through your rules says gánx. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g80",
@@ -3017,9 +3831,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vaibrent; CMUdict through your rules says vaibrxnt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: vaibrxnt   "
+    }
+   ],
+   "why": "You always write vaibrent; CMUdict through your rules says vaibrxnt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g81",
@@ -3038,9 +3863,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write intrmīdixt; CMUdict through your rules says intrmīdīit. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: intrmīdīit   "
+    }
+   ],
+   "why": "You always write intrmīdixt; CMUdict through your rules says intrmīdīit. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g82",
@@ -3059,9 +3895,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write incræktīng; CMUdict through your rules says intræktīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: intræktīng   "
+    }
+   ],
+   "why": "You always write incræktīng; CMUdict through your rules says intræktīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g83",
@@ -3080,9 +3927,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write intrmīdix; CMUdict through your rules says intrmīdīx. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: intrmīdīx   "
+    }
+   ],
+   "why": "You always write intrmīdix; CMUdict through your rules says intrmīdīx. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g84",
@@ -3101,9 +3959,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write xpīrins; CMUdict through your rules says xpirxns. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xpīrins   "
+    }
+   ],
+   "why": "You always write xpīrins; CMUdict through your rules says xpirxns. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g85",
@@ -3122,9 +3991,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fxnkī; CMUdict through your rules says fxngkī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fxngkī   "
+    }
+   ],
+   "why": "You always write fxnkī; CMUdict through your rules says fxngkī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g86",
@@ -3143,9 +4023,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write laisenzīng; CMUdict through your rules says laisxnsīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: laisenzīng   "
+    }
+   ],
+   "why": "You always write laisenzīng; CMUdict through your rules says laisxnsīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g87",
@@ -3164,9 +4055,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write laisxnz; CMUdict through your rules says laisxns. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: laisxnz   "
+    }
+   ],
+   "why": "You always write laisxnz; CMUdict through your rules says laisxns. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g88",
@@ -3185,9 +4087,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yüziz; CMUdict through your rules says yüsxz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: yüziz   "
+    }
+   ],
+   "why": "You always write yüziz; CMUdict through your rules says yüsxz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g89",
@@ -3206,9 +4119,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fánds; CMUdict through your rules says fánts. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fánts   "
+    }
+   ],
+   "why": "You always write fánds; CMUdict through your rules says fánts. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g90",
@@ -3227,9 +4151,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write selekšin; CMUdict through your rules says sxlekšxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: selekšin   "
+    }
+   ],
+   "why": "You always write selekšin; CMUdict through your rules says sxlekšxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g91",
@@ -3248,9 +4183,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rīmemr; CMUdict through your rules says rimembr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rimembr   "
+    }
+   ],
+   "why": "You always write rīmemr; CMUdict through your rules says rimembr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g92",
@@ -3269,9 +4215,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dikšin4īz; CMUdict through your rules says dikšxnerīz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dikšin4īz   "
+    }
+   ],
+   "why": "You always write dikšin4īz; CMUdict through your rules says dikšxnerīz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g93",
@@ -3290,9 +4247,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write xpīrz; CMUdict through your rules says xpirz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xpīrz   "
+    }
+   ],
+   "why": "You always write xpīrz; CMUdict through your rules says xpirz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g94",
@@ -3311,9 +4279,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write mæpīngg; CMUdict through your rules says mæpīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: mæpīng   "
+    }
+   ],
+   "why": "You always write mæpīngg; CMUdict through your rules says mæpīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g95",
@@ -3332,9 +4311,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sxmskraib; CMUdict through your rules says sxbskraib. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sxbskraib   "
+    }
+   ],
+   "why": "You always write sxmskraib; CMUdict through your rules says sxbskraib. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g96",
@@ -3353,9 +4343,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kraitīrīx; CMUdict through your rules says kraitirīx. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kraitīrīx   "
+    }
+   ],
+   "why": "You always write kraitīrīx; CMUdict through your rules says kraitirīx. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g97",
@@ -3374,9 +4375,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vižüxlī; CMUdict through your rules says vižwxlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: vižyuxli"
+    }
+   ],
+   "why": "You always write vižüxlī; CMUdict through your rules says vižwxlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "vižyuxli",
+    "note": ""
+   }
   },
   {
    "id": "g98",
@@ -3395,9 +4407,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prōvaidīng; CMUdict through your rules says prxvaidīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prōvaidīng   "
+    }
+   ],
+   "why": "You always write prōvaidīng; CMUdict through your rules says prxvaidīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g99",
@@ -3416,9 +4439,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write imprüvment; CMUdict through your rules says imprüvmxnt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: imprüvment   "
+    }
+   ],
+   "why": "You always write imprüvment; CMUdict through your rules says imprüvmxnt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g100",
@@ -3437,9 +4471,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write tōrdz; CMUdict through your rules says txwōrdz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: tōrdz   "
+    }
+   ],
+   "why": "You always write tōrdz; CMUdict through your rules says txwōrdz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g101",
@@ -3458,9 +4503,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write iksplēšinz; CMUdict through your rules says eksplxnēšxnz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: eksplxnēšxnz   "
+    }
+   ],
+   "why": "You always write iksplēšinz; CMUdict through your rules says eksplxnēšxnz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g102",
@@ -3479,9 +4535,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vōkæbyülerī; CMUdict through your rules says vōkæbyxlerī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: vōkæbyülerī   "
+    }
+   ],
+   "why": "You always write vōkæbyülerī; CMUdict through your rules says vōkæbyxlerī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g103",
@@ -3500,9 +4567,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kævīáts; CMUdict through your rules says kēvīæts. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kævīáts   "
+    }
+   ],
+   "why": "You always write kævīáts; CMUdict through your rules says kēvīæts. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g104",
@@ -3521,9 +4599,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sīrīislī; CMUdict through your rules says sirīxslī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sīrīislī   "
+    }
+   ],
+   "why": "You always write sīrīislī; CMUdict through your rules says sirīxslī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g105",
@@ -3542,9 +4631,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ikscrīmlī; CMUdict through your rules says ekscrīmlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ikscrīmlī   "
+    }
+   ],
+   "why": "You always write ikscrīmlī; CMUdict through your rules says ekscrīmlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g106",
@@ -3563,9 +4663,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write skrips; CMUdict through your rules says skripts. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: skripts   "
+    }
+   ],
+   "why": "You always write skrips; CMUdict through your rules says skripts. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g107",
@@ -3584,9 +4695,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ækcüxl; CMUdict through your rules says ækcxwxl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: ækcyuxl"
+    }
+   ],
+   "why": "You always write ækcüxl; CMUdict through your rules says ækcxwxl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "ækcyuxl",
+    "note": ""
+   }
   },
   {
    "id": "g108",
@@ -3605,9 +4727,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write enjinīrīng; CMUdict through your rules says enjxnirīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: enjinīrīng   "
+    }
+   ],
+   "why": "You always write enjinīrīng; CMUdict through your rules says enjxnirīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g109",
@@ -3626,9 +4759,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prōvaidid; CMUdict through your rules says prxvaidid. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prōvaidid   "
+    }
+   ],
+   "why": "You always write prōvaidid; CMUdict through your rules says prxvaidid. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g110",
@@ -3647,9 +4791,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kyürīis; CMUdict through your rules says kyurīxs. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kyürīis   "
+    }
+   ],
+   "why": "You always write kyürīis; CMUdict through your rules says kyurīxs. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g111",
@@ -3668,9 +4823,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write b4īr; CMUdict through your rules says bærīr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: b4īr   "
+    }
+   ],
+   "why": "You always write b4īr; CMUdict through your rules says bærīr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g112",
@@ -3689,9 +4855,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eksperimentxl; CMUdict through your rules says iksperimentxl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: iksp4imentxl"
+    }
+   ],
+   "why": "You always write eksperimentxl; CMUdict through your rules says iksperimentxl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "iksp4imentxl",
+    "note": ""
+   }
   },
   {
    "id": "g113",
@@ -3710,9 +4887,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eksplēšin; CMUdict through your rules says eksplxnēšxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: eksplxnēšxn   "
+    }
+   ],
+   "why": "You always write eksplēšin; CMUdict through your rules says eksplxnēšxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g114",
@@ -3731,9 +4919,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write mitikyülxslī; CMUdict through your rules says mxtikyxlxslī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: mitikyülxslī   "
+    }
+   ],
+   "why": "You always write mitikyülxslī; CMUdict through your rules says mxtikyxlxslī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g115",
@@ -3752,9 +4951,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write tügedhr; CMUdict through your rules says txgedhr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: tügedhr   "
+    }
+   ],
+   "why": "You always write tügedhr; CMUdict through your rules says txgedhr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g116",
@@ -3773,9 +4983,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write imīdiit; CMUdict through your rules says imīdīxt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: imīdīxt   "
+    }
+   ],
+   "why": "You always write imīdiit; CMUdict through your rules says imīdīxt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g117",
@@ -3794,9 +5015,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fīnggrz; CMUdict through your rules says fīngrz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fīnggrz   "
+    }
+   ],
+   "why": "You always write fīnggrz; CMUdict through your rules says fīngrz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g118",
@@ -3836,9 +5068,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rädhr; CMUdict through your rules says rædhr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rædhr   "
+    }
+   ],
+   "why": "You always write rädhr; CMUdict through your rules says rædhr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g120",
@@ -3857,9 +5100,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write áldhō; CMUdict through your rules says xdišxnxlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xdišxnxlī   "
+    }
+   ],
+   "why": "You always write áldhō; CMUdict through your rules says xdišxnxlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g121",
@@ -3878,9 +5132,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eksept; CMUdict through your rules says iksept. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: eksept   "
+    }
+   ],
+   "why": "You always write eksept; CMUdict through your rules says iksept. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g122",
@@ -3899,9 +5164,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sálvd; CMUdict through your rules says sálv. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sálv   "
+    }
+   ],
+   "why": "You always write sálvd; CMUdict through your rules says sálv. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g123",
@@ -3920,9 +5196,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write w4d; CMUdict through your rules says wird. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: wīrd"
+    }
+   ],
+   "why": "You always write w4d; CMUdict through your rules says wird. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "wīrd",
+    "note": ""
+   }
   },
   {
    "id": "g124",
@@ -3941,9 +5228,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write implõīd; CMUdict through your rules says emplõīd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: implõīd   "
+    }
+   ],
+   "why": "You always write implõīd; CMUdict through your rules says emplõīd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g125",
@@ -3962,9 +5260,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write räšxnälz; CMUdict through your rules says ræšxnælz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ræšxnælz   "
+    }
+   ],
+   "why": "You always write räšxnälz; CMUdict through your rules says ræšxnælz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g126",
@@ -3983,9 +5292,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekspīriinsiz; CMUdict through your rules says ikspirīxnsiz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ikspirīxnsiz   "
+    }
+   ],
+   "why": "You always write ekspīriinsiz; CMUdict through your rules says ikspirīxnsiz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g127",
@@ -4004,9 +5324,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write thīrīz; CMUdict through your rules says thirīz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: thīrīz   "
+    }
+   ],
+   "why": "You always write thīrīz; CMUdict through your rules says thirīz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g128",
@@ -4025,9 +5356,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fälänjīz; CMUdict through your rules says fxlänjīz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fxlänjīz   "
+    }
+   ],
+   "why": "You always write fälänjīz; CMUdict through your rules says fxlänjīz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g129",
@@ -4046,9 +5388,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekseptid; CMUdict through your rules says ækseptid. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ekseptid    · but sometimes I would say ækseptid, like \"he was accepted to yale\""
+    }
+   ],
+   "why": "You always write ekseptid; CMUdict through your rules says ækseptid. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "but sometimes I would say ækseptid, like \"he was accepted to yale\""
+   }
   },
   {
    "id": "g130",
@@ -4067,9 +5420,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write inēbl; CMUdict through your rules says enēbl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: inēbl   "
+    }
+   ],
+   "why": "You always write inēbl; CMUdict through your rules says enēbl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g131",
@@ -4088,9 +5452,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fīnggr; CMUdict through your rules says fīngr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fīnggr   "
+    }
+   ],
+   "why": "You always write fīnggr; CMUdict through your rules says fīngr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g132",
@@ -4109,9 +5484,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write lándrī; CMUdict through your rules says lánjrī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: láwnjrī"
+    }
+   ],
+   "why": "You always write lándrī; CMUdict through your rules says lánjrī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "láwnjrī",
+    "note": ""
+   }
   },
   {
    "id": "g133",
@@ -4130,9 +5516,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write miriid; CMUdict through your rules says mirīxd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: miriid   "
+    }
+   ],
+   "why": "You always write miriid; CMUdict through your rules says mirīxd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g134",
@@ -4151,9 +5548,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prōtōtaip; CMUdict through your rules says prōtxtaip. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prōtōtaip   "
+    }
+   ],
+   "why": "You always write prōtōtaip; CMUdict through your rules says prōtxtaip. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g135",
@@ -4172,9 +5580,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write hxndridz; CMUdict through your rules says hxnjrxdz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "My version: hxnjridz"
+    }
+   ],
+   "why": "You always write hxndridz; CMUdict through your rules says hxnjrxdz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": null,
+    "own": "hxnjridz",
+    "note": ""
+   }
   },
   {
    "id": "g136",
@@ -4193,9 +5612,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write figrd; CMUdict through your rules says figyrd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: figrd   "
+    }
+   ],
+   "why": "You always write figrd; CMUdict through your rules says figyrd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g137",
@@ -4214,9 +5644,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekspīriins; CMUdict through your rules says ikspirīxns. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ekspīriins   "
+    }
+   ],
+   "why": "You always write ekspīriins; CMUdict through your rules says ikspirīxns. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g138",
@@ -4235,9 +5676,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kerentlī; CMUdict through your rules says krxntlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: krxntlī   "
+    }
+   ],
+   "why": "You always write kerentlī; CMUdict through your rules says krxntlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g139",
@@ -4256,9 +5708,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write aidhr; CMUdict through your rules says īdhr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: aidhr    · either either "
+    }
+   ],
+   "why": "You always write aidhr; CMUdict through your rules says īdhr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "either either "
+   }
   },
   {
    "id": "g140",
@@ -4277,9 +5740,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekspensiv; CMUdict through your rules says ikspensiv. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ekspensiv   "
+    }
+   ],
+   "why": "You always write ekspensiv; CMUdict through your rules says ikspensiv. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g141",
@@ -4298,9 +5772,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vidiō; CMUdict through your rules says vidīō. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: vidīō   "
+    }
+   ],
+   "why": "You always write vidiō; CMUdict through your rules says vidīō. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g142",
@@ -4319,9 +5804,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rizálvd; CMUdict through your rules says rīzálvd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīzálvd   "
+    }
+   ],
+   "why": "You always write rizálvd; CMUdict through your rules says rīzálvd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g143",
@@ -4340,9 +5836,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rīr; CMUdict through your rules says rir. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīr   "
+    }
+   ],
+   "why": "You always write rīr; CMUdict through your rules says rir. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g144",
@@ -4361,9 +5868,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write kyürētid; CMUdict through your rules says kyurētid. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: kyurētid    · why is yu becoming y and u separately instead of the yu glyph ? whenever i type yu i mean "
+    }
+   ],
+   "why": "You always write kyürētid; CMUdict through your rules says kyurētid. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": "why is yu becoming y and u separately instead of the yu glyph ? whenever i type yu i mean "
+   }
   },
   {
    "id": "g145",
@@ -4382,9 +5900,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekskyüziz; CMUdict through your rules says ikskyüsiz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ikskyüsiz   "
+    }
+   ],
+   "why": "You always write ekskyüziz; CMUdict through your rules says ikskyüsiz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g146",
@@ -4403,9 +5932,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sáldrīng; CMUdict through your rules says sádrīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sádrīng   "
+    }
+   ],
+   "why": "You always write sáldrīng; CMUdict through your rules says sádrīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g147",
@@ -4424,9 +5964,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dītēlz; CMUdict through your rules says ditēlz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: dītēlz   "
+    }
+   ],
+   "why": "You always write dītēlz; CMUdict through your rules says ditēlz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g148",
@@ -4445,9 +5996,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write hevir; CMUdict through your rules says hevīr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: hevīr   "
+    }
+   ],
+   "why": "You always write hevir; CMUdict through your rules says hevīr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g149",
@@ -4466,9 +6028,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write putīng; CMUdict through your rules says pxtīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: putīng   "
+    }
+   ],
+   "why": "You always write putīng; CMUdict through your rules says pxtīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g150",
@@ -4487,9 +6060,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eksīdīnglī; CMUdict through your rules says iksīdīnglī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: iksīdīnglī   "
+    }
+   ],
+   "why": "You always write eksīdīnglī; CMUdict through your rules says iksīdīnglī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g151",
@@ -4508,9 +6092,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write lánggr; CMUdict through your rules says lángr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: lánggr   "
+    }
+   ],
+   "why": "You always write lánggr; CMUdict through your rules says lángr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g152",
@@ -4529,9 +6124,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ekspīriinsīng; CMUdict through your rules says ikspirīxnsīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ikspirīxnsīng   "
+    }
+   ],
+   "why": "You always write ekspīriinsīng; CMUdict through your rules says ikspirīxnsīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g153",
@@ -4550,9 +6156,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prīviis; CMUdict through your rules says prīvīxs. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prīvīxs   "
+    }
+   ],
+   "why": "You always write prīviis; CMUdict through your rules says prīvīxs. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g154",
@@ -4571,9 +6188,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dürīng; CMUdict through your rules says durīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: durīng   "
+    }
+   ],
+   "why": "You always write dürīng; CMUdict through your rules says durīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g155",
@@ -4592,9 +6220,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write mīdix; CMUdict through your rules says mīdīx. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: mīdīx   "
+    }
+   ],
+   "why": "You always write mīdix; CMUdict through your rules says mīdīx. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g156",
@@ -4613,9 +6252,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prōfešinxl; CMUdict through your rules says prxfešxnxl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prxfešxnxl   "
+    }
+   ],
+   "why": "You always write prōfešinxl; CMUdict through your rules says prxfešxnxl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g157",
@@ -4634,9 +6284,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rilīs; CMUdict through your rules says rīlīs. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rīlīs   "
+    }
+   ],
+   "why": "You always write rilīs; CMUdict through your rules says rīlīs. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g158",
@@ -4655,9 +6316,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write seprit; CMUdict through your rules says seprēt. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: seprit   "
+    }
+   ],
+   "why": "You always write seprit; CMUdict through your rules says seprēt. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g159",
@@ -4676,9 +6348,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write rowtid; CMUdict through your rules says rütid. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: rowtid   "
+    }
+   ],
+   "why": "You always write rowtid; CMUdict through your rules says rütid. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g160",
@@ -4697,9 +6380,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write injõīd; CMUdict through your rules says enjõīd. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: injõīd   "
+    }
+   ],
+   "why": "You always write injõīd; CMUdict through your rules says enjõīd. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g161",
@@ -4718,9 +6412,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write eliments; CMUdict through your rules says elxmxnts. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: elxmxnts   "
+    }
+   ],
+   "why": "You always write eliments; CMUdict through your rules says elxmxnts. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g162",
@@ -4739,9 +6444,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write yīrz; CMUdict through your rules says yirz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: yīrz   "
+    }
+   ],
+   "why": "You always write yīrz; CMUdict through your rules says yirz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g163",
@@ -4760,9 +6476,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write fxnkšin; CMUdict through your rules says fxngkšxn. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: fxngkšxn   "
+    }
+   ],
+   "why": "You always write fxnkšin; CMUdict through your rules says fxngkšxn. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g164",
@@ -4781,9 +6508,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write injõī; CMUdict through your rules says enjõī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: injõī   "
+    }
+   ],
+   "why": "You always write injõī; CMUdict through your rules says enjõī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g165",
@@ -4802,9 +6540,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write pritend; CMUdict through your rules says prītend. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prītend   "
+    }
+   ],
+   "why": "You always write pritend; CMUdict through your rules says prītend. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g166",
@@ -4823,9 +6572,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write ikscrīmist; CMUdict through your rules says ekscrīmist. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ekscrīmist   "
+    }
+   ],
+   "why": "You always write ikscrīmist; CMUdict through your rules says ekscrīmist. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g167",
@@ -4844,9 +6604,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write dispret; CMUdict through your rules says disprit. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: disprit   "
+    }
+   ],
+   "why": "You always write dispret; CMUdict through your rules says disprit. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g168",
@@ -4865,9 +6636,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write xjresiz; CMUdict through your rules says æjresiz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xjresiz   "
+    }
+   ],
+   "why": "You always write xjresiz; CMUdict through your rules says æjresiz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g169",
@@ -4886,9 +6668,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write xjres; CMUdict through your rules says æjres. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: æjres   "
+    }
+   ],
+   "why": "You always write xjres; CMUdict through your rules says æjres. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g170",
@@ -4907,9 +6700,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prtikyülrlī; CMUdict through your rules says pártikyxlrlī. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prtikyülrlī   "
+    }
+   ],
+   "why": "You always write prtikyülrlī; CMUdict through your rules says pártikyxlrlī. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g171",
@@ -4928,9 +6732,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write naidhr; CMUdict through your rules says nīdhr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: naidhr   "
+    }
+   ],
+   "why": "You always write naidhr; CMUdict through your rules says nīdhr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g172",
@@ -4949,9 +6764,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write árinj; CMUdict through your rules says ōrxnj. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: árinj   "
+    }
+   ],
+   "why": "You always write árinj; CMUdict through your rules says ōrxnj. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g173",
@@ -4970,9 +6796,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write webpēj; CMUdict through your rules says webpij. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: webpēj   "
+    }
+   ],
+   "why": "You always write webpēj; CMUdict through your rules says webpij. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g174",
@@ -4991,9 +6828,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write inēblīng; CMUdict through your rules says enēbxlīng. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: inēblīng   "
+    }
+   ],
+   "why": "You always write inēblīng; CMUdict through your rules says enēbxlīng. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g175",
@@ -5012,9 +6860,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write xnklīr; CMUdict through your rules says xnklir. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: xnklīr   "
+    }
+   ],
+   "why": "You always write xnklīr; CMUdict through your rules says xnklir. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g176",
@@ -5033,9 +6892,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write prefrensiz; CMUdict through your rules says prefrxnsiz. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: prefrensiz   "
+    }
+   ],
+   "why": "You always write prefrensiz; CMUdict through your rules says prefrxnsiz. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g177",
@@ -5054,9 +6924,20 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write sxmskraibr; CMUdict through your rules says sxbskraibr. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: sxbskraibr   "
+    }
+   ],
+   "why": "You always write sxmskraibr; CMUdict through your rules says sxbskraibr. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g178",
@@ -5075,9 +6956,36 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
-   "why": "You always write vælyüibl; CMUdict through your rules says vælyxbl. Keep yours unless it was a slip."
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: vælyüibl   "
+    }
+   ],
+   "why": "You always write vælyüibl; CMUdict through your rules says vælyxbl. Keep yours unless it was a slip.",
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
+  },
+  {
+   "id": "w1-mwn5e8xd-0",
+   "key": "the",
+   "lang": "*",
+   "ask": "dhī, not dhi",
+   "options": [],
+   "pick": null,
+   "status": "answered",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "dhī, not dhi"
+    }
+   ]
   }
  ]
 }
