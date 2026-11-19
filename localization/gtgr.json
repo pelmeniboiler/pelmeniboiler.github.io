@@ -1,0 +1,22 @@
+{
+  "en": {
+    "gtgr_win_gallery_title": "▤ gtgr.article",
+    "gtgr_title": "Graflect, graded",
+    "gtgr_nav_title": "Graflect, graded",
+    "gtgr_desc": "<i>Teaching a computer my accent, and finding out I don’t spell it the same way twice.</i>",
+    "gtgr_h2_grading-myself": "Grading myself",
+    "gtgr_nav_grading-myself": "<strong>&ensp;Grading myself</strong>",
+    "gtgr_h2_the-grader-graded-me-back": "The grader graded me back",
+    "gtgr_nav_the-grader-graded-me-back": "<strong>&ensp;The grader graded me back</strong>",
+    "gtgr_h3_rules-i-didnt-know-i-had": "Rules I didn’t know I had",
+    "gtgr_nav_rules-i-didnt-know-i-had": "&emsp;&emsp;Rules I didn’t know I had",
+    "gtgr_h2_next-geniza": "Next: Geniza",
+    "gtgr_nav_next-geniza": "<strong>&ensp;Next: Geniza</strong>",
+    "gtgr_p1": "Graflect is phonic: you spell what you say. So if a computer knows how I talk, it should be able to write Graflect for me. To find out how close one gets, every Graflect article on this site becomes a test. The computer studies all of my other articles, gets only the English of the one left out, and spells it. Then it’s scored on how many words it spelled the way I did.",
+    "gtgr_p2": "There are two halves to the system. One is my own words: anything I’ve already spelled in another article gets spelled the same way again. The other is CMUdict, a pronunciation dictionary of American English, put through my rules (dr is jr, a before n and m is ä, and so on). Neither is great alone. Together they spell 91% of my words the way I do.",
+    "gtgr_p3": "Wherever CMUdict and I disagreed, the computer asked me which was right, in rounds, like the translation reviews. A lot of the time, I was the one who was wrong. I had dropped the r after c and j (crip for trip), written häv for have, spelled the same word three different ways in three articles, and typed grælekt in the title of the Graflect guide.",
+    "gtgr_p4": "Every fix made my Graflect easier to predict, because there was less of me disagreeing with myself. Of about 6,100 words, 958 were respelled, roughly one in six.",
+    "gtgr_ul1": "<li>“The” is dhx, but dhī before a vowel.</li><li>“A” is x, and ē when I stress it.</li><li>“And” is änd, but xnd in set pairs like “cookies and cream”.</li><li>“Have to” is hæf tü.</li><li>Every -ing has its g: thīngg, yüzīngg.</li><li>w then ī is the wī glyph: wī, wīl, wīk.</li>",
+    "gtgr_p5": "Next, a small neural network trained on Geniza, my home server, with an Nvidia P40. It learns pronunciation from CMUdict first, then my spellings, and it only gets the words my rules can’t handle. Its first run guessed 65% of dictionary words it had never seen exactly right, and added about 40 words to the rules’ score. Now that my articles agree with themselves, it’s time to train it again."
+  }
+}

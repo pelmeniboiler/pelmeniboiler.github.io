@@ -62,7 +62,7 @@ export async function bakeGraflectWords(rootDir, { log = console.log } = {}) {
 
 // The Graflect queue (tools/gt.html): every English line that has no Graflect
 // yet, grouped by localization file. Coal is in progress, so it stays out.
-const QUEUE_SKIP = new Set(['tl-status', 'coal']);
+const QUEUE_SKIP = new Set(['tl-status', 'coal', 'gtgr']);
 export async function bakeGtQueue(rootDir, { log = console.log } = {}) {
     const locDir = path.join(rootDir, 'localization'), files = {};
     for (const f of (await fs.readdir(locDir)).filter((n) => n.endsWith('.json')).sort()) {
