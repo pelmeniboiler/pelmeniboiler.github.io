@@ -23,8 +23,9 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
-const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = path.join(ROOT, 'vault', 'reviews');
 const read = async (p) => JSON.parse(await fs.readFile(p, 'utf8'));
 const hash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 12);
@@ -79,7 +80,7 @@ async function apply(article, force) {
     console.log(`Wrote ${n} line(s) into localization/${article}.json. Now: npm run vault:check`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const [cmd, arg] = process.argv.slice(2);
     if (cmd === 'apply') await apply(arg, process.argv.includes('--force'));
     else await status();

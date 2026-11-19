@@ -21,9 +21,10 @@ import path from 'node:path';
 import os from 'node:os';
 import vm from 'node:vm';
 import { execSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { learnWords } from './graflect-words.mjs';
 
-const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LOC = path.join(ROOT, 'localization');
 const isGlyph = (c) => { const n = c.codePointAt(0); return n >= 0xE000 && n <= 0xF8FF; };
 
@@ -31,6 +32,8 @@ export async function graflectData() {
     const ctx = {}; vm.createContext(ctx);
     vm.runInContext(`${await fs.readFile(path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), 'utf8')};this.words=defaultWordMap;this.slug=slugMap;`, ctx);
     const toGlyph = Object.entries(ctx.slug).filter(([, s]) => s.trim()).sort((a, b) => b[1].length - a[1].length);
+    // She writes these sounds as two glyphs: never rr or rä joined, and wī joined only for the word "we".
+    const joinedOk = (s, i, v) => (v !== 'rr' && v !== 'rä' && v !== 'wī') || (v === 'wī' && !/\p{L}/u.test(s[i - 1] || '') && !/\p{L}/u.test(s[i + 2] || ''));
     return {
         words: { ...ctx.words },
         slug: (g) => [...g].map((c) => ctx.slug[c] ?? c).join(''),
@@ -43,7 +46,7 @@ export async function graflectData() {
                 if (keep) { out += keep[0].startsWith('‹') ? keep[0].slice(1, -1) : keep[0]; i += keep[0].length; continue; }
                 const letterAround = /\p{L}/u.test(s[i - 1] || '') || /\p{L}/u.test(s[i + 1] || '');
                 if (/\d/.test(s[i]) && !letterAround) { out += s[i++]; continue; }
-                const m = toGlyph.find(([, v]) => s.startsWith(v, i));
+                const m = toGlyph.find(([, v]) => s.startsWith(v, i) && joinedOk(s, i, v));
                 if (m && !/\s/.test(s[i])) { out += m[0]; i += m[1].length; } else out += s[i++];
             }
             return out;
@@ -107,7 +110,7 @@ export async function evaluate(system) {
     return rows;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const args = process.argv.slice(2), opt = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : null; };
     const data = await graflectData();
     if (opt('--export')) {
