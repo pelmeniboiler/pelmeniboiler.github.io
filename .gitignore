@@ -27,3 +27,4 @@ blog/*/
 /styles/fonts/_sources/
 __pycache__/
 *.pt
+/runs/

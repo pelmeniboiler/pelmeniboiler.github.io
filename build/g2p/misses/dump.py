@@ -1,6 +1,8 @@
-# Like the P40 report's g2p_dump.py (rules mode), for any version of build/g2p/predict_rules.py:
+# Like the P40 report's g2p_dump.py, for any version of build/g2p/predict_rules.py:
 # OUT is exactly what that version writes; DUMP says where each English word's spelling came from.
-#   python3 dump2.py REPO CMU
+#   python3 dump.py REPO CMU                                   the rules system
+#   python3 dump.py REPO CMU --model g2p.pt [--model-first]    the model, as build/g2p/predict_model.py runs it
+#                                                              (fine-tuned on TRAIN; G2P_EPOCHS as there)
 import json, os, re, sys, collections
 REPO, CMU = sys.argv[1], sys.argv[2]
 sys.path.insert(0, os.path.join(REPO, 'build', 'g2p'))
@@ -33,12 +35,29 @@ for line in open(CMU, encoding='utf-8'):
     if ph: prons[re.sub(r'\(\d+\)$', '', w).lower()].append(ph)
 votes = votes_of(train)
 
+# The model: fine-tuned on her words exactly as predict_model.py does, then asked for the words it would be asked for.
+guessed, MODEL_FIRST = {}, '--model-first' in sys.argv
+if '--model' in sys.argv:
+    import random, torch
+    from g2p_model import load, train as tune, predict
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    random.seed(0); torch.manual_seed(0)
+    model, sv, tv, cfg = load(sys.argv[sys.argv.index('--model') + 1], device)
+    mine = [(w, x) for w, x in hers.items() if w.replace("'", '').isalpha()]
+    some = random.sample([(w, slug(p)) for w, p in cmu.items() if w.isalpha()], min(len(mine) * 2, 20000))
+    tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '30')), lr=2e-4, batch=128, device=device, log=lambda s: None)
+    tests = [json.loads(l) for l in open(os.environ['TEST'], encoding='utf-8') if l.strip()]
+    ws = sorted({m.group(0).lower().replace('’', "'") for t in tests for p in re.split(r'(<[^>]+>|&#?\w+;)', t['en']) if not p.startswith(('<', '&')) for m in re.finditer(r"[A-Za-z][A-Za-z'’]*", p)})
+    need = [w for w in ws if w not in hers and w.replace("'", '') not in hers and w not in keep and (MODEL_FIRST or w not in cmu)]
+    guessed = dict(zip(need, predict(model, need, sv, tv, device=device)))
+
 def word(w):
     k = w.lower().replace('’', "'")
     if k in keep: return '‹' + w + '›', 'latin'
     if k in hers: return hers[k], 'hers'
     if k.replace("'", '') in hers: return hers[k.replace("'", '')], 'hers'
-    if k in cmu: return slug(cmu[k]), 'cmu'
+    if not MODEL_FIRST and k in cmu: return slug(cmu[k]), 'cmu'
+    if guessed.get(k): return guessed[k], 'model'
     return '‹' + w + '›', 'latin'
 
 SPLIT = r'(<[^>]+>|&#?\w+;)'
@@ -47,7 +66,7 @@ with open(os.environ['OUT'], 'w', encoding='utf-8') as out, open(os.environ['DUM
         if not l.strip(): continue
         t = json.loads(l)
         if hasattr(pr, 'spell_line'):
-            line = pr.spell_line(t['en'], pr.speller(hers, keep, cmu))
+            line = pr.spell_line(t['en'], pr.speller(hers, keep, None if MODEL_FIRST else cmu, guessed))
         else:
             line = ''.join(p if re.match(SPLIT, p) else re.sub(r"[A-Za-z][A-Za-z'’]*", lambda m: word(m.group(0))[0], p) for p in re.split(SPLIT, t['en']))
         out.write(json.dumps({'id': t['id'], 'slug': line}, ensure_ascii=False) + '\n')
