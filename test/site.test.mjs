@@ -1591,8 +1591,11 @@ try {
         fixture.round = 1;
         for (const q of fixture.questions) { q.status = 'open'; delete q.answer; q.thread = q.thread.filter((t) => t.who === 'claude').slice(0, 1); }
         const reviewFile = JSON.stringify(fixture);
-        await c.route(`${BASE}/localization/reviews/**`, (route) => route.fulfill({ status: 200, contentType: 'application/json',
-            body: route.request().url().endsWith('index.json') ? JSON.stringify([{ article: 'ct125', title: fixture.title, round: 1, open: fixture.questions.length }]) : reviewFile }));
+        // A second article in another language (a Graflect round), to switch to.
+        const gtFile = JSON.stringify({ article: 'gtfix', kind: 'graflect', title: 'Graflect proofreading', round: 1, langs: ['gt'], lines: { w: { en: 'we', gt: { text: '\uece7', back: 'wī' } } },
+            questions: [{ id: 'g1', key: 'w', lang: 'gt', ask: '“we”?', options: [{ text: 'wī', why: 'yours' }, { text: 'w·ī', why: 'CMUdict' }], pick: 0, status: 'open', thread: [] }] });
+        await c.route(`${BASE}/localization/reviews/**`, (route) => { const u = route.request().url(); route.fulfill({ status: 200, contentType: 'application/json',
+            body: u.endsWith('index.json') ? JSON.stringify([{ article: 'ct125', title: fixture.title, round: 1, open: fixture.questions.length }, { article: 'gtfix', title: 'Graflect proofreading', round: 1, open: 1 }]) : u.endsWith('gtfix.json') ? gtFile : reviewFile }); });
         await c.route('https://api.github.com/**', async (route) => {
             const req = route.request(), u = new URL(req.url());
             const j = (o, s = 200) => route.fulfill({ status: s, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(o) });
@@ -1616,10 +1619,13 @@ try {
         await p.click('#send'); await p.waitForFunction(() => /Sent|✗/.test(document.getElementById('status').textContent));
         const sent = tree && JSON.parse(tree.tree[0].content);
         const q = sent && sent.questions.find((x) => x.id === firstQ), asked = sent && sent.questions.at(-1);
+        // Switching articles shows the new article's languages, not the old one's.
+        await p.selectOption('#pick-article', 'gtfix'); await p.waitForFunction(() => /Graflect/.test(document.getElementById('review-title').textContent));
+        const switched = await p.$$eval('.q[data-id] .opt', (o) => o.length);
         await c.close();
         ok(shown.lines > 20 && shown.backs > 40 && shown.qs > 5 && shown.en.trim() && tree && tree.tree[0].path === 'vault/reviews/ct125.json'
-            && q.status === 'answered' && q.answer.pick === 1 && q.thread.at(-1).who === 'wendy' && asked.thread[0].text === 'Is this the right word for tyres?' && !errs.length,
-            `Translation review: shows lines, back-translations and questions; sends her pick, note and new question as one commit (${JSON.stringify({ shown: { ...shown, en: undefined }, errs })})`);
+            && q.status === 'answered' && q.answer.pick === 1 && q.thread.at(-1).who === 'wendy' && asked.thread[0].text === 'Is this the right word for tyres?' && switched === 2 && !errs.length,
+            `Translation review: shows lines, back-translations and questions; sends her pick, note and new question as one commit; switching articles shows the new one's questions (${JSON.stringify({ shown: { ...shown, en: undefined }, switched, errs })})`);
     }
 
     // The daylight figure: the north pole turns the axis through the year, dated in the Hebrew calendar.
