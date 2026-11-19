@@ -80,7 +80,7 @@
 (() => {
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    const LANG = { ru: 'Русский', he: 'עברית', de: 'Deutsch', ja: '日本語' };
+    const LANG = { ru: 'Русский', he: 'עברית', de: 'Deutsch', ja: '日本語', gt: 'Graflect' };
     const GH = 'pelmeniboiler-sofrut2-github';
     const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } };
     const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) { /* full or blocked */ } };
