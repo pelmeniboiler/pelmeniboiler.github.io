@@ -1,0 +1,213 @@
+{
+ "article": "graflect-3",
+ "kind": "graflect",
+ "title": "Graflect habits",
+ "round": 1,
+ "langs": [
+  "gt"
+ ],
+ "lines": {
+  "ir": {
+   "en": "clear, sphere, year, weird, criteria, experience",
+   "gt": {
+    "text": "     ",
+    "back": "klīr   sfīr   yīr   wīrd   kraitīrīx   ekspīriins"
+   }
+  },
+  "yu": {
+   "en": "particular, vocabulary, meticulously, valuable, curated",
+   "gt": {
+    "text": "    ",
+    "back": "prtikyülr   vōkæbyülerī   mitikyülxslī   vælyüibl   kyürētid"
+   }
+  },
+  "air": {
+   "en": "dictionary, area, paragraph, very, secondary, necessary",
+   "gt": {
+    "text": "     ",
+    "back": "dikšin4ī   4īx   p4xgræf   verī   sekinderī   nesiserī"
+   }
+  },
+  "ex": {
+   "en": "exactly, example, except, explain, expensive",
+   "gt": {
+    "text": "    ",
+    "back": "igzæktlī   igzämpxl   eksept   eksplēn   ekspensiv"
+   }
+  },
+  "bxl": {
+   "en": "table, capable, global, symbol",
+   "gt": {
+    "text": "   ",
+    "back": "tēbl   kēpxbxl   glōbxl   simbxl"
+   }
+  },
+  "ngg": {
+   "en": "finger, longer, thing, English, languages",
+   "gt": {
+    "text": "    ",
+    "back": "fīnggr   lánggr   thīngg   īngliš   lēngwijiz"
+   }
+  },
+  "xi": {
+   "en": "problem, combinations, languages, metacarpals",
+   "gt": {
+    "text": "   ",
+    "back": "práblim   kámbinēšinz   lēngwijiz   metikárpxlz"
+   }
+  }
+ },
+ "questions": [
+  {
+   "id": "g1",
+   "kind": "habit",
+   "key": "ir",
+   "lang": "gt",
+   "ask": "ī before r: always?",
+   "why": "Where CMUdict has the short i before r (here, near, year), you write ī: 14 times, against 2 times i (experiences ikspirīxnsiz, experiencing ikspirīxnsīngg, though experience is ekspīriins). As a rule it’s worth 8 more words now, and it would cover every new word like it.",
+   "options": [
+    {
+     "text": "Always ī before r",
+     "why": "make it a rule, and fix experiences and experiencing"
+    },
+    {
+     "text": "Depends on the word",
+     "why": "tell me which"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g2",
+   "kind": "habit",
+   "key": "yu",
+   "lang": "gt",
+   "ask": "yü for the weak u after y: always?",
+   "why": "In -ular, -ulous, -uable and -ure, CMUdict has a weak vowel after y (kyxlr). You always write yü there: prtikyülr, vōkæbyülerī, mitikyülxslī, vælyüibl, kyürētid. 4 for 4 where it’s the only difference.",
+   "options": [
+    {
+     "text": "Always yü",
+     "why": "make it a rule"
+    },
+    {
+     "text": "Not always",
+     "why": "tell me which"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g3",
+   "kind": "habit",
+   "key": "air",
+   "lang": "gt",
+   "ask": "4 before a vowel: which words?",
+   "why": "You write 4 in dictionary (dikšin4ī), area (4īx), barrier (b4īr), paragraph (p4xgræf), but e or æ in very (verī ×14), cherries (cerīz), error (err), american (xmerikin), and -erī in secondary, necessary, commentary. I can’t find one rule that fits all of these. Is there one, or is it word by word?",
+   "options": [
+    {
+     "text": "Word by word",
+     "why": "keep each as you wrote it; new words get CMUdict’s e/æ"
+    },
+    {
+     "text": "-ary is 4ī",
+     "why": "dictionary, secondary, necessary, commentary all 4ī; very and error stay"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g4",
+   "kind": "habit",
+   "key": "ex",
+   "lang": "gt",
+   "ask": "ex- at the start: ik or ek?",
+   "why": "Mostly ik/ig: igzæktlī, igzämpxl, igzist, ikstenšin, ikspirīxnsiz. But eks in except (eksept), explain (eksplēn) and expensive (ekspensiv), and experience is ekspīriins. Is there a pattern, or are the eks ones slips?",
+   "options": [
+    {
+     "text": "Always ik/ig",
+     "why": "the eks ones were slips"
+    },
+    {
+     "text": "Both are right",
+     "why": "it depends on how I say the word; keep them"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g5",
+   "kind": "habit",
+   "key": "bxl",
+   "lang": "gt",
+   "ask": "-ble, -bal, -bol: bl or bxl?",
+   "why": "The converter drops the vowel after b (table tēbl, assembled xsembld), but you wrote capable kēpxbxl, global glōbxl and symbol simbxl ×2. Which is it?",
+   "options": [
+    {
+     "text": "bxl",
+     "why": "keep the vowel: tēbxl, kēpxbxl, simbxl"
+    },
+    {
+     "text": "bl",
+     "why": "drop it: kēpxbl, glōbl, simbl"
+    },
+    {
+     "text": "Depends",
+     "why": "tell me which"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g6",
+   "kind": "habit",
+   "key": "ngg",
+   "lang": "gt",
+   "ask": "ng then g inside a word?",
+   "why": "You write the g in finger (fīnggr) and longer (lánggr), and in every -ing (thīngg), but not in English (īngliš) or languages (lēngwijiz). Is English the exception, or does the g depend on the word?",
+   "options": [
+    {
+     "text": "English and languages are the exceptions",
+     "why": "g everywhere else"
+    },
+    {
+     "text": "Depends on the word",
+     "why": "tell me which"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g7",
+   "kind": "habit",
+   "key": "xi",
+   "lang": "gt",
+   "ask": "x or i: does the grader need to care?",
+   "why": "The biggest pile left: 135 words differ from you only in the unstressed vowel, x or i. A rule now gets you i before a final d, z, n, t or s, but the rest look like free choice. If x and i are the same to you in an unstressed syllable, the grader could count either as right. If they’re different sounds to you, I keep looking for rules.",
+   "options": [
+    {
+     "text": "They’re the same to me there",
+     "why": "count either as right"
+    },
+    {
+     "text": "They’re different",
+     "why": "keep looking for rules"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  }
+ ]
+}
