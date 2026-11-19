@@ -1,29 +1,11 @@
 # build/g2p/cmu2slug.py — CMUdict (ARPAbet) → SLUG, compared with her spellings.
 # Usage: python3 build/g2p/cmu2slug.py cmudict.dict words.tsv   (words.tsv from: npm run gt:eval -- --export DIR)
 # Step 1 of the P40 plan: a big pronunciation dictionary in her Graflect, for a model to learn from.
-import sys, collections
+import sys, os, collections
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from cmu2slug_lib import slug, load_cmu
 CMU, WORDS = sys.argv[1], sys.argv[2]
-C = dict(B='b', CH='c', D='d', DH='dh', F='f', G='g', HH='h', JH='j', K='k', L='l', M='m', N='n', NG='ng', P='p', R='r', S='s', SH='š', T='t', TH='th', V='v', W='w', Y='y', Z='z', ZH='ž')
-V = dict(AA='á', AE='æ', AH='x', AO='á', AW='ow', AY='ai', EH='e', ER='r', EY='ē', IH='i', IY='ī', OW='ō', OY='õī', UH='u', UW='ü')
-
-def slug(phones):
-    out, ph = [], [p.rstrip('012') for p in phones]
-    stress = [p[-1] if p[-1] in '012' else '' for p in phones]
-    i = 0
-    while i < len(ph):
-        p, nxt = ph[i], (ph[i + 1] if i + 1 < len(ph) else '')
-        if p == 'T' and nxt == 'R': out.append('c'); i += 2; continue          # trip → cip
-        if p == 'Y' and nxt == 'UW': out.append('yü'); i += 2; continue
-        if p == 'AE' and nxt in ('N', 'M'): out.append('ä'); i += 1; continue   # man → män
-        if p in ('AO', 'AA') and nxt == 'R': out.append('ō' if p == 'AO' else 'á'); i += 1; continue
-        if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph): i += 1; continue  # people → pīpl
-        out.append(C.get(p) or V.get(p, '?')); i += 1
-    return ''.join(out)
-
-cmu = {}
-for line in open(CMU, encoding='utf-8'):
-    w, *ph = line.split('#')[0].split()
-    if '(' not in w: cmu.setdefault(w.lower(), ph)
+cmu = load_cmu(CMU)
 hers = dict(l.rstrip('\n').split('\t') for l in open(WORDS, encoding='utf-8') if '\t' in l)
 same = diff = missing = 0
 pairs = collections.Counter()
