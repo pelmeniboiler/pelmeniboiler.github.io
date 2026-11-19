@@ -28,3 +28,4 @@ blog/*/
 __pycache__/
 *.pt
 /runs/
+/cmudict.dict
