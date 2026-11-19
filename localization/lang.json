@@ -64,7 +64,7 @@
     "lang_p35": "So I don't think it's a perfect representation of how I'd talk, but it's a closer approximation than plain Latin can give."
   },
   "he": {
-    "win_gallerynav_title": "◈ ניווט.שפה",
+    "win_gallerynav_title": "◈ שפה.nav",
     "lang_nav_title": "לוקליזציה!",
     "lang_nav_you-deliberately-left-out-my-language": "באמת?",
     "lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you": "איך?",
@@ -73,7 +73,7 @@
     "lang_nav_tldr": "תכל'ס",
     "lang_nav_postface-commentary": "הערות סיום",
     "gt_nav_h2_home": "⌂←",
-    "lang_win_gallery_title": "▤ מאמר.שפה",
+    "lang_win_gallery_title": "▤ שפה.article",
     "lang_title": "הבלוג הזה תומך עכשיו בשפה שלך",
     "lang_p1": "אוקיי, יש סיכוי שהוא לא.",
     "lang_p2": "למעשה, מכיוון שהבלוג הזה בכוונה לא זמין במנדרינית, ספרדית, הינדי או ערבית, זה סיכוי די גדול.",
@@ -128,7 +128,7 @@
     "lang_p35": "אז אני לא חושבת שזה ייצוג מושלם של איך שהייתי מדברת, אבל זה קירוב טוב יותר ממה שהכתב הלטיני הפשוט יכול לתת."
   },
   "ru": {
-    "win_gallerynav_title": "◈ Навигация.язык",
+    "win_gallerynav_title": "◈ язык.nav",
     "lang_nav_title": "Локализация!",
     "lang_nav_you-deliberately-left-out-my-language": "Серьёзно?",
     "lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you": "Как?",
@@ -137,7 +137,7 @@
     "lang_nav_tldr": "TL;DR",
     "lang_nav_postface-commentary": "Послесловие",
     "gt_nav_h2_home": "⌂←",
-    "lang_win_gallery_title": "▤ Статья.язык",
+    "lang_win_gallery_title": "▤ язык.article",
     "lang_title": "Этот блог теперь поддерживает твой язык",
     "lang_p1": "Ну, есть шанс, что нет.",
     "lang_p2": "На самом деле, поскольку этот блог намеренно не доступен на мандаринском, испанском, хинди или арабском, этот шанс довольно велик.",
@@ -192,7 +192,7 @@
     "lang_p35": "Так что я не думаю, что это идеальное представление того, как я бы говорила, но это более близкое приближение, чем может дать простая латиница."
   },
   "de": {
-    "win_gallerynav_title": "◈ Navigation.Sprache",
+    "win_gallerynav_title": "◈ sprache.nav",
     "lang_nav_title": "Lokalisierung!",
     "lang_nav_you-deliberately-left-out-my-language": "Wirklich?",
     "lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you": "Wie?",
@@ -201,7 +201,7 @@
     "lang_nav_tldr": "TL;DR",
     "lang_nav_postface-commentary": "Nachwort",
     "gt_nav_h2_home": "⌂←",
-    "lang_win_gallery_title": "▤ Artikel.Sprache",
+    "lang_win_gallery_title": "▤ sprache.article",
     "lang_title": "Dieser Blog unterstützt jetzt deine Sprache",
     "lang_p1": "Okay, es besteht die Möglichkeit, dass er das nicht tut.",
     "lang_p2": "Tatsächlich, da dieser Blog absichtlich nicht auf Mandarin, Spanisch, Hindi oder Arabisch verfügbar ist, ist die Chance ziemlich groß.",
@@ -256,7 +256,7 @@
     "lang_p35": "Also denke ich nicht, dass es eine perfekte Darstellung davon ist, wie ich sprechen würde, aber es ist eine nähere Annäherung, als es einfaches Latein geben kann."
   },
   "ja": {
-    "win_gallerynav_title": "◈ ナビ.言語",
+    "win_gallerynav_title": "◈ 言語.nav",
     "lang_nav_title": "ローカリゼーション！",
     "lang_nav_you-deliberately-left-out-my-language": "本気で？",
     "lang_nav_so-you-just-ask-ai-to-translate-the-pages-for-you": "どうやって？",
@@ -265,7 +265,7 @@
     "lang_nav_tldr": "要約",
     "lang_nav_postface-commentary": "あとがき",
     "gt_nav_h2_home": "⌂←",
-    "lang_win_gallery_title": "▤ 記事.言語",
+    "lang_win_gallery_title": "▤ 言語.article",
     "lang_title": "このブログが、あなたの言語をサポートするようになりました",
     "lang_p1": "まあ、そうじゃない可能性もありますけどね。",
     "lang_p2": "実際、このブログは意図的に標準中国語、スペイン語、ヒンディー語、アラビア語に対応していないので、その可能性はかなり高いです。",

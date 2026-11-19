@@ -67,5 +67,10 @@
  ],
  "brands-latin": [
   "coal:ch_post7_body:he"
+ ],
+ "dotted-ending": [
+  "coal:ch_win_timeline_title:he",
+  "coal:ch_win_timeline_title:ja",
+  "coal:ch_win_timeline_title:ru"
  ]
 }

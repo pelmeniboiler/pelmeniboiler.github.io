@@ -62,6 +62,13 @@ async function loadGtChart() {
     return gtChart;
 }
 
+// The author's rules for this language from vault/rules.json (vault:check enforces them afterwards).
+let vaultRules = null;
+async function vaultSays(lang) {
+    vaultRules ??= JSON.parse(await fs.readFile(path.join(process.cwd(), 'vault/rules.json'), 'utf8'));
+    return vaultRules.filter((r) => r.say && (lang === 'gt' ? r.gt : r.lang === '*' || r.lang === lang)).map((r) => `- ${r.say}`);
+}
+
 async function geminiTranslate(lang, entries, retryNote = '') {
     const prompt = [
         `You are localizing a personal blog from English into ${LANG_NAMES[lang] || lang} (code "${lang}").`,
@@ -69,6 +76,7 @@ async function geminiTranslate(lang, entries, retryNote = '') {
         "- Localize, do not translate. Avoid translatese; preserve the author's voice.",
         '- Keep every HTML tag and entity (<br>, <span ...>, <strong>, &nbsp;) exactly where it is.',
         '- Output ONLY valid JSON: the same keys, values translated. No commentary, no code fences.',
+        ...(await vaultSays(lang)),
         ...(lang === 'gt' ? [
             '- Graflect is a featural PHONETIC script. Render the ENGLISH pronunciation.',
             '- Use ONLY the glyphs in this chart (glyph = its romanization). Never any',

@@ -51,11 +51,12 @@ if '--model' in sys.argv:
     need = [w for w in ws if w not in hers and w.replace("'", '') not in hers and w not in keep and (MODEL_FIRST or w not in cmu)]
     guessed = dict(zip(need, predict(model, need, sv, tv, device=device)))
 
-def word(w):
+def word(w, m=None):
     k = w.lower().replace('’', "'")
     if k in keep: return '‹' + w + '›', 'latin'
     if k in hers: return hers[k], 'hers'
     if k.replace("'", '') in hers: return hers[k.replace("'", '')], 'hers'
+    if m is not None and hasattr(pr, 'latin_name') and pr.latin_name(m): return '‹' + w + '›', 'latin'
     if not MODEL_FIRST and k in cmu: return slug(cmu[k]), 'cmu'
     if guessed.get(k): return guessed[k], 'model'
     return '‹' + w + '›', 'latin'
@@ -75,7 +76,7 @@ with open(os.environ['OUT'], 'w', encoding='utf-8') as out, open(os.environ['DUM
             if re.match(SPLIT, p): toks.append(None); continue
             pos = 0
             for m in re.finditer(r"[A-Za-z][A-Za-z'’]*", p):
-                s, how = word(m.group(0)); gap = p[pos:m.start()]; pos = m.end()
+                s, how = word(m.group(0), m); gap = p[pos:m.start()]; pos = m.end()
                 toks.append({'en': m.group(0), 'slug': s, 'src': how, 'gap': gap})
         # Her context rules, as this version's spell_line applies them.
         LATIN_V = "‹[AEIOUaeiou]" in src   # this version also uses dhī before a Latin name starting with a vowel

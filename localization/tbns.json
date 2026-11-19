@@ -70,7 +70,7 @@
     "tbns_p15": "<aside>既読履歴の同期や、不完全なRSSフィードしか提供しないウェブサイトから情報を取得（スクレイピング）できるサービスが必要な場合もあるでしょう。もしそうなら、簡単に見つかりますよ。</aside>"
   },
   "de": {
-    "tbns_win_gallery_title": "RSS.artikel",
+    "tbns_win_gallery_title": "RSS.article",
     "tbns_title": "Dieser Blog unterstützt jetzt RSS",
     "tbns_nav_title": "RSS",
     "tbns_desc": "Mein Blog unterstützt jetzt RSS. Du kannst darauf zugreifen, indem du auf das Satelliten-Symbol in der oberen Leiste der Blog-Ansicht klickst.",

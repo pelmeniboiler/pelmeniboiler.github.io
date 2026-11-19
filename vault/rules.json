@@ -8,5 +8,12 @@
   {"id": "polite-form", "lang": "ja", "say": "です/ます with 私; no plain-form sentence endings.", "forbid": "(?:だ|である|だよ|だね|じゃん|僕|俺)[。！？]?(?=[。！？]|$)"},
   {"id": "no-new-dash", "lang": "*", "say": "No dashes she didn't write (Russian copula dashes are grammar, not style: approve them in ok.json).", "added": "—–"},
   {"id": "keep-semicolons", "lang": "*", "say": "Her semicolons stay.", "kept": ";", "same": "；"},
-  {"id": "keep-parentheses", "lang": "*", "say": "Her parentheses stay.", "kept": "(", "same": "（"}
+  {"id": "keep-parentheses", "lang": "*", "say": "Her parentheses stay.", "kept": "(", "same": "（"},
+ {
+  "id": "dotted-ending",
+  "lang": "*",
+  "gt": true,
+  "say": "A dotted name like system.settings or music.ogg keeps its ending in English in every translation; the part before the dot may be translated.",
+  "ending": true
+ }
 ]

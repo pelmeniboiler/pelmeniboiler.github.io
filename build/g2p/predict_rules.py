@@ -3,6 +3,7 @@
 #      and words she leaves in Latin there (names, labels) stay Latin,
 #   2. else CMUdict through her rules (cmu2slug_lib.py),
 #   3. else the English word, left in Latin.
+#   Names stay Latin before step 2: two or more capitals (PCB, KiCad), and the ending of a dotted name (system.settings).
 #   Then "the" before a vowel becomes dhī, as she writes it.
 # Usage (on Windows: python, and npm.cmd from PowerShell):
 #   npm run gt:eval -- --cmd "python3 build/g2p/predict_rules.py path/to/cmudict.dict"
@@ -48,12 +49,20 @@ def spell_line(en, spell):
     out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=(?:<[^>]+>)*(?:[' + ''.join(VOWELS) + ']|‹[AEIOUaeiou]))', r'dhī\1', out)
     return re.sub(r'(?<![^\W\d_])hæv(\s+)(?=tü(?![^\W\d_]))', r'hæf\1', out)
 
+def latin_name(m):
+    """Words she keeps in Latin unless she has spelled them: two or more capitals (PCB, KiCad, MuseScore),
+    and the ending of a dotted name (system.settings, music.ogg)."""
+    w, i, s = m.group(0), m.start(), m.string
+    if sum(c.isupper() for c in w) >= 2: return True
+    return i >= 2 and s[i - 1] == '.' and s[i - 2].isalnum()
+
 def speller(hers, keep_latin, cmu=None, guessed=None):
     def spell(m):
         w = m.group(0); k = w.lower().replace('’', "'")
         if k in keep_latin: return '‹' + w + '›'
         if k in hers: return hers[k]
         if k.replace("'", '') in hers: return hers[k.replace("'", '')]
+        if latin_name(m): return '‹' + w + '›'
         if cmu is not None and k in cmu: return slug(cmu[k])
         if guessed and guessed.get(k): return guessed[k]
         return '‹' + w + '›'

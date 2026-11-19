@@ -22,6 +22,8 @@ The rules system, `build/g2p/predict_rules.py`, spells each word with:
 3. else the English word, left in Latin.
 
 Then two context rules: "the" is dhī before a vowel (or a Latin name starting with one), "have to" is hæf tü.
+Words she hasn't written stay Latin before step 2 if they have two or more capitals (PCB, KiCad) or are the ending
+of a dotted name (system.settings): `latin_name` in `predict_rules.py`, her decision after v15.
 
 Score: **5648 of 6091 words (92.7%), 165 of 405 lines exact.** That's the number to beat.
 
