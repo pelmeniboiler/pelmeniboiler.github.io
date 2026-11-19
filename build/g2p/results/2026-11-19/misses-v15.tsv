@@ -1,0 +1,393 @@
+id	category	english	system_slug	her_slug	cmu_rules_slug	dictionary_slug	her_other_spellings
+dixie:nav_li_breakfast	cmu_differs	Breakfast	brekfxst	brekfist	brekfxst		
+dixie:music_h5_arranger	cmu_differs	arranged	rēnjd	xrēnjd	rēnjd		
+dixie:dv_p1	cmu_differs	arrived	raivd	xraivd	raivd		
+dixie:dv_p1	cmu_differs	incredibly	inkredxblī	inkrediblī	inkredxblī		
+dixie:dv_p1	cmu_differs	damage	dämij	dæmij	dämij		
+dixie:dv_p2	cmu_differs	portraits	pōrcrxts	pōrcrits	pōrcrxts		
+dixie:dv_p2	cmu_differs	monitor	mánxtr	mánitr	mánxtr		
+dixie:dv_p5	cmu_differs	caramel	kerxmxl	k4xmel	kerxmxl		
+dixie:dv_p8	cmu_alt	restaurant	restránt	rescránt	restránt		
+dixie:dv_p8	cmu_alt	restaurant	restránt	rescránt	restránt		
+dixie:dv_h2_david	model_oov	Aquisition	xkwizišin	ækwizišin			
+dixie:dv_p11	cmu_differs	impossible	impásxbl	impásibl	impásxbl		
+dixie:dv_p12	cmu_alt	vehicles	vīhikxlz	vīikxlz	vīhikxlz		
+dixie:dv_p15	model_oov	horrifically	hōrifikxlī	hōrifiklī			
+dixie:dv_p15	cmu_differs	horrifying	hōrxfaiīngg	hōrifaiīngg	hōrxfaiīngg		
+dixie:dv_p15	cmu_differs	sphere	sfir	sfīr	sfir		
+dixie:dv_p15	cmu_differs	beckoned	bekxnd	bekind	bekxnd		
+dixie:dv_p15	model_oov	suprising	süpraizīngg	srpraizīngg			
+dixie:dv_p15	cmu_differs	precision	prīsižin	prisižin	prīsižin		
+dixie:dv_p15	cmu_differs	sphere	sfir	sfīr	sfir		
+dixie:dv_p15	cmu_differs	sphere	sfir	sfīr	sfir		
+dixie:dv_p16	cmu_differs	sharpest	šárpxst	šárpist	šárpxst		
+dixie:dv_h3_breakfast	cmu_differs	Breakfast	brekfxst	brekfist	brekfxst		
+dixie:dv_p19	cmu_differs	breakfast	brekfxst	brekfist	brekfxst		
+dixie:dv_p19	cmu_differs	woman	wumin	wxmin	wumin		
+epark:nav_li_aaaah	model_oov	AAAAAH	xxxxhá	áááááh			
+epark:ep_p1	cmu_differs	landscape	ländskēp	lændskēp	ländskēp		
+epark:ep_p1	cmu_alt	detail	ditēl	dītēl	ditēl		
+epark:ep_p_red_intro	cmu_differs	Certified	srtxfaid	srtifaid	srtxfaid		
+epark:ep_p_red_intro	cmu_differs	gonna	gánx	gxnx	gánx		
+epark:ep_p_standing	cmu_differs	archetypal	árktaipxl	árkitaipxl	árktaipxl		
+epark:ep_p_white_intro	cmu_differs	hadn't	hædxnt	hædint	hædxnt		
+epark:ep_p_canna	model_oov	purpley	prplī	prpxlī			
+epark:ep_p_zinnia	latin	lense	lense	lenz			lenz×2
+epark:ep_p_marigold	cmu_differs	mari	márī	m4ī	márī		
+epark:ep_h3_rosehip	model_oov	Rosehips	rōšips	rōzhips			
+epark:ep_p_bee1	cmu_alt	detail	ditēl	dītēl	ditēl		
+epark:ep_p_bee1	cmu_differs	secondary	sekxnderī	sekinderī	sekxnderī		
+epark:ep_h3_aaaah	model_oov	AAAAAH	xxxxhá	áááááh			
+global:win_settings_title	latin	system	system	sistxm	sistxm		
+global:about_h2	latin	Wendy	Wendy	wendī	wendī		
+global:about_h2	model_oov	Shoshana	šōšánx	šōšáná			
+global:about_h2	latin	Zhulkovsky	Zhulkovsky	žulkávskī			
+global:about_p	cmu_differs	interdisciplinary	intrdisxplxnerī	intrdisxplinerī	intrdisxplxnerī		
+global:about_p	cmu_differs	intersection	intrsekšin	intrsekšxn	intrsekšin		
+global:about_p	model_oov	intercommunication	intrkxmyüntikxn	intrkxmyünxkēšxn			
+global:win_zman_title	count_mismatch	shaon zmanim	šown zmänim	zmänīm			
+global:zman_chalakim_label	model_oov	chalakim	cxlákīm	khälxkīm			
+global:zman_regaim_label	model_oov	regaim	rigēm	regäīm			
+global:settings_nav_theme	cmu_differs	Appearance	xpirxns	xpīrins	xpirxns		
+global:theme_gallery_label	latin	Gallery	Gallery	gælxrī	gælrī		
+global:theme_bubblegum_label	model_oov	Bubblegum	bxbligxm	bxbxlgxm			
+global:theme_techelet_label	model_oov	Techelet	tekxlet	tkhelet			
+global:theme_zelyonny_label	model_oov	Zelyonny	zelīánī	zelyōnī			
+global:theme_rindswurst_label	model_oov	Rindswurst	rindswrts	rhindsvxrhst			
+global:info_title	cmu_differs	Licensing	laisxnsīngg	laisenzīngg	laisxnsīngg		
+global:info_p3	hers_variant	use	yüz	yüs	yüs	yüz	yüz×16 yüs×2
+global:info_p3	cmu_differs	modification	mádxfxkēšin	mádifikēšin	mádxfxkēšin		
+global:info_p3	cmu_differs	license	laisxns	laisxnz	laisxns		
+global:info_p4	cmu_alt	uses	yüsiz	yüziz	yüsiz		
+global:start_menu_btn	latin	program	program	prōgräm	prōgräm		
+global:share_copy_url_tooltip	cmu_differs	selection	sxlekšin	selekšin	sxlekšin		
+graflect_ipa:graflect_ipa_title	latin	Chart	Chart	cárt	cárt		cárt×1
+graflect_ipa:win_article_nav_title	latin	article	article	ártikxl	ártikxl		ártikxl×1
+graflect_ipa:gt_nav_h3_consonants	cmu_differs	Consonants	kánsxnxnts	kánsxnints	kánsxnxnts		
+graflect_ipa:guide_h1	hers_new	a	x	ē	x	x	x×124
+graflect_ipa:guide_h1	model_oov	Transliteration	cränzlitrēšin	cränzlitxrēšxn			
+graflect_ipa:guide_p1	cmu_differs	capable	kēpxbl	kēpxbxl	kēpxbl		
+graflect_ipa:guide_p1	cmu_differs	variety	vraixtī	vxraixti	vraixtī		
+graflect_ipa:guide_p1	hers_new	even	īvin	īvxn	īvin	īvin	īvin×6
+graflect_ipa:guide_p1	cmu_differs	orthography	ōrthágrxfī	árthágrxfī	ōrthágrxfī		
+graflect_ipa:guide_p1	context	the	dhī	dhx	dhx	dhx	dhx×216 dhī×48
+graflect_ipa:guide_p1	cmu_differs	official	xfišxl	ōfišxl	xfišxl		
+graflect_ipa:guide_p1	latin	chart	chart	cárt	cárt		cárt×1
+graflect_ipa:guide_p1	cmu_differs	official	xfišxl	ōfišxl	xfišxl		
+graflect_ipa:graflect_example_p	cmu_differs	paragraph	pærxgræf	p4xgræf	pærxgræf		
+graflect_ipa:guide_h2_tool	model_oov	Transliteration	cränzlitrēšin	cränzlitxrēšxn			
+graflect_ipa:guide_p_tool	latin	program	program	prōgräm	prōgräm		
+graflect_ipa:guide_p_tool	latin	launcher	launcher	lõncr	láncr		
+graflect_ipa:guide_p_tool	hers_new	transliterate	cärnzlitrēt	cränzlitrēt			cärnzlitrēt×1
+graflect_ipa:guide_p_tool	hers_new	meant	ment	sxpōzd	ment		ment×2
+graflect_ipa:guide_p_tool	hers_new	function	fxngkšxn	fxnkšxn	fxngkšin		fxngkšxn×1
+graflect_ipa:guide_p_tool	cmu_differs	substitution	sxbstitüšin	sxbstitüšxn	sxbstitüšin		
+graflect_ipa:guide_p_tool	latin	pre	pre	prī	prī		
+graflect_ipa:guide_p_tool	cmu_differs	conversion	kxnvržin	kxnvržxn	kxnvržin		
+graflect_ipa:guide_p_tool	cmu_differs	absurd	xbsrd	æbsrd	xbsrd		
+graflect_ipa:guide_p_tool	cmu_differs	capabilities	kēpxbilxtīz	kēpxbilitīz	kēpxbilxtīz		
+graflect_ipa:guide_p_tool	hers_new	this	dhis	dhx	dhis	dhis	dhis×50
+graflect_ipa:guide_p_tool	hers_new	a	x	ē	x	x	x×124
+graflect_ipa:guide_p_tool	cmu_differs	dictionary	dikšxnerī	dikšxn4ī	dikšxnerī		
+graflect_ipa:guide_p_tool	latin	system	system	sistxm	sistxm		
+graflect_ipa:guide_p_tool	hers_new	a	x	ē	x	x	x×124
+graflect_ipa:guide_p_tool	count_mismatch	default dictionary based	difált dikšxnerī bēst	dikšxn4ī bēsd			
+graflect_ipa:guide_p_tool	cmu_differs	encounters	inkowntrz	enkowntrz	inkowntrz		
+graflect_ipa:guide_p_tool	hers_new	combination	kámbinēšin	káminēšxn	kámbxnēšin		kámbinēšin×1
+graflect_ipa:guide_p_tool	hers_new	multiple	mxltipxl	mxltipl	mxltxpxl		mxltipxl×1
+graflect_ipa:guide_p_tool	cmu_differs	pronunciations	prōnxnsīēšinz	prxnxnsīēšxns	prōnxnsīēšinz		
+graflect_ipa:guide_p_tool	cmu_differs	vs	vīes	vrsxs	vīes		
+graflect_ipa:guide_p_tool	hers_new	correct	kxrekt	kōrekt	krekt		kxrekt×3
+graflect_ipa:guide_p_tool	cmu_differs	choices	cõīsiz	cōīsīz	cõīsiz		
+graflect_ipa:guide_p_tool	cmu_differs	dictionary	dikšxnerī	dikšxn4ī	dikšxnerī		
+graflect_ipa:guide_p_tool	cmu_differs	accurately	ækyrxtlī	ækyüritlī	ækyrxtlī		
+graflect_ipa:guide_p_tool	latin	translate	translate	cränzlēt	cränzlēt		cränzlēt×5
+graflect_ipa:active_dict_label	cmu_differs	Dictionary	dikšxnerī	dikšin4ī	dikšxnerī		
+graflect_ipa:manage_dict_btn	cmu_differs	Manage	mänij	mænij	mänij		
+graflect_ipa:manage_dict_btn	cmu_differs	Dictionaries	dikšxnerīz	dikšin4īz	dikšxnerīz		
+graflect_ipa:graflect_tool_explanation	model_oov	transliteration	cränzlitrēšin	cränzlitxrēšxn			
+graflect_ipa:textarea_placeholder	cmu_differs	paragraph	pærxgræf	p4xgræf	pærxgræf		
+graflect_ipa:direct_input_label	cmu_alt	direct	drekt	dairekt	drekt		
+graflect_ipa:direct_input_label	cmu_differs	substitution	sxbstitüšin	sxbstitüšxn	sxbstitüšin		
+graflect_ipa:win_manage_dicts_title	cmu_differs	Dictionaries	dikšxnerīz	dikšin4īz	dikšxnerīz		
+graflect_ipa:new_dict_btn	cmu_differs	Dictionary	dikšxnerī	dikšin4ī	dikšxnerī		
+graflect_ipa:import_dict_btn	cmu_differs	Dictionary	dikšxnerī	dikšin4ī	dikšxnerī		
+graflect_ipa:win_edit_dict_title	cmu_differs	Dictionary	dikšxnerī	dikšin4ī	dikšxnerī		
+graflect_ipa:guide_h2_consonants	cmu_differs	Consonants	kánsxnxnts	kánsxnints	kánsxnxnts		
+graflect_ipa:table_header_symbol	cmu_differs	Symbol	simbl	simbxl	simbl		
+graflect_ipa:table_header_ipa	cmu_differs	Symbol	simbl	simbxl	simbl		
+graflect_ipa:table_header_example_desc	cmu_differs	Description	diskripšin	diskripšxn	diskripšin		
+graflect_ipa:slug_output_placeholder	cmu_differs	appears	xpirz	xpīrz	xpirz		
+graflect_ipa:slug_section_title	model_oov	Romanization	rōmxnxzēšin	rōminaizēšin			
+graflect_ipa:slug_section_p1	hers_new	easier	īzīr	īzīyr	īzīr		īzīr×1
+graflect_ipa:slug_section_p1	cmu_differs	goal	gōl	gõl	gōl		
+graflect_ipa:slug_section_p1	cmu_differs	provide	prxvaid	prōvaid	prxvaid		
+graflect_ipa:slug_section_p1	cmu_differs	typed	taipt	taipd	taipt		
+graflect_ipa:slug_section_p1	count_mismatch	diacritics available on most	daixkritxks xvēlibxl án mōst	daixkritiks xvēlxbl ánmōst			
+index:win_welcome_title	cmu_alt	hello	hxlō	helō	hxlō		
+index:welcome_text_eink	count_mismatch	standard English localization	ständrd īngliš lōkxlxzēšxn	græflekt cränzlitrēšinz			
+index:welcome_text_eink	count_mismatch	prefer to see images in color or to read in another supported localization option	prifr tü sī imijiz in kxlr ōr tü rīd in xnxdhr sxpōrtid lōkxlxzēšxn ápšin	prīfr xdhr setīnggz			
+index:welcome_text_eink	count_mismatch	opening which starts closed	ōpxnīngg wic stárts klōzd	ōpenīngg			
+index:welcome_text_eink	cmu_differs	screen	skrīn	pēj	skrīn		
+index:welcome_text_lcd	count_mismatch	has been disabled enjoy images in full color	hæz bin disēbxld injõī imijiz in ful kxlr	disēbld			
+index:tools_h4	cmu_differs	optimal	áptxmxl	áptimxl	áptxmxl		
+index:tools_h4	hers_variant	use	yüz	yüs	yüs	yüz	yüs×2 yüz×16
+index:tools_link2	hers_new	Extension	ikstenšin	ekstenšxn	ikstenšin		ikstenšin×1
+index:music_h4	cmu_differs	Performed	prfōrmd	prifōrmd	prfōrmd		
+index:music_h5	cmu_differs	Piano	pīänō	pīænō	pīänō		
+index:music_h5	model_oov	Andr	änjr	ándrhē			
+index:music_h5	model_oov	Wils	wailz	vīls			
+index:music_h5	cmu_differs	adapted	xdæptid	mádifaid	xdæptid		
+index:win_applib_title	hers_new	app	æp	æps	æp		æp×1
+index:applib_demos_h4	latin	article	article	ártikl	ártikxl		ártikxl×1
+index:subscribe	hers_variant	the	dhx	dhī	dhx	dhx	dhx×218 dhī×47
+lang:lang_nav_title	cmu_differs	Localization	lōkxlxzēšin	lōkxlxzēšxn	lōkxlxzēšin		
+lang:lang_nav_does-gemini-do-the-graflect-transliterations-too	model_oov	Transliterations	cränzlitxrēšxnz	cränzlitrēšinz			
+lang:lang_nav_postface-commentary	model_oov	Postface	pástfēs	pōstfēs			
+lang:lang_nav_postface-commentary	cmu_differs	Commentary	kámxnterī	káminterī	kámxnterī		
+lang:lang_p2	cmu_differs	deliberately	dilibrxtlī	dilibretlī	dilibrxtlī		
+lang:lang_h2_you-deliberately-left-out-my-language	cmu_differs	deliberately	dilibrxtlī	dilibretlī	dilibrxtlī		
+lang:lang_p4	cmu_differs	localization	lōkxlxzēšin	lōkxlxzēšxn	lōkxlxzēšin		
+lang:lang_p4	cmu_differs	languages	længwijiz	lēngwijiz	længwijiz		
+lang:lang_li1	cmu_differs	algorithmic	ælgridhxmik	ælgxridhmik	ælgridhxmik		
+lang:lang_li1	cmu_differs	translation	cränzlēšin	cænzlēšin	cränzlēšin		
+lang:lang_li1	extra			kántent			
+lang:lang_li3	model_oov	phonologically	fxnálxjiklī	fōnxlájikxlī			
+lang:lang_p5	cmu_differs	criteria	kraitirīx	kraitīrīx	kraitirīx		
+lang:lang_p7	cmu_differs	decently	dīsxntlī	dīsintlī	dīsxntlī		
+lang:lang_p8	cmu_differs	languages	længwijiz	lēngwijiz	længwijiz		
+lang:lang_p8	cmu_differs	visually	vižwxlī	vižyüxlī	vižwxlī		
+lang:lang_p8	cmu_differs	usually	yüžxwxlī	yüžüxlī	yüžxwxlī		
+lang:lang_p9	cmu_differs	priority	praiōrxtī	praiōritī	praiōrxtī		
+lang:lang_p11	cmu_differs	providing	prxvaidīngg	prōvaidīngg	prxvaidīngg		
+lang:lang_p11	cmu_differs	improvement	imprüvmxnt	imprüvment	imprüvmxnt		
+lang:lang_p11	cmu_alt	towards	txwōrdz	tōrdz	txwōrdz		
+lang:lang_p11	cmu_differs	habits	hæbxts	hæbits	hæbxts		
+lang:lang_li4	model_oov	lossless	láslis	lásles			
+lang:lang_li8	cmu_differs	localization	lōkxlxzēšin	lōkxlxzēšxn	lōkxlxzēšin		
+lang:lang_li8	cmu_differs	languages	længwijiz	lēngwijiz	længwijiz		
+lang:lang_li8	model_oov	translatese	cränzlēts	crænzlētēs			
+lang:lang_li10	seen_unlearned	read	red	rīd	red		red×4 rīd×4
+lang:lang_li10	cmu_differs	explanations	eksplxnēšinz	eksplxnēšxnz	eksplxnēšinz		
+lang:lang_p15	cmu_differs	vocabulary	vōkæbyxlerī	vōkæbyülerī	vōkæbyxlerī		
+lang:lang_p16	hers_new	somewhat	sxmwxt	sxmwát	sxmwxt		sxmwxt×1
+lang:lang_p16	count_mismatch	he's genuinely	hīz jenyxwxnlī	its x kēs xv him jenyüinlī			
+lang:lang_p17	seen_unlearned	read	red	rīd	red		red×4 rīd×4
+lang:lang_p17	cmu_differs	languages	længwijiz	lēngwijiz	længwijiz		
+lang:lang_h2_does-gemini-do-the-graflect-transliterations-too	model_oov	Transliterations	cränzlitxrēšxnz	cränzlitrēšinz			
+lang:lang_p18	cmu_differs	caveats	kēvīæts	kævīáts	kēvīæts		
+lang:lang_p20	cmu_differs	instance	instxns	instins	instxns		
+lang:lang_p20	cmu_differs	Seriously	sirīxslī	sīrīislī	sirīxslī		
+lang:lang_p20	count_mismatch	rhotic where the r' is dropped at the end of syllables	rátik w4 dhx r iz jrápt æt dhī end xv silxbxlz	rōtik			
+lang:lang_p21	cmu_differs	extremely	ekscrīmlī	ikscrīmlī	ekscrīmlī		
+lang:lang_p21	cmu_differs	consistent	kxnsistxnt	kxnsistint	kxnsistxnt		
+lang:lang_p22	cmu_differs	problem	práblxm	práblim	práblxm		
+lang:lang_p22	latin	chart	chart	cárt	cárt		
+lang:lang_p22	cmu_differs	honestly	ánxstlī	ánistlī	ánxstlī		
+lang:lang_p23	model_oov	glyphs	glaifs	glifs			
+lang:lang_p23	cmu_differs	adorable	xdōrxbl	xdōribl	xdōrxbl		
+lang:lang_p23	cmu_differs	actual	ækcxwxl	ækcyüxl	ækcxwxl		
+lang:lang_p23	model_oov	glyphs	glaifs	glifs			
+lang:lang_p23	cmu_differs	happening	hæpxnīngg	hæpinīngg	hæpxnīngg		
+lang:lang_p23	cmu_differs	problem	práblxm	práblim	práblxm		
+lang:lang_p24	cmu_differs	engineering	enjxnirīngg	enjinīrīngg	enjxnirīngg		
+lang:lang_p24	model_oov	glyphs	glaifs	glifs			
+lang:lang_p24	cmu_differs	problem	práblxm	práblim	práblxm		
+lang:lang_p25	cmu_differs	localization	lōkxlxzēšin	lōkxlxzēšxn	lōkxlxzēšin		
+lang:lang_p26	latin	box	box	báks	báks		
+lang:lang_p26	cmu_differs	provided	prxvaidid	prōvaidid	prxvaidid		
+lang:lang_p26	cmu_differs	curious	kyurīis	kyürīis	kyurīis		
+lang:lang_p26	cmu_differs	oddities	ádxtīz	áditīz	ádxtīz		
+lang:lang_p27	cmu_differs	aim	ēm	šüt	ēm		
+lang:lang_p27	extra			laik			
+lang:lang_p27	cmu_differs	sample	sämpxl	sæmpxl	sämpxl		
+lang:lang_p29	cmu_differs	usually	yüžxwxlī	yüžüxlī	yüžxwxlī		
+lang:lang_p29	hers_variant	used	yüzd	yüst	yüzd		yüzd×7 yüst×1
+lang:lang_p29	seen_unlearned	read	red	rīd	red		red×4 rīd×4
+lang:lang_p29	cmu_differs	global	glōbl	glōbxl	glōbl		
+lang:lang_p30	cmu_differs	indication	indxkēšin	indikēšin	indxkēšin		
+lang:lang_p30	cmu_differs	barrier	bærīr	b4īr	bærīr		
+lang:lang_p30	cmu_differs	couldn't	kudxnt	kudint	kudxnt		
+lang:lang_p31	model_oov	phonologically	fxnálxjiklī	fōnxlájikxlī			
+lang:lang_h2_postface-commentary	model_oov	Postface	pástfēs	pōstfēs			
+lang:lang_h2_postface-commentary	cmu_differs	Commentary	kámxnterī	káminterī	kámxnterī		
+lang:lang_p32	cmu_differs	instance	instxns	instins	instxns		
+lang:lang_p32	extra			kæn			
+lang:lang_p32	count_mismatch	sentence	sentxns	sentins ai kæn dü dhæt			
+lang:lang_p34	extra			ä			
+lang:lang_p35	cmu_differs	representation	reprxzentēšin	reprizentēšin	reprxzentēšin		
+lang:lang_p35	cmu_differs	approximation	xpráksxmēšin	xpráksimēšin	xpráksxmēšin		
+rsssitename:site_title	latin	Pelmeniboiler	Pelmeniboiler	pelmenībáilö			
+sunshine:nav_h3_plans	cmu_differs	Epilogue	epxlág	epilág	epxlág		
+sunshine:sunshine_h1	cmu_differs	Experimental	iksperimentxl	iksp4imentxl	iksperimentxl		
+sunshine:sunshine_p1	cmu_differs	comfortably	kxmfrtxblī	kxmfrtiblī	kxmfrtxblī		
+sunshine:sunshine_p1	cmu_differs	utilize	yütxlaiz	yütilaiz	yütxlaiz		
+sunshine:sunshine_p1	model_oov	solenoids	sxlenõīdz	sōlinõīdz			
+sunshine:tldr_p1	cmu_differs	path	pæth	päth	pæth		
+sunshine:tldr_p1	cmu_differs	resistance	rizistxns	rizistins	rizistxns		
+sunshine:tldr_p1	cmu_differs	detailed	ditēld	dītēld	ditēld		
+sunshine:tldr_p1	cmu_differs	explanation	eksplxnēšin	eksplxnēšxn	eksplxnēšin		
+sunshine:intro_p1	cmu_differs	meticulously	mxtikyxlxslī	mitikyülxslī	mxtikyxlxslī		
+sunshine:intro_p1	cmu_differs	functioning	fxngkšxnīngg	fxnkšinīngg	fxngkšxnīngg		
+sunshine:intro_p1	cmu_differs	mechanical	mxkänikxl	mikänikxl	mxkänikxl		
+sunshine:intro_p1	cmu_differs	Inevitably	inevxtxblī	inevitiblī	inevxtxblī		
+sunshine:intro_p1	cmu_differs	together	txgedhr	tügedhr	txgedhr		
+sunshine:intro_p2	cmu_differs	circuits	srkxts	srkits	srkxts		
+sunshine:intro_p2	cmu_differs	immediate	imīdīit	imīdīxt	imīdīit		
+sunshine:intro_p2	cmu_differs	problems	práblxmz	práblimz	práblxmz		
+sunshine:intro_p2	cmu_differs	fingers	fīngrz	fīnggrz	fīngrz		
+sunshine:intro_p2	cmu_differs	proportionally	prxpōršxnxlī	prxpōršinitlī	prxpōršxnxlī		
+sunshine:intro_p3	cmu_differs	Except	iksept	eksept	iksept		
+sunshine:intro_p3	cmu_differs	uncomfortable	xnkxmfrtxbl	xnkxmfrtibl	xnkxmfrtxbl		
+sunshine:intro_p3	hers_variant	the	dhx	dhī	dhx	dhx	dhx×97 dhī×19
+sunshine:intro_p3	cmu_differs	multiple	mxltxpxl	mxltipxl	mxltxpxl		
+sunshine:intro_p3	model_oov	inelegant	inelxgxnt	ineligint			
+sunshine:intro_p3	cmu_differs	weird	wird	wīrd	wird		
+sunshine:intro_p3	cmu_differs	distance	distxns	distins	distxns		
+sunshine:intro_p3	hers_variant	read	rīd	red	red		rīd×7 red×2
+sunshine:intro_p3	model_oov	writeups	raitüps	raitxps			
+sunshine:intro_p3	cmu_differs	ideal	aidīl	aidīxl	aidīl		
+sunshine:objectives_p1	cmu_differs	deepened	dīpxnd	dīpind	dīpxnd		
+sunshine:objectives_p1	cmu_differs	widened	waidxnd	waidind	waidxnd		
+sunshine:objectives_h3_theory	cmu_alt	theories	thirīz	thīrīz	thirīz		
+sunshine:objectives_h4_phalanges	cmu_alt	Phalanges	fxlēnjiz	fxlänjīz	fxlēnjiz		
+sunshine:objectives_p2	model_oov	metatarsals	metxtársxlz	metitársxlz			
+sunshine:objectives_p2	cmu_differs	similar	simxlr	similr	simxlr		
+sunshine:objectives_p2	cmu_differs	metacarpals	metxkárpxlz	metikárpxlz	metxkárpxlz		
+sunshine:objectives_p2	cmu_differs	Thankfully	thængkfxlī	thänkfxlī	thængkfxlī		
+sunshine:objectives_p2	cmu_differs	accepted	ækseptid	ekseptid	ækseptid		
+sunshine:objectives_p2	cmu_differs	underutilized	xndryütxlaizd	xndryütilaizd	xndryütxlaizd		
+sunshine:objectives_p2	cmu_differs	position	pxzišin	pizišin	pxzišin		
+sunshine:objectives_h4_combos	cmu_differs	combinations	kámbxnēšinz	kámbinēšinz	kámbxnēšinz		
+sunshine:objectives_p3	cmu_differs	combinations	kámbxnēšinz	kámbinēšinz	kámbxnēšinz		
+sunshine:objectives_p3	cmu_differs	explain	iksplēn	eksplēn	iksplēn		
+sunshine:objectives_p3	cmu_differs	continuity	kántxnüxtī	kántinüitī	kántxnüxtī		
+sunshine:objectives_p3	cmu_differs	explain	iksplēn	eksplēn	iksplēn		
+sunshine:objectives_p3	cmu_differs	finger	fīngr	fīnggr	fīngr		
+sunshine:objectives_p4	cmu_differs	laundry	lánjrī	láwnjrī	lánjrī		
+sunshine:objectives_li1	count_mismatch	their own	dh4 ōn	dh4ōn			
+sunshine:objectives_li1	cmu_differs	combination	kámbxnēšin	kámbinēšin	kámbxnēšin		
+sunshine:objectives_li3	cmu_differs	metacarpals	metxkárpxlz	metikárpxlz	metxkárpxlz		
+sunshine:objectives_li5	model_oov	Columnar	kxlümnr	kálxmnr			
+sunshine:objectives_li6	cmu_differs	myriad	mirīid	miriid	mirīid		
+sunshine:objectives_li6	cmu_differs	similar	simxlr	similr	simxlr		
+sunshine:objectives_li7	model_oov	stenotyping	stenxtaipīngg	stenōtaipīngg			
+sunshine:design_p1	cmu_differs	Ireland	airlxnd	airlind	airlxnd		
+sunshine:design_p1	cmu_differs	experimenting	eksperxmentīngg	eksperimentīngg	eksperxmentīngg		
+sunshine:design_p1	cmu_differs	heavily	hevxlī	hevilī	hevxlī		
+sunshine:design_p1	cmu_differs	aforementioned	xfōrmenšxnd	xfōrmenšind	xfōrmenšxnd		
+sunshine:design_p1	cmu_differs	accessible	æksesxbl	æksesibl	æksesxbl		
+sunshine:design_p2	cmu_differs	usable	yüzxbl	yüzibl	yüzxbl		
+sunshine:cad_p1	cmu_differs	rapidly	ræpxdlī	ræpidlī	ræpxdlī		
+sunshine:cad_p1	cmu_differs	prototype	prōtxtaip	prōtōtaip	prōtxtaip		
+sunshine:cad_p2	cmu_differs	permanent	prmxnxnt	prminint	prmxnxnt		
+sunshine:cad_p4	cmu_differs	comfortable	kxmfrtxbl	kxmfrtibl	kxmfrtxbl		
+sunshine:cad_p4	cmu_differs	minutes	minxts	minits	minxts		
+sunshine:final_h3	cmu_differs	hundreds	hxnjrxdz	hxnjridz	hxnjrxdz		
+sunshine:final_p1	cmu_differs	iterations	itxrēšinz	itrēšinz	itxrēšinz		
+sunshine:final_p1	cmu_differs	adjustments	xjxstmxnts	xjxstmints	xjxstmxnts		
+sunshine:final_p2	cmu_differs	figured	figyrd	figrd	figyrd		
+sunshine:final_p2	cmu_differs	thankfully	thængkfxlī	thänkfxlī	thængkfxlī		
+sunshine:final_p2	cmu_differs	calipers	kælxprz	kæliprz	kælxprz		
+sunshine:final_p3	cmu_differs	positioning	pxzišxnīngg	pizišinīngg	pxzišxnīngg		
+sunshine:final_p5	model_oov	onionskin	xnyánskin	xnyinskin			
+sunshine:final_p5	model_oov	accidentially	æksxdenšlī	æksidentilī			
+sunshine:final_p5	model_oov	polycarbonate	pxlīkárbxnēt	pálīkárbxnēt			
+sunshine:pcb_p1	cmu_differs	ability	xbilxtī	xbilitī	xbilxtī		
+sunshine:pcb_p1	cmu_differs	experience	ikspirīxns	ekspīriins	ikspirīxns		
+sunshine:pcb_p1	cmu_alt	either	īdhr	aidhr	īdhr		
+sunshine:pcb_p1	cmu_differs	stupidly	stüpxdlī	stüpidlī	stüpxdlī		
+sunshine:pcb_p1	cmu_differs	expensive	ikspensiv	ekspensiv	ikspensiv		
+sunshine:pcb_p1	cmu_differs	reversible	rivrsxbl	rivrsibl	rivrsxbl		
+sunshine:pcb_p1	cmu_differs	rear	rir	rīr	rir		
+sunshine:pcb_p1	cmu_differs	curated	kyurētid	kyürētid	kyurētid		
+sunshine:pcb_p3	cmu_differs	components	kxmpōnxnts	kxmpōnints	kxmpōnxnts		
+sunshine:pcb_p3	model_oov	solenoid	sxlenõīd	sōlinõīd			
+sunshine:pcb_p4	model_oov	decal	dīkxl	dīkäl			
+sunshine:pcb_p7	cmu_differs	company	kxmpxnī	kxmpinī	kxmpxnī		
+sunshine:keymap_h3	latin	personal	personal	prsxnxl	prsinxl		prsxnxl×1
+sunshine:keymap_h3	cmu_differs	adjustments	xjxstmxnts	xjxstmints	xjxstmxnts		
+sunshine:keymap_p1	cmu_alt	details	ditēlz	dītēlz	ditēlz		
+sunshine:keymap_p1	model_oov	arduously	árdüislī	árjüxslī			
+sunshine:keymap_p1	cmu_differs	assembled	xsembxld	xsembld	xsembxld		
+sunshine:keymap_p1	cmu_differs	comfortable	kxmfrtxbl	kxmfrtibl	kxmfrtxbl		
+sunshine:keymap_p1	cmu_differs	combination	kámbxnēšin	kámbinēšin	kámbxnēšin		
+sunshine:keymap_p1	latin	personal	personal	prsxnxl	prsinxl		prsxnxl×1
+sunshine:keymap_p1	cmu_differs	adjustment	xjxstmxnt	xjxstmint	xjxstmxnt		
+sunshine:keymap_p1	model_oov	alphanumerics	ælfxnümeriks	ælfänümeriks			
+sunshine:keymap_p1	cmu_alt	putting	pxtīngg	putīngg	pxtīngg		
+sunshine:keymap_p1	model_oov	desoldering	disáldrīngg	dīsáldrīngg			
+sunshine:keymap_p1	cmu_differs	comfortable	kxmfrtxbl	kxmfrtibl	kxmfrtxbl		
+sunshine:keymap_p1	cmu_differs	longer	lángr	lánggr	lángr		
+sunshine:keymap_p1	cmu_differs	ideas	aidīiz	aidīxz	aidīiz		
+sunshine:discoveries_p1	cmu_differs	previous	prīvīis	prīvīxs	prīvīis		
+sunshine:discoveries_li1	cmu_differs	combinations	kámbxnēšinz	kámbinēšinz	kámbxnēšinz		
+sunshine:discoveries_li2	cmu_differs	highest	haixst	haiist	haixst		
+sunshine:discoveries_li3	cmu_differs	convenience	kxnvīnyxns	kxnvīnyins	kxnvīnyxns		
+sunshine:discoveries_li4	model_oov	thenar	dhenr	thīnr			
+sunshine:discoveries_li4	cmu_differs	eminence	emxnxns	eminins	emxnxns		
+sunshine:discoveries_li5	cmu_differs	metacarpals	metxkárpxlz	metikárpxlz	metxkárpxlz		
+sunshine:discoveries_p2	cmu_differs	rectify	rektxfai	rektifai	rektxfai		
+sunshine:discoveries_p2	cmu_differs	Impeccable	impekxbl	impekibl	impekxbl		
+sunshine:discoveries_p2	cmu_differs	elegance	elxgxns	eligins	elxgxns		
+sunshine:plans_h3_layout	cmu_differs	optimized	áptxmaizd	áptimaizd	áptxmaizd		
+sunshine:plans_p1	cmu_differs	investigate	investxgēt	investigēt	investxgēt		
+sunshine:plans_p2	cmu_differs	convenient	kxnvīnyxnt	kxnvīnyint	kxnvīnyxnt		
+sunshine:plans_p2	latin	welcome	welcome	welkxm	welkxm		welkxm×1
+sunshine:plans_p2	cmu_differs	convenience	kxnvīnyxns	kxnvīnyins	kxnvīnyxns		
+sunshine:plans_p2	cmu_differs	listening	lisxnīngg	lisinīngg	lisxnīngg		
+sunshine:plans_p2	cmu_alt	directional	drekšxnxl	direkšinxl	drekšxnxl		
+sunshine:plans_p2	cmu_alt	directional	drekšxnxl	direkšinxl	drekšxnxl		
+sunshine:plans_p2	cmu_differs	arrangement	rēnjmxnt	xrēnjmint	rēnjmxnt		
+sunshine:plans_h3_production	cmu_alt	Production	prxdxkšin	prōdxkšin	prxdxkšin		
+sunshine:plans_p3	cmu_differs	benefit	benxfit	benifit	benxfit		
+sunshine:plans_p3	cmu_differs	benefits	benxfits	benifits	benxfits		
+sunshine:plans_p3	cmu_differs	elegant	elxgxnt	eligint	elxgxnt		
+sunshine:plans_p3	model_oov	solenoid	sxlenõīd	sōlinõīd			
+sunshine:plans_p3	cmu_alt	routed	rütid	rowtid	rütid		
+sunshine:plans_p3	cmu_differs	ideas	aidīiz	aidīxz	aidīiz		
+sunshine:plans_p3	model_oov	pothos	pōthōz	pōthōs			
+sunshine:plans_p3	cmu_differs	implemented	implxmentid	implimentid	implxmentid		
+sunshine:bye_p1	cmu_differs	haven't	hævxnt	hævint	hævxnt		
+sunshine:bye_p1	hers_variant	read	rīd	red	red		rīd×7 red×2
+tbns:tbns_p1	cmu_differs	rearranged	rīrēnjd	rīxrēnjd	rīrēnjd		
+tbns:tbns_p1	hers_variant	used	yüzd	yüst	yüzd		yüzd×6 yüst×1
+tbns:tbns_p2	cmu_differs	genres	žánriz	žánrz	žánriz		
+tbns:tbns_p2	latin	article	article	ártikxl	ártikxl		
+tbns:tbns_p2	cmu_differs	years	yirz	yīrz	yirz		
+tbns:tbns_p2	cmu_differs	genres	žánriz	žánrz	žánriz		
+tbns:tbns_p3	cmu_differs	Ultimately	xltxmxtlī	xltimitlī	xltxmxtlī		
+tbns:tbns_p3	cmu_differs	scalable	skēlxbl	skēlibl	skēlxbl		
+tbns:tbns_p4	cmu_differs	categories	kætxgōrīz	kætigōrīz	kætxgōrīz		
+tbns:tbns_p4	cmu_differs	function	fxngkšin	fxngkšxn	fxngkšin		
+tbns:tbns_p4	latin	posts	posts	pōsts	pōsts		
+tbns:tbns_p4	cmu_differs	necessary	nesxserī	nesiserī	nesxserī		
+tbns:tbns_p5	hers_variant	read	rīd	red	red		rīd×3 red×2
+tbns:tbns_p6	cmu_differs	Principled	prinsxpxld	prinsipxld	prinsxpxld		
+tbns:tbns_p7	cmu_alt	addresses	æjresiz	xjresiz	æjresiz		
+tbns:tbns_p7.5	latin	demos	demos	demōz	demōz		
+tbns:tbns_p7.5	hers_new	people	pīpxl	pīpl	pīpxl	pīpxl	pīpxl×2
+tbns:tbns_p7.5	cmu_differs	particularly	pártikyxlrlī	prtikyülrlī	pártikyxlrlī		
+tbns:tbns_p7.5	cmu_alt	neither	nīdhr	naidhr	nīdhr		
+tbns:tbns_p7.5	cmu_differs	phenomenally	fxnámxnxlī	fináminxlī	fxnámxnxlī		
+tbns:tbns_p7.5	cmu_differs	patience	pēšxns	pēšins	pēšxns		
+tbns:tbns_h2_resolving-a-significant-snag	cmu_differs	Significant	signifikxnt	signifikint	signifikxnt		
+tbns:tbns_nav_resolving-a-significant-snag	cmu_differs	Significant	signifikxnt	signifikint	signifikxnt		
+tbns:tbns_p8	cmu_differs	isn't	izxnt	izint	izxnt		
+tbns:tbns_p9	cmu_differs	orange	ōrinj	árinj	ōrinj		
+tbns:tbns_p9	cmu_differs	webpage	webpij	webpēj	webpij		
+tbns:tbns_p9	cmu_differs	dedicated	dedxkētid	dedikētid	dedxkētid		
+tbns:tbns_p9	cmu_alt	enabling	inēbxlīngg	inēblīngg	inēbxlīngg		
+tbns:tbns_p9	cmu_differs	subscription	sxbskripšin	sxbskripšxn	sxbskripšin		
+tbns:tbns_p9	cmu_differs	prioritize	praiōrxtaiz	praiōritaiz	praiōrxtaiz		
+tbns:tbns_p10	cmu_differs	unclear	xnklir	xnklīr	xnklir		
+tbns:tbns_p10	model_oov	localizations	lōkxlxzēšinz	lōkxlaizēšinz			
+tbns:tbns_p11	cmu_differs	preferences	prefrxnsiz	prefrensiz	prefrxnsiz		
+tbns:tbns_h2_rapacious-subscription-services	cmu_alt	Rapacious	rxpæšis	rxpēšis	rxpæšis		
+tbns:tbns_h2_rapacious-subscription-services	cmu_differs	Subscription	sxbskripšin	sxbskripšxn	sxbskripšin		
+tbns:tbns_nav_rapacious-subscription-services	cmu_alt	Rapacious	rxpæšis	rxpēšis	rxpæšis		
+tbns:tbns_p13	hers_variant	read	rīd	red	red		rīd×3 red×2
+tbns:tbns_p13	cmu_differs	valuable	vælyxbl	vælyüibl	vælyxbl		
+tbns:tbns_p13	hers_variant	use	yüz	yüs	yüs	yüz	yüs×2 yüz×10
+tbns:tbns_p15	model_oov	synced	sinst	sīngkt			
+tbns:tbns_p15	cmu_differs	easily	īzxlī	īzilī	īzxlī		
