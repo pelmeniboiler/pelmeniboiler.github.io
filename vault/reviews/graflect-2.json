@@ -1,0 +1,187 @@
+{
+ "article": "graflect-2",
+ "kind": "graflect",
+ "title": "Graflect proofreading",
+ "round": 1,
+ "langs": [
+  "gt"
+ ],
+ "lines": {
+  "ing": {
+   "en": "<span class=\"key\">index</span> This website is currently <u>using</u> E-Ink friendly and standard English localization settings.<br>If you would prefer to see images in color, or to read in another supported localization option,<br> you can do so by opening <span class=\"symbol\">⚙</span> <strong>system.settings</strong> which starts closed in the program.launcher at the bottom of the screen.",
+   "gt": {
+    "text": "     E-Ink    .<br>     ,<br>     <span class=\"symbol\">⚙</span><strong>system.settings</strong>  program.launcher      .",
+    "back": "dhis websait iz krxntlī yüzīngg ‹E›-‹Ink› frendlī änd græflekt cnzlitrēšinz.if yü wud prīfr xdhr setīnggz,yü kän dü sō bai ōpenīngg⚙‹system›.‹settings›in dhx ‹program›.‹launcher› æt dhx bátxm xv dhx pēj."
+   }
+  },
+  "we": {
+   "en": "<span class=\"key\">dixie</span> A door-to-door FLDS pie saleswoman sold Aaron and I this pie-shaped cheesecake. <u>We</u> had it with cherries on the back porch. It was creamy and sweet, kinda light, and doused in caramel. It served as a good pair with the cherries.",
+   "gt": {
+    "text": " -- FLDS    Aaron    - .         .     ,  ,    .         .",
+    "back": "x dōr-tü-dōr ‹FLDS› pai sēlzwumin sōld ‹Aaron› änd ai dhis pai-šēpt cīzkēk. wī hæd it with cerīz án dhx bæk pōrc. it wxz krīmī änd sw·īt, kaindx lait, änd dowst in k4xmel. it srvd æz x gud p4 with dhx cerīz."
+   }
+  },
+  "where": {
+   "en": "<span class=\"key\">sunshine</span> Once twenty two small squares were cut out, I could place the keys down. Here is <u>where</u> I realized the <kbd>BALL</kbd> key could not be such a strange size, and I would have to settle for a 2.75u key. This was for the best, as that let me fit the fourth thumb key.",
+   "gt": {
+    "text": "       ,      .       <kbd>BALL</kbd>        ,         2.75u .     ,         .",
+    "back": "wxns twentī tü smál skw4z wir kxt owt, ai kud plēs dhx kīz down. hīr iz w4 ai rīxlaizd dhx ‹BALL› kī kud nát bī sxc x scrēnj saiz, änd ai wud hæv tü setxl fōr x 2.75‹u› kī. dhis wxz fōr dhx best, æz dhæt let mī fit dhx fōrth thxm kī."
+   }
+  },
+  "proportionally": {
+   "en": "<span class=\"key\">sunshine</span> The Lily58 became my first ever split keyboard, and I loved it. After learning about circuits to discover how I had botched adding a rotary encoder I eventually moved on to Keeb.io's Iris for double the amount of rotary encoders. Despite my immediate love for ergonomic keyboards, I had a few problems with the ones I was using. While I have big hands, my fingers are <u>proportionally</u> rather short. The uppermost of the four rows on most split boards felt like a big waste of space to me; and my pinkies could not reach the second uppermost row without moving my whole hand for them, let alone the second uppermost row in the outermost columns.",
+   "gt": {
+    "text": " Lily58      ,    .                    Keeb.io's Iris       .       ,           .     ,      .                   ;                 ,          .",
+    "back": "dhx ‹Lily›58 bikēm mai frst evr split kībōrd, änd ai lxvd it. æftr lrnīng xbowt srkits tü diskxvr how ai hæd báct ædīng x rōtrī inkōdr ai ivencüxlī müvd án tü ‹Keeb›.‹io›'‹s› ‹Iris› fōr dxbl dhī xmownt xv rōtrī inkōdrz. dispait mai imīdīxt lxv fōr rgxnámik kībōrdz, ai hæd x fyü práblimz with dhx wxnz ai wxz yüzīng. wail ai hæv big händz, mai fīnggrz ár prōpōršinitlī rædhr šōrt. dhī xprmōst xv dhx fōr rōz án mōst split bōrdz felt laik x big wēst xv spēs tü mī; änd mai pīngkīz kud nát rīc dhx sekind xprmōst rō withowt müvīng mai hōl händ fōr dhem, let xlōn dhx sekind xprmōst rō in dhī owtrmōst kálxmz."
+   }
+  },
+  "translate": {
+   "en": "<span class=\"key\">graflect_ipa</span> In the program.launcher, you can find a tool to transliterate any text to Graflect. Initially, the tool was meant to function by applying a set of grapheme-to-phoneme rules for substitution, but pre-empting every possible conversion would be absurd and self defeating. Since Graflect has phonetic capabilities, it only makes sense to use them. That's why this tool is mostly just a customizable dictionary system. It comes with a small default dictionary based on my accent, but when the tool encounters a word or sound combination with multiple possible pronunciations (like the \"ch\" in \"chase\" vs. \"loch\"), it will prompt you for the correct choice. By saving your choices, you can build a personal dictionary that accurately reflects your own accent. Use the \"Manage Dictionaries\" button inside the tool to view, edit, import, and export your custom word lists, which can help you to learn reading and writing in Graflect. If you <u>translate</u> anything cool, please let me know!",
+   "gt": {
+    "text": "  .           .             --   ,  -         ,     ,       .           .          ,               (  \"ch\"  \"chase\"  \"loch\"),        .    ,            .   \"Manage Dictionaries\"      , , ,      ,           .     ,    !",
+    "back": "in dhx prōgräm.lõncr yü kän faind x tül tü cränzlitrēt enī tekst tü græflekt. inišxlī dhx tül wxz sxpōzd tü fxnkšxn bai xplaiīng x set xv græfīm-tü-fōnīm rülz fōr sxbstitüšxn, bxt prī-emptīng evrī pásibl kxnvržxn wud bī æbsrd änd self difītīng, sins græflekt hæz fxnetik kēpxbilitīz, it ōnlī mēks sens tü yüz dhem. dhæts wai dhx tül iz mōstlī jxst ē kxstxmaizxbl dikšxn4ī sistxm. it kxmz with ē smál dikšxn4ī bēsd án mai æksent, bxt wen dhx tül enkowntrz x wrd ōr sownd káminēšxn with mxltipl pásibl prxnxnsīēšxns (laik dhx \"‹ch›\" in \"‹chase›\" vrsxs \"‹loch›\"), it wil prámpt yü fōr dhx kōrekt cõīs. bai sēvīng yir cōīsīz, yü kän bild x prsxnxl dikšxn4ī dhæt ækyüritlī riflekts yir ōn æksent. yüz dhx \"‹Manage› ‹Dictionaries›\" bxin insaid dhx tül tü vyü, edit, impōrt, änd ekspōrt yir kxstxm wrd lists, wic kän help yü tü lrn rīdīng änd raitīng in græflekt. if yü cränslēt enīthīng kül, plīz let mī nō!"
+   }
+  },
+  "version": {
+   "en": "<span class=\"key\">graflect_ipa</span> To make Graflect easier to type and discuss on systems without the proper font support, this guide proposes <b>SLUG</b>: <b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect. The goal is to provide a mapping from Graflect symbols to easily-typed glyphs. This <u>version</u> uses common letters, digraphs, and a few diacritics available on most keyboards.",
+   "gt": {
+    "text": "             ,    <b>SLUG</b>:<b>S</b>tandardized <b>L</b>atin <b>U</b>nderstudies for <b>G</b>raflect.           - .     , ,       .",
+    "back": "tü mēk græflekt īzīyr tü taip änd diskxs án sistxmz withowt prápr fánt sxpōrt, dhis gaid prxpōziz ‹SLUG›:‹Standardized› ‹Latin› ‹Understudies› ‹for› ‹Graflect›. dhx gõl iz tü prōvaid x mæpīng frxm græflekt tü īzilī-taipd glifs. dhis vržxn yüziz kámin letrz, daigræfs, änd x fyü daixkritiks xvēlxbl ánmōst kībōrdz."
+   }
+  }
+ },
+ "questions": [
+  {
+   "id": "g1",
+   "kind": "disputed",
+   "key": "ing",
+   "lang": "gt",
+   "ask": "-ing: īng or īngg?",
+   "why": "You said “thing” is thīngg (ng then g), and that the g is there in “settings” and “opening”, but also that -ing is always īng. Your articles have īng 212 times and īngg 4 times (thīngg, yüzīngg, ōpenīngg, rīxsainīngg).",
+   "options": [
+    {
+     "text": "yüzīng   ",
+     "why": "īng always; only “thing” gets the g"
+    },
+    {
+     "text": "ōpenīngg   ",
+     "why": "īngg when you hear the g (opening, settings): tell me which words"
+    },
+    {
+     "text": "yüzīngg   ",
+     "why": "īngg on every -ing word"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g2",
+   "kind": "disputed",
+   "key": "we",
+   "lang": "gt",
+   "ask": "“we”: the wī glyph, or w then ī?",
+   "why": "You write “we” with the single wī glyph (8×). Spelled sound by sound it is w then ī (w·ī), as in w·īl “wheel”. When should the wī glyph be used? Also, for “weird” you typed wīrd; I wrote it w·īrd, with two glyphs.",
+   "options": [
+    {
+     "text": "wī   ",
+     "why": "“we” uses the wī glyph"
+    },
+    {
+     "text": "w·ī   ",
+     "why": "w then ī, like every other w-ī word"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g3",
+   "kind": "disputed",
+   "key": "where",
+   "lang": "gt",
+   "ask": "“where”: w4 or wir?",
+   "why": "w4 everywhere now. Two were wir, but those were my mistake: changing “were” to wir also caught “where” in those lines. I’ve put them back.",
+   "options": [
+    {
+     "text": "w4   ",
+     "why": "“where” is w4, “were” is wir"
+    }
+   ],
+   "pick": 0,
+   "status": "settled",
+   "thread": [
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "w4 everywhere now. Two were wir, but those were my mistake: changing “were” to wir also caught “where” in those lines. I’ve put them back."
+    }
+   ]
+  },
+  {
+   "id": "g4",
+   "kind": "disputed",
+   "key": "proportionally",
+   "lang": "gt",
+   "ask": "“proportionally”: which spelling?",
+   "why": "You wrote prōpōršinitlī, which sounds like “proportionately”. CMUdict through your rules says prxpōršxnxlī. (Carried over from round 1.)",
+   "options": [
+    {
+     "text": "prxpōršxnxlī   ",
+     "why": "CMUdict through your rules"
+    },
+    {
+     "text": "prōpōršinitlī   ",
+     "why": "yours, 1×"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g5",
+   "kind": "disputed",
+   "key": "translate",
+   "lang": "gt",
+   "ask": "“translate”: cränzlēt or cränslēt?",
+   "why": "You write cränzlēt 6 times and cränslēt once (in the tool guide).",
+   "options": [
+    {
+     "text": "cränzlēt   ",
+     "why": "yours, 6×"
+    },
+    {
+     "text": "cränslēt   ",
+     "why": "yours, 1×"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  },
+  {
+   "id": "g6",
+   "kind": "disputed",
+   "key": "version",
+   "lang": "gt",
+   "ask": "“version”: vržin or vržxn?",
+   "why": "You write vržin 5 times and vržxn once (in the SLUG section). The unstressed vowel is your call by context; this is just to check.",
+   "options": [
+    {
+     "text": "vržin   ",
+     "why": "yours, 5×"
+    },
+    {
+     "text": "vržxn   ",
+     "why": "yours, 1×"
+    }
+   ],
+   "pick": 0,
+   "status": "open",
+   "thread": []
+  }
+ ]
+}

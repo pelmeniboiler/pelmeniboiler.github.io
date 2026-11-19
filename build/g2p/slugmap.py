@@ -17,7 +17,7 @@ def to_glyph(s):
         m = re.match(r'‹[^›]*›|<[^>]+>|&#?\w+;', s[i:])
         if m: t = m.group(0); out += t[1:-1] if t.startswith('‹') else t; i += len(t); continue
         if s[i] == '·': i += 1; continue
-        if s[i].isdigit() and not (i and s[i - 1].isalpha()) and not (i + 1 < len(s) and s[i + 1].isalpha()): out += s[i]; i += 1; continue
+        if s[i].isdigit() and not (i and (s[i - 1].isalpha() or s[i - 1] == '·')) and not (i + 1 < len(s) and (s[i + 1].isalpha() or s[i + 1] == '·')): out += s[i]; i += 1; continue
         k = next(((v, g) for v, g in KEYS if s.startswith(v, i)), None)
         if k and not s[i].isspace(): out += k[1]; i += len(k[0])
         else: out += s[i]; i += 1
@@ -27,13 +27,16 @@ def join(units):
     """Join SLUG units, marking a boundary wherever two would read back as one glyph."""
     out, prev = '', None
     for u in units:
-        if prev and to_glyph(prev + u) != to_glyph(prev) + to_glyph(u): out += '·'
+        if prev and to_glyph(prev + u) != to_glyph(prev + '·' + u): out += '·'
         out += u; prev = u
     return out
 
 def to_slug(g):
     out, prev, latin = '', None, ''
-    for c in g:
+    for c in re.findall(r'<[^>]+>|&#?\w+;|.', g, re.S):
+        if len(c) > 1:
+            if latin: out += f'‹{latin}›'; latin = ''
+            out += c; prev = None; continue
         if not is_glyph(c) and c.isalpha(): latin += c; prev = None; continue
         if latin: out += f'‹{latin}›'; latin = ''
         u = '␣' if SLUG.get(c) == ' ' else SLUG.get(c, c)
