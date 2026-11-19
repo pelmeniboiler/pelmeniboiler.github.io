@@ -31,26 +31,43 @@ const isGlyph = (c) => { const n = c.codePointAt(0); return n >= 0xE000 && n <= 
 export async function graflectData() {
     const ctx = {}; vm.createContext(ctx);
     vm.runInContext(`${await fs.readFile(path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), 'utf8')};this.words=defaultWordMap;this.slug=slugMap;`, ctx);
-    const toGlyph = Object.entries(ctx.slug).filter(([, s]) => s.trim()).sort((a, b) => b[1].length - a[1].length);
-    // She writes these sounds as two glyphs: never rr or rä joined, and wī joined only for the word "we".
-    const joinedOk = (s, i, v) => (v !== 'rr' && v !== 'rä' && v !== 'wī') || (v === 'wī' && !/\p{L}/u.test(s[i - 1] || '') && !/\p{L}/u.test(s[i + 2] || ''));
+    // SLUG ↔ glyphs. "·" marks a boundary where two glyphs would otherwise read as one (r·r is two r
+    // glyphs, rr is the trilled r); "yu" is typed for yü. ‹Latin›, tags, entities and lone digits pass through.
+    const yu = Object.entries(ctx.slug).find(([, v]) => v === 'yü');
+    // The Graflect space glyph is written ␣ in SLUG, so it isn't mistaken for an ordinary space.
+    const sp = Object.entries(ctx.slug).find(([, v]) => v === ' ');
+    const toGlyph = [...Object.entries(ctx.slug).filter(([, v]) => v.trim()), ...(yu ? [[yu[0], 'yu']] : []), ...(sp ? [[sp[0], '␣']] : [])].sort((a, b) => b[1].length - a[1].length);
+    const unslug = (s) => {
+        let out = '', i = 0;
+        while (i < s.length) {
+            const keep = s.slice(i).match(/^(?:‹[^›]*›|<[^>]+>|&#?\w+;)/);
+            if (keep) { out += keep[0].startsWith('‹') ? keep[0].slice(1, -1) : keep[0]; i += keep[0].length; continue; }
+            if (s[i] === '·') { i++; continue; }
+            const letterAround = /\p{L}/u.test(s[i - 1] || '') || /\p{L}/u.test(s[i + 1] || '');
+            if (/\d/.test(s[i]) && !letterAround) { out += s[i++]; continue; }
+            const m = toGlyph.find(([, v]) => s.startsWith(v, i));
+            if (m && !/\s/.test(s[i])) { out += m[0]; i += m[1].length; } else out += s[i++];
+        }
+        return out;
+    };
+    const isG = (c) => c in ctx.slug;
     return {
         words: { ...ctx.words },
-        slug: (g) => [...g].map((c) => ctx.slug[c] ?? c).join(''),
-        // SLUG → glyphs, longest match first; spaces and other characters pass through.
-        // ‹Latin› stays Latin; tags, entities and digits that stand alone pass through (as in the queue).
-        unslug: (s) => {
-            let out = '', i = 0;
-            while (i < s.length) {
-                const keep = s.slice(i).match(/^(?:‹[^›]*›|<[^>]+>|&#?\w+;)/);
-                if (keep) { out += keep[0].startsWith('‹') ? keep[0].slice(1, -1) : keep[0]; i += keep[0].length; continue; }
-                const letterAround = /\p{L}/u.test(s[i - 1] || '') || /\p{L}/u.test(s[i + 1] || '');
-                if (/\d/.test(s[i]) && !letterAround) { out += s[i++]; continue; }
-                const m = toGlyph.find(([, v]) => s.startsWith(v, i) && joinedOk(s, i, v));
-                if (m && !/\s/.test(s[i])) { out += m[0]; i += m[1].length; } else out += s[i++];
+        slug: (g) => {
+            // Latin she kept stays marked ‹…›, so it reads back as Latin.
+            let out = '', prev = null, latin = '';
+            const flush = () => { if (latin) { out += `‹${latin}›`; latin = ''; } };
+            for (const c of g) {
+                if (!isG(c) && /\p{L}/u.test(c)) { latin += c; prev = null; continue; }
+                flush();
+                const u = ctx.slug[c] === ' ' ? '␣' : (ctx.slug[c] ?? c);
+                if (prev && isG(c) && unslug(prev[1] + u) !== prev[0] + c) out += '·';
+                out += u; prev = isG(c) ? [c, u] : null;
             }
+            flush();
             return out;
         },
+        unslug,
     };
 }
 

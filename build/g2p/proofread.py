@@ -14,27 +14,20 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..
 sys.path.insert(0, HERE)
 from cmu2slug_lib import slug, load_cmu
 
-src = open(os.path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), encoding='utf-8').read()
-SLUG = dict(re.findall(r"'(.)':\s*'([^']*)'", src[src.index('slugMap'):]))
-TO_GLYPH = sorted(((v, g) for g, v in SLUG.items() if v.strip()), key=lambda x: -len(x[0]))
-def is_glyph(c): return 0xE000 <= ord(c) <= 0xF8FF
-def to_slug(g): return ''.join(SLUG.get(c, c) for c in g)
-def to_glyph(s):
-    out, i = '', 0
-    while i < len(s):
-        m = next(((v, g) for v, g in TO_GLYPH if s.startswith(v, i) and v not in ('rr', 'rä') and (v != 'wī' or s == 'wī')), None)
-        if m: out += m[1]; i += len(m[0])
-        else: out += s[i]; i += 1
-    return out
+from slugmap import to_slug, to_glyph, is_glyph
 def strip(s): return re.sub(r'&\w+;', ' ', re.sub(r'<[^>]+>', ' ', s))
 def sentences(s): return re.split(r'[.!?;:]+\s', strip(s))
 
 CONTEXT = {
-    'the': 'dhx before a consonant, dhi before a vowel (the build and the queue do this for you).',
+    'the': 'dhx before a consonant, dhī before a vowel (the build and the queue do this for you).',
     'a': 'x, and ē when you stress it: for emphasis or contrast (“a cat, not the cat”), when you pause after it, or say it on its own.',
     'read': 'rīd now, red in the past (same spelling in English, different words).',
     'use': 'yüz the verb (“I use it”), yüs the noun (“a use for it”).',
     'used': 'yüzd “used it”, yüst “used to”.',
+    'and': 'änd, and xnd unstressed in set pairs (“cookies and cream”, “cherries and pie”).',
+    'have': 'hæv, and hæf in “have to” (the build and the queue do this for you).',
+    'accepted': 'ekseptid, and ækseptid when you stress it (“accepted to Yale”).',
+    'either': 'both: either / either.',
 }
 
 def main():

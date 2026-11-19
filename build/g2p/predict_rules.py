@@ -3,7 +3,7 @@
 #      and words she leaves in Latin there (names, labels) stay Latin,
 #   2. else CMUdict through her rules (cmu2slug_lib.py),
 #   3. else the English word, left in Latin.
-#   Then "the" before a vowel becomes dhi, as she writes it.
+#   Then "the" before a vowel becomes dhī, as she writes it.
 # Usage (on Windows: python, and npm.cmd from PowerShell):
 #   npm run gt:eval -- --cmd "python3 build/g2p/predict_rules.py path/to/cmudict.dict"
 import json, os, re, sys, collections
@@ -26,7 +26,8 @@ def learn(lines):
             ew, gw = e.split(), g.split()
             if len(ew) != len(gw): continue
             for a, b in zip(ew, gw):
-                a = re.sub(r"[^A-Za-z']", '', a).lower(); b = re.sub(r'[^\wÀ-ɏ4]', '', b)
+                if '‹' in b: continue   # Latin she kept: learned below, not as a spelling
+                a = re.sub(r"[^A-Za-z']", '', a).lower(); b = re.sub(r'[^\w\u00C0-\u024F4·␣]', '', b).strip('·')
                 if a and b: votes[a][b] += 1
         # Latin she kept: English words that appear as-is in her Graflect line.
         kept = {w.lower() for w in re.findall(r'[A-Za-z]{2,}', re.sub(r'<[^>]+>|&\w+;', ' ', l['gt']))}
@@ -42,8 +43,9 @@ def learn(lines):
 def spell_line(en, spell):
     """Spell the words of one English line (outside tags and entities), then her context rules."""
     out = ''.join(p if re.match(r'<[^>]+>|&#?\w+;', p) else WORD.sub(spell, p) for p in re.split(r'(<[^>]+>|&#?\w+;)', en))
-    # "the" before a vowel is dhi (12 of 15 times in her articles).
-    return re.sub(r'(?<![^\W\d_])dhx(\s+)(?=[' + ''.join(VOWELS) + '])', r'dhi\1', out)
+    # "the" before a vowel is dhī; "have to" is hæf tü.
+    out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=[' + ''.join(VOWELS) + '])', r'dhī\1', out)
+    return re.sub(r'(?<![^\W\d_])hæv(\s+)(?=tü(?![^\W\d_]))', r'hæf\1', out)
 
 def speller(hers, keep_latin, cmu=None, guessed=None):
     def spell(m):
