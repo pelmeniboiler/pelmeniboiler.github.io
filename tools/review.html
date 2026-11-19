@@ -101,7 +101,8 @@
     }
     async function open(article) {
         review = await (await fetch(`/localization/reviews/${encodeURIComponent(article)}.json`, { cache: 'no-cache' })).json();
-        shown = shown || [...review.langs];
+        // A new article starts with all its languages; a choice made for another article doesn't carry over.
+        if (!shown || !shown.every((l) => review.langs.includes(l))) shown = [...review.langs];
         $('langs').innerHTML = review.langs.map((l) => `<button data-lang="${l}" aria-pressed="${shown.includes(l)}">${LANG[l] || l}</button>`).join(' ');
         render();
     }

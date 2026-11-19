@@ -2,7 +2,7 @@
  "article": "graflect-2",
  "kind": "graflect",
  "title": "Graflect proofreading",
- "round": 1,
+ "round": 2,
  "langs": [
   "gt"
  ],
@@ -73,8 +73,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": []
+   "status": "settled",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "īngg"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: īngg on every -ing word (203 in the articles, plurals too: thīnggz, setīnggz), and in the converter."
+    }
+   ],
+   "answer": {
+    "pick": 2,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g2",
@@ -94,8 +110,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": []
+   "status": "settled",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "wī glyph"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept: “we” uses the wī glyph. Other words with the wī sound (wheel, week, weird) are still w·ī; tell me if they should use it too."
+    }
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g3",
@@ -138,8 +170,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": []
+   "status": "settled",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "prxpõršinitlī"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: prxpõršinitlī, with õ as you typed it. Your other “or” words use ō (fōr, kībōrdz), so tell me if õ was a slip."
+    }
+   ],
+   "answer": {
+    "pick": null,
+    "own": "prxpõršinitlī",
+    "note": ""
+   }
   },
   {
    "id": "g5",
@@ -159,8 +207,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": []
+   "status": "settled",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "cränzlēt"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: the one cränslēt is now cränzlēt."
+    }
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "g6",
@@ -180,8 +244,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": []
+   "status": "settled",
+   "thread": [
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "vržin"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: the one vržxn is now vržin."
+    }
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   }
  ]
 }

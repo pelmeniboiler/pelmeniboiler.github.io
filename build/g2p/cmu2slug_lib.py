@@ -14,9 +14,10 @@ def slug(phones):
         if p == 'T' and nxt == 'R': out.append('c'); i += 1; continue          # trip → crip (t before r is c)
         if p == 'D' and nxt == 'R': out.append('j'); i += 1; continue          # dream → jrīm (d before r is j, and the r stays)
         if p == 'AE' and nxt in ('N', 'M'): out.append('ä'); i += 1; continue   # can, man, hand, translate, random → ä
-        if p == 'IH' and nxt == 'NG': out.append('ī'); i += 1; continue          # -ing → īng, think → thīngk, English → īngliš
+        if p == 'IH' and nxt == 'NG': out.append('ī'); i += 1; continue          # -ing → īngg, think → thīngk, English → īngliš
         if p == 'EH' and nxt == 'R' and (i + 2 == len(ph) or ph[i + 2] not in V_SET): out.append('4'); i += 2; continue  # where → w4, pair → p4 (the air sound carries the r); very stays verī
         if p == 'NG' and nxt == 'G': out.append('ng'); i += 2; continue        # English → īngliš (no strong g)
+        if p == 'NG' and i and ph[i - 1] == 'IH' and (nxt == '' or (nxt == 'Z' and i + 2 == len(ph))): out += ['ng', 'g']; i += 1; continue  # -ing → īngg, thing → thīngg (ng then g)
         if p == 'Y' and nxt == 'UW': out.append('yü'); i += 2; continue
         if p in ('AO', 'AA') and nxt == 'R': out.append('ō' if p == 'AO' else 'á'); i += 1; continue
         if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph) and i > 0 and ph[i - 1] == 'B': i += 1; continue  # table → tēbl, but people → pīpxl
