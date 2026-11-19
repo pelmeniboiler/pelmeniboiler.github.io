@@ -912,7 +912,7 @@
                 const ch = text[i];
                 if (ch === '‹') { const end = text.indexOf('›', i); const j = end < 0 ? text.length : end; out += text.slice(i + 1, j); i = j + 1; continue; }
                 if (ch === '·') { i++; continue; }
-                const letterAround = /\p{L}/u.test(text[i - 1] || '') || /\p{L}/u.test(text[i + 1] || '');
+                const letterAround = /[\p{L}·]/u.test(text[i - 1] || '') || /[\p{L}·]/u.test(text[i + 1] || '');
                 if (/\s/.test(ch) || (/\d/.test(ch) && !letterAround)) { out += ch; i++; continue; }
                 const key = QUEUE_KEYS.find((k) => text.startsWith(k, i));
                 if (key) { out += glyphOf(key); i += key.length; } else { out += ch; i++; }

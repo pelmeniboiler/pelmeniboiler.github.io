@@ -5607,8 +5607,14 @@
     }
    ],
    "pick": 0,
-   "status": "open",
-   "thread": [],
+   "status": "settled",
+   "thread": [
+    {
+     "who": "claude",
+     "round": 2,
+     "text": "Moved to graflect-2."
+    }
+   ],
    "why": "You always write prōpōršinitlī; CMUdict through your rules says prxpōršxnxlī. Keep yours unless it was a slip."
   },
   {
