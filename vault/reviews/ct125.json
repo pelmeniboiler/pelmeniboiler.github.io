@@ -564,14 +564,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "I kept the English: the two headings are a quiet McQueen pair, and the Sunday callback matters more than the release titles. German and Japanese release titles are verified if you’d rather have them."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: Keep “On Any Sunday” in English"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q2",
@@ -594,14 +604,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "I went with Fridays. If the heading stays “On Any Sunday”, Hebrew loses that link either way."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ימי שישי (Fridays)"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q3",
@@ -620,14 +640,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses Latin letters. Opus, translating on its own, chose Hebrew letters, so it’s worth settling once."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: Latin letters"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q4",
@@ -646,14 +676,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft follows your English."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: Keep “he”: он, הוא, er"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q5",
@@ -672,14 +712,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses the short local titles."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: Short local title: «Дзен…», „Zen und die Kunst …“, “זן ואמנות…”, 『禅とオートバイ修理技術』"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q6",
@@ -698,14 +748,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "I kept your picture. It’s funnier and it’s what you wrote."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: Literal: носилки с колёсиками, Trage mit Rollen, אלונקה עם גלגלים, キャスター付きの担架"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q7",
@@ -728,14 +788,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: там будут одни штуйот от людей…"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q8",
@@ -758,14 +828,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: weil da nur Schtujot von Leuten kommt…"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q9",
@@ -788,14 +868,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: どうでもいい話ばかり出てくる"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q10",
@@ -818,14 +908,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: keep English: ru «skid plate» / «under cover», de „skid plate“ / „under cover“, he \"skid plate\" / \"under cover\" · We don't support searching in non english languages (yet...) so we will not say that we can type anything we can't."
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": "We don't support searching in non english languages (yet...) so we will not say that we can type anything we can't."
+   }
   },
   {
    "id": "q11",
@@ -848,14 +948,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ru пил 92-й, de noch E10 schluckt, he יסתפק ב-95, ja レギュラーガソリンで走れる"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q12",
@@ -874,14 +984,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: スーパーカブ"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 0,
+    "own": "",
+    "note": ""
+   }
   },
   {
    "id": "q13",
@@ -900,14 +1020,24 @@
     }
    ],
    "pick": 0,
-   "status": "open",
+   "status": "answered",
    "thread": [
     {
      "who": "claude",
      "round": 1,
      "text": "The draft uses option 1."
+    },
+    {
+     "who": "wendy",
+     "round": 1,
+     "text": "I pick: ה-LLM שלכם / LLMs"
     }
-   ]
+   ],
+   "answer": {
+    "pick": 1,
+    "own": "",
+    "note": ""
+   }
   }
  ]
 }
