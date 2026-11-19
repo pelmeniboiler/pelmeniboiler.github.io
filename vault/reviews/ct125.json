@@ -1,7 +1,7 @@
 {
  "article": "ct125",
  "title": "Your Service Manual Should be an App",
- "round": 1,
+ "round": 2,
  "langs": [
   "ru",
   "he",
@@ -278,16 +278,16 @@
   "ct125_p8": {
    "en": "But, to be honest, the first thing I reach for (as a zoomer) is Google. Or LLMs, which often don’t actually have any grounding on this. For instance, if you ask your LLM right now what torque to put on an arbitrarily selected bolt on your bike, it will just have to guess. Its guess may be good enough; after all, that’s usually what most people do when they’re putting the bolts back on. Google will be worse, because it will just have shtuyot from people discussing my machine in terminology I don’t understand, or discussing things adjacent to the question. I don’t really like that.",
    "ru": {
-    "text": "Но, честно говоря, первым делом я (как зумер) лезу в Google. Или в LLM, которым на самом деле часто не на что опереться в этом вопросе. Например, если прямо сейчас спросить свою LLM, с каким моментом затягивать какой-нибудь наугад выбранный болт на твоём мотоцикле, ей придётся просто угадывать. Может, её догадки и хватит; в конце концов, обычно так и делает большинство, когда закручивает болты обратно. С Google будет хуже, потому что там будет одна фигня от людей, которые обсуждают мой аппарат в непонятных мне терминах или обсуждают что-то по соседству с вопросом. Мне такое не очень нравится.",
-    "back": "But, honestly speaking, the first thing I do (as a zoomer) is dig into Google. Or into LLMs, which in fact often have nothing to lean on in this matter. For example, if right now you ask your LLM with what torque to tighten some randomly chosen bolt on your motorcycle, it will just have to guess. Maybe its guess will do; after all, that's usually what most people do when they screw the bolts back in. With Google it'll be worse, because there'll be nothing but crap [одна фигня, mild slang standing in for 'shtuyot'] from people who discuss my machine [аппарат, bikers' slang for a motorcycle] in terms I don't understand, or discuss something next door to the question. I don't much like that."
+    "text": "Но, честно говоря, первым делом я (как зумер) лезу в Google. Или в LLM, которым на самом деле часто не на что опереться в этом вопросе. Например, если прямо сейчас спросить свою LLM, с каким моментом затягивать какой-нибудь наугад выбранный болт на твоём мотоцикле, ей придётся просто угадывать. Может, её догадки и хватит; в конце концов, обычно так и делает большинство, когда закручивает болты обратно. С Google будет хуже, потому что там будут одни штуйот от людей, которые обсуждают мой аппарат в непонятных мне терминах или обсуждают что-то по соседству с вопросом. Мне такое не очень нравится.",
+    "back": "But, honestly speaking, the first thing I do (as a zoomer) is dig into Google. Or into LLMs, which in fact often have nothing to lean on in this matter. For example, if right now you ask your LLM with what torque to tighten some randomly chosen bolt on your motorcycle, it will just have to guess. Maybe its guess will do; after all, that's usually what most people do when they screw the bolts back in. With Google it'll be worse, because there'll be nothing but shtuyot [your Hebrew word, kept as штуйот] from people who discuss my machine [аппарат, bikers' slang for a motorcycle] in terms I don't understand, or discuss something next door to the question. I don't much like that."
    },
    "he": {
-    "text": "אבל, למען האמת, הדבר הראשון שאני פונה אליו (בתור זומרית) הוא גוגל. או מודלי שפה, שלרוב אין להם באמת על מה להתבסס בעניין הזה. למשל, אם תשאלו עכשיו את מודל השפה שלכם באיזה מומנט לחזק בורג כלשהו שנבחר באקראי באופנוע שלכם, הוא פשוט יצטרך לנחש. אולי הניחוש שלו יהיה מספיק טוב; אחרי הכול, זה בדרך כלל מה שרוב האנשים עושים כשהם מחזירים את הברגים למקום. גוגל תהיה גרועה יותר, כי יהיו שם רק שטויות של אנשים שמדברים על האופנוע שלי במונחים שאני לא מבינה, או על דברים שרק קרובים לשאלה. אני לא ממש אוהבת את זה.",
-    "back": "But, to tell the truth, the first thing I turn to (as a zoomer, fem.) is Google. Or language models, which mostly don't really have anything to base themselves on in this matter. For example, if you (pl.) ask your language model now with what torque to tighten some randomly chosen bolt on your motorcycle, it will simply have to guess. Maybe its guess will be good enough; after all, that's usually what most people do when they put the bolts back in place. Google will be worse, because there'll only be shtuyot [here simply the native Hebrew word] from people talking about my motorcycle in terms I don't understand (fem.), or about things that are only near the question. I don't really like (fem.) that."
+    "text": "אבל, למען האמת, הדבר הראשון שאני פונה אליו (בתור זומרית) הוא גוגל. או LLMs, שלרוב אין להם באמת על מה להתבסס בעניין הזה. למשל, אם תשאלו עכשיו את ה-LLM שלכם באיזה מומנט לחזק בורג כלשהו שנבחר באקראי באופנוע שלכם, הוא פשוט יצטרך לנחש. אולי הניחוש שלו יהיה מספיק טוב; אחרי הכול, זה בדרך כלל מה שרוב האנשים עושים כשהם מחזירים את הברגים למקום. גוגל תהיה גרועה יותר, כי יהיו שם רק שטויות של אנשים שמדברים על האופנוע שלי במונחים שאני לא מבינה, או על דברים שרק קרובים לשאלה. אני לא ממש אוהבת את זה.",
+    "back": "But, to tell the truth, the first thing I turn to (as a zoomer, fem.) is Google. Or LLMs, which mostly don't really have anything to base themselves on in this matter. For example, if you (pl.) ask your LLM now with what torque to tighten some randomly chosen bolt on your motorcycle, it will simply have to guess. Maybe its guess will be good enough; after all, that's usually what most people do when they put the bolts back in place. Google will be worse, because there'll only be shtuyot [here simply the native Hebrew word] from people talking about my motorcycle in terms I don't understand (fem.), or about things that are only near the question. I don't really like (fem.) that."
    },
    "de": {
-    "text": "Aber ehrlich gesagt greife ich (als Zoomerin) als Erstes zu Google. Oder zu LLMs, die dafür eigentlich oft gar kein Grounding haben. Wenn du dein LLM zum Beispiel jetzt gleich fragst, mit welchem Drehmoment eine beliebig herausgepickte Schraube an deinem Motorrad angezogen wird, muss es einfach raten. Vielleicht reicht sein Tipp; schließlich machen die meisten Leute meistens genau das, wenn sie die Schrauben wieder reindrehen. Google ist noch schlimmer, weil da nur Stuss von Leuten kommt, die über meine Maschine in Begriffen reden, die ich nicht verstehe, oder über Dinge, die nur so neben der Frage liegen. Das mag ich nicht so.",
-    "back": "But honestly, I reach (as a zoomer, fem.) for Google first. Or for LLMs, which for this actually often have no grounding at all. If, for example, you ask your LLM right now with what torque an arbitrarily picked-out bolt on your motorcycle gets tightened, it simply has to guess. Maybe its guess is enough; after all, most people mostly do exactly that when they screw the bolts back in. Google is even worse, because all that comes up there is Stuss [Yiddish-derived German for 'nonsense', from the same Hebrew root as 'shtuyot'] from people who talk about my machine [Maschine, bikers' word for a motorcycle] in terms I don't understand, or about things that lie just beside the question. I don't like that so much."
+    "text": "Aber ehrlich gesagt greife ich (als Zoomerin) als Erstes zu Google. Oder zu LLMs, die dafür eigentlich oft gar kein Grounding haben. Wenn du dein LLM zum Beispiel jetzt gleich fragst, mit welchem Drehmoment eine beliebig herausgepickte Schraube an deinem Motorrad angezogen wird, muss es einfach raten. Vielleicht reicht sein Tipp; schließlich machen die meisten Leute meistens genau das, wenn sie die Schrauben wieder reindrehen. Google ist noch schlimmer, weil da nur Schtujot von Leuten kommt, die über meine Maschine in Begriffen reden, die ich nicht verstehe, oder über Dinge, die nur so neben der Frage liegen. Das mag ich nicht so.",
+    "back": "But honestly, I reach (as a zoomer, fem.) for Google first. Or for LLMs, which for this actually often have no grounding at all. If, for example, you ask your LLM right now with what torque an arbitrarily picked-out bolt on your motorcycle gets tightened, it simply has to guess. Maybe its guess is enough; after all, most people mostly do exactly that when they screw the bolts back in. Google is even worse, because all that comes up there is Schtujot [your Hebrew word, kept] from people who talk about my machine [Maschine, bikers' word for a motorcycle] in terms I don't understand, or about things that lie just beside the question. I don't like that so much."
    },
    "ja": {
     "text": "でも正直に言うと、（Z世代なので）私がまず頼るのはGoogleです。あるいはLLMですが、実はこういうことについてちゃんとした根拠を持っていないことがよくあります。たとえば、今すぐLLMに、自分のバイクの適当に選んだボルトの締め付けトルクを聞いても、推測するしかありません。その推測で十分なこともあるでしょう；結局、ボルトを付け直すときにたいていの人がやっているのも、それですから。Googleはもっとひどいです。私の愛車のことを私にはわからない用語で話している人や、質問からちょっとずれた話をしている人たちの、どうでもいい話ばかり出てくるからです。それはあまり好きじゃないです。",
@@ -328,8 +328,8 @@
     "back": "PDFs are also annoying to search. My copy is a scan of the real book, so just pictures of the pages without a text layer. ⌘F finds nothing. Even if we had Honda's original file, that would only find the exact string. Type in „skid plate“, and you get nothing, because Honda calls the part „under cover“. Thanks to Claude, the app knows both names and dozens more of this kind. It searches the torque tables, technical data, fault codes, guides and the summary of each page at once, sorts the hits and shows you the number itself instead of the page it's hiding on. Every result still names the page in the real book, so you can check."
    },
    "ja": {
-    "text": "PDFは検索もしにくいです。私が持っているのは実物をスキャンしたものなので、テキストデータのない、ただのページの画像です。<kbd>⌘F</kbd>では何も見つかりません。ホンダのオリジナルファイルがあったとしても、見つかるのは完全に一致する文字列だけです。「スキッドプレート」と入力しても何も出てきません。ホンダはそれを「アンダーカバー」と呼んでいるからです。Claudeのおかげで、アプリは両方の名前を知っていますし、同じような言い換えを何十個も知っています。トルク表、諸元、故障コード、ガイド、各ページの要約をまとめて検索し、見つかったものを順位付けして、数値が隠れているページではなく、数値そのものを見せてくれます。それでも、どの結果にも実物の本のページが載っているので、確認できます。",
-    "back": "PDFs are also hard to search. What I have is a scan of the real thing, so it's just images of pages with no text data. ⌘F finds nothing. Even if we had Honda's original file, all it finds is an exactly matching string. Type 'skid plate' (スキッドプレート) and nothing comes up. Because Honda calls it 'under cover' (アンダーカバー, the term Japanese Honda manuals use). Thanks to Claude, the app knows both names, and knows dozens of similar alternate names. It searches the torque tables, specs, fault codes, guides and each page's summary all together, ranks what it found, and shows you not the page the number is hiding on but the number itself. Still, every result carries the page in the real book, so you can check."
+    "text": "PDFは検索もしにくいです。私が持っているのは実物をスキャンしたものなので、テキストデータのない、ただのページの画像です。<kbd>⌘F</kbd>では何も見つかりません。ホンダのオリジナルファイルがあったとしても、見つかるのは完全に一致する文字列だけです。「skid plate」と入力しても何も出てきません。ホンダはそれを「under cover」と呼んでいるからです。Claudeのおかげで、アプリは両方の名前を知っていますし、同じような言い換えを何十個も知っています。トルク表、諸元、故障コード、ガイド、各ページの要約をまとめて検索し、見つかったものを順位付けして、数値が隠れているページではなく、数値そのものを見せてくれます。それでも、どの結果にも実物の本のページが載っているので、確認できます。",
+    "back": "PDFs are also hard to search. What I have is a scan of the real thing, so it's just images of pages with no text data. ⌘F finds nothing. Even if we had Honda's original file, all it finds is an exactly matching string. Type 'skid plate' (in English, like the app's search) and nothing comes up. Because Honda calls it 'under cover' (in English). Thanks to Claude, the app knows both names, and knows dozens of similar alternate names. It searches the torque tables, specs, fault codes, guides and each page's summary all together, ranks what it found, and shows you not the page the number is hiding on but the number itself. Still, every result carries the page in the real book, so you can check."
    }
   },
   "ct125_p11": {
@@ -510,7 +510,7 @@
     "back": "If you don't have a CT125, buy one. And once you've bought it, and if you feel like having such an interactive manual navigator for another motorcycle, sic your LLM on my 🏍 ct125.manual, give it a PDF of the manual, or of several manuals, for your motorcycle (for example, the Kawasaki KLR 650 needs the Clymer manual, the KLR 600 manual and the supplement for the 650) and ask it to make the same for yours."
    },
    "he": {
-    "text": "אם אין לכם CT125, תקנו אחד. אחרי שעשיתם את זה, ואם אתם רוצים אפליקציה אינטראקטיבית כזאת לעיון בספר השירות של אופנוע אחר, תפנו את מודל השפה שלכם ל-<a href=\"/ct125/\">🏍 ct125.manual</a> שלי, תנו לו PDF של ספר שירות, או כמה ספרים, של האופנוע שלכם (ל-Kawasaki KLR 650, למשל, צריך את הספר של Clymer, את הספר של KLR 600 ואת התוספת ל-650), ותבקשו ממנו לבנות אחד לשלכם.",
+    "text": "אם אין לכם CT125, תקנו אחד. אחרי שעשיתם את זה, ואם אתם רוצים אפליקציה אינטראקטיבית כזאת לעיון בספר השירות של אופנוע אחר, תפנו את ה-LLM שלכם ל-<a href=\"/ct125/\">🏍 ct125.manual</a> שלי, תנו לו PDF של ספר שירות, או כמה ספרים, של האופנוע שלכם (ל-Kawasaki KLR 650, למשל, צריך את הספר של Clymer, את הספר של KLR 600 ואת התוספת ל-650), ותבקשו ממנו לבנות אחד לשלכם.",
     "back": "If you (pl.) don't have a CT125, buy one. After you've done that, and if you want such an interactive app for browsing the service book of another motorcycle, point your language model at my 🏍 ct125.manual, give it a PDF of a service book, or several books, for your motorcycle (for the Kawasaki KLR 650, for example, you need the Clymer book, the KLR 600 book and the supplement for the 650), and ask it to build one for yours."
    },
    "de": {
@@ -564,7 +564,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -575,6 +575,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: Keep “On Any Sunday” in English"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: “On Any Sunday” stays in English everywhere. It’s in the vault, with the verified German and Japanese release titles noted."
     }
    ],
    "answer": {
@@ -604,7 +609,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -615,6 +620,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: ימי שישי (Fridays)"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: Fridays in Hebrew."
     }
    ],
    "answer": {
@@ -640,7 +650,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -651,6 +661,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: Latin letters"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled, and now a vault rule for every post: brand names stay in Latin letters in Hebrew. That also caught Nikon and Tesla in Dixie & Vegas, which I’ve changed to match."
     }
    ],
    "answer": {
@@ -676,7 +691,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -687,6 +702,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: Keep “he”: он, הוא, er"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: Claude is он / הוא / er, as in your English."
     }
    ],
    "answer": {
@@ -712,7 +732,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -723,6 +743,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: Short local title: «Дзен…», „Zen und die Kunst …“, “זן ואמנות…”, 『禅とオートバイ修理技術』"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: the short local titles. In the vault."
     }
    ],
    "answer": {
@@ -748,7 +773,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -759,6 +784,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: Literal: носилки с колёсиками, Trage mit Rollen, אלונקה עם גלגלים, キャスター付きの担架"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: literal, your picture."
     }
    ],
    "answer": {
@@ -787,8 +817,8 @@
      "why": "milder and more neutral"
     }
    ],
-   "pick": 0,
-   "status": "answered",
+   "pick": 1,
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -799,6 +829,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: там будут одни штуйот от людей…"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: штуйот in Russian. In the vault, so it stays your word in later posts."
     }
    ],
    "answer": {
@@ -827,8 +862,8 @@
      "why": "plain, loses the Hebrew connection"
     }
    ],
-   "pick": 0,
-   "status": "answered",
+   "pick": 1,
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -839,6 +874,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: weil da nur Schtujot von Leuten kommt…"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: Schtujot in German. In the vault."
     }
    ],
    "answer": {
@@ -868,7 +908,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -879,6 +919,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: どうでもいい話ばかり出てくる"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: どうでもいい話."
     }
    ],
    "answer": {
@@ -908,7 +953,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -919,6 +964,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: keep English: ru «skid plate» / «under cover», de „skid plate“ / „under cover“, he \"skid plate\" / \"under cover\" · We don't support searching in non english languages (yet...) so we will not say that we can type anything we can't."
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Kept the English terms, and following your note I changed Japanese to 「skid plate」 / 「under cover」 too, since the app only searches in English."
     }
    ],
    "answer": {
@@ -948,7 +998,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -959,6 +1009,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: ru пил 92-й, de noch E10 schluckt, he יסתפק ב-95, ja レギュラーガソリンで走れる"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: each country’s cheapest pump grade."
     }
    ],
    "answer": {
@@ -984,7 +1039,7 @@
     }
    ],
    "pick": 0,
-   "status": "answered",
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -995,6 +1050,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: スーパーカブ"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Settled: スーパーカブ in Japanese, Super Cub elsewhere. In the vault."
     }
    ],
    "answer": {
@@ -1019,8 +1079,8 @@
      "why": "matches lang.json and the other languages"
     }
    ],
-   "pick": 0,
-   "status": "answered",
+   "pick": 1,
+   "status": "settled",
    "thread": [
     {
      "who": "claude",
@@ -1031,6 +1091,11 @@
      "who": "wendy",
      "round": 1,
      "text": "I pick: ה-LLM שלכם / LLMs"
+    },
+    {
+     "who": "claude",
+     "round": 1,
+     "text": "Done: LLM in Latin letters in Hebrew (p8 and p16). In the vault."
     }
    ],
    "answer": {
