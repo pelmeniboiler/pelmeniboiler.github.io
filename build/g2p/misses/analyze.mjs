@@ -21,6 +21,7 @@ const CATS = {
     contraction: "Contraction: she keeps the apostrophe (it's → 2 Graflect words), the system writes one word",
     extra: 'Structure: she wrote words with no English counterpart here (numbers, symbols, added words)',
     count_mismatch: 'Structure: word counts differ in this stretch (she merged, split, added or dropped words)',
+    dict: 'Her hand-made dictionary has another spelling than this article',
     context: 'A context rule (dhi/dhī before a vowel, hæf before tü) fired and was wrong here',
 };
 
@@ -51,6 +52,7 @@ function glyphPairs(a, b) {
 
 function category(t, r) {
     if (t.src === 'context') return 'context';
+    if (t.src === 'dict') return 'dict';
     if (t.src === 'latin') return 'latin';
     if (t.src === 'hers') return t.votes[r] ? 'hers_variant' : 'hers_new';
     if (Object.keys(t.votes).length) return 'seen_unlearned';

@@ -59,13 +59,16 @@ with open(os.environ['OUT'], 'w', encoding='utf-8') as out, open(os.environ['DUM
                 s, how = word(m.group(0)); gap = p[pos:m.start()]; pos = m.end()
                 toks.append({'en': m.group(0), 'slug': s, 'src': how, 'gap': gap})
         # Her context rules, as this version's spell_line applies them.
+        LATIN_V = "‹[AEIOUaeiou]" in src   # this version also uses dhī before a Latin name starting with a vowel
         for i, tk in enumerate(toks):
-            nx = toks[i + 1] if i + 1 < len(toks) else None
-            if not tk or not nx or not nx['gap'].strip() == '' or not nx['gap']: continue
-            if THE and tk['slug'] == 'dhx' and nx['slug'].startswith(VOW): tk['slug'], tk['src'] = THE, 'context'
+            j = i + 1
+            while j < len(toks) and toks[j] is None: j += 1   # tags between, as in the <abbr>IPA</abbr>
+            nx = toks[j] if j < len(toks) else None
+            if not tk or not nx or nx['gap'].strip() != '' or (not nx['gap'] and j == i + 1): continue
+            if THE and tk['slug'] == 'dhx' and (nx['slug'].startswith(VOW) or (LATIN_V and re.match('‹[AEIOUaeiou]', nx['slug']))): tk['slug'], tk['src'] = THE, 'context'
             if HAEF and tk['slug'] == 'hæv' and nx['slug'] == 'tü': tk['slug'], tk['src'] = 'hæf', 'context'
         for i, tk in enumerate(x for x in toks if x):
             k = tk['en'].lower().replace('’', "'")
             v = votes.get(k) or votes.get(k.replace("'", '')) or {}
             dump.write(json.dumps({'id': t['id'], 'i': i, 'en': tk['en'], 'slug': tk['slug'], 'src': tk['src'], 'votes': dict(v), 'in_cmu': k in cmu,
-                                   'cmu_slug': slug(cmu[k]) if k in cmu else None, 'cmu_alt': [slug(p) for p in prons.get(k, [])[1:]]}, ensure_ascii=False) + '\n')
+                                   'cmu_slug': slug(cmu[k]) if k in cmu else None, 'cmu_alt': [slug(p) for p in prons.get(k, []) if k in cmu and p != cmu[k]]}, ensure_ascii=False) + '\n')

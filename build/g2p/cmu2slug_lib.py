@@ -1,5 +1,5 @@
 # build/g2p/cmu2slug_lib.py — ARPAbet → SLUG with her rules (shared by cmu2slug.py and the predictors).
-import os, sys
+import os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from slugmap import join
 C = dict(B='b', CH='c', D='d', DH='dh', F='f', G='g', HH='h', JH='j', K='k', L='l', M='m', N='n', NG='ng', P='p', R='r', S='s', SH='š', T='t', TH='th', V='v', W='w', Y='y', Z='z', ZH='ž')
@@ -30,10 +30,12 @@ def slug(phones):
 V_SET = set(V)
 
 def load_cmu(path):
-    """First pronunciation of each word: {word: [phones]}."""
-    cmu = {}
+    """One pronunciation per word: {word: [phones]}. Where CMUdict lists several, the one with the most
+    unstressed IH (services: S ER1 V IH0 S IH0 Z, not ...V AH0 S AH0 Z), as she says them; else the first."""
+    alls = {}
     for line in open(path, encoding='utf-8'):
         w, *ph = line.split('#')[0].split()
-        if '(' not in w: cmu.setdefault(w.lower(), ph)
-    return cmu
+        if ph: alls.setdefault(re.sub(r'\(\d+\)$', '', w).lower(), []).append(ph)
+    # Only among pronunciations as long as the first, so a weak form (him: IH0 M) never wins.
+    return {w: max((p for p in ps if len(p) == len(ps[0])), key=lambda ph: ph.count('IH0')) for w, ps in alls.items()}
 

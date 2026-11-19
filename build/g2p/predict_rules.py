@@ -44,7 +44,8 @@ def spell_line(en, spell):
     """Spell the words of one English line (outside tags and entities), then her context rules."""
     out = ''.join(p if re.match(r'<[^>]+>|&#?\w+;', p) else WORD.sub(spell, p) for p in re.split(r'(<[^>]+>|&#?\w+;)', en))
     # "the" before a vowel is dhī; "have to" is hæf tü.
-    out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=[' + ''.join(VOWELS) + '])', r'dhī\1', out)
+    # Also before a name kept in Latin that starts with a vowel (the Iris, the <abbr>IPA</abbr>).
+    out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=(?:<[^>]+>)*(?:[' + ''.join(VOWELS) + ']|‹[AEIOUaeiou]))', r'dhī\1', out)
     return re.sub(r'(?<![^\W\d_])hæv(\s+)(?=tü(?![^\W\d_]))', r'hæf\1', out)
 
 def speller(hers, keep_latin, cmu=None, guessed=None):
