@@ -25,7 +25,7 @@ import vm from 'node:vm';
 
 const LOC = path.join(process.cwd(), 'localization');
 const STATUS_PATH = path.join(LOC, 'tl-status.json');
-const EXCLUDED_PREFIXES = ['coal']; // in-progress content: hands off
+const EXCLUDED_PREFIXES = ['coal', 'gtgr']; // in-progress content: hands off
 const LANG_NAMES = { he: 'Hebrew', ru: 'Russian', de: 'German', ja: 'Japanese', gt: 'Graflect' };
 const MODEL = process.env.GEM_MODEL || 'gemini-2.0-flash';
 const API_KEY = process.env.GEM_API_KEY;
