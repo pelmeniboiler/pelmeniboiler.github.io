@@ -1438,10 +1438,12 @@ try {
             await fc.route(/\/ct125\/data\/\d+\.json$/, async (r) => { const res = await r.fetch(); const d = await res.json(); d.source.files = [{ fp, shift: 2 }]; r.fulfill({ response: res, json: d }); });
             const pf = await fc.newPage();
             await pf.goto(`${BASE}/ct125/`, { waitUntil: 'load' });
+            await pf.waitForSelector('#bedit'); // the app is ready: a click before this lands on nothing on a slow machine
             await pf.click('.tabs [data-v=pages]');
+            await pf.waitForSelector('#v-pages .bar', { timeout: 20000 }).catch(() => {});
             await pf.setInputFiles('#pdfpick', { name: 'mine.pdf', mimeType: 'application/pdf', buffer: pdfBytes });
             await pf.waitForFunction(() => /indexed copy/.test(document.querySelector('#v-pages .bar')?.textContent || ''), null, { timeout: 20000 }).catch(() => {});
-            const got = await pf.evaluate(() => ({ bar: document.querySelector('#v-pages .bar').textContent.replace(/\s+/g, ' '), flag: !!document.querySelector('#v-pages .flag') }));
+            const got = await pf.evaluate(() => ({ bar: (document.querySelector('#v-pages .bar')?.textContent || '(no bar)').replace(/\s+/g, ' '), flag: !!document.querySelector('#v-pages .flag') }));
             await fc.close();
             ok(shown1.includes(`fingerprint ${fp}`) && /✓ indexed copy/.test(got.bar) && /Page offset\s*−\s*2\s*\+/.test(got.bar) && !got.flag,
                 `CT125: a PDF shows its fingerprint, and a listed one is recognised with its page offset (${JSON.stringify({ fp, ...got })})`);
