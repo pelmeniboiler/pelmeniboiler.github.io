@@ -20,6 +20,7 @@ def slug(phones):
         if p == 'NG' and i and ph[i - 1] == 'IH' and (nxt == '' or (nxt == 'Z' and i + 2 == len(ph))): out += ['ng', 'g']; i += 1; continue  # -ing → īngg, thing → thīngg (ng then g)
         if p == 'Y' and nxt == 'UW': out.append('yü'); i += 2; continue
         if p in ('AO', 'AA') and nxt == 'R': out.append('ō' if p == 'AO' else 'á'); i += 1; continue
+        if p == 'AH' and stress[i] == '0' and nxt in ('D', 'Z', 'N', 'T', 'S') and (i + 2 == len(ph) or (nxt == 'N' and i + 3 == len(ph) and ph[i + 2] == 'Z')): out.append('i'); i += 1; continue  # unstressed before a final d z n t s: aided → ēdid, services → srvisiz, garden → gárdin, edit → edit
         if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph) and i > 0 and ph[i - 1] == 'B': i += 1; continue  # table → tēbl, but people → pīpxl
         out.append(C.get(p) or V.get(p, '?')); i += 1
     for j in range(len(out) - 1):                  # w then ī is the wī glyph (we, wheel, week, weird)

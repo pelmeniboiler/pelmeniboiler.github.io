@@ -5,7 +5,7 @@
 import os, re
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 _src = open(os.path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), encoding='utf-8').read()
-SLUG = dict(re.findall(r"'(.)':\s*'([^']*)'", _src[_src.index('slugMap'):]))
+SLUG = dict(re.findall(r"'(.)'\s*:\s*'([^']*)'", _src[_src.index('slugMap'):]))
 _g = {v: g for g, v in SLUG.items()}
 KEYS = sorted([(v, g) for g, v in SLUG.items() if v.strip()] + [('yu', _g['yü']), ('␣', _g[' '])], key=lambda x: -len(x[0]))
 
