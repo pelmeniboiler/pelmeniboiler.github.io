@@ -63,6 +63,7 @@ async function status() {
 
 async function apply(article, force) {
     const r = await read(path.join(DIR, `${article}.json`));
+    if (r.kind === 'graflect') { console.log('A Graflect round is applied word by word to the articles (aligned respelling), not with apply.'); process.exitCode = 1; return; }
     const open = r.questions.filter((q) => q.status !== 'settled');
     if (open.length && !force) { console.log(`${open.length} question(s) still open: ${open.map((q) => q.id).join(', ')}. Settle them first (or --force).`); process.exitCode = 1; return; }
     const locPath = path.join(ROOT, 'localization', `${article}.json`), statusPath = path.join(ROOT, 'localization', 'tl-status.json');
