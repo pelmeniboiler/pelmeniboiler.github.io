@@ -931,9 +931,9 @@
         };
         function draftSlug(text) {
             const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w) => { const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
-            // "the" before a vowel is dhī, as she writes it.
+            // "the" before a vowel (or a Latin name starting with one) is dhī, as she writes it.
             // ...and "have to" is hæf tü.
-            return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=[aeiouxæäáōõöīüē4])/gu, '$1dhī$2').replace(/(^|[^\p{L}])hæv(\s+)(?=tü(?!\p{L}))/gu, '$1hæf$2');
+            return slug.replace(/(^|[^\p{L}])dhx(\s+)(?=(?:<[^>]+>)*(?:[aeiouxæäáōõöīüē4]|‹[AEIOUaeiou]))/gu, '$1dhī$2').replace(/(^|[^\p{L}])hæv(\s+)(?=tü(?!\p{L}))/gu, '$1hæf$2');
         }
         // A finished segment teaches the dictionary every word it didn't know (when the words line up).
         function learnFrom(english, graflect) {

@@ -1,9 +1,9 @@
-// node sources.mjs NAME... (run inside RUNSDIR): right words by where they came from; CMUdict misses by how far off.
+// node sources.mjs RUNSDIR NAME...: right words by where they came from; CMUdict misses by how far off.
 // Per step: correct words by where the spelling came from; CMUdict misses by how far off they are.
 import fs from 'node:fs';
-const steps = process.argv.slice(2), out = {};
+const [RUNS, ...steps] = process.argv.slice(2), out = {};
 for (const s of steps) {
-  const run = JSON.parse(fs.readFileSync(`runs/${s}.json`, 'utf8')), lines = run.articles.flatMap((a) => a.lines);
+  const run = JSON.parse(fs.readFileSync(`${RUNS}/${s}.json`, 'utf8')), lines = run.articles.flatMap((a) => a.lines);
   const hits = {}; let total = 0;
   for (const l of lines) {
     total += l.ref.length;
@@ -14,7 +14,7 @@ for (const s of steps) {
     let i = 0, j = 0;
     while (i < n && j < m) { if (eq(i, j) && dp[i][j] === dp[i + 1][j + 1] + 1) { const k = l.tokens[i].src; hits[k] = (hits[k] || 0) + 1; i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
   }
-  const tsv = fs.readFileSync(`runs/misses-${s}.tsv`, 'utf8').trim().split('\n').slice(1).map((r) => r.split('\t'));
+  const tsv = fs.readFileSync(`${RUNS}/misses-${s}.tsv`, 'utf8').trim().split('\n').slice(1).map((r) => r.split('\t'));
   const sub = { vowel_xi: 0, one: 0, more: 0 };
   for (const [, cat, en, sys, her] of tsv) {
     if (cat !== 'cmu_differs') continue;
