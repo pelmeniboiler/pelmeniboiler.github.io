@@ -35,7 +35,19 @@ export async function graflectData() {
         words: { ...ctx.words },
         slug: (g) => [...g].map((c) => ctx.slug[c] ?? c).join(''),
         // SLUG → glyphs, longest match first; spaces and other characters pass through.
-        unslug: (s) => { let out = '', i = 0; while (i < s.length) { const m = toGlyph.find(([, v]) => s.startsWith(v, i)); if (m && !/\s/.test(s[i])) { out += m[0]; i += m[1].length; } else out += s[i++]; } return out; },
+        // ‹Latin› stays Latin; tags, entities and digits that stand alone pass through (as in the queue).
+        unslug: (s) => {
+            let out = '', i = 0;
+            while (i < s.length) {
+                const keep = s.slice(i).match(/^(?:‹[^›]*›|<[^>]+>|&#?\w+;)/);
+                if (keep) { out += keep[0].startsWith('‹') ? keep[0].slice(1, -1) : keep[0]; i += keep[0].length; continue; }
+                const letterAround = /\p{L}/u.test(s[i - 1] || '') || /\p{L}/u.test(s[i + 1] || '');
+                if (/\d/.test(s[i]) && !letterAround) { out += s[i++]; continue; }
+                const m = toGlyph.find(([, v]) => s.startsWith(v, i));
+                if (m && !/\s/.test(s[i])) { out += m[0]; i += m[1].length; } else out += s[i++];
+            }
+            return out;
+        },
     };
 }
 
