@@ -22,7 +22,9 @@ def slug(phones):
         if p in ('AO', 'AA') and nxt == 'R': out.append('ō' if p == 'AO' else 'á'); i += 1; continue
         if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph) and i > 0 and ph[i - 1] == 'B': i += 1; continue  # table → tēbl, but people → pīpxl
         out.append(C.get(p) or V.get(p, '?')); i += 1
-    return join(out)   # w·ī, n·g…: separate glyphs, as she writes them
+    for j in range(len(out) - 1):                  # w then ī is the wī glyph (we, wheel, week, weird)
+        if out[j] == 'w' and out[j + 1] == 'ī': out[j:j + 2] = ['wī', '']
+    return join([u for u in out if u])   # n·g, r·r…: separate glyphs where two would read as one
 
 V_SET = set(V)
 

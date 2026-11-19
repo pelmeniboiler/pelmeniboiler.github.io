@@ -2,7 +2,7 @@
  "article": "graflect-2",
  "kind": "graflect",
  "title": "Graflect proofreading",
- "round": 2,
+ "round": 3,
  "langs": [
   "gt"
  ],
@@ -121,6 +121,16 @@
      "who": "claude",
      "round": 1,
      "text": "Kept: “we” uses the wī glyph. Other words with the wī sound (wheel, week, weird) are still w·ī; tell me if they should use it too."
+    },
+    {
+     "who": "wendy",
+     "round": 2,
+     "text": "wheel, week and weird all use the wī glyph"
+    },
+    {
+     "who": "claude",
+     "round": 2,
+     "text": "Done: w then ī is always the wī glyph now: 14 words in the articles (wheel, week, weekend, weird, sweet, between, wings) and in the converter."
     }
    ],
    "answer": {
@@ -181,6 +191,16 @@
      "who": "claude",
      "round": 1,
      "text": "Done: prxpõršinitlī, with õ as you typed it. Your other “or” words use ō (fōr, kībōrdz), so tell me if õ was a slip."
+    },
+    {
+     "who": "wendy",
+     "round": 2,
+     "text": "ō"
+    },
+    {
+     "who": "claude",
+     "round": 2,
+     "text": "Done: prxpōršinitlī."
     }
    ],
    "answer": {
