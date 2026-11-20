@@ -114,7 +114,8 @@ function initializeRomajiIME() {
         if (!word) return;
         const activeDict = dictionaryManager.getActiveDictionary();
         if (!activeDict) { return; }
-        romajiOutputEditorEl.disabled = true;
+        // Read-only, not disabled: a disabled textarea loses focus, and losing focus resets the builder.
+        romajiOutputEditorEl.readOnly = true;
         builderState = { 
             isActive: true, 
             originalWord: word, 
@@ -221,7 +222,7 @@ function initializeRomajiIME() {
     function resetBuilder() {
         builderState.isActive = false;
         imeFloaterEl.classList.add('hidden');
-        romajiOutputEditorEl.disabled = false;
+        romajiOutputEditorEl.readOnly = false;
         romajiOutputEditorEl.focus();
     }
 
@@ -397,6 +398,9 @@ function initializeRomajiIME() {
             renderOutput();
         }
     });
+
+    // Clicking a suggestion mustn't take focus from the editor (that would reset the builder before the click).
+    imeFloaterEl.addEventListener('mousedown', (e) => e.preventDefault());
 
     copyBtn.addEventListener('click', handleCopy);
 
