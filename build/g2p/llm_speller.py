@@ -11,6 +11,10 @@
 #   fable   claude-fable-5-2
 #   flash   $GEM_MODEL (gemini-2.5-flash)  GEMINI_API_KEY (or the proxy's), sent as x-goog-api-key
 #
+# Without API keys, as subagents in a Claude Code session (build/g2p/subagents.md):
+#   LLM_EXPORT=dir   write dir/<article>.md, the whole request for each held-out article, and ask nothing
+#   LLM_ANSWERS=dir  read the answers from dir/<name>/<article>.json ({word: SLUG}) instead of an API
+#
 # Effort: LLM_EFFORT (default high) for every Claude model, so the tiers are compared at the same setting.
 # Answers are kept in runs/llm-cache/, so a rerun costs nothing. No refusal fallback: a fallback model would
 # answer in another model's place and spoil the comparison, so a refusal is counted (and the words left Latin).
@@ -94,8 +98,21 @@ def clean(s):
     """Her SLUG letters only: anything else would read as Latin."""
     return re.sub(r'[^a-zāēīōūáéíóúäöüæõšžx4·]', '', s.lower().replace(' ', '').replace('ʃ', 'š'))
 
-def spell_words(name, words, hers):
+def request(hers, words):
+    """The whole request as one document, for a subagent: what an API call would send."""
+    return (system(hers) + '\n\n---\n\nSpell each of these words in SLUG, the way she would. Give every word back exactly as written here.\n\n'
+            + '\n'.join(words) + '\n')
+
+def spell_words(name, words, hers, article=None):
     """{word: SLUG} for these words, from the named model, learning from her words (hers: word → SLUG)."""
+    if os.environ.get('LLM_EXPORT'):
+        d = os.environ['LLM_EXPORT']; os.makedirs(d, exist_ok=True)
+        open(os.path.join(d, f'{article}.md'), 'w', encoding='utf-8').write(request(hers, words)); return {}
+    if os.environ.get('LLM_ANSWERS'):
+        path = os.path.join(os.environ['LLM_ANSWERS'], name, f'{article}.json')
+        got = {k.lower(): v for k, v in json.load(open(path, encoding='utf-8')).items()} if os.path.exists(path) else {}
+        if not got: print(f'  no answers from {name} for {article}', file=sys.stderr)
+        return {w: clean(got.get(w, '')) for w in words if clean(got.get(w, ''))}
     if name not in MODELS: sys.exit(f'unknown --llm {name}; one of {", ".join(MODELS)}')
     model, sys_text, out = MODELS[name], system(hers), {}
     cache = os.path.join(ROOT, 'runs', 'llm-cache', name); os.makedirs(cache, exist_ok=True)

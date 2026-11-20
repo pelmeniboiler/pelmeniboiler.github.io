@@ -49,7 +49,8 @@ def asked_for():
 if '--llm' in sys.argv:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
     from llm_speller import spell_words
-    guessed = spell_words(sys.argv[sys.argv.index('--llm') + 1], asked_for(), hers)
+    article = json.loads(next(l for l in open(os.environ['TEST'], encoding='utf-8') if l.strip()))['id'].split(':')[0]
+    guessed = spell_words(sys.argv[sys.argv.index('--llm') + 1], asked_for(), hers, article)
 if '--model' in sys.argv:
     import random, torch
     from g2p_model import load, train as tune, predict

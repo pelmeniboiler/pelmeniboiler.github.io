@@ -1,0 +1,163 @@
+[
+ {
+  "key": "A",
+  "title": "the rules alone",
+  "model": null,
+  "words": 5758,
+  "of": 6167,
+  "exact": 187,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4438,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 27,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "haiku",
+  "title": "the rules, then haiku",
+  "model": "llm:haiku",
+  "words": 5781,
+  "of": 6167,
+  "exact": 191,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4438,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 50,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "haiku+",
+  "title": "haiku before CMUdict",
+  "model": "llm:haiku",
+  "words": 5622,
+  "of": 6167,
+  "exact": 163,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4438,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1143,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 50,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "sonnet",
+  "title": "the rules, then sonnet",
+  "model": "llm:sonnet",
+  "words": 5787,
+  "of": 6167,
+  "exact": 193,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 56,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "sonnet+",
+  "title": "sonnet before CMUdict",
+  "model": "llm:sonnet",
+  "words": 5807,
+  "of": 6167,
+  "exact": 189,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1325,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 56,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "opus",
+  "title": "the rules, then opus",
+  "model": "llm:opus",
+  "words": 5786,
+  "of": 6167,
+  "exact": 191,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 60,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "opus+",
+  "title": "opus before CMUdict",
+  "model": "llm:opus",
+  "words": 5868,
+  "of": 6167,
+  "exact": 212,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1387,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 60,
+    "of": 222
+   }
+  }
+ }
+]
