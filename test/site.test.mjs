@@ -1565,9 +1565,14 @@ try {
             if (/pulls$/.test(u.pathname)) return j({ html_url: 'https://github.com/x/y/pull/1' });
             return j({ message: 'unexpected' }, 500);
         });
+        // A built draft (build/g2p/draft.py) wins over the word list for its piece of text; the rest draft as before.
+        const q0 = JSON.parse(await fs.readFile(path.join(ROOT, 'tools/gt-queue.json'), 'utf-8')).files.sunshine[0].en;
+        await c.route(`${BASE}/tools/gt-drafts.json`, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ segments: { [q0]: 'lüs wait kīkæps ‹test›' } }) }));
         await p.goto(`${BASE}/tools/gt.html`, { waitUntil: 'load' });
         await p.waitForSelector('#queue-list button');
         await p.click('#queue-list button:has-text("sunshine")');
+        const built = await p.evaluate(() => document.getElementById('slug-input').value);
+        await p.click('#skip-btn');
         const first = await p.evaluate(() => ({ slug: document.getElementById('slug-input').value, gt: document.getElementById('graflect-input').value, latin: document.getElementById('queue-status').textContent }));
         let n = 0; while (await p.evaluate(() => !document.getElementById('submit-btn').hidden) && n < 40) { await p.click('#submit-btn'); n++; }
         await p.fill('#gh-token', 'test-token'); await p.dispatchEvent('#gh-token', 'change');
@@ -1576,10 +1581,10 @@ try {
         const sun = tree && JSON.parse(tree.tree.find((t) => t.path === 'localization/sunshine.json').content);
         const left = await p.evaluate(() => localStorage.getItem('pelmeniboiler-gt-queue'));
         await c.close();
-        ok(/[-]/.test(first.gt) && /‹[^›]+›/.test(first.slug) && /Left in Latin/.test(first.latin)
+        ok(built === 'lüs wait kīkæps ‹test›' && /[-]/.test(first.gt) && /‹[^›]+›/.test(first.slug) && /Left in Latin/.test(first.latin)
             && JSON.stringify(committed) === JSON.stringify(['localization/sunshine.json', 'localization/tl-status.json'])
-            && sun && Object.keys(sun.gt).filter((k) => k.startsWith('sunshine_alt')).length === 8 && left === '{}' && !errs.length,
-            `Graflect queue: drafts lines in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ n, committed, left, errs })})`);
+            && sun && Object.keys(sun.gt).filter((k) => k.startsWith('sunshine_alt')).length === 7 && left === '{}' && !errs.length,
+            `Graflect queue: uses a built draft where there is one, drafts the rest in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ built, n, committed, left, errs })})`);
     }
 
     // Translation review: lines with back-translations, questions with options; her answers go back as one commit.

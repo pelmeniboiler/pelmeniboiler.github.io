@@ -98,6 +98,19 @@ jobs:
       - name: Build site (manifest, feeds, per-language pages, sitemap)
         run: npm run build
 
+      # Graflect drafts for the queue in tools/gt.html: her words, then CMUdict through her
+      # rules (build/g2p/draft.py). A test on one article for now. Never blocks a deploy.
+      - name: Cache CMUdict
+        uses: actions/cache@v4
+        with:
+          path: ~/cmudict.dict
+          key: cmudict-v1
+      - name: Draft Graflect for the queue
+        run: |
+          [ -s ~/cmudict.dict ] || curl -sSfL https://raw.githubusercontent.com/cmusphinx/cmudict/master/cmudict.dict -o ~/cmudict.dict
+          python3 build/g2p/draft.py ~/cmudict.dict _site/tools/gt-drafts.json --only eink \
+            || echo "::warning::Graflect drafts were not made; the queue drafts from the word list."
+
       # The build writes only to /_site. If it ever touches a source file again,
       # fail here rather than let the sources drift.
       - name: Sources untouched by the build
