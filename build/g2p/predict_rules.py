@@ -14,6 +14,17 @@ from cmu2slug_lib import slug, load_cmu
 def strip(s): return re.sub(r'&\w+;', ' ', re.sub(r'<[^>]+>', ' ', s))
 def sentences(s): return re.split(r'[.!?;:]+\s', strip(s))
 WORD = re.compile(r"[A-Za-z][A-Za-z'’]*")
+NAME = re.compile(r"[A-Za-z][A-Za-z0-9'’]*(?:[-.][A-Za-z0-9]+)*")   # a word, a hyphenated name, or a dotted name
+
+def kept_compound(m, keep_latin):
+    """Is this word part of a hyphenated name she keeps in Latin (E-Ink, also in E-Ink-like)?"""
+    s, a, b = m.string, m.start(), m.end()
+    while a > 0 and (s[a - 1].isalnum() or s[a - 1] == '-'): a -= 1
+    while b < len(s) and (s[b].isalnum() or s[b] == '-'): b += 1
+    parts = s[a:b].strip('-').lower().split('-')
+    if len(parts) < 2: return False
+    here = s[a:m.start()].strip('-').count('-') + (1 if s[a:m.start()].strip('-') else 0)
+    return any('-'.join(parts[i:j]) in keep_latin for i in range(len(parts)) for j in range(i + 2, len(parts) + 1) if i <= here < j)
 VOWELS = tuple('aeiouxæäáōõöīüē4')
 
 def learn(lines):
@@ -30,10 +41,16 @@ def learn(lines):
                 if '‹' in b: continue   # Latin she kept: learned below, not as a spelling
                 a = re.sub(r"[^A-Za-z']", '', a).lower(); b = re.sub(r'[^\w\u00C0-\u024F4·␣]', '', b).strip('·')
                 if a and b: votes[a][b] += 1
-        # Latin she kept: English words that appear as-is in her Graflect line.
-        kept = {w.lower() for w in re.findall(r'[A-Za-z]{2,}', re.sub(r'<[^>]+>|&\w+;', ' ', l['gt']))}
-        for w in WORD.findall(strip(l['en'])):
-            if w.lower() in kept: latin[w.lower()] += 1
+        # Latin she kept: English words that appear as-is in her Graflect line. A hyphenated name is kept
+        # whole (E-Ink, not "ink"); a dotted name (program.launcher) teaches nothing: the dotted rule has it.
+        kept = set()
+        for t in NAME.findall(re.sub(r'<[^>]+>|&\w+;', ' ', l['gt'])):
+            if '.' not in t and (len(t) > 1 or '-' in t): kept.add(t.lower())
+        for t in NAME.findall(strip(l['en'])):
+            if '.' in t: continue
+            if t.lower() in kept: latin[t.lower()] += 1
+            elif '-' not in t and t.lower().replace('’', "'") in kept: latin[t.lower()] += 1
+            elif '-' in t: latin.update(p for p in t.lower().split('-') if p in kept)
     hers = {}
     for w, c in votes.items():
         b, n = c.most_common(1)[0]
@@ -49,17 +66,21 @@ def spell_line(en, spell):
     out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=(?:<[^>]+>)*(?:[' + ''.join(VOWELS) + ']|‹[AEIOUaeiou]))', r'dhī\1', out)
     return re.sub(r'(?<![^\W\d_])hæv(\s+)(?=tü(?![^\W\d_]))', r'hæf\1', out)
 
-def latin_name(m):
-    """Words she keeps in Latin unless she has spelled them: two or more capitals (PCB, KiCad, MuseScore),
-    and the ending of a dotted name (system.settings, music.ogg)."""
-    w, i, s = m.group(0), m.start(), m.string
-    if sum(c.isupper() for c in w) >= 2: return True
+def latin_place(m):
+    """Latin wherever it stands, even a word she spells elsewhere: the ending of a dotted name
+    (system.settings, eink.article, music.ogg), and code after @ (@media)."""
+    i, s = m.start(), m.string
+    if i >= 1 and s[i - 1] == '@': return True
     return i >= 2 and s[i - 1] == '.' and s[i - 2].isalnum()
+
+def latin_name(m):
+    """A word she hasn't written stays Latin with two or more capitals (PCB, KiCad, MuseScore), or in a Latin place."""
+    return sum(c.isupper() for c in m.group(0)) >= 2 or latin_place(m)
 
 def speller(hers, keep_latin, cmu=None, guessed=None):
     def spell(m):
         w = m.group(0); k = w.lower().replace('’', "'")
-        if k in keep_latin: return '‹' + w + '›'
+        if k in keep_latin or kept_compound(m, keep_latin) or latin_place(m): return '‹' + w + '›'
         if k in hers: return hers[k]
         if k.replace("'", '') in hers: return hers[k.replace("'", '')]
         if latin_name(m): return '‹' + w + '›'

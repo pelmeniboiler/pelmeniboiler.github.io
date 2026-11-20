@@ -11,6 +11,7 @@ def slug(phones):
     i = 0
     while i < len(ph):
         p, nxt = ph[i], (ph[i + 1] if i + 1 < len(ph) else '')
+        if i == 0 and p == 'ER' and stress[0] == '0' and nxt in V_SET: out += ['x', 'r']; i += 1; continue   # arranged → xrēnjd, originally → xrijinxlī
         if p == 'T' and nxt == 'R': out.append('c'); i += 1; continue          # trip → crip (t before r is c)
         if p == 'D' and nxt == 'R': out.append('j'); i += 1; continue          # dream → jrīm (d before r is j, and the r stays)
         if p == 'AE' and nxt in ('N', 'M'): out.append('ä'); i += 1; continue   # can, man, hand, translate, random → ä

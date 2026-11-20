@@ -53,7 +53,7 @@ if '--model' in sys.argv:
 
 def word(w, m=None):
     k = w.lower().replace('’', "'")
-    if k in keep: return '‹' + w + '›', 'latin'
+    if k in keep or (m is not None and hasattr(pr, 'kept_compound') and (pr.kept_compound(m, keep) or pr.latin_place(m))): return '‹' + w + '›', 'latin'
     if k in hers: return hers[k], 'hers'
     if k.replace("'", '') in hers: return hers[k.replace("'", '')], 'hers'
     if m is not None and hasattr(pr, 'latin_name') and pr.latin_name(m): return '‹' + w + '›', 'latin'
