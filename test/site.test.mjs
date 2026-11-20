@@ -1845,6 +1845,28 @@ try {
             `Sofrut II: formatting across paragraphs, dialogs keep the selection, nested blocks unwrapped (${JSON.stringify({ across: across.slice(0, 220), nested })})`);
     }
 
+    // type.ime on the Graflect article: space opens the chooser and it stays open (a disabled editor used to
+    // lose focus, which reset it at once); Enter takes the dictionary's spelling; a mouse click picks too.
+    {
+        const c = await browser.newContext({ viewport: { width: 1300, height: 900 } });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/blog/graflect/en/`, { waitUntil: 'load' });
+        await p.waitForFunction(() => [...document.querySelectorAll('#tray-icons .tray-icon')].some((b) => /ime/.test(b.title)));
+        await p.evaluate(() => [...document.querySelectorAll('#tray-icons .tray-icon')].find((b) => /ime/.test(b.title)).click());
+        const ed = '#romaji-output-editor', shown = () => p.$eval('#ime-floater', (f) => getComputedStyle(f).display !== 'none');
+        await p.click(ed); await p.keyboard.type('the'); await p.keyboard.press('Space'); await p.waitForTimeout(150);
+        const open = await shown();
+        await p.keyboard.press('Enter'); await p.waitForTimeout(150);
+        const first = await p.$eval(ed, (e) => e.value);
+        await p.keyboard.type('the'); await p.keyboard.press('Space'); await p.waitForTimeout(150);
+        await p.click('#suggestions-dropdown .suggestion-item'); await p.waitForTimeout(150);
+        const second = await p.$eval(ed, (e) => e.value);
+        await c.close();
+        const glyphs = (s) => [...s].filter((ch) => ch >= '' && ch <= '').length;
+        ok(open && glyphs(first) > 0 && first.endsWith(' ') && !/the/.test(second) && glyphs(second) === 2 * glyphs(first) && errs.length === 0,
+            `type.ime: the chooser stays open; Enter and a click both write Graflect (${JSON.stringify({ open, first, second, errs })})`);
+    }
+
     await browser.close();
     server.close();
 }
