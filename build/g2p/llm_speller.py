@@ -84,9 +84,9 @@ def ask_gemini(model, sys_text, words):
                                  headers={'content-type': 'application/json', 'x-goog-api-key': os.environ.get('GEMINI_API_KEY', 'set-by-proxy')})
     for attempt in range(5):
         try:
-            d = json.load(urllib.request.urlopen(req, timeout=300)); break
+            d = json.load(urllib.request.urlopen(req, timeout=900)); break
         except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 503) and attempt < 4: time.sleep(10 * (attempt + 1)); continue
+            if e.code in (429, 500, 503) and attempt < 4: time.sleep(60 * (attempt + 1)); continue
             raise
     cand = (d.get('candidates') or [{}])[0]
     if cand.get('finishReason') not in (None, 'STOP'): return {}, {'refusal': cand.get('finishReason')}
