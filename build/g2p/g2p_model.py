@@ -70,6 +70,16 @@ def predict(model, words, sv, tv, device='cpu', batch=512, max_len=40):
             row = row[1:]; out.append(tv.decode(row[: row.index(EOS)] if EOS in row else row))
     return out
 
+@torch.no_grad()
+def score(model, pairs, sv, tv, device='cpu', batch=512):
+    """How likely the model finds each (word, SLUG) spelling: the summed log-probability of its characters."""
+    model.eval(); out = []
+    for src, tin, tout in batches(pairs, sv, tv, batch, shuffle=False):
+        src, tin, tout = src.to(device), tin.to(device), tout.to(device)
+        lp = torch.log_softmax(model(src, tin), -1).gather(-1, tout[..., None])[..., 0]
+        out += (lp * (tout != PAD)).sum(-1).tolist()
+    return out
+
 def save(path, model, sv, tv, cfg): torch.save({'model': model.state_dict(), 'src': sv.state(), 'tgt': tv.state(), 'cfg': cfg}, path)
 def load(path, device='cpu'):
     ck = torch.load(path, map_location=device)
