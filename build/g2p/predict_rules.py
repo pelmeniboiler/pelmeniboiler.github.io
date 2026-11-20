@@ -10,6 +10,7 @@
 import json, os, re, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
+from slugmap import join
 
 def strip(s): return re.sub(r'&\w+;', ' ', re.sub(r'<[^>]+>', ' ', s))
 def sentences(s): return re.split(r'[.!?;:]+\s', strip(s))
@@ -85,8 +86,40 @@ def speller(hers, keep_latin, cmu=None, guessed=None):
         if k.replace("'", '') in hers: return hers[k.replace("'", '')]
         if latin_name(m): return '‹' + w + '›'
         if cmu is not None and k in cmu: return slug(cmu[k])
+        c = inflected(k) or compound(k)
+        if c: return c
         if guessed and guessed.get(k): return guessed[k]
         return '‹' + w + '›'
+    def known(k):
+        if k in hers: return hers[k]
+        if cmu is not None and k in cmu and len(k) > 2: return slug(cmu[k])
+    def inflected(k):
+        """A known word plus an ending, by sound: kindles = kindle + z, pinkies, formatted = format + id, horrifically."""
+        if "'" in k: return None
+        voiceless = lambda x: x.rstrip('·')[-1:] in set('ptkfsšc') or x.endswith('th')
+        tries = []
+        if k.endswith('ies'): tries.append((k[:-3] + 'y', 'z'))
+        if k.endswith('es'): tries.append((k[:-2], 'iz'))
+        if k.endswith('s'): tries.append((k[:-1], None))
+        if k.endswith('ed'): tries += [(k[:-2], 'ed'), (k[:-1], 'ed'), (k[:-3], 'ed') if k[-3:-2] == k[-4:-3] else (None, None)]
+        if k.endswith('ally'): tries.append((k[:-4], 'lī'))
+        if k.endswith('ly'): tries.append((k[:-2], 'lī'))
+        for stem, end in tries:
+            st = known(stem) if stem and len(stem) > 2 else None
+            if not st: continue
+            if end is None: end = 's' if voiceless(st) else 'z'
+            if end == 'iz' and not st.rstrip('·')[-1:] in set('szšžcj'): continue
+            if end == 'ed': end = 'id' if st.rstrip('·')[-1:] in ('t', 'd') else 't' if voiceless(st) else 'd'
+            return join([st, end])
+    SUFFIXY = {'les', 'ies', 'als', 'ers', 'ous', 'ing', 'ism', 'ist', 'ity', 'ive', 'ful', 'ess', 'ent', 'ant', 'ate', 'ize', 'ise', 'ion', 'ian', 'ial'}
+    def compound(k):
+        """A word nobody knows that is two words somebody does: whisper + net, font + stack, dead + arms."""
+        if "'" in k or len(k) < 6: return None
+        ok = lambda part, first: re.search('[aeiouy]', part) and (len(part) > 3 or (part in hers if first else part not in SUFFIXY))
+        for i in sorted(range(3, len(k) - 2), key=lambda i: -min(i, len(k) - i)):   # the most even split first
+            if not (ok(k[:i], True) and ok(k[i:], False)): continue
+            a, b = known(k[:i]), known(k[i:])
+            if a and b: return join([a, b])
     return spell
 
 def main():

@@ -53,6 +53,7 @@ function glyphPairs(a, b) {
 function category(t, r) {
     if (t.src === 'context') return 'context';
     if (t.src === 'dict') return 'dict';
+    if (t.src === 'compound') return 'model_oov';   // an unknown word spelled from known parts, wrong
     if (t.src === 'latin') return 'latin';
     if (t.src === 'hers') return t.votes[r] ? 'hers_variant' : 'hers_new';
     if (Object.keys(t.votes).length) return 'seen_unlearned';
