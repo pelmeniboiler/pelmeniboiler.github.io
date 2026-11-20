@@ -47,7 +47,7 @@ async function validateGtInFile(filePath) {
     for (const key of Object.keys(gtLocalization)) {
         const value = gtLocalization[key];
         const plainTextValue = value.replace(/<[^>]*>/g, ' ');
-        const textWithPunctuationAsSpaces = plainTextValue.replace(/[.,;:'"!?()\[\]{}\-_*\\/–—&]/g, ' ');
+        const textWithPunctuationAsSpaces = plainTextValue.replace(/[.,;:'"!?()\[\]{}\-_*\\/–—&…‘’“”«»@]/g, ' ');
         const words = textWithPunctuationAsSpaces.split(/\s+/);
 
         for (const word of words) {
