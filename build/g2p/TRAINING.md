@@ -147,3 +147,16 @@ No GPU; it needs `pip install anthropic` and two keys set in the shell (never pa
 About $20–40 in API calls (mostly Fable and Opus); answers are cached in `runs/llm-cache/`, so a rerun is free.
 Every Claude model runs at the same effort (`LLM_EFFORT`, default high); Gemini is `GEM_MODEL` (default
 gemini-2.5-flash). Report every row, and the refusals in `runs/llm-cache/*-usage.jsonl` if there are any.
+
+## The spelling test: Kanna's answers
+
+Wendy spells 80 words blind on /tools/spelltest.html (40 that neither CMUdict nor her articles know, 40 that
+only CMUdict knows). The language models and the rules have answered already (sealed in
+`build/g2p/spelltest/answers.sealed.json`). Kanna's answers, on Geniza, before or after Wendy's (Kanna
+never sees hers):
+
+    git pull
+    python build/g2p/spelltest.py kanna cmudict.dict g2p.pt
+
+Then commit `build/g2p/spelltest/answers.sealed.json` on a branch `geniza/spelltest-<date>`, push, and say so.
+Don't open the sealed answers or wendy.json, and don't grade: the main session does that.
