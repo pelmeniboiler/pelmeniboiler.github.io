@@ -1673,10 +1673,16 @@ try {
         await p.$eval('#zh-daylight', (s) => s.scrollIntoView({ block: 'center' }));
         // LCD: on screen, it walks through the year by itself.
         const w0 = (await read()).date; await p.waitForTimeout(1200); const w1 = (await read()).date;
-        const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
-        // Focusing the handle stops the walk (as grabbing does), so the press can't miss a moving target.
-        await p.focus('#zh-daylight .zh-knob'); await p.locator('#zh-daylight .zh-knob').hover(); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
-        const june = await read();
+        // Focusing the handle stops the walk (as grabbing does), so the press can't miss a moving target. The
+        // target is measured after that (the page can still shift as it settles), and a missed press is retried.
+        let june;
+        for (let tries = 0; tries < 3; tries++) {
+            await p.focus('#zh-daylight .zh-knob'); await p.waitForTimeout(100);
+            const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
+            await p.locator('#zh-daylight .zh-knob').hover(); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
+            june = await read();
+            if (/(Sivan|Tamuz|Tammuz)/.test(june.date)) break;
+        }
         await p.waitForTimeout(800); const held = (await read()).date === june.date; // grabbed: it stays put
         await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');
         const later = await read();
