@@ -1,0 +1,140 @@
+[
+ {
+  "key": "A",
+  "title": "the rules alone",
+  "model": null,
+  "words": 5758,
+  "of": 6167,
+  "exact": 187,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4438,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 27,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "B",
+  "title": "the rules, then Kanna",
+  "model": "kanna",
+  "words": 5772,
+  "of": 6167,
+  "exact": 189,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1292,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 42,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "C",
+  "title": "Kanna before CMUdict",
+  "model": "kanna",
+  "words": 5645,
+  "of": 6167,
+  "exact": 175,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1175,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 42,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "D",
+  "title": "Kanna alone",
+  "model": "kanna",
+  "words": 5589,
+  "of": 6167,
+  "exact": 137,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4364,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1175,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 42,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "C'",
+  "title": "Kanna before CMUdict, blind",
+  "model": "blind",
+  "words": 5616,
+  "of": 6167,
+  "exact": 163,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1152,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 39,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "D'",
+  "title": "Kanna alone, blind",
+  "model": "blind",
+  "words": 5559,
+  "of": 6167,
+  "exact": 122,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4360,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1152,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 39,
+    "of": 222
+   }
+  }
+ }
+]
