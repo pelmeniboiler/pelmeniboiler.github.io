@@ -1,5 +1,6 @@
 # build/g2p/draft.py — Graflect drafts for the queue in tools/gt.html, from the rules system
-# (her words from every article, then CMUdict through her rules, then the model if given).
+# (her hand-made dictionary and her words from every article, then CMUdict through her rules,
+# then the model's words if there are any).
 #
 #   python3 build/g2p/draft.py cmudict.dict _site/tools/gt-drafts.json [--only eink,history]
 #   python3 build/g2p/draft.py cmudict.dict drafts.json --model g2p.pt     (on Geniza)
@@ -7,11 +8,12 @@
 # With --model, the model (fine-tuned once on all her words) spells the queue's words that neither her
 # articles nor CMUdict know, and those spellings are saved to build/g2p/model-words.json (commit it).
 # Without --model, that file is used if it's there: so GitHub's build, which has no GPU, gets them too.
+# Fine-tuning epochs: G2P_EPOCHS (default 10).
 #
 # The queue drafts each line in pieces: the text between the line's top-level HTML elements.
 # So the drafts are keyed by that text, exactly as the browser reads it, and the queue uses one
 # whenever it has it (else it drafts from her word list, as before). The build workflow runs this
-# after `npm run build`; Fine-tuning only happens with --model (on Geniza; G2P_EPOCHS, default 10).
+# after `npm run build`. build/g2p/geniza.py uses the same pieces to write whole articles.
 import json, os, re, sys, glob
 from html.parser import HTMLParser
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..', '..')
@@ -22,6 +24,8 @@ from predict_rules import learn, speller, spell_line, WORD
 
 SKIP = {'tl-status', 'coal', 'gtgr'}   # as the queue (build/graflect-words.mjs)
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
+GLYPH = re.compile('[-]')
+WORDS_PATH = os.path.join(HERE, 'model-words.json')
 
 class Pieces(HTMLParser):
     """Text nodes directly in <body>, as DOMParser + body.childNodes gives them to the queue."""
@@ -43,11 +47,9 @@ class Pieces(HTMLParser):
 def pieces(html):
     p = Pieces(); p.feed(html); p.close(); p.flush(); return p.out
 
-def main():
-    cmu_path, out_path = sys.argv[1], sys.argv[2]
-    opt = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
-    only = set(opt('--only').split(',')) if opt('--only') else None
-    train, queue = [], {}
+def articles(only=None):
+    """(train, missing): her Graflect lines as {en, gt, slug}, and {file: [(key, en)]} still without Graflect."""
+    train, missing = [], {}
     for f in sorted(glob.glob(os.path.join(ROOT, 'localization', '*.json'))):
         name = os.path.basename(f)[:-5]
         if name in SKIP: continue
@@ -56,38 +58,54 @@ def main():
         en, gt = d.get('en') or {}, d.get('gt') or {}
         for k, e in en.items():
             g = str(gt.get(k) or '')
-            if g.strip() and re.search('[-]', g): train.append({'en': e, 'gt': g, 'slug': to_slug(g)})
-            elif str(e).strip() and not g.strip() and (only is None or name in only): queue.setdefault(name, []).append(e)
+            if g.strip() and GLYPH.search(g): train.append({'en': e, 'gt': g, 'slug': to_slug(g)})
+            elif str(e).strip() and not g.strip() and (only is None or name in only): missing.setdefault(name, []).append((k, e))
+    return train, missing
+
+def hand_words():
+    """Her hand-made dictionary (defaultWordMap in graflect-data.js), in SLUG. It wins, as on the site."""
+    src = open(os.path.join(ROOT, 'scripts/blog/demos/graflect-data.js'), encoding='utf-8').read()
+    i = src.index('const defaultWordMap = {'); body = src[i:src.index('};', i)]
+    return {w: to_slug(g) for w, g in re.findall(r"'([a-z']+)':\s*'([^']*)'", body) if g.strip()}
+
+def system(cmu_path, texts, ckpt=None):
+    """The speller for these texts: her words (hand-made first), CMUdict through her rules, the model's words."""
+    train, _ = articles()
     hers, keep_latin = learn(train)
+    hers.update(hand_words())
     cmu = load_cmu(cmu_path)
-    segs = sorted({s for lines in queue.values() for e in lines for s in pieces(str(e))})
-    words_path = os.path.join(HERE, 'model-words.json')
-    guessed = {}
-    if not opt('--model') and os.path.exists(words_path):
-        guessed = json.load(open(words_path, encoding='utf-8')).get('words', {})
-    if opt('--model'):
+    guessed = json.load(open(WORDS_PATH, encoding='utf-8')).get('words', {}) if os.path.exists(WORDS_PATH) else {}
+    if ckpt:
         # The model, fine-tuned once on all her words, for words neither her articles nor CMUdict know.
         import random, torch
         from g2p_model import load, train as tune, predict
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         random.seed(0); torch.manual_seed(0)
-        model, sv, tv, cfg = load(opt('--model'), device)
+        model, sv, tv, cfg = load(ckpt, device)
         mine = [(w, x) for w, x in hers.items() if w.replace("'", '').isalpha()]
         some = random.sample([(w, slug(p)) for w, p in cmu.items() if w.isalpha()], min(len(mine) * 2, 20000))
         tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '10')), lr=2e-4, batch=128, device=device, log=lambda s: None)
-        words = sorted({m.group(0).lower().replace('’', "'") for s in segs for m in WORD.finditer(s)})
+        words = sorted({m.group(0).lower().replace('’', "'") for t in texts for m in WORD.finditer(re.sub(r'<[^>]+>|&#?\w+;', ' ', t))})
         need = [w for w in words if w not in hers and w.replace("'", '') not in hers and w not in keep_latin and w not in cmu]
-        guessed = dict(zip(need, predict(model, need, sv, tv, device=device)))
-        old = json.load(open(words_path, encoding='utf-8')).get('words', {}) if os.path.exists(words_path) else {}
-        json.dump({'note': 'The model\'s spellings (SLUG) of queue words that neither her articles nor CMUdict know; made by draft.py --model.',
-                   'words': dict(sorted({**old, **guessed}.items()))}, open(words_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    spell = speller(hers, keep_latin, cmu, guessed)
+        new = dict(zip(need, predict(model, need, sv, tv, device=device)))
+        guessed = {**guessed, **new}
+        json.dump({'note': 'The model\'s spellings (SLUG) of words that neither her articles nor CMUdict know; made on Geniza.',
+                   'words': dict(sorted(guessed.items()))}, open(WORDS_PATH, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    used = lambda ts: sorted({m.group(0).lower() for t in ts for m in WORD.finditer(t) if m.group(0).lower() in guessed and m.group(0).lower() not in hers and m.group(0).lower() not in cmu})
+    return speller(hers, keep_latin, cmu, guessed), used
+
+def main():
+    cmu_path, out_path = sys.argv[1], sys.argv[2]
+    opt = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
+    only = set(opt('--only').split(',')) if opt('--only') else None
+    _, missing = articles(only)
+    segs = sorted({s for lines in missing.values() for _, e in lines for s in pieces(str(e))})
+    spell, used = system(cmu_path, segs, opt('--model'))
     drafts = {s: spell_line(s, spell) for s in segs}
     os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
-    used = sorted({w for s in segs for w in (m.group(0).lower().replace('’', "'") for m in WORD.finditer(s)) if w in guessed and w not in hers and w not in cmu})
-    json.dump({'segments': drafts, 'files': sorted(queue), 'model_words': used}, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False)
-    print(f'{len(drafts)} draft pieces for {sum(len(v) for v in queue.values())} lines in {len(queue)} file(s) → {out_path}'
-          + (f'; {len(used)} words spelled by the model' if used else ''))
+    json.dump({'segments': drafts, 'files': sorted(missing), 'model_words': used(segs)}, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False)
+    print(f'{len(drafts)} draft pieces for {sum(len(v) for v in missing.values())} lines in {len(missing)} file(s) → {out_path}'
+          + (f'; {len(used(segs))} words spelled by the model' if used(segs) else ''))
 
 if __name__ == '__main__':
     main()
