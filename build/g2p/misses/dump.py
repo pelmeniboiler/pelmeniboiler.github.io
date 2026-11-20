@@ -4,6 +4,7 @@
 #   python3 dump.py REPO CMU --model g2p.pt [--model-first]    the model, as build/g2p/predict_model.py runs it
 #                                                              (fine-tuned on TRAIN; G2P_EPOCHS as there)
 #   python3 dump.py REPO CMU --model g2p.pt --model-only       the model spells every word: no lookups, no rules
+#   python3 dump.py REPO CMU --llm opus [--model-first]        a large language model in Kanna's place (../llm_speller.py)
 # Each word also gets a group, whatever spelled it: hers (in her other articles), cmu (only CMUdict knows it),
 # unknown (neither), or kept (she keeps it in Latin). build/g2p/kanna_vs_rules.py scores by group.
 import json, os, re, sys, collections
@@ -41,6 +42,14 @@ votes = votes_of(train)
 # The model: fine-tuned on her words exactly as predict_model.py does, then asked for the words it would be asked for.
 guessed, MODEL_ONLY = {}, '--model-only' in sys.argv
 MODEL_FIRST = '--model-first' in sys.argv or MODEL_ONLY
+def asked_for():
+    tests = [json.loads(l) for l in open(os.environ['TEST'], encoding='utf-8') if l.strip()]
+    ws = sorted({m.group(0).lower().replace('’', "'") for t in tests for p in re.split(r'(<[^>]+>|&#?\w+;)', t['en']) if not p.startswith(('<', '&')) for m in re.finditer(r"[A-Za-z][A-Za-z'’]*", p)})
+    return ws if MODEL_ONLY else [w for w in ws if w not in hers and w.replace("'", '') not in hers and w not in keep and (MODEL_FIRST or w not in cmu)]
+if '--llm' in sys.argv:
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+    from llm_speller import spell_words
+    guessed = spell_words(sys.argv[sys.argv.index('--llm') + 1], asked_for(), hers)
 if '--model' in sys.argv:
     import random, torch
     from g2p_model import load, train as tune, predict

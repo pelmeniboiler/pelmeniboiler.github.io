@@ -134,3 +134,16 @@ CMUdict (C), Kanna alone with no lookups or rules (D), and C and D again with `g
 which has never seen a CMUdict word Wendy has written. Each is scored overall and on three kinds of word: hers
 (in her other articles), only CMUdict knows, nobody knows. It pushes `results/<date>/kanna-vs-rules.md` on
 `geniza/kanna-<date>`. Run it once and report every row; don't rerun to pick a better one.
+
+## Large language models in Kanna's place
+
+`kanna_vs_rules.py` can also put a large language model where Kanna goes (`build/g2p/llm_speller.py`): it gets the
+SLUG table, her rules and every word she has spelled in the articles it may learn from, and spells the rest.
+No GPU; it needs `pip install anthropic` and two keys set in the shell (never pasted into chat or committed):
+`$env:ANTHROPIC_API_KEY` for Claude and `$env:GEMINI_API_KEY` for Gemini. Then:
+
+    python build/g2p/kanna_vs_rules.py cmudict.dict --only A --llms haiku,sonnet,opus,fable,flash --name llms-vs-rules
+
+About $20–40 in API calls (mostly Fable and Opus); answers are cached in `runs/llm-cache/`, so a rerun is free.
+Every Claude model runs at the same effort (`LLM_EFFORT`, default high); Gemini is `GEM_MODEL` (default
+gemini-2.5-flash). Report every row, and the refusals in `runs/llm-cache/*-usage.jsonl` if there are any.

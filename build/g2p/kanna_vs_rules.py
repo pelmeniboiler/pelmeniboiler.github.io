@@ -2,6 +2,8 @@
 #
 #   python build/g2p/kanna_vs_rules.py cmudict.dict            all contestants (an hour or so on the P40)
 #   options: --no-git, --only A,D (some contestants), --kanna path.pt (default g2p.pt), --tiny (a CPU smoke test)
+#   python build/g2p/kanna_vs_rules.py cmudict.dict --only A --llms haiku,sonnet,opus,fable,flash --name llms-vs-rules
+#            large language models in Kanna's place (build/g2p/llm_speller.py; needs their API keys, not a GPU)
 #
 # Every contestant is graded the same way as everything else (build/gt-eval.mjs, through
 # build/g2p/misses/collect.mjs): each article is left out in turn, the system learns her other articles and
@@ -12,6 +14,7 @@
 #   C  Kanna before CMUdict      her words, then Kanna for every other word
 #   D  Kanna alone               Kanna spells every word: no lookups, no rules
 #   C', D'  the same with g2p-blind.pt, a model pretrained without any CMUdict word she has written
+#   with --llms: for each model, "the rules, then it" (as B) and "it before CMUdict" (as C)
 #
 # Scores are split by kind of word, whatever spelled it:
 #   hers     she wrote it in another article (the rules copy her; Kanna learned it in fine-tuning)
@@ -67,14 +70,17 @@ def main():
         if git('status', '--porcelain', '--untracked-files=no'): sys.exit('The repo has uncommitted changes; commit or stash them first.')
         git('checkout', 'main'); git('pull', '--ff-only'); print('Pulled main:', git('log', '-1', '--format=%h %s'))
     todo = [c for c in CONTESTANTS if only is None or c[0] in only]
+    for n in (opt('--llms') or '').split(','):
+        if n: todo += [(n, f'the rules, then {n}', 'llm:' + n, []), (n + '+', f'{n} before CMUdict', 'llm:' + n, ['--model-first'])]
+    report = opt('--name') or 'kanna-vs-rules'
     if any(c[2] == 'kanna' for c in todo) and not os.path.exists(kanna): sys.exit(f'Kanna is not at {kanna}; pass --kanna path.pt')
     if any(c[2] == 'blind' for c in todo) and not os.path.exists(blind): make_blind(cmu_path, blind, tiny)
     env = {**os.environ, 'G2P_EPOCHS': os.environ.get('G2P_EPOCHS', '1' if tiny else '10')}
     runs = os.path.join(ROOT, 'runs', 'kanna'); os.makedirs(runs, exist_ok=True)
     results = []
     for key, title, model, flags in todo:
-        name = 'contestant-' + key.replace("'", 'b')
-        cmd = [sys.executable, os.path.join(HERE, 'misses', 'dump.py'), ROOT, cmu_path, *(['--model', kanna if model == 'kanna' else blind] if model else []), *flags]
+        name = 'contestant-' + key.replace("'", 'b').replace('+', '-first')
+        cmd = [sys.executable, os.path.join(HERE, 'misses', 'dump.py'), ROOT, cmu_path, *(['--llm', model[4:]] if model and model.startswith('llm:') else ['--model', kanna if model == 'kanna' else blind] if model else []), *flags]
         print(f'\n{key}: {title}')
         subprocess.run(['node', os.path.join(HERE, 'misses', 'collect.mjs'), ROOT, name, runs, '--', *cmd], cwd=ROOT, env=env, check=True)
         run = json.load(open(os.path.join(runs, f'{name}.json'), encoding='utf-8'))
@@ -86,8 +92,8 @@ def main():
         r = results[-1]; print(f'{key}: {r["words"]}/{r["of"]} words, {r["exact"]}/{r["lines"]} lines exact')
 
     pc = lambda a, b: f'{100 * a / b:.1f}%' if b else '—'
-    md = [f'# Kanna against the rules, {date}', '',
-          f'Graded leaving one article out; G2P_EPOCHS={env["G2P_EPOCHS"]}; Kanna is {os.path.basename(kanna)}. Every run is listed.', '',
+    md = [f'# {"Kanna" if report == "kanna-vs-rules" else "Models"} against the rules, {date}', '',
+          f'Graded leaving one article out; G2P_EPOCHS={env["G2P_EPOCHS"]}; Kanna is {os.path.basename(kanna)}; LLM_EFFORT={os.environ.get("LLM_EFFORT", "high")}. Every run is listed.', '',
           '| | contestant | words right | lines exact | ' + ' | '.join(f'{g}: {d}' for g, d in GROUPS) + ' |',
           '|---|---|---|---|' + '---|' * len(GROUPS)]
     for r in results:
@@ -96,13 +102,13 @@ def main():
     md += ['', 'Groups count every English word in it, Latin ones included, so they are for comparing contestants, not totals.',
            'For "only CMUdict knows", the fair Kanna is C\' or D\': Kanna herself has memorized CMUdict.']
     out_dir = os.path.join(HERE, 'results', date); os.makedirs(out_dir, exist_ok=True)
-    json.dump(results, open(os.path.join(out_dir, 'kanna-vs-rules.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    open(os.path.join(out_dir, 'kanna-vs-rules.md'), 'w', encoding='utf-8').write('\n'.join(md) + '\n')
+    json.dump(results, open(os.path.join(out_dir, f'{report}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    open(os.path.join(out_dir, f'{report}.md'), 'w', encoding='utf-8').write('\n'.join(md) + '\n')
     print('\n' + '\n'.join(md))
     if use_git:
         git('checkout', '-B', branch)
-        git('add', os.path.join(os.path.relpath(out_dir, ROOT), 'kanna-vs-rules.md'), os.path.join(os.path.relpath(out_dir, ROOT), 'kanna-vs-rules.json'))
-        git('commit', '-m', 'Kanna against the rules: ' + ', '.join(f'{r["key"]} {pc(r["words"], r["of"])}' for r in results))
+        git('add', os.path.join(os.path.relpath(out_dir, ROOT), f'{report}.md'), os.path.join(os.path.relpath(out_dir, ROOT), f'{report}.json'))
+        git('commit', '-m', f'{report}: ' + ', '.join(f'{r["key"]} {pc(r["words"], r["of"])}' for r in results))
         git('push', '-u', 'origin', branch)
         url = re.sub(r'\.git$', '', git('remote', 'get-url', 'origin')).replace('git@github.com:', 'https://github.com/')
         print(f'Pushed {branch}: {url}/tree/{branch}'); git('checkout', 'main')
