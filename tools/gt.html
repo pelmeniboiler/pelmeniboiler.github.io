@@ -929,7 +929,11 @@
             }
             return out;
         };
+        // Drafts from the rules system (her words, then CMUdict through her rules), made by
+        // build/g2p/draft.py after each build, keyed by the piece of text; else the word list below.
+        let builtDrafts = {};
         function draftSlug(text) {
+            if (builtDrafts[text]) return builtDrafts[text];
             // The ending of a dotted name (system.settings, music.ogg) stays English, as in every translation.
             const slug = text.replace(/[A-Za-z][A-Za-z'’]*/g, (w, i, s) => { if (s[i - 1] === '.' && /[A-Za-z0-9]/.test(s[i - 2] || '')) return `‹${w}›`; const g = lookup(w); return g ? toSlug(g) : `‹${w}›`; });
             // "the" before a vowel (or a Latin name starting with one) is dhī, as she writes it.
@@ -952,6 +956,7 @@
                 if (!r.ok) return;
                 queueData = (await r.json()).files || {};
             } catch (_) { return; }
+            try { const d = await fetch('/tools/gt-drafts.json', { cache: 'no-cache' }); if (d.ok) builtDrafts = (await d.json()).segments || {}; } catch (_) { /* none: word-list drafts */ }
             renderQueue();
         }
         function renderQueue() {
