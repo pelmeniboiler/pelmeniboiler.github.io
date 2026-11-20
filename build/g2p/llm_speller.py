@@ -81,12 +81,15 @@ def ask_gemini(model, sys_text, words):
                 'type': 'OBJECT', 'required': ['spellings'], 'properties': {'spellings': {'type': 'ARRAY', 'items': {
                     'type': 'OBJECT', 'required': ['word', 'slug'], 'properties': {'word': {'type': 'STRING'}, 'slug': {'type': 'STRING'}}}}}}}}
     req = urllib.request.Request(f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent', data=json.dumps(body).encode(),
-                                 headers={'content-type': 'application/json', 'x-goog-api-key': os.environ.get('GEMINI_API_KEY', 'set-by-proxy')})
+                                 headers={'content-type': 'application/json', **({'x-goog-api-key': os.environ['GEMINI_API_KEY']} if os.environ.get('GEMINI_API_KEY') else {})})   # else a proxy adds it
     for attempt in range(5):
         try:
             d = json.load(urllib.request.urlopen(req, timeout=900)); break
-        except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 503) and attempt < 4: time.sleep(60 * (attempt + 1)); continue
+        except urllib.error.HTTPError as e:   # busy, overloaded or a dropped gateway: wait and ask again
+            if e.code in (429, 500, 502, 503, 504) and attempt < 4: time.sleep(60 * (attempt + 1)); continue
+            raise
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            if attempt < 4: time.sleep(60 * (attempt + 1)); continue
             raise
     cand = (d.get('candidates') or [{}])[0]
     if cand.get('finishReason') not in (None, 'STOP'): return {}, {'refusal': cand.get('finishReason')}
