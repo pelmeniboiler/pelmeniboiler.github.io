@@ -501,6 +501,7 @@
         let currentLineIndex = 0;
         let graflectTranslations = {};
         let currentLineParts = [];
+        let lineDoc = null;   // the current line, parsed: its text nodes are replaced in place
         let textPartsToTranslate = [];
         let currentTextPartIndex = 0;
         let transliteratedSegments = [];
@@ -659,24 +660,23 @@
             }
 
 
+            // Every piece of text in the line, at any depth (inside <i>, <strong>, <li>, <a>…), is a
+            // segment; code and keyboard keys stay as they are. Each one goes back where it came from.
             const parser = new DOMParser();
-            const doc = parser.parseFromString(`<body>${currentLine.value}</body>`, 'text/html');
-            currentLineParts = Array.from(doc.body.childNodes).map(node => {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    return { type: 'text', content: node.textContent };
-                } else if (node.nodeType === Node.ELEMENT_NODE) {
-                    return { type: 'element', content: node.outerHTML };
-                }
-                return null;
-            }).filter(part => part && (part.type === 'element' || part.content.trim() !== ''));
+            lineDoc = parser.parseFromString(`<body>${currentLine.value}</body>`, 'text/html');
+            const walker = lineDoc.createTreeWalker(lineDoc.body, NodeFilter.SHOW_TEXT, {
+                acceptNode: (n) => (n.textContent.trim() && !n.parentElement.closest('code, pre, kbd, samp, script, style')) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+            });
+            currentLineParts = [];
+            for (let n = walker.nextNode(); n; n = walker.nextNode()) currentLineParts.push({ type: 'text', content: n.textContent, node: n });
 
-            textPartsToTranslate = currentLineParts.filter(p => p.type === 'text');
+            textPartsToTranslate = currentLineParts;
             currentTextPartIndex = 0;
             transliteratedSegments = [];
             
-            if (textPartsToTranslate.length === 0 && currentLineParts.length > 0) {
+            if (textPartsToTranslate.length === 0 && lineDoc.body.innerHTML.trim()) {
                  finalizeLineAndProceed();
-            } else if (textPartsToTranslate.length === 0 && currentLineParts.length === 0) {
+            } else if (textPartsToTranslate.length === 0) {
                  const currentLineKey = allLines[currentLineIndex].key;
                  graflectTranslations[currentLineKey] = "";
                  currentLineIndex++;
@@ -710,16 +710,8 @@
         }
         
         function finalizeLineAndProceed() {
-            let finalString = "";
-            let transliteratedIndex = 0;
-            currentLineParts.forEach(part => {
-                if (part.type === 'text') {
-                    finalString += transliteratedSegments[transliteratedIndex] || '';
-                    transliteratedIndex++;
-                } else {
-                    finalString += part.content;
-                }
-            });
+            textPartsToTranslate.forEach((part, i) => { part.node.textContent = transliteratedSegments[i] || ''; });
+            const finalString = lineDoc.body.innerHTML;
 
             const currentLineKey = allLines[currentLineIndex].key;
             // Only update if there was something to translate

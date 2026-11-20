@@ -10,7 +10,7 @@
 # Without --model, that file is used if it's there: so GitHub's build, which has no GPU, gets them too.
 # Fine-tuning epochs: G2P_EPOCHS (default 10).
 #
-# The queue drafts each line in pieces: the text between the line's top-level HTML elements.
+# The queue drafts each line in pieces: each piece of text in it, at any depth, outside code and keys.
 # So the drafts are keyed by that text, exactly as the browser reads it, and the queue uses one
 # whenever it has it (else it drafts from her word list, as before). The build workflow runs this
 # after `npm run build`. build/g2p/geniza.py uses the same pieces to write whole articles.
@@ -28,21 +28,37 @@ GLYPH = re.compile('[-]')
 WORDS_PATH = os.path.join(HERE, 'model-words.json')
 
 class Pieces(HTMLParser):
-    """Text nodes directly in <body>, as DOMParser + body.childNodes gives them to the queue."""
+    """Every text node of a line, at any depth, outside code and keyboard keys: the queue's segments."""
+    SKIP_IN = {'code', 'pre', 'kbd', 'samp', 'script', 'style'}
     def __init__(self):
-        super().__init__(convert_charrefs=True); self.depth, self.out, self.buf = 0, [], ''
+        super().__init__(convert_charrefs=True); self.stack, self.out, self.buf = [], [], ''
     def handle_starttag(self, tag, attrs):
-        if self.depth == 0: self.flush()
-        if tag not in VOID: self.depth += 1
+        self.flush()
+        if tag not in VOID: self.stack.append(tag)
     def handle_startendtag(self, tag, attrs):
-        if self.depth == 0: self.flush()
+        self.flush()
     def handle_endtag(self, tag):
-        if tag not in VOID and self.depth: self.depth -= 1
+        self.flush()
+        if tag in self.stack: del self.stack[len(self.stack) - 1 - self.stack[::-1].index(tag):]
     def handle_data(self, d):
-        if self.depth == 0: self.buf += d
+        if not self.SKIP_IN.intersection(self.stack): self.buf += d
     def flush(self):
         if self.buf.strip(): self.out.append(self.buf)
         self.buf = ''
+
+def spell_html(html, spell):
+    """A whole line in SLUG: text spelled at any depth, tags kept, code and keyboard keys left as they are."""
+    out, stack = [], []
+    for part in re.split(r'(<[^>]+>)', str(html)):
+        m = re.match(r'<(/?)([a-zA-Z0-9]+)', part)
+        if m:
+            tag = m.group(2).lower()
+            if m.group(1): stack[:] = stack[:len(stack) - 1 - stack[::-1].index(tag)] if tag in stack else stack
+            elif tag not in VOID and not part.endswith('/>'): stack.append(tag)
+            out.append(part)
+        else:
+            out.append(part if Pieces.SKIP_IN.intersection(stack) else spell_line(part, spell))
+    return ''.join(out)
 
 def pieces(html):
     p = Pieces(); p.feed(html); p.close(); p.flush(); return p.out

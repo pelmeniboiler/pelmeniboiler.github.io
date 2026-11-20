@@ -47,6 +47,7 @@ def learn(lines):
         kept = set()
         for t in NAME.findall(re.sub(r'<[^>]+>|&\w+;', ' ', l['gt'])):
             if '.' not in t and (len(t) > 1 or '-' in t): kept.add(t.lower())
+            if '-' in t and '.' not in t: kept.add(t.lower().replace('-', ''))   # E-Ink, so eink too
         for t in NAME.findall(strip(l['en'])):
             if '.' in t: continue
             if t.lower() in kept: latin[t.lower()] += 1
@@ -67,12 +68,13 @@ def spell_line(en, spell):
     out = re.sub(r'(?<![^\W\d_])dhx(\s+)(?=(?:<[^>]+>)*(?:[' + ''.join(VOWELS) + ']|‹[AEIOUaeiou]))', r'dhī\1', out)
     return re.sub(r'(?<![^\W\d_])hæv(\s+)(?=tü(?![^\W\d_]))', r'hæf\1', out)
 
+PLAIN = set(" \t\n\u00a0.,;:!?'\"()[]{}-–—/…“”‘’«»<>&")   # what may touch a word that is spelled
 def latin_place(m):
-    """Latin wherever it stands, even a word she spells elsewhere: the ending of a dotted name
-    (system.settings, eink.article, music.ogg), and code after @ (@media)."""
-    i, s = m.start(), m.string
-    if i >= 1 and s[i - 1] == '@': return True
-    return i >= 2 and s[i - 1] == '.' and s[i - 2].isalnum()
+    """Latin wherever it stands, even a word she spells elsewhere: right after a dot (system.settings,
+    eink.article, .avif), and glued to a digit or a symbol (CT125, 2nd, Y2K, ⌘F, @media, 4mm)."""
+    i, e, s = m.start(), m.end(), m.string
+    if i >= 1 and s[i - 1] == '.': return True
+    return any(c and (c.isdigit() or c not in PLAIN) for c in (s[i - 1] if i else '', s[e] if e < len(s) else ''))
 
 def latin_name(m):
     """A word she hasn't written stays Latin with two or more capitals (PCB, KiCad, MuseScore), or in a Latin place."""
@@ -86,6 +88,7 @@ def speller(hers, keep_latin, cmu=None, guessed=None):
         if k.replace("'", '') in hers: return hers[k.replace("'", '')]
         if latin_name(m): return '‹' + w + '›'
         if cmu is not None and k in cmu: return slug(cmu[k])
+        if not re.search('[aeiouy]', k): return '‹' + w + '›'   # js, pdfs, svgs, llm: letters, not a word
         c = inflected(k) or compound(k)
         if c: return c
         if guessed and guessed.get(k): return guessed[k]

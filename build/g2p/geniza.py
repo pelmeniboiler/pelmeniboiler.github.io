@@ -7,16 +7,17 @@
 # 1. Pulls main (the articles are the repo's localization/*.json, the same files the site is built from).
 # 2. Spells each missing line with the rules system (her hand-made dictionary and her words from every
 #    article, CMUdict through her rules, the name and context rules) and the model for words neither
-#    knows; text inside links and other tags is spelled too, the tags themselves are kept.
+#    knows; text inside links and other tags is spelled too, the tags themselves are kept, and code and
+#    keyboard keys are left alone.
 # 3. Writes the lines into each file's "gt", stamps localization/tl-status.json, saves the model's words
 #    (build/g2p/model-words.json) and a readable SLUG preview (build/g2p/results/<date>/graflect.md).
-# 4. Commits on a new branch geniza/graflect-<date> and pushes it: open the pull request, read the
+# 4. Runs the Graflect check the deploy runs, and stops if it fails.
+# 5. Commits on a new branch geniza/graflect-<date> and pushes it: open the pull request, read the
 #    preview, fix what's wrong, merge. Nothing reaches the site until you merge.
 import datetime, hashlib, json, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, HERE)
-from draft import articles, system, WORDS_PATH
-from predict_rules import spell_line
+from draft import articles, system, spell_html, WORDS_PATH
 from slugmap import to_glyph
 
 def git(*a, check=True):
@@ -54,7 +55,7 @@ def main():
         gt = dict(d.get('gt') or {})
         preview += [f'## {name}', '', '| key | English | Graflect (SLUG) |', '|---|---|---|']
         for key, en in lines:
-            s = spell_line(str(en), spell)
+            s = spell_html(en, spell)
             gt[key] = to_glyph(s)
             status.setdefault(name, {}).setdefault(key, {})['gt'] = hashlib.sha256(str(en).encode('utf-8')).hexdigest()[:12]
             cell = lambda x: re.sub(r'<[^>]+>', '', x).replace('|', '\\|').replace('\n', ' ')
@@ -69,6 +70,14 @@ def main():
     preview_path = os.path.join(out_dir, 'graflect.md')
     open(preview_path, 'w', encoding='utf-8').write('\n'.join(preview))
     print(f'Wrote {len(texts)} lines; preview: {os.path.relpath(preview_path, ROOT)}')
+
+    # The deploy runs this check too: never push what would fail it.
+    v = subprocess.run(['node', os.path.join('build', 'validate-gt.mjs')], cwd=ROOT, capture_output=True, text=True)
+    if v.returncode:
+        print(v.stdout + v.stderr)
+        sys.exit('The Graflect check failed on the lines above, so nothing was committed or pushed. Fix them in'
+                 ' localization/, or discard everything with: git checkout -- localization')
+    print('The Graflect check passed.')
 
     if use_git:
         git('checkout', '-B', branch)

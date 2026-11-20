@@ -1587,6 +1587,28 @@ try {
             `Graflect queue: uses a built draft where there is one, drafts the rest in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ built, n, committed, left, errs })})`);
     }
 
+    // The Graflect queue spells text at every depth (inside <i>, <b>, <li>…), keeps the tags, and leaves keyboard keys alone.
+    {
+        const c = await browser.newContext({ viewport: { width: 1100, height: 900 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        const line = '<i>Like paper, no less.</i> I <b>use</b> the <kbd>HEEL</kbd> key';
+        await c.route(`${BASE}/tools/gt-queue.json`, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ files: { nested: [{ key: 'k1', en: line }] } }) }));
+        await c.route(`${BASE}/tools/gt-drafts.json`, (r) => r.fulfill({ status: 404, body: '' }));
+        await p.goto(`${BASE}/tools/gt.html`, { waitUntil: 'load' });
+        await p.waitForSelector('#queue-list button');
+        await p.click('#queue-list button:has-text("nested")');
+        const segs = [];
+        for (let n = 0; n < 10 && await p.evaluate(() => !document.getElementById('submit-btn').hidden && document.getElementById('current-segment-container').textContent !== '---'); n++) {
+            segs.push(await p.evaluate(() => document.getElementById('current-segment-container').textContent));
+            await p.click('#submit-btn');
+        }
+        const saved = JSON.parse(await p.evaluate(() => localStorage.getItem('pelmeniboiler-gt-queue')) || '{}')['nested::k1'] || '';
+        await c.close();
+        const inside = (tag) => ((saved.match(new RegExp(`<${tag}>(.*?)</${tag}>`)) || [])[1] || '');
+        ok(segs.length === 5 && /[\uE000-\uF8FF]/.test(inside('i')) && !/[A-Za-z]{3}/.test(inside('i')) && /[\uE000-\uF8FF]/.test(inside('b')) && saved.includes('<kbd>HEEL</kbd>') && !errs.length,
+            `Graflect queue: spells the text inside formatting, keeps the tags, leaves keys alone (${JSON.stringify({ segs, kbd: saved.includes('<kbd>HEEL</kbd>'), errs })})`);
+    }
+
     // Translation review: lines with back-translations, questions with options; her answers go back as one commit.
     {
         const c = await browser.newContext({ viewport: { width: 1000, height: 900 }, serviceWorkers: 'block' });
