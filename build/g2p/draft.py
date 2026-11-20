@@ -14,7 +14,7 @@
 # So the drafts are keyed by that text, exactly as the browser reads it, and the queue uses one
 # whenever it has it (else it drafts from her word list, as before). The build workflow runs this
 # after `npm run build`. build/g2p/geniza.py uses the same pieces to write whole articles.
-import json, os, re, sys, glob
+import hashlib, json, os, re, sys, glob
 from html.parser import HTMLParser
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..', '..')
 sys.path.insert(0, HERE)
@@ -26,6 +26,14 @@ SKIP = {'tl-status', 'coal', 'gtgr'}   # as the queue (build/graflect-words.mjs)
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
 GLYPH = re.compile('[-]')
 WORDS_PATH = os.path.join(HERE, 'model-words.json')
+MACHINE_PATH = os.path.join(HERE, 'machine-lines.json')
+
+def stamp(gt): return hashlib.sha256(str(gt).encode('utf-8')).hexdigest()[:12]
+
+def machine_lines():
+    """{'file:key': stamp} for lines a machine wrote (geniza.py); while unchanged they aren't hers."""
+    try: return json.load(open(MACHINE_PATH, encoding='utf-8')).get('lines', {})
+    except FileNotFoundError: return {}
 
 class Pieces(HTMLParser):
     """Every text node of a line, at any depth, outside code and keyboard keys: the queue's segments."""
@@ -64,8 +72,8 @@ def pieces(html):
     p = Pieces(); p.feed(html); p.close(); p.flush(); return p.out
 
 def articles(only=None):
-    """(train, missing): her Graflect lines as {en, gt, slug}, and {file: [(key, en)]} still without Graflect."""
-    train, missing = [], {}
+    """(train, missing): her Graflect lines as {en, gt, slug} (not ones a machine wrote), and {file: [(key, en)]} still without Graflect."""
+    train, missing, machine = [], {}, machine_lines()
     for f in sorted(glob.glob(os.path.join(ROOT, 'localization', '*.json'))):
         name = os.path.basename(f)[:-5]
         if name in SKIP: continue
@@ -74,6 +82,7 @@ def articles(only=None):
         en, gt = d.get('en') or {}, d.get('gt') or {}
         for k, e in en.items():
             g = str(gt.get(k) or '')
+            if g.strip() and machine.get(f'{name}:{k}') == stamp(g): continue   # a machine's line, not hers
             if g.strip() and GLYPH.search(g): train.append({'en': e, 'gt': g, 'slug': to_slug(g)})
             elif str(e).strip() and not g.strip() and (only is None or name in only): missing.setdefault(name, []).append((k, e))
     return train, missing

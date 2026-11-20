@@ -6,7 +6,7 @@
 # Geniza's articles have words she has never written, spelled from CMUdict through her rules. This asks the
 # model about each of them, and first measures how much its answer is worth:
 # 1. Pulls main. Her lines are every line except the ones still exactly as a Geniza run wrote them
-#    (build/g2p/results/*/graflect.md); a line she has corrected is hers.
+#    (build/g2p/machine-lines.json); a line she has corrected is hers.
 # 2. The words to ask about: in Geniza's lines, spelled from CMUdict, never written by her.
 # 3. Pretrains a fresh model (g2p-blind.pt) on CMUdict without those words and without any word she has
 #    written, so its opinion on them isn't just CMUdict remembered.
@@ -18,33 +18,14 @@
 import collections, datetime, glob, json, os, random, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, HERE)
-from draft import hand_words, pieces, SKIP, GLYPH
+from draft import hand_words, pieces, SKIP, GLYPH, machine_lines, stamp
 from slugmap import to_slug
 from cmu2slug_lib import slug, load_cmu
 from predict_rules import learn, WORD, latin_name, latin_place, kept_compound
 
-# Preview sections whose lines were hers all along (Geniza drafted Global's 15, but hers were kept).
-HERS_ANYWAY = {'2026-11-19': {'global'}}
-
 def git(*a):
     import subprocess
     return subprocess.run(['git', *a], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
-
-def machine_lines():
-    """{(file, key)} for lines still exactly as a Geniza run wrote them."""
-    cell = lambda x: re.sub(r'<[^>]+>', '', x).replace('|', '\\|').replace('\n', ' ')
-    norm = lambda x: re.sub(r"[·‹›'’\\\s]|&#?\w+;", '', x)
-    out = set()
-    for md in sorted(glob.glob(os.path.join(HERE, 'results', '*', 'graflect.md'))):
-        date = os.path.basename(os.path.dirname(md)); cur = None
-        for l in open(md, encoding='utf-8'):
-            if l.startswith('## '): cur = l[3:].strip()
-            elif cur and l.startswith('| ') and not l.startswith(('| key', '|---')) and cur not in HERS_ANYWAY.get(date, ()):
-                parts = re.split(r'(?<!\\) \| ', l.strip()[2:-2])
-                try: gt = json.load(open(os.path.join(ROOT, 'localization', f'{cur}.json'), encoding='utf-8'))['gt']
-                except Exception: continue
-                if parts[0] in gt and norm(cell(to_slug(gt[parts[0]]))) == norm(parts[-1]): out.add((cur, parts[0]))
-    return out
 
 def lines():
     """(hers, geniza): her lines as {en, gt, slug}; Geniza's as (file, key, English)."""
@@ -55,26 +36,12 @@ def lines():
         d = json.load(open(f, encoding='utf-8')); en, gt = d.get('en') or {}, d.get('gt') or {}
         for k, e in en.items():
             g = str(gt.get(k) or '')
-            if (name, k) in mine: geniza.append((name, k, str(e)))
+            if g.strip() and mine.get(f'{name}:{k}') == stamp(g): geniza.append((name, k, str(e)))
             elif g.strip() and GLYPH.search(g): hers.append({'en': e, 'gt': g, 'slug': to_slug(g)})
     return hers, geniza
 
-def main():
-    args = sys.argv[1:]
-    if not args or args[0].startswith('--'): sys.exit('usage: python build/g2p/second_opinion.py cmudict.dict [--no-git] [--reuse] [--folds 5] [--tiny]')
-    cmu_path = os.path.abspath(args[0]); use_git = '--no-git' not in args; tiny = '--tiny' in args
-    folds = int(args[args.index('--folds') + 1]) if '--folds' in args else 5
-    date = datetime.date.today().isoformat(); branch = f'geniza/second-opinion-{date}'
-    if use_git:
-        if git('status', '--porcelain', '--untracked-files=no'): sys.exit('The repo has uncommitted changes; commit or stash them first.')
-        git('checkout', 'main'); git('pull', '--ff-only'); print('Pulled main:', git('log', '-1', '--format=%h %s'))
-
-    import torch
-    from g2p_model import load, train as tune, predict, score
-    from pretrain import pretrain
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
-
+def hidden(cmu_path):
+    """Her lines, Geniza's, her words, the words to ask about (CMUdict's, in Geniza's lines) and her words CMUdict has."""
     her_lines, geniza = lines()
     hers, keep_latin = learn(her_lines); hers.update(hand_words())
     cmu = load_cmu(cmu_path)
@@ -90,13 +57,36 @@ def main():
                     if k in hers or k.replace("'", '') in hers or latin_name(m): continue
                     if k in cmu and k.replace("'", '').isalpha(): asked[k].append(name)
     tested = sorted(w for w in hers if w in cmu and w.isalpha() and w not in keep_latin)
+    return her_lines, geniza, hers, keep_latin, cmu, asked, tested
+
+def make_blind(cmu_path, ckpt, tiny=False):
+    """g2p-blind.pt: pretrained on CMUdict without the words to ask about and without any word of hers it has."""
+    from pretrain import pretrain
+    _, _, _, _, _, asked, tested = hidden(cmu_path)
+    print(f'Pretraining {os.path.basename(ckpt)} without {len(asked) + len(tested)} words (about 10 minutes on the P40)...')
+    pretrain(cmu_path, ckpt, tiny=tiny, exclude=set(asked) | set(tested))
+
+def main():
+    args = sys.argv[1:]
+    if not args or args[0].startswith('--'): sys.exit('usage: python build/g2p/second_opinion.py cmudict.dict [--no-git] [--reuse] [--folds 5] [--tiny]')
+    cmu_path = os.path.abspath(args[0]); use_git = '--no-git' not in args; tiny = '--tiny' in args
+    folds = int(args[args.index('--folds') + 1]) if '--folds' in args else 5
+    date = datetime.date.today().isoformat(); branch = f'geniza/second-opinion-{date}'
+    if use_git:
+        if git('status', '--porcelain', '--untracked-files=no'): sys.exit('The repo has uncommitted changes; commit or stash them first.')
+        git('checkout', 'main'); git('pull', '--ff-only'); print('Pulled main:', git('log', '-1', '--format=%h %s'))
+
+    import torch
+    from g2p_model import load, train as tune, predict, score
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
+
+    her_lines, geniza, hers, keep_latin, cmu, asked, tested = hidden(cmu_path)
     print(f'{len(her_lines)} of her lines, {len(geniza)} of Geniza\'s; {len(asked)} words to ask about; {len(tested)} of her words to test on')
 
     # A model that has never seen any of these words.
     ckpt = os.path.join(ROOT, 'g2p-blind.pt')
-    if not ('--reuse' in args and os.path.exists(ckpt)):
-        print('Pretraining g2p-blind.pt without them (about 10 minutes on the P40)...')
-        pretrain(cmu_path, ckpt, tiny=tiny, exclude=set(asked) | set(tested))
+    if not ('--reuse' in args and os.path.exists(ckpt)): make_blind(cmu_path, ckpt, tiny)
     blind = set(asked) | set(tested)
     pool = [(w, slug(p)) for w, p in cmu.items() if w.isalpha() and w not in blind]
     epochs = 1 if tiny else int(os.environ.get('G2P_EPOCHS', '10'))

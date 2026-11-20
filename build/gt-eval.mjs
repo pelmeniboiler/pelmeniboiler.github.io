@@ -74,12 +74,19 @@ export async function graflectData() {
     };
 }
 
+/** Lines a machine wrote and nobody has changed since (build/g2p/machine-lines.json): not hers, so not graded. */
+export async function machineLines(root = ROOT) {
+    let m = {}; try { m = JSON.parse(await fs.readFile(path.join(root, 'build/g2p/machine-lines.json'), 'utf8')).lines || {}; } catch { /* an older checkout */ }
+    const { createHash } = await import('node:crypto');
+    return (id, gt) => m[id] != null && createHash('sha256').update(gt).digest('hex').slice(0, 12) === m[id];
+}
+
 async function articles() {
-    const out = {};
+    const out = {}, machine = await machineLines();
     for (const f of (await fs.readdir(LOC)).filter((n) => n.endsWith('.json') && n !== 'tl-status.json').sort()) {
         let d; try { d = JSON.parse(await fs.readFile(path.join(LOC, f), 'utf8')); } catch { continue; }
         if (!d || !d.en || !d.gt) continue;
-        const lines = Object.keys(d.gt).filter((k) => d.en[k] && /[-]/.test(d.gt[k])).map((k) => ({ id: `${f.replace(/\.json$/, '')}:${k}`, en: d.en[k], gt: d.gt[k] }));
+        const lines = Object.keys(d.gt).filter((k) => d.en[k] && /[-]/.test(d.gt[k])).map((k) => ({ id: `${f.replace(/\.json$/, '')}:${k}`, en: d.en[k], gt: d.gt[k] })).filter((l) => !machine(l.id, l.gt));
         if (lines.length) out[f.replace(/\.json$/, '')] = lines;
     }
     return out;
