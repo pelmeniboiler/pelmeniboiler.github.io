@@ -24,8 +24,8 @@ def slug(phones):
         if p == 'AH' and stress[i] == '0' and nxt in ('D', 'Z', 'N', 'T', 'S') and (i + 2 == len(ph) or (nxt == 'N' and i + 3 == len(ph) and ph[i + 2] == 'Z')): out.append('i'); i += 1; continue  # unstressed before a final d z n t s: aided → ēdid, services → srvisiz, garden → gárdin, edit → edit
         if p == 'AH' and stress[i] == '0' and nxt == 'L' and i + 2 == len(ph) and i > 0 and ph[i - 1] == 'B': i += 1; continue  # table → tēbl, but people → pīpxl
         out.append(C.get(p) or V.get(p, '?')); i += 1
-    for j in range(len(out) - 1):                  # w then ī is the wī glyph (we, wheel, week, weird)
-        if out[j] == 'w' and out[j + 1] == 'ī': out[j:j + 2] = ['wī', '']
+    for j in range(len(out) - 1):                  # w then ī is the wī glyph (we, wheel, week, weird), r then ä the rä glyph (translate, program)
+        if (out[j], out[j + 1]) in (('w', 'ī'), ('r', 'ä')): out[j:j + 2] = [out[j] + out[j + 1], '']
     return join([u for u in out if u])   # n·g, r·r…: separate glyphs where two would read as one
 
 V_SET = set(V)

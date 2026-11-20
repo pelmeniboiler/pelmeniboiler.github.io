@@ -107,3 +107,11 @@ On a new branch `geniza/training-<date>` (never `main`), commit only `build/g2p/
 
 Push the branch. Don't commit `g2p.pt` or `runs/` (they're big; `*.pt` is git-ignored). Tell Wendy briefly what
 it scored, in plain words.
+
+## Giving articles their Graflect
+
+`python build/g2p/geniza.py cmudict.dict` (after training, so `g2p.pt` is in the repo folder) pulls main, writes
+Graflect for every line that has none, and pushes it on a branch `geniza/graflect-<date>` with a SLUG preview in
+`build/g2p/results/<date>/graflect.md`. Wendy reviews the pull request; nothing is live until she merges.
+`--only eink,history` limits it to some articles; `--no-model` skips the model.
+

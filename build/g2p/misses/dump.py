@@ -59,6 +59,9 @@ def word(w, m=None):
     if m is not None and hasattr(pr, 'latin_name') and pr.latin_name(m): return '‹' + w + '›', 'latin'
     if not MODEL_FIRST and k in cmu: return slug(cmu[k]), 'cmu'
     if guessed.get(k): return guessed[k], 'model'
+    if m is not None and hasattr(pr, 'speller'):   # a known word plus an ending, or two known words
+        x = pr.speller(hers, keep, None if MODEL_FIRST else cmu, guessed)(m)
+        if not x.startswith('‹'): return x, 'compound'
     return '‹' + w + '›', 'latin'
 
 SPLIT = r'(<[^>]+>|&#?\w+;)'
