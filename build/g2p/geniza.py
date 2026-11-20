@@ -9,7 +9,8 @@
 #    article, CMUdict through her rules, the name and context rules) and the model for words neither
 #    knows; text inside links and other tags is spelled too, the tags themselves are kept, and code and
 #    keyboard keys are left alone.
-# 3. Writes the lines into each file's "gt", stamps localization/tl-status.json, saves the model's words
+# 3. Writes the lines into each file's "gt", stamps localization/tl-status.json, records them in
+#    build/g2p/machine-lines.json (not hers until she edits them: the grader skips them), saves the model's words
 #    (build/g2p/model-words.json) and a readable SLUG preview (build/g2p/results/<date>/graflect.md).
 # 4. Runs the Graflect check the deploy runs, and stops if it fails.
 # 5. Commits on a new branch geniza/graflect-<date> and pushes it: open the pull request, read the
@@ -17,7 +18,7 @@
 import datetime, hashlib, json, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, HERE)
-from draft import articles, system, spell_html, WORDS_PATH
+from draft import articles, system, spell_html, WORDS_PATH, MACHINE_PATH, machine_lines, stamp
 from slugmap import to_glyph
 
 def git(*a, check=True):
@@ -46,6 +47,7 @@ def main():
     print('The model:', ckpt or 'not used (no g2p.pt); unknown words stay Latin')
     spell, used = system(cmu_path, texts, ckpt)
 
+    machine = machine_lines()   # so the grader and the next drafts know these lines aren't hers until she edits them
     status_path = os.path.join(ROOT, 'localization', 'tl-status.json')
     status = json.load(open(status_path, encoding='utf-8'))
     preview = [f'# Graflect from Geniza, {date}', '', 'Each line in SLUG (‹…› is Latin). Words the model spelled: ' + (', '.join(used(texts)) or 'none') + '.', '']
@@ -56,7 +58,7 @@ def main():
         preview += [f'## {name}', '', '| key | English | Graflect (SLUG) |', '|---|---|---|']
         for key, en in lines:
             s = spell_html(en, spell)
-            gt[key] = to_glyph(s)
+            gt[key] = to_glyph(s); machine[f'{name}:{key}'] = stamp(gt[key])
             status.setdefault(name, {}).setdefault(key, {})['gt'] = hashlib.sha256(str(en).encode('utf-8')).hexdigest()[:12]
             cell = lambda x: re.sub(r'<[^>]+>', '', x).replace('|', '\\|').replace('\n', ' ')
             preview.append(f'| {key} | {cell(str(en))} | {cell(s)} |')
@@ -66,6 +68,8 @@ def main():
         open(path, 'w', encoding='utf-8').write(json.dumps(d, ensure_ascii=False, indent=2) + ('\n' if raw.endswith('\n') else ''))
     status = {f: {k: status[f][k] for k in sorted(status[f])} for f in sorted(status)}
     open(status_path, 'w', encoding='utf-8').write(json.dumps(status, ensure_ascii=False, indent=2) + '\n')
+    note = json.load(open(MACHINE_PATH, encoding='utf-8'))['note'] if os.path.exists(MACHINE_PATH) else 'Lines a machine wrote.'
+    open(MACHINE_PATH, 'w', encoding='utf-8').write(json.dumps({'note': note, 'lines': dict(sorted(machine.items()))}, ensure_ascii=False, indent=1))
     out_dir = os.path.join(HERE, 'results', date); os.makedirs(out_dir, exist_ok=True)
     preview_path = os.path.join(out_dir, 'graflect.md')
     open(preview_path, 'w', encoding='utf-8').write('\n'.join(preview))
@@ -81,7 +85,7 @@ def main():
 
     if use_git:
         git('checkout', '-B', branch)
-        git('add', 'localization', os.path.relpath(preview_path, ROOT), *([os.path.relpath(WORDS_PATH, ROOT)] if os.path.exists(WORDS_PATH) else []))
+        git('add', 'localization', os.path.relpath(preview_path, ROOT), os.path.relpath(MACHINE_PATH, ROOT), *([os.path.relpath(WORDS_PATH, ROOT)] if os.path.exists(WORDS_PATH) else []))
         git('commit', '-m', f'Graflect from Geniza: {len(texts)} lines in {", ".join(missing)}')
         git('push', '-u', 'origin', branch)
         url = re.sub(r'\.git$', '', git('remote', 'get-url', 'origin')).replace('git@github.com:', 'https://github.com/')

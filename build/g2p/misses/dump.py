@@ -3,6 +3,9 @@
 #   python3 dump.py REPO CMU                                   the rules system
 #   python3 dump.py REPO CMU --model g2p.pt [--model-first]    the model, as build/g2p/predict_model.py runs it
 #                                                              (fine-tuned on TRAIN; G2P_EPOCHS as there)
+#   python3 dump.py REPO CMU --model g2p.pt --model-only       the model spells every word: no lookups, no rules
+# Each word also gets a group, whatever spelled it: hers (in her other articles), cmu (only CMUdict knows it),
+# unknown (neither), or kept (she keeps it in Latin). build/g2p/kanna_vs_rules.py scores by group.
 import json, os, re, sys, collections
 REPO, CMU = sys.argv[1], sys.argv[2]
 sys.path.insert(0, os.path.join(REPO, 'build', 'g2p'))
@@ -36,7 +39,8 @@ for line in open(CMU, encoding='utf-8'):
 votes = votes_of(train)
 
 # The model: fine-tuned on her words exactly as predict_model.py does, then asked for the words it would be asked for.
-guessed, MODEL_FIRST = {}, '--model-first' in sys.argv
+guessed, MODEL_ONLY = {}, '--model-only' in sys.argv
+MODEL_FIRST = '--model-first' in sys.argv or MODEL_ONLY
 if '--model' in sys.argv:
     import random, torch
     from g2p_model import load, train as tune, predict
@@ -48,11 +52,18 @@ if '--model' in sys.argv:
     tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '30')), lr=2e-4, batch=128, device=device, log=lambda s: None)
     tests = [json.loads(l) for l in open(os.environ['TEST'], encoding='utf-8') if l.strip()]
     ws = sorted({m.group(0).lower().replace('’', "'") for t in tests for p in re.split(r'(<[^>]+>|&#?\w+;)', t['en']) if not p.startswith(('<', '&')) for m in re.finditer(r"[A-Za-z][A-Za-z'’]*", p)})
-    need = [w for w in ws if w not in hers and w.replace("'", '') not in hers and w not in keep and (MODEL_FIRST or w not in cmu)]
+    need = ws if MODEL_ONLY else [w for w in ws if w not in hers and w.replace("'", '') not in hers and w not in keep and (MODEL_FIRST or w not in cmu)]
     guessed = dict(zip(need, predict(model, need, sv, tv, device=device)))
+
+def group(w):
+    k = w.lower().replace('’', "'")
+    if k in keep: return 'kept'
+    if k in hers or k.replace("'", '') in hers: return 'hers'
+    return 'cmu' if k in cmu else 'unknown'
 
 def word(w, m=None):
     k = w.lower().replace('’', "'")
+    if MODEL_ONLY: return (guessed.get(k) or '‹' + w + '›'), 'model'
     if k in keep or (m is not None and hasattr(pr, 'kept_compound') and (pr.kept_compound(m, keep) or pr.latin_place(m))): return '‹' + w + '›', 'latin'
     if k in hers: return hers[k], 'hers'
     if k.replace("'", '') in hers: return hers[k.replace("'", '')], 'hers'
@@ -69,7 +80,9 @@ with open(os.environ['OUT'], 'w', encoding='utf-8') as out, open(os.environ['DUM
     for l in open(os.environ['TEST'], encoding='utf-8'):
         if not l.strip(): continue
         t = json.loads(l)
-        if hasattr(pr, 'spell_line'):
+        if MODEL_ONLY:
+            line = ''.join(p if re.match(SPLIT, p) else re.sub(r"[A-Za-z][A-Za-z'’]*", lambda m: word(m.group(0))[0], p) for p in re.split(SPLIT, t['en']))
+        elif hasattr(pr, 'spell_line'):
             line = pr.spell_line(t['en'], pr.speller(hers, keep, None if MODEL_FIRST else cmu, guessed))
         else:
             line = ''.join(p if re.match(SPLIT, p) else re.sub(r"[A-Za-z][A-Za-z'’]*", lambda m: word(m.group(0))[0], p) for p in re.split(SPLIT, t['en']))
@@ -87,11 +100,12 @@ with open(os.environ['OUT'], 'w', encoding='utf-8') as out, open(os.environ['DUM
             j = i + 1
             while j < len(toks) and toks[j] is None: j += 1   # tags between, as in the <abbr>IPA</abbr>
             nx = toks[j] if j < len(toks) else None
+            if MODEL_ONLY: break
             if not tk or not nx or nx['gap'].strip() != '' or (not nx['gap'] and j == i + 1): continue
             if THE and tk['slug'] == 'dhx' and (nx['slug'].startswith(VOW) or (LATIN_V and re.match('‹[AEIOUaeiou]', nx['slug']))): tk['slug'], tk['src'] = THE, 'context'
             if HAEF and tk['slug'] == 'hæv' and nx['slug'] == 'tü': tk['slug'], tk['src'] = 'hæf', 'context'
         for i, tk in enumerate(x for x in toks if x):
             k = tk['en'].lower().replace('’', "'")
             v = votes.get(k) or votes.get(k.replace("'", '')) or {}
-            dump.write(json.dumps({'id': t['id'], 'i': i, 'en': tk['en'], 'slug': tk['slug'], 'src': tk['src'], 'votes': dict(v), 'in_cmu': k in cmu,
+            dump.write(json.dumps({'id': t['id'], 'i': i, 'en': tk['en'], 'slug': tk['slug'], 'src': tk['src'], 'group': group(tk['en']), 'votes': dict(v), 'in_cmu': k in cmu,
                                    'cmu_slug': slug(cmu[k]) if k in cmu else None, 'cmu_alt': [slug(p) for p in prons.get(k, []) if k in cmu and p != cmu[k]]}, ensure_ascii=False) + '\n')

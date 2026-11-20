@@ -26,6 +26,7 @@ Words she hasn't written stay Latin before step 2 if they have two or more capit
 of a dotted name (system.settings): `latin_name` in `predict_rules.py`, her decision after v15.
 
 Score: **5648 of 6091 words (92.7%), 165 of 405 lines exact.** That's the number to beat.
+(Lines a machine wrote, listed in `build/g2p/machine-lines.json`, are not graded: they are not hers until she edits them.)
 
 Where the 444 misses come from (`build/g2p/misses`, v14):
 
@@ -124,3 +125,12 @@ never seen those words or any word of hers, then first tests itself on her own w
 with CMUdict, how often is it the model that matches her? Then it spells the asked words, writes
 `build/g2p/results/<date>/second-opinion.md` and `.json`, and pushes them on a branch
 `geniza/second-opinion-<date>`. Don't change any spelling yourself; the main session makes a review round from it.
+
+## Kanna against the rules
+
+The model on Geniza is called Kanna (`g2p.pt`). `python build/g2p/kanna_vs_rules.py cmudict.dict` (an hour or so)
+grades six contestants the same way: the rules alone (A), the rules then Kanna (B, the site now), Kanna before
+CMUdict (C), Kanna alone with no lookups or rules (D), and C and D again with `g2p-blind.pt` (made if missing),
+which has never seen a CMUdict word Wendy has written. Each is scored overall and on three kinds of word: hers
+(in her other articles), only CMUdict knows, nobody knows. It pushes `results/<date>/kanna-vs-rules.md` on
+`geniza/kanna-<date>`. Run it once and report every row; don't rerun to pick a better one.

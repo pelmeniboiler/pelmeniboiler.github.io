@@ -13,13 +13,14 @@ const CMD = process.argv.slice(process.argv.indexOf('--') + 1);
 const LOC = path.join(REPO, 'localization');
 const isGlyph = (c) => { const n = c.codePointAt(0); return n >= 0xE000 && n <= 0xF8FF; };
 
-const { graflectData } = await import(pathToFileURL(path.join(REPO, 'build', 'gt-eval.mjs')).href);
+const evalMod = await import(pathToFileURL(path.join(REPO, 'build', 'gt-eval.mjs')).href), { graflectData } = evalMod;
 async function articles() {
-    const out = {};
+    // Lines a machine wrote aren't hers (build/g2p/machine-lines.json); older checkouts have none.
+    const out = {}, machine = evalMod.machineLines ? await evalMod.machineLines(REPO) : () => false;
     for (const f of (await fs.readdir(LOC)).filter((n) => n.endsWith('.json') && n !== 'tl-status.json').sort()) {
         let d; try { d = JSON.parse(await fs.readFile(path.join(LOC, f), 'utf8')); } catch { continue; }
         if (!d || !d.en || !d.gt) continue;
-        const lines = Object.keys(d.gt).filter((k) => d.en[k] && /[\u{E000}-\u{F8FF}]/u.test(d.gt[k])).map((k) => ({ id: `${f.replace(/\.json$/, '')}:${k}`, en: d.en[k], gt: d.gt[k] }));
+        const lines = Object.keys(d.gt).filter((k) => d.en[k] && /[\u{E000}-\u{F8FF}]/u.test(d.gt[k])).map((k) => ({ id: `${f.replace(/\.json$/, '')}:${k}`, en: d.en[k], gt: d.gt[k] })).filter((l) => !machine(l.id, l.gt));
         if (lines.length) out[f.replace(/\.json$/, '')] = lines;
     }
     return out;
@@ -51,7 +52,7 @@ for (const [name, test] of Object.entries(all)) {
         const tokens = toks.filter((t) => t.id === l.id).sort((a, b) => a.i - b.i).map((t) => {
             const key = t.en.toLowerCase().replace(/’/g, "'");
             return {
-                en: t.en, src: t.src, out: gwords(g(t.slug)),
+                en: t.en, src: t.src, group: t.group, out: gwords(g(t.slug)),
                 cmu: t.cmu_slug == null ? null : g(t.cmu_slug), cmuAlt: t.cmu_alt.map(g), inCmu: t.in_cmu,
                 votes: Object.fromEntries(Object.entries(t.votes).map(([s, n]) => [g(s), n])),
                 dict: data.words[key] ?? data.words[key.replace(/'/g, '')] ?? null,
