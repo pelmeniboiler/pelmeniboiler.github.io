@@ -107,8 +107,17 @@ def system(cmu_path, texts, ckpt=None):
         guessed = {**guessed, **new}
         json.dump({'note': 'The model\'s spellings (SLUG) of words that neither her articles nor CMUdict know; made on Geniza.',
                    'words': dict(sorted(guessed.items()))}, open(WORDS_PATH, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    used = lambda ts: sorted({m.group(0).lower() for t in ts for m in WORD.finditer(t) if m.group(0).lower() in guessed and m.group(0).lower() not in hers and m.group(0).lower() not in cmu})
-    return speller(hers, keep_latin, cmu, guessed), used
+    spell = speller(hers, keep_latin, cmu, guessed)
+    def used(ts):
+        """The words the model's spelling was actually used for (not ones a rule kept in Latin)."""
+        out = set()
+        for t in ts:
+            for part in re.split(r'<[^>]+>|&#?\w+;', str(t)):
+                for m in WORD.finditer(part):
+                    k = m.group(0).lower()
+                    if k in guessed and k not in hers and k not in cmu and spell(m) == guessed[k]: out.add(k)
+        return sorted(out)
+    return spell, used
 
 def main():
     cmu_path, out_path = sys.argv[1], sys.argv[2]

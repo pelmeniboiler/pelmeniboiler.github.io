@@ -50,7 +50,9 @@ def learn(lines):
             if '-' in t and '.' not in t: kept.add(t.lower().replace('-', ''))   # E-Ink, so eink too
         for t in NAME.findall(strip(l['en'])):
             if '.' in t: continue
-            if t.lower() in kept: latin[t.lower()] += 1
+            if t.lower() in kept:
+                latin[t.lower()] += 1
+                if '-' in t: latin[t.lower().replace('-', '')] += 1   # E-Ink kept, so eink too
             elif '-' not in t and t.lower().replace('’', "'") in kept: latin[t.lower()] += 1
             elif '-' in t: latin.update(p for p in t.lower().split('-') if p in kept)
     hers = {}
