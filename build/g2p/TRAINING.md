@@ -115,3 +115,12 @@ Graflect for every line that has none, and pushes it on a branch `geniza/graflec
 `build/g2p/results/<date>/graflect.md`. Wendy reviews the pull request; nothing is live until she merges.
 `--only eink,history` limits it to some articles; `--no-model` skips the model.
 
+
+## A second opinion on CMUdict's words
+
+`python build/g2p/second_opinion.py cmudict.dict` (about 15 minutes on the P40) asks the model about the words
+Geniza's articles got from CMUdict, which Wendy has never written. It pretrains a fresh `g2p-blind.pt` that has
+never seen those words or any word of hers, then first tests itself on her own words: where it disagrees
+with CMUdict, how often is it the model that matches her? Then it spells the asked words, writes
+`build/g2p/results/<date>/second-opinion.md` and `.json`, and pushes them on a branch
+`geniza/second-opinion-<date>`. Don't change any spelling yourself; the main session makes a review round from it.

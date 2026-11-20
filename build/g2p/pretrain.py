@@ -3,6 +3,7 @@
 #   python3 build/g2p/pretrain.py cmudict.dict g2p.pt              # the real run (P40: minutes)
 #   python3 build/g2p/pretrain.py cmudict.dict g2p.pt --small      # a smaller model a CPU can train in an hour or so
 #   python3 build/g2p/pretrain.py cmudict.dict g2p.pt --tiny       # a smoke test on a CPU
+#   (build/g2p/second_opinion.py calls pretrain() with words to leave out, so the model has never seen them)
 #
 # On the P40 (sm_61): the cu118 build works (pip install torch --index-url https://download.pytorch.org/whl/cu118).
 # On driver 537.13 the cu126 build failed with cudaErrorDevicesUnavailable; newer builds may have dropped Pascal.
@@ -13,12 +14,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
 from g2p_model import Vocab, G2P, train, predict, save
 
-def main():
-    cmu_path, out, tiny, small = sys.argv[1], sys.argv[2], '--tiny' in sys.argv, '--small' in sys.argv
+def pretrain(cmu_path, out, tiny=False, small=False, exclude=()):
+    exclude = set(exclude)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
     random.seed(0); torch.manual_seed(0)
-    pairs = [(w, slug(ph)) for w, ph in load_cmu(cmu_path).items() if w.replace("'", '').isalpha() and len(w) <= 40]
+    pairs = [(w, slug(ph)) for w, ph in load_cmu(cmu_path).items() if w.replace("'", '').isalpha() and len(w) <= 40 and w not in exclude]
     pairs = [(w, s) for w, s in pairs if '?' not in s]
     random.shuffle(pairs)
     held, pairs = pairs[:2000], pairs[2000:]
@@ -34,6 +35,9 @@ def main():
     got = predict(model, [w for w, _ in held], sv, tv, device=device)
     print(f'held-out CMUdict words reproduced exactly: {sum(g == s for g, (_, s) in zip(got, held)) / len(held):.0%}')
     save(out, model, sv, tv, cfg); print('saved', out)
+
+def main():
+    pretrain(sys.argv[1], sys.argv[2], tiny='--tiny' in sys.argv, small='--small' in sys.argv)
 
 if __name__ == '__main__':
     main()
