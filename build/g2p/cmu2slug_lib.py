@@ -16,6 +16,7 @@ def slug(phones):
         if p == 'D' and nxt == 'R': out.append('j'); i += 1; continue          # dream → jrīm (d before r is j, and the r stays)
         if p == 'AE' and nxt in ('N', 'M'): out.append('ä'); i += 1; continue   # can, man, hand, translate, random → ä
         if p == 'IH' and nxt == 'NG': out.append('ī'); i += 1; continue          # -ing → īngg, think → thīngk, English → īngliš
+        if p == 'IH' and stress[i] in '12' and nxt == 'R' and (i + 2 == len(ph) or ph[i + 2] not in V_SET): out.append('ī'); i += 1; continue  # CMUdict's "ear" is IH R: sphere → sfīr, year → yīr, clear → klīr
         if p == 'EH' and nxt == 'R' and (i + 2 == len(ph) or ph[i + 2] not in V_SET): out.append('4'); i += 2; continue  # where → w4, pair → p4 (the air sound carries the r); very stays verī
         if p == 'NG' and nxt == 'G': out.append('ng'); i += 2; continue        # English → īngliš (no strong g)
         if p == 'NG' and i and ph[i - 1] == 'IH' and (nxt == '' or (nxt == 'Z' and i + 2 == len(ph))): out += ['ng', 'g']; i += 1; continue  # -ing → īngg, thing → thīngg (ng then g)

@@ -26,6 +26,7 @@
         .gg-row { display: grid; grid-template-columns: 2.4em 10.5em minmax(0, 1fr) 3.6em; gap: 0 8px; align-items: center; margin: 4px 0; }
         .gg-row .gg-t, .gg-numbers td:first-of-type { white-space: nowrap; font-size: 0.9em; unicode-bidi: isolate; }
         .gg-row .gg-p { text-align: right; font-weight: bold; }
+        .gg-row.gg-row3 { grid-template-columns: 12em minmax(0, 1fr) 3.6em; }
         .gg-bar { display: flex; column-gap: 2px; height: 20px; }
         .gg-seg { box-shadow: inset 0 0 0 1px var(--text-color); min-width: 1px; }
         .gg-k-right { background: var(--win-bg-color); }
@@ -35,7 +36,7 @@
         .gg-k-me { background: repeating-linear-gradient(45deg, var(--text-color) 0 1.5px, var(--win-bg-color) 1.5px 6px); }
         .gg-k-apos { background: repeating-linear-gradient(90deg, var(--text-color) 0 1.5px, var(--win-bg-color) 1.5px 5px); }
         .gg-k-struct { background: repeating-linear-gradient(45deg, var(--text-color) 0 1px, transparent 1px 7px), repeating-linear-gradient(-45deg, var(--text-color) 0 1px, var(--win-bg-color) 1px 7px); }
-        @media (max-width: 768px) { .gg-row { grid-template-columns: 2.4em minmax(0, 1fr) 3.4em; } .gg-row .gg-t { display: none; } }
+        @media (max-width: 768px) { .gg-row { grid-template-columns: 2.4em minmax(0, 1fr) 3.4em; } .gg-row.gg-row3 { grid-template-columns: 7.5em minmax(0, 1fr) 3.4em; font-size: 0.9em; } .gg-row .gg-t { display: none; } }
         /* Each figure's numbers, for readers who can't hover (e-ink) or want them all. */
         .gg-numbers { margin: 4px 0 15px; }
         .gg-numbers > div { overflow-x: auto; }
@@ -59,6 +60,7 @@
                 <li><a href="#rules-i-didnt-know-i-had" data-key="gtgr_nav_rules-i-didnt-know-i-had"></a></li>
                 <li><a href="#the-model" data-key="gtgr_nav_the-model"></a></li>
                 <li><a href="#names" data-key="gtgr_nav_names"></a></li>
+                <li><a href="#claude" data-key="gtgr_nav_claude"></a></li>
             </ul>
             <a href="/index.html" data-key="gt_nav_h2_home">⌂←</a>
         </div>
@@ -118,6 +120,11 @@
             <p data-key="gtgr_p6"></p>
             <h3 id="names" data-key="gtgr_h3_names"></h3>
             <p data-key="gtgr_p7"></p>
+            <h2 id="claude" data-key="gtgr_h2_claude"></h2>
+            <p data-key="gtgr_p8"></p>
+<figure class="gg-wide"><div class="gg-cap" id="gg-claude-t">Claude in Kanna’s place</div><ul class="gg-legend"><li><span class="gg-seg gg-k-right"></span>Right</li><li><span class="gg-seg gg-k-cmu"></span>Missed</li></ul><div role="img" aria-labelledby="gg-claude-t" aria-describedby="gg-claude-d"><p hidden id="gg-claude-d">Of 6,167 words, spelled one article at a time from my other articles: the rules alone 93.4%; Haiku 93.7% after the rules and 91.2% before CMUdict; Sonnet 93.8% and 94.2%; Opus 93.8% and 95.2%.</p><div class="gg-row gg-row3"><span class="gg-v">The rules alone</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5758 1 0" title="The rules alone: right, 5758"></span><span class="gg-seg gg-k-cmu" style="flex: 409 1 0" title="The rules alone: missed, 409"></span></div></div><span class="gg-p">93.4%</span></div><div class="gg-row gg-row3"><span class="gg-v">Haiku, after the rules</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5781 1 0" title="Haiku, after the rules: right, 5781"></span><span class="gg-seg gg-k-cmu" style="flex: 386 1 0" title="Haiku, after the rules: missed, 386"></span></div></div><span class="gg-p">93.7%</span></div><div class="gg-row gg-row3"><span class="gg-v">Haiku, before CMUdict</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5622 1 0" title="Haiku, before CMUdict: right, 5622"></span><span class="gg-seg gg-k-cmu" style="flex: 545 1 0" title="Haiku, before CMUdict: missed, 545"></span></div></div><span class="gg-p">91.2%</span></div><div class="gg-row gg-row3"><span class="gg-v">Sonnet, after the rules</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5787 1 0" title="Sonnet, after the rules: right, 5787"></span><span class="gg-seg gg-k-cmu" style="flex: 380 1 0" title="Sonnet, after the rules: missed, 380"></span></div></div><span class="gg-p">93.8%</span></div><div class="gg-row gg-row3"><span class="gg-v">Sonnet, before CMUdict</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5807 1 0" title="Sonnet, before CMUdict: right, 5807"></span><span class="gg-seg gg-k-cmu" style="flex: 360 1 0" title="Sonnet, before CMUdict: missed, 360"></span></div></div><span class="gg-p">94.2%</span></div><div class="gg-row gg-row3"><span class="gg-v">Opus, after the rules</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5786 1 0" title="Opus, after the rules: right, 5786"></span><span class="gg-seg gg-k-cmu" style="flex: 381 1 0" title="Opus, after the rules: missed, 381"></span></div></div><span class="gg-p">93.8%</span></div><div class="gg-row gg-row3"><span class="gg-v">Opus, before CMUdict</span><div><div class="gg-bar" style="width: 100%"><span class="gg-seg gg-k-right" style="flex: 5868 1 0" title="Opus, before CMUdict: right, 5868"></span><span class="gg-seg gg-k-cmu" style="flex: 299 1 0" title="Opus, before CMUdict: missed, 299"></span></div></div><span class="gg-p">95.2%</span></div></div><details class="gg-numbers"><summary>The numbers</summary><div><table><thead><tr><th scope="col">Who</th><th scope="col">Words right</th><th scope="col">Lines exactly right</th></tr></thead><tbody><tr><th scope="row">The rules alone</th><td>5758 of 6167</td><td>187 of 419</td></tr><tr><th scope="row">Haiku, after the rules</th><td>5781 of 6167</td><td>191 of 419</td></tr><tr><th scope="row">Haiku, before CMUdict</th><td>5622 of 6167</td><td>163 of 419</td></tr><tr><th scope="row">Sonnet, after the rules</th><td>5787 of 6167</td><td>193 of 419</td></tr><tr><th scope="row">Sonnet, before CMUdict</th><td>5807 of 6167</td><td>189 of 419</td></tr><tr><th scope="row">Opus, after the rules</th><td>5786 of 6167</td><td>191 of 419</td></tr><tr><th scope="row">Opus, before CMUdict</th><td>5868 of 6167</td><td>212 of 419</td></tr></tbody></table></div></details></figure>
+            <p data-key="gtgr_p9"></p>
+            <p data-key="gtgr_p10"></p>
         </article>
     </main>
     <div id="settings-module-placeholder"></div>
