@@ -1863,6 +1863,25 @@ try {
             `type.ime: the chooser stays open; Enter and a click both write Graflect (${JSON.stringify({ open, first, second, errs })})`);
     }
 
+    // The spelling test: one word at a time, glyphs as she types, answers kept across a reload, and the
+    // download holds them (the models' answers are never on the page).
+    {
+        const c = await browser.newContext({ viewport: { width: 1000, height: 800 }, acceptDownloads: true });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/tools/spelltest.html`, { waitUntil: 'load' }); await p.waitForFunction(() => document.getElementById('word').textContent);
+        const first = await p.textContent('#word');
+        await p.fill('#slug', 'kæt/kát'); const glyphs = await p.textContent('#glyphs');
+        await p.press('#slug', 'Enter'); const second = await p.textContent('#word');
+        await p.reload({ waitUntil: 'load' }); await p.waitForFunction(() => document.getElementById('word').textContent);
+        const count = await p.textContent('#count'), resumed = await p.textContent('#word');
+        const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#download')]);
+        const saved = JSON.parse(await fs.readFile(await dl.path(), 'utf8'));
+        const words = (await p.$$eval('#list button', (b) => b.length));
+        await c.close();
+        ok(first && second && first !== second && /[-].* \/ .*[-]/.test(glyphs) && /1 answered/.test(count) && resumed === second && saved.answers[first] === 'kæt/kát' && words === 80 && !errs.length,
+            `Spelling test: a word at a time, glyphs as she types, kept across a reload, downloadable (${JSON.stringify({ first, second, resumed, glyphs, count, saved: saved.answers, words, errs })})`);
+    }
+
     await browser.close();
     server.close();
 }
