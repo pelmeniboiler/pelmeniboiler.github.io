@@ -1566,7 +1566,11 @@ try {
             return j({ message: 'unexpected' }, 500);
         });
         // A built draft (build/g2p/draft.py) wins over the word list for its piece of text; the rest draft as before.
-        const q0 = JSON.parse(await fs.readFile(path.join(ROOT, 'tools/gt-queue.json'), 'utf-8')).files.sunshine[0].en;
+        // Its own queue (what's still missing changes as she writes): Sunshine's photo descriptions.
+        const sunEn = JSON.parse(await fs.readFile(path.join(ROOT, 'localization/sunshine.json'), 'utf-8')).en;
+        const fixtureQueue = { files: { sunshine: Object.entries(sunEn).filter(([k]) => k.startsWith('sunshine_alt')).slice(0, 8).map(([key, en]) => ({ key, en })) } };
+        await c.route(`${BASE}/tools/gt-queue.json`, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixtureQueue) }));
+        const q0 = fixtureQueue.files.sunshine[0].en;
         await c.route(`${BASE}/tools/gt-drafts.json`, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ segments: { [q0]: 'lüs wait kīkæps ‹test›' } }) }));
         await p.goto(`${BASE}/tools/gt.html`, { waitUntil: 'load' });
         await p.waitForSelector('#queue-list button');
@@ -1583,7 +1587,7 @@ try {
         await c.close();
         ok(built === 'lüs wait kīkæps ‹test›' && /[-]/.test(first.gt) && /‹[^›]+›/.test(first.slug) && /Left in Latin/.test(first.latin)
             && JSON.stringify(committed) === JSON.stringify(['localization/sunshine.json', 'localization/tl-status.json'])
-            && sun && Object.keys(sun.gt).filter((k) => k.startsWith('sunshine_alt')).length === 7 && left === '{}' && !errs.length,
+            && sun && fixtureQueue.files.sunshine.slice(1).every(({ key }) => /[\uE000-\uF8FF]/.test(sun.gt[key] || '')) && left === '{}' && !errs.length,
             `Graflect queue: uses a built draft where there is one, drafts the rest in SLUG from the dictionary, marks Latin, publishes the file and the tracker in one commit (${JSON.stringify({ built, n, committed, left, errs })})`);
     }
 
@@ -1670,8 +1674,8 @@ try {
         // LCD: on screen, it walks through the year by itself.
         const w0 = (await read()).date; await p.waitForTimeout(1200); const w1 = (await read()).date;
         const right = await p.evaluate(() => { const s = document.getElementById('zh-daylight'); const pt = new DOMPoint(175 + 168 * Math.sin(23.44 * Math.PI / 180), 67).matrixTransform(s.getScreenCTM()); return [pt.x, pt.y]; });
-        // hover() waits for the walking handle to hold still between steps, so the press lands on it.
-        await p.locator('#zh-daylight .zh-knob').hover(); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
+        // Focusing the handle stops the walk (as grabbing does), so the press can't miss a moving target.
+        await p.focus('#zh-daylight .zh-knob'); await p.locator('#zh-daylight .zh-knob').hover(); await p.mouse.down(); await p.mouse.move(right[0], right[1], { steps: 10 }); await p.mouse.up();
         const june = await read();
         await p.waitForTimeout(800); const held = (await read()).date === june.date; // grabbed: it stays put
         await p.focus('#zh-daylight .zh-knob'); await p.keyboard.press('PageUp'); await p.keyboard.press('ArrowRight');

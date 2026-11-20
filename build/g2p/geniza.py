@@ -84,7 +84,7 @@ def main():
         git('add', 'localization', os.path.relpath(preview_path, ROOT), *([os.path.relpath(WORDS_PATH, ROOT)] if os.path.exists(WORDS_PATH) else []))
         git('commit', '-m', f'Graflect from Geniza: {len(texts)} lines in {", ".join(missing)}')
         git('push', '-u', 'origin', branch)
-        url = git('remote', 'get-url', 'origin').replace('.git', '').replace('git@github.com:', 'https://github.com/')
+        url = re.sub(r'\.git$', '', git('remote', 'get-url', 'origin')).replace('git@github.com:', 'https://github.com/')
         print(f'Pushed {branch}. Open the pull request: {url}/compare/main...{branch}?expand=1')
         git('checkout', 'main')
 
