@@ -35,7 +35,7 @@
 | gloomy | cmudict | glümī | **glümī** | **glümī** | **glümī** | **glümī** | **glümī** | **glümī** |
 | accidentally | cmudict | æksidenxlī | æksxdentxlī | æksidentilī | æksidentxlī | æksidentxlī | æksxdentxlī | æksidentilī |
 | muffin | cmudict | mxfin | **mxfin** | **mxfin** | **mxfin** | **mxfin** | **mxfin** | **mxfin** |
-| strolling | cmudict | strõlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg |
+| strolling | cmudict | scrõlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg | scrōlīngg |
 | bodybuilding | nobody | bádībildīngg | – | **bádībildīngg** | bōdībildīngg | **bádībildīngg** | **bádībildīngg** | **bádībildīngg** |
 | unrealistic | cmudict | xnrīxlistik | xnrīlistik | xnrīlistik | **xnrīxlistik** | **xnrīxlistik** | xnrīlistik | **xnrīxlistik** |
 | braid | cmudict | brēd | **brēd** | **brēd** | **brēd** | **brēd** | **brēd** | **brēd** |

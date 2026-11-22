@@ -8,7 +8,8 @@
 #   python3 build/g2p/spelltest.py request                 write request.md: what each language model gets
 #   python3 build/g2p/spelltest.py rules cmudict.dict      the rules system's answers (her words, CMUdict, Latin)
 #   python3 build/g2p/spelltest.py cmudict cmudict.dict    CMUdict through her rules alone (no answer where it has none)
-#   python build/g2p/spelltest.py kanna cmudict.dict g2p.pt   Kanna's answers (on Geniza; G2P_EPOCHS, default 10)
+#   python build/g2p/spelltest.py kanna cmudict.dict g2p.pt [name]   Kanna's answers (on Geniza; G2P_EPOCHS,
+#                                                                    default 10); name: another model, e.g. tohru
 #   python3 build/g2p/spelltest.py grade                   results.md, once wendy.json is in
 #
 # A language model's answers: give it request.md (and nothing else), save its {word: SLUG} as a file
@@ -79,7 +80,7 @@ def main():
         mine = [(w, x) for w, x in h.items() if w.replace("'", '').isalpha()]
         some = random.sample([(w, slug(p)) for w, p in cmu.items() if w.isalpha()], min(len(mine) * 2, 20000))
         tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '10')), lr=2e-4, batch=128, device=device, log=lambda s: None)
-        save('kanna', dict(zip(W['order'], predict(model, W['order'], sv, tv, device=device))))
+        save(sys.argv[4] if len(sys.argv) > 4 else 'kanna', dict(zip(W['order'], predict(model, W['order'], sv, tv, device=device))))
     elif cmd == 'seal':   # spelltest.py seal NAME answers.json: a language model's answers, sealed
         save(sys.argv[2], {k.lower(): v for k, v in json.load(open(sys.argv[3], encoding='utf-8')).items()})
     elif cmd == 'grade':

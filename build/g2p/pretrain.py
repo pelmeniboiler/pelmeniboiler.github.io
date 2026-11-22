@@ -14,12 +14,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
 from g2p_model import Vocab, G2P, train, predict, save
 
-def pretrain(cmu_path, out, tiny=False, small=False, exclude=()):
+def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None):
+    """pairs: [(word, SLUG)] to learn from instead of CMUdict through her rules (build/g2p/tohru.py)."""
     exclude = set(exclude)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
     random.seed(0); torch.manual_seed(0)
-    pairs = [(w, slug(ph)) for w, ph in load_cmu(cmu_path).items() if w.replace("'", '').isalpha() and len(w) <= 40 and w not in exclude]
+    if pairs is None: pairs = [(w, slug(ph)) for w, ph in load_cmu(cmu_path).items()]
+    pairs = [(w, s) for w, s in pairs if w.replace("'", '').isalpha() and len(w) <= 40 and w not in exclude]
     pairs = [(w, s) for w, s in pairs if '?' not in s]
     random.shuffle(pairs)
     held, pairs = pairs[:2000], pairs[2000:]
@@ -33,7 +35,7 @@ def pretrain(cmu_path, out, tiny=False, small=False, exclude=()):
     print(f'{len(pairs)} words, {sum(p.numel() for p in model.parameters()) / 1e6:.1f}M parameters')
     train(model, pairs, sv, tv, epochs=1 if tiny else 8 if small else 20, batch=256 if tiny else 512, device=device)
     got = predict(model, [w for w, _ in held], sv, tv, device=device)
-    print(f'held-out CMUdict words reproduced exactly: {sum(g == s for g, (_, s) in zip(got, held)) / len(held):.0%}')
+    print(f'held-out words reproduced exactly: {sum(g == s for g, (_, s) in zip(got, held)) / len(held):.0%}')
     save(out, model, sv, tv, cfg); print('saved', out)
 
 def main():
