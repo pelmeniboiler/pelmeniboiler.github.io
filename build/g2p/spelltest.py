@@ -7,6 +7,7 @@
 #
 #   python3 build/g2p/spelltest.py request                 write request.md: what each language model gets
 #   python3 build/g2p/spelltest.py rules cmudict.dict      the rules system's answers (her words, CMUdict, Latin)
+#   python3 build/g2p/spelltest.py cmudict cmudict.dict    CMUdict through her rules alone (no answer where it has none)
 #   python build/g2p/spelltest.py kanna cmudict.dict g2p.pt   Kanna's answers (on Geniza; G2P_EPOCHS, default 10)
 #   python3 build/g2p/spelltest.py grade                   results.md, once wendy.json is in
 #
@@ -60,6 +61,11 @@ def main():
         from predict_rules import speller, WORD
         h, keep = hers(); spell = speller(h, keep, load_cmu(sys.argv[2]))
         save('rules', {w: spell(next(WORD.finditer(w))) for w in W['order']})
+    elif cmd == 'cmudict':
+        # CMUdict through her rules and nothing else: no words of hers, no Latin, nothing for words it lacks.
+        from cmu2slug_lib import load_cmu, slug
+        cmu = load_cmu(sys.argv[2])
+        save('cmudict', {w: slug(cmu[w]) for w in W['order'] if w in cmu})
     elif cmd == 'kanna':
         # Kanna alone, as kanna_vs_rules.py's D: fine-tuned once on all her words, then spells every word.
         import random, torch

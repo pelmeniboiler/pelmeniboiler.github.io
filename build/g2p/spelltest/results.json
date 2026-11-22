@@ -3,7 +3,7 @@
   "name": "opus",
   "score": {
    "nobody": 25,
-   "cmudict": 22
+   "cmudict": 27
   },
   "of": {
    "nobody": 40,
@@ -14,7 +14,7 @@
   "name": "sonnet",
   "score": {
    "nobody": 22,
-   "cmudict": 22
+   "cmudict": 25
   },
   "of": {
    "nobody": 40,
@@ -25,7 +25,7 @@
   "name": "haiku",
   "score": {
    "nobody": 18,
-   "cmudict": 18
+   "cmudict": 17
   },
   "of": {
    "nobody": 40,
@@ -36,7 +36,7 @@
   "name": "kanna",
   "score": {
    "nobody": 16,
-   "cmudict": 15
+   "cmudict": 17
   },
   "of": {
    "nobody": 40,
@@ -47,7 +47,18 @@
   "name": "rules",
   "score": {
    "nobody": 12,
-   "cmudict": 15
+   "cmudict": 17
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "cmudict",
+  "score": {
+   "nobody": 0,
+   "cmudict": 17
   },
   "of": {
    "nobody": 40,
