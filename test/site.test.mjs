@@ -1489,9 +1489,10 @@ try {
         const ww = await pw.evaluate(() => document.querySelector('.start-menu').getBoundingClientRect().right);
         await cw.close();
         ok(ww <= 412, `Roundup: WordArt's launcher fits a phone (right edge ${Math.round(ww)}px)`);
-        // Funky: every random palette keeps title-bar text and body text readable.
+        // Funky: every random palette keeps title-bar text and body text readable (read after the body's
+        // 0.3 s colour fade, or a half-faded colour looks unreadable).
         const cf = await themed('funky'); const pf = await cf.newPage(); let worst = 99;
-        for (let i = 0; i < 30; i++) { await pf.goto(`${BASE}/`, { waitUntil: 'load' }); const [bar, text, bg] = await pf.evaluate(() => { const t = getComputedStyle(document.querySelector('.title-bar')); return [t.backgroundColor, getComputedStyle(document.body).color, getComputedStyle(document.body).backgroundColor].concat([t.color]); }).then((v) => [[v[3], v[0]], [v[1], v[2]]]).then(([a, b]) => [ratio(...a), ratio(...b), 0]); worst = Math.min(worst, bar, text); }
+        for (let i = 0; i < 30; i++) { await pf.goto(`${BASE}/`, { waitUntil: 'load' }); await pf.waitForFunction(() => !document.getAnimations().some((a) => a.playState === 'running' && /color/i.test(a.transitionProperty || ''))); const [bar, text, bg] = await pf.evaluate(() => { const t = getComputedStyle(document.querySelector('.title-bar')); return [t.backgroundColor, getComputedStyle(document.body).color, getComputedStyle(document.body).backgroundColor].concat([t.color]); }).then((v) => [[v[3], v[0]], [v[1], v[2]]]).then(([a, b]) => [ratio(...a), ratio(...b), 0]); worst = Math.min(worst, bar, text); }
         await cf.close();
         ok(worst >= 3, `Roundup: Funky's random palettes stay readable (worst contrast over 30 draws ${worst.toFixed(2)})`);
         // Editor: the two export buttons keep their own colours.
@@ -1880,6 +1881,39 @@ try {
         await c.close();
         ok(first && second && first !== second && /[-].* \/ .*[-]/.test(glyphs) && /1 answered/.test(count) && resumed === second && saved.answers[first] === 'kæt/kát' && words === 80 && !errs.length,
             `Spelling test: a word at a time, glyphs as she types, kept across a reload, downloadable (${JSON.stringify({ first, second, resumed, glyphs, count, saved: saved.answers, words, errs })})`);
+    }
+
+    // Saved window positions come back only on a screen the size they were saved on: arranged on a wide
+    // screen, they'd hang off a narrower one, so there the fresh arrangement stands.
+    {
+        const c = await browser.newContext({ viewport: { width: 960, height: 900 } });
+        const p = await c.newPage();
+        await p.goto(`${BASE}/index.html`, { waitUntil: 'load' });
+        const at = async (layout) => {
+            await p.evaluate((l) => localStorage.setItem('pelmeniboiler-layout:/index.html', JSON.stringify(l)), layout);
+            await p.reload({ waitUntil: 'load' }); await p.waitForTimeout(600);
+            return p.$eval('#music-window', (w) => { const r = w.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.right)]; });
+        };
+        const wide = await at({ pos: { 'music-window': [1300, 500] }, closed: [], view: [1600, 900] });
+        const old = await at({ pos: { 'music-window': [1300, 500] }, closed: [] });
+        const same = await at({ pos: { 'music-window': [300, 500] }, closed: [], view: await p.evaluate(() => [document.documentElement.clientWidth, document.documentElement.clientHeight]) });
+        await c.close();
+        ok(wide[1] <= 960 && old[1] <= 960 && same[0] === 300, `Windows: positions saved on a wider screen aren't restored on a narrower one; same size, they are (${JSON.stringify({ wide, old, same })})`);
+    }
+
+    // The Graflect tools' dialogs (manage, edit, confirm, create) are drawn as little windows, but they
+    // aren't windows: they never land in the tray, and the dictionary manager still opens from its tool.
+    {
+        const c = await browser.newContext({ viewport: { width: 960, height: 428 } });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/blog/graflect/en/`, { waitUntil: 'load' });
+        await p.waitForFunction(() => document.querySelectorAll('#tray-icons .tray-icon').length);
+        const tray = await p.$$eval('#tray-icons .tray-icon', (b) => b.map((x) => x.title));
+        await p.evaluate(() => [...document.querySelectorAll('#tray-icons .tray-icon')].find((b) => /translit/.test(b.title)).click());
+        await p.click('#manage-dict-btn');
+        const shown = await p.$eval('#dictionary-manager-modal', (m) => getComputedStyle(m).display !== 'none');
+        await c.close();
+        ok(tray.length && tray.every((t) => /\.\w/.test(t)) && shown && !errs.length, `Graflect page: only real windows in the tray, and the dictionary manager still opens (${JSON.stringify({ tray, shown, errs })})`);
     }
 
     await browser.close();

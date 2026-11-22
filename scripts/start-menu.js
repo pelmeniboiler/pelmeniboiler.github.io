@@ -10,7 +10,9 @@ function setupStartMenu() {
     }
 
     const startButton = startMenu.querySelector('.start-button');
-    const windows = document.querySelectorAll('.window');
+    // Windows, not the dialogs some tools draw as little windows inside an overlay (the dictionary
+    // manager, editor and confirmations in the Graflect tools): those open and close with their tool.
+    const windows = [...document.querySelectorAll('.window')].filter((w) => !w.closest('.ledger-modal-overlay, .modal-overlay, dialog'));
     const windowList = startMenu.querySelector('.window-list');
     let closedWindows = [];
 
@@ -343,10 +345,20 @@ function setupStartMenu() {
             }
         });
         const closed = closedWindows.filter((w) => w.id && w.dataset.startedOpen === '1').map((w) => w.id);
-        try { localStorage.setItem(LAYOUT_KEY, JSON.stringify({ pos, closed })); } catch (_) { /* storage unavailable */ }
+        const view = [document.documentElement.clientWidth, document.documentElement.clientHeight];
+        try { localStorage.setItem(LAYOUT_KEY, JSON.stringify({ pos, closed, view })); } catch (_) { /* storage unavailable */ }
+    }
+    // Positions are only worth restoring on a screen like the one they were arranged on: moved on a wide
+    // screen, they would hang off a narrower one. Then the windows keep the fresh arrangement (closed
+    // windows stay closed either way). A layout saved before the size was kept counts if it all fits.
+    function layoutFits(pos, view) {
+        const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+        if (view) return Math.abs(view[0] - vw) <= 40 && Math.abs(view[1] - vh) <= 120;
+        return [...windows].every((w) => !pos[w.id] || pos[w.id][0] + w.offsetWidth <= vw);
     }
     function applySavedLayout() {
-        const { pos = {}, closed = [] } = loadLayout();
+        const { pos: saved = {}, closed = [], view } = loadLayout();
+        const pos = layoutFits(saved, view) ? saved : {};
         windows.forEach((w) => {
             if (!w.id) return;
             if (closed.includes(w.id) && w.dataset.startedOpen === '1') {
