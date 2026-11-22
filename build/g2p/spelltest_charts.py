@@ -37,7 +37,9 @@ fig1 = ('<figure class="gg-wide"><div class="gg-cap" id="gg-test-t">The spelling
         + '</tbody></table></div></details></figure>')
 def cell(w, ans):
     if not ans: return '<td class="gg-none">–</td>'
-    return f'<td class="{"gg-hit" if right(w, ans) else ""}" title="{html.escape(ans)}">{html.escape(to_glyph(ans))}</td>'
+    cmu = A.get('cmudict', {}).get(w)
+    cls = 'gg-hit' if right(w, ans) else 'gg-ascmu' if cmu and norm(ans) == norm(cmu) else ''
+    return f'<td class="{cls}" title="{html.escape(ans)}"><span>{html.escape(to_glyph(ans))}</span></td>'
 def body(words, title):
     out = [f'<tr class="gg-set"><th colspan="{2 + len(WHO)}" scope="rowgroup">{title}</th></tr>']
     for w in sorted(words):
@@ -45,7 +47,7 @@ def body(words, title):
                    + ''.join(cell(w, A[n].get(w)) for n, _ in WHO) + '</tr>')
     return '<tbody>' + ''.join(out) + '</tbody>'
 fig2 = ('<figure class="gg-wide gg-answers-fig"><div class="gg-cap" id="gg-answers-t">Every answer, all 80 words</div>'
-        '<ul class="gg-legend"><li><span class="gg-seg gg-k-cmu"></span>Spelled the way I did</li></ul>'
+        '<ul class="gg-legend"><li><span class="gg-seg gg-k-cmu"></span>Spelled the way I did</li><li><span class="gg-seg gg-k-ascmu"></span>Not my way, but CMUdict’s</li></ul>'
         '<div class="gg-answers-scroll"><table class="gg-answers" aria-labelledby="gg-answers-t"><thead><tr><th scope="col">Word</th><th scope="col">Me</th>'
         + ''.join(f'<th scope="col">{t}</th>' for _, t in WHO) + '</tr></thead>'
         + body(W['nobody'], 'Words nobody knows: not in CMUdict or my articles') + body(W['cmudict'], 'Words only CMUdict knows')
