@@ -8,13 +8,15 @@
 #   python3 build/g2p/tohru.py words                 tohru/words.txt: the 20,000 most common words she hasn't written
 #   python3 build/g2p/tohru.py requests DIR [500]    one request per batch of words, for Opus (as subagents)
 #   python3 build/g2p/tohru.py merge DIR             their answers (DIR/answers/NNN.json) → tohru/teacher.json
-#   python build/g2p/tohru.py train cmudict.dict tohru.pt [--mix]     on Geniza: pretrain Tohru
+#   python build/g2p/tohru.py train cmudict.dict tohru.pt [--mix] [--weight 5]   on Geniza: pretrain Tohru
 #
 # Opus learns from her words minus the 80 spelling-test words, and the list leaves those out too, so the
 # spelling test stays a fair test for Tohru. --mix: Opus's words, and CMUdict through her rules for every
 # word Opus didn't spell (126,000 words instead of 20,000); without it, Opus's words only, for as many
 # updates as Kanna had (about 140 epochs instead of 20; TOHRU_EPOCHS to choose).
-# Then grade Tohru like Kanna: kanna_vs_rules.py --kanna tohru.pt, spelltest.py kanna CMU tohru.pt tohru.
+# --weight N: Opus's words N times over, so with --mix they aren't outvoted five to one by CMUdict's.
+# Then grade Tohru like Kanna: kanna_vs_rules.py --kanna tohru.pt, spelltest.py kanna CMU tohru.pt tohru;
+# with G2P_ANCHOR=build/g2p/tohru/teacher.json, the fine-tune keeps Opus's words beside hers, not CMUdict's.
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 DIR = os.path.join(HERE, 'tohru'); sys.path.insert(0, HERE)
@@ -66,10 +68,13 @@ def main():
         if '--mix' in sys.argv: pairs += [(w, slug(p)) for w, p in cmu.items() if w not in teacher]
         _, _, test = hers_for_teacher()
         # As many updates as Kanna had (20 epochs of CMUdict): 20,000 words alone need about 7 times the epochs.
-        epochs = int(os.environ.get('TOHRU_EPOCHS') or max(20, round(20 * len(cmu) / len(pairs))))
-        pretrain(sys.argv[2], sys.argv[3], tiny='--tiny' in sys.argv, exclude=test, pairs=pairs, epochs=epochs)
+        # --weight N: Opus's words N times over (with --mix, 5 makes them count about as much as CMUdict's 106,000).
+        n = int(sys.argv[sys.argv.index('--weight') + 1]) if '--weight' in sys.argv else 1
+        extra = list(teacher.items()) * (n - 1)
+        epochs = int(os.environ.get('TOHRU_EPOCHS') or max(20, round(20 * len(cmu) / (len(pairs) + len(extra)))))
+        pretrain(sys.argv[2], sys.argv[3], tiny='--tiny' in sys.argv, exclude=test, pairs=pairs, epochs=epochs, extra=extra)
     else:
-        sys.exit('usage: tohru.py words | requests DIR [size] | merge DIR | train cmudict.dict tohru.pt [--mix]')
+        sys.exit('usage: tohru.py words | requests DIR [size] | merge DIR | train cmudict.dict tohru.pt [--mix] [--weight N]')
 
 if __name__ == '__main__':
     main()

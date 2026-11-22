@@ -9,7 +9,9 @@
 #   python3 build/g2p/spelltest.py rules cmudict.dict      the rules system's answers (her words, CMUdict, Latin)
 #   python3 build/g2p/spelltest.py cmudict cmudict.dict    CMUdict through her rules alone (no answer where it has none)
 #   python build/g2p/spelltest.py kanna cmudict.dict g2p.pt [name]   Kanna's answers (on Geniza; G2P_EPOCHS,
-#                                                                    default 10); name: another model, e.g. tohru
+#                                                                    default 10); name: another model, e.g. tohru;
+#                                                                    G2P_ANCHOR=build/g2p/tohru/teacher.json: fine-tune
+#                                                                    beside Opus's words instead of CMUdict's
 #   python3 build/g2p/spelltest.py grade                   results.md, once wendy.json is in
 #
 # A language model's answers: give it request.md (and nothing else), save its {word: SLUG} as a file
@@ -80,7 +82,9 @@ def main():
         model, sv, tv, _ = load(sys.argv[3], device)
         h, _ = hers(); cmu = load_cmu(sys.argv[2])
         mine = [(w, x) for w, x in h.items() if w.replace("'", '').isalpha()]
-        some = random.sample([(w, slug(p)) for w, p in cmu.items() if w.isalpha()], min(len(mine) * 2, 20000))
+        pool = list(json.load(open(os.environ['G2P_ANCHOR'], encoding='utf-8'))['words'].items()) if os.environ.get('G2P_ANCHOR') else [(w, slug(p)) for w, p in cmu.items() if w.isalpha()]
+        test = set(W['order'])
+        some = random.sample([(w, x) for w, x in pool if w.isalpha() and w not in test], min(len(mine) * 2, 20000))
         tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '10')), lr=2e-4, batch=128, device=device, log=lambda s: None)
         save(sys.argv[4] if len(sys.argv) > 4 else 'kanna', dict(zip(W['order'], predict(model, W['order'], sv, tv, device=device))))
     elif cmd == 'seal':   # spelltest.py seal NAME answers.json: a language model's answers, sealed

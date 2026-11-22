@@ -2,7 +2,8 @@
 # OUT is exactly what that version writes; DUMP says where each English word's spelling came from.
 #   python3 dump.py REPO CMU                                   the rules system
 #   python3 dump.py REPO CMU --model g2p.pt [--model-first]    the model, as build/g2p/predict_model.py runs it
-#                                                              (fine-tuned on TRAIN; G2P_EPOCHS as there)
+#                                                              (fine-tuned on TRAIN; G2P_EPOCHS as there;
+#                                                              G2P_ANCHOR=teacher.json: Opus's words, not CMUdict's)
 #   python3 dump.py REPO CMU --model g2p.pt --model-only       the model spells every word: no lookups, no rules
 #   python3 dump.py REPO CMU --llm opus [--model-first]        a large language model in Kanna's place (../llm_speller.py)
 # Each word also gets a group, whatever spelled it: hers (in her other articles), cmu (only CMUdict knows it),
@@ -58,7 +59,10 @@ if '--model' in sys.argv:
     random.seed(0); torch.manual_seed(0)
     model, sv, tv, cfg = load(sys.argv[sys.argv.index('--model') + 1], device)
     mine = [(w, x) for w, x in hers.items() if w.replace("'", '').isalpha()]
-    some = random.sample([(w, slug(p)) for w, p in cmu.items() if w.isalpha()], min(len(mine) * 2, 20000))
+    # The words that keep the model from forgetting the rest of English: CMUdict through her rules, or with
+    # G2P_ANCHOR=tohru/teacher.json, Opus's (none of which she has written), so Tohru isn't pulled back to CMUdict.
+    pool = list(json.load(open(os.environ['G2P_ANCHOR'], encoding='utf-8'))['words'].items()) if os.environ.get('G2P_ANCHOR') else [(w, slug(p)) for w, p in cmu.items() if w.isalpha()]
+    some = random.sample([(w, x) for w, x in pool if w.isalpha() and w not in hers], min(len(mine) * 2, 20000))
     tune(model, mine * 4 + some, sv, tv, epochs=int(os.environ.get('G2P_EPOCHS', '30')), lr=2e-4, batch=128, device=device, log=lambda s: None)
     tests = [json.loads(l) for l in open(os.environ['TEST'], encoding='utf-8') if l.strip()]
     ws = sorted({m.group(0).lower().replace('’', "'") for t in tests for p in re.split(r'(<[^>]+>|&#?\w+;)', t['en']) if not p.startswith(('<', '&')) for m in re.finditer(r"[A-Za-z][A-Za-z'’]*", p)})
