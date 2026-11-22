@@ -92,7 +92,7 @@
 | audiobook | nobody | ádīōbuk | – | ódiōbuk | ádībuk | **ádīōbuk** | **ádīōbuk** | **ádīōbuk** |
 | dystopian | nobody | distōpīin | – | **distōpīin** | daistōpīin | **distōpīin** | ‹dystopian› | distōpīxn |
 | postgraduate | nobody | pōstgræjyuit | – | pōstgræjüēt | pōscræjxdēt | pōstgræjüit | pōstgræjxwit | pōstgræjüit |
-| envelope | cmudict | envxlõp | envxlōp | envxlōp | envxlōp | envxlōp | envxlōp | envxlōp |
+| envelope | cmudict | ánvxlõp | envxlōp | envxlōp | envxlōp | envxlōp | envxlōp | envxlōp |
 | renewable | cmudict | renüxbl | rīnüxbl | rinüēbl | rīnüxbl | rinüibl | rīnüxbl | rinüxbl |
 | closets | cmudict | klázits | klázxts | **klázits** | klōsets | **klázits** | klázxts | **klázits** |
 
