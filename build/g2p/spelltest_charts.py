@@ -8,7 +8,7 @@ from slugmap import to_glyph, to_slug
 W = json.load(open(os.path.join(ROOT, 'tools/spelltest-words.json')))
 her = json.load(open(os.path.join(HERE, 'spelltest/wendy.json'), encoding='utf-8'))['answers']
 A = {n: json.loads(base64.b64decode(v['base64'])) for n, v in json.load(open(os.path.join(HERE, 'spelltest/answers.sealed.json')))['answers'].items()}
-WHO = [('opus', 'Opus'), ('sonnet', 'Sonnet'), ('haiku', 'Haiku'), ('kanna', 'Kanna'), ('tohru', 'Tohru'), ('tohru-mix', 'Tohru with CMUdict'), ('rules', 'The rules'), ('cmudict', 'CMUdict')]
+WHO = [('opus', 'Opus'), ('sonnet', 'Sonnet'), ('haiku', 'Haiku'), ('kanna', 'Kanna'), ('tohru', 'Tohru'), ('tohru-mix', 'Tohru with CMUdict'), ('tohru2', 'Tohru 2'), ('rules', 'The rules'), ('cmudict', 'CMUdict')]
 norm = lambda s: to_slug(to_glyph(re.sub(r'\s+', '', s or '')))
 def right(w, a): return bool(a) and any(norm(a) == norm(x) for x in her[w].split('/') if x.strip())
 def lev(a, b):
