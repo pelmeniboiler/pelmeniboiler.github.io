@@ -1,0 +1,57 @@
+[
+ {
+  "name": "opus",
+  "score": {
+   "nobody": 24,
+   "cmudict": 22
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "sonnet",
+  "score": {
+   "nobody": 21,
+   "cmudict": 22
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "haiku",
+  "score": {
+   "nobody": 17,
+   "cmudict": 18
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "kanna",
+  "score": {
+   "nobody": 15,
+   "cmudict": 15
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "rules",
+  "score": {
+   "nobody": 11,
+   "cmudict": 15
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ }
+]
