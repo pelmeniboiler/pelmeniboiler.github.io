@@ -53,5 +53,16 @@
    "nobody": 40,
    "cmudict": 40
   }
+ },
+ {
+  "name": "cmudict",
+  "score": {
+   "nobody": 0,
+   "cmudict": 15
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
  }
 ]
