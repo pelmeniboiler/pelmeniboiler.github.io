@@ -12,7 +12,8 @@
 #
 # Opus learns from her words minus the 80 spelling-test words, and the list leaves those out too, so the
 # spelling test stays a fair test for Tohru. --mix: Opus's words, and CMUdict through her rules for every
-# word Opus didn't spell (126,000 words instead of 20,000); without it, Opus's words only.
+# word Opus didn't spell (126,000 words instead of 20,000); without it, Opus's words only, for as many
+# updates as Kanna had (about 140 epochs instead of 20; TOHRU_EPOCHS to choose).
 # Then grade Tohru like Kanna: kanna_vs_rules.py --kanna tohru.pt, spelltest.py kanna CMU tohru.pt tohru.
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
@@ -22,8 +23,8 @@ N = 20000
 def hers_for_teacher():
     """Her words (articles and dictionary), minus the spelling test's words, and the ones she keeps in Latin."""
     from spelltest import hers, words as test_words
-    h, keep = hers(); test = set(test_words()['order'])
-    return {w: s for w, s in h.items() if w not in test}, keep, test
+    h, keep = hers()   # already without the test words
+    return h, keep, set(test_words()['order'])
 
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
@@ -61,9 +62,12 @@ def main():
         from cmu2slug_lib import load_cmu, slug
         teacher = json.load(open(os.path.join(DIR, 'teacher.json'), encoding='utf-8'))['words']
         pairs = list(teacher.items())
-        if '--mix' in sys.argv: pairs += [(w, slug(p)) for w, p in load_cmu(sys.argv[2]).items() if w not in teacher]
+        cmu = load_cmu(sys.argv[2])
+        if '--mix' in sys.argv: pairs += [(w, slug(p)) for w, p in cmu.items() if w not in teacher]
         _, _, test = hers_for_teacher()
-        pretrain(sys.argv[2], sys.argv[3], tiny='--tiny' in sys.argv, exclude=test, pairs=pairs)
+        # As many updates as Kanna had (20 epochs of CMUdict): 20,000 words alone need about 7 times the epochs.
+        epochs = int(os.environ.get('TOHRU_EPOCHS') or max(20, round(20 * len(cmu) / len(pairs))))
+        pretrain(sys.argv[2], sys.argv[3], tiny='--tiny' in sys.argv, exclude=test, pairs=pairs, epochs=epochs)
     else:
         sys.exit('usage: tohru.py words | requests DIR [size] | merge DIR | train cmudict.dict tohru.pt [--mix]')
 

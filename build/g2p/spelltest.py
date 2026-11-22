@@ -26,12 +26,14 @@ def words():
     return json.load(open(os.path.join(ROOT, 'tools', 'spelltest-words.json'), encoding='utf-8'))
 
 def hers():
-    """Her words (word → SLUG) and the words she keeps in Latin, from her own lines and dictionary."""
+    """Her words (word → SLUG) and the words she keeps in Latin, from her own lines and dictionary, without
+    the 80 test words: her answers are in her dictionary now (graflect-data.js), and no contestant may learn them."""
     from second_opinion import lines
     from predict_rules import learn
     from draft import hand_words
     her_lines, _ = lines(); h, keep = learn(her_lines); h.update(hand_words())
-    return h, keep
+    test = set(words()['order'])
+    return {w: x for w, x in h.items() if w not in test}, keep - test if isinstance(keep, set) else keep
 
 # The contestants' answers are sealed (base64) until she has answered, so a glance at the repository
 # can't show them to her; the sha256 of each shows they weren't changed after hers came in.
