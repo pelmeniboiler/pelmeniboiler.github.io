@@ -4,11 +4,11 @@
 
 | contestant | nobody knows (Kanna’s job) | CMUdict knows (the accent) | all |
 |---|---|---|---|
-| opus | 24/40 | 22/40 | 46/80 |
-| sonnet | 21/40 | 22/40 | 43/80 |
-| haiku | 17/40 | 18/40 | 35/80 |
-| kanna | 15/40 | 15/40 | 30/80 |
-| rules | 11/40 | 15/40 | 26/80 |
+| opus | 25/40 | 22/40 | 47/80 |
+| sonnet | 22/40 | 22/40 | 44/80 |
+| haiku | 18/40 | 18/40 | 36/80 |
+| kanna | 16/40 | 15/40 | 31/80 |
+| rules | 12/40 | 15/40 | 27/80 |
 
 ## Every word
 
@@ -50,7 +50,7 @@
 | skincare | nobody | skink4 | **skink4** | **skink4** | **skink4** | **skink4** | **skink4** |
 | volcanoes | cmudict | võlkēnō | válkänōz | válkänōz | válkēnōz | válkēnōz | válkēnōz |
 | wireless | cmudict | wairlis | wairles | **wairlis** | **wairlis** | **wairlis** | **wairlis** |
-| shortlisted | nobody | šōrtlist | šōrtlistid | šōrtlistid | šōrtlistid | šōrtlistid | šōrtlistid |
+| shortlisted | nobody | šōrtlistid | **šōrtlistid** | **šōrtlistid** | **šōrtlistid** | **šōrtlistid** | **šōrtlistid** |
 | remastered | nobody | rīmæstrd | rimæstrd | **rīmæstrd** | **rīmæstrd** | ‹remastered› | **rīmæstrd** |
 | glitter | cmudict | glitr | **glitr** | **glitr** | **glitr** | **glitr** | **glitr** |
 | adaptation | cmudict | ædiptēšin | ædæptēšin | xdæptēšin | ædxptēšin | ædxptēšin | ædæptēšin |
@@ -69,7 +69,7 @@
 | fanbase | nobody | fänbēs | **fänbēs** | **fänbēs** | **fänbēs** | **fänbēs** | **fänbēs** |
 | remix | nobody | rīmiks | rimiks | **rīmiks** | **rīmiks** | ‹remix› | **rīmiks** |
 | hashtags | nobody | hæštægz | **hæštægz** | **hæštægz** | **hæštægz** | **hæštægz** | **hæštægz** |
-| metadata | nobody | mevxdætx | metxdētx | metádátx | metxdētx | mītxdētx | metxdētx |
+| metadata | nobody | metxdætx | metxdētx | metádátx | metxdētx | mītxdētx | metxdētx |
 | smoothie | nobody | smüdhī | smüthī | smüthī | **smüdhī** | ‹smoothie› | **smüdhī** |
 | cybersecurity | nobody | saibrsekyuritī | saibrsikyüritī | saibrsekcritī | saibrsikyüritī | saibrsiky·urxtī | saibrsikyüritī |
 | circumvent | cmudict | sirkxmvent | srkxmvent | srkxmvent | srkxmvent | srkxmvent | srkxmvent |
