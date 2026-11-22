@@ -4,12 +4,12 @@
 
 | contestant | nobody knows (Kanna’s job) | CMUdict knows (the accent) | all |
 |---|---|---|---|
-| opus | 25/40 | 22/40 | 47/80 |
-| sonnet | 22/40 | 22/40 | 44/80 |
-| haiku | 18/40 | 18/40 | 36/80 |
-| kanna | 16/40 | 15/40 | 31/80 |
-| rules | 12/40 | 15/40 | 27/80 |
-| cmudict | 0/40 | 15/40 | 15/80 |
+| opus | 25/40 | 27/40 | 52/80 |
+| sonnet | 22/40 | 25/40 | 47/80 |
+| haiku | 18/40 | 17/40 | 35/80 |
+| kanna | 16/40 | 17/40 | 33/80 |
+| rules | 12/40 | 17/40 | 29/80 |
+| cmudict | 0/40 | 17/40 | 17/80 |
 
 ## Every word
 
@@ -58,12 +58,12 @@
 | unemployment | cmudict | xnimplõīmint | xnimplõīmxnt | xnimplõīmxnt | xnimplõīmxnt | **xnimplõīmint** | xnimplõīmxnt | **xnimplõīmint** |
 | opioid | nobody | ōpīōīd | – | ōpīoid | ápīõīd | ōpīõīd | ‹opioid› | ōpīõīd |
 | backstory | nobody | bækstōrī | – | **bækstōrī** | **bækstōrī** | **bækstōrī** | **bækstōrī** | **bækstōrī** |
-| melancholy | cmudict | melxnkálī | **melxnkálī** | melänkálī | melxncálī | melinkálī | **melxnkálī** | **melxnkálī** |
+| melancholy | cmudict | melinkálī | melxnkálī | melänkálī | melxncálī | **melinkálī** | melxnkálī | melxnkálī |
 | genomic | nobody | gīnōmik | – | jenōmik | jenámik | jinōmik | jīnōmik | jīnámik |
 | frontman | nobody | frxntmän | – | **frxntmän** | frxntmin | **frxntmän** | **frxntmän** | **frxntmän** |
-| necessities | cmudict | nesesitīz | nxsesitīz | nesisitīz | nesisitīz | nisesitīz | nxsesitīz | nisesitīz |
+| necessities | cmudict | nisesitīz | nxsesitīz | nesisitīz | nesisitīz | **nisesitīz** | nxsesitīz | **nisesitīz** |
 | immersive | nobody | imrsiv | – | **imrsiv** | **imrsiv** | **imrsiv** | ‹immersive› | **imrsiv** |
-| conundrum | cmudict | kxnxndrxm | kxnxnjrxm | **kxnxndrxm** | kánxnjrxm | kxnxnjrxm | kxnxnjrxm | kxnxnjrxm |
+| conundrum | cmudict | kxnxnjrxm | **kxnxnjrxm** | kxnxndrxm | kánxnjrxm | **kxnxnjrxm** | **kxnxnjrxm** | **kxnxnjrxm** |
 | downloadable | nobody | downlōdxbl | – | downlōdēbl | **downlōdxbl** | downlōdibl | downlōdēbl | downlōdibl |
 | tweeting | nobody | twītīngg | – | **twītīngg** | **twītīngg** | **twītīngg** | ‹tweeting› | **twītīngg** |
 | cryptocurrency | nobody | kriptōkurensī | – | kriptōkrxnsī | kriptxkyürxnsī | kriptōkrxnsī | kriptōkrxnsī | kriptōkxrinsī |
@@ -73,7 +73,7 @@
 | metadata | nobody | metxdætx | – | metxdētx | metádátx | metxdētx | mītxdētx | metxdētx |
 | smoothie | nobody | smüdhī | – | smüthī | smüthī | **smüdhī** | ‹smoothie› | **smüdhī** |
 | cybersecurity | nobody | saibrsekyuritī | – | saibrsikyüritī | saibrsekcritī | saibrsikyüritī | saibrsiky·urxtī | saibrsikyüritī |
-| circumvent | cmudict | sirkxmvent | srkxmvent | srkxmvent | srkxmvent | srkxmvent | srkxmvent | srkxmvent |
+| circumvent | cmudict | srkxmvent | **srkxmvent** | **srkxmvent** | **srkxmvent** | **srkxmvent** | **srkxmvent** | **srkxmvent** |
 | sentient | nobody | sentīent | – | sentīnt | sentīxnt | senšint | ‹sentient› | senšint |
 | relatable | nobody | rīlētxbl | – | rilētēbl | rilētibl | rilētibl | ‹relatable› | rilētibl |
 | weirder | cmudict | wīrdr | **wīrdr** | **wīrdr** | **wīrdr** | **wīrdr** | **wīrdr** | **wīrdr** |
@@ -82,7 +82,7 @@
 | playable | nobody | plēxbl | – | plēēbl | plēibl | plēibl | plēēbl | plēibl |
 | cylinders | cmudict | silindrz | silxndrz | **silindrz** | **silindrz** | **silindrz** | silxndrz | silinjrz |
 | surplus | cmudict | surplxs | srplis | srplxs | srplis | srplxs | srplis | srplxs |
-| bloodstream | cmudict | blxdstrīm | blxdscrīm | **blxdstrīm** | blxdscrīm | blxdscrīm | blxdscrīm | blxdscrīm |
+| bloodstream | cmudict | blxdscrīm | **blxdscrīm** | blxdstrīm | **blxdscrīm** | **blxdscrīm** | **blxdscrīm** | **blxdscrīm** |
 | webcam | nobody | webkæm | – | webkäm | webkäm | **webkæm** | ‹webcam› | **webkæm** |
 | renewables | nobody | rīnüxblz | – | rinüēblz | rīnüxbxlz | rinüiblz | **rīnüxblz** | rinüxblz |
 | motorsport | nobody | mōtrspõrt | – | mōtrspōrt | mōtrspōrt | mōtrspōrt | mōtrspōrt | mōtrspōrt |
