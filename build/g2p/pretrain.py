@@ -14,9 +14,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
 from g2p_model import Vocab, G2P, train, predict, save
 
-def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None, epochs=None):
+def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None, epochs=None, extra=()):
     """pairs: [(word, SLUG)] to learn from instead of CMUdict through her rules (build/g2p/tohru.py);
-    epochs: instead of 20 (8 with small)."""
+    epochs: instead of 20 (8 with small); extra: more copies of some pairs, to weight them (never held out)."""
     exclude = set(exclude)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
@@ -26,6 +26,8 @@ def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None, epo
     pairs = [(w, s) for w, s in pairs if '?' not in s]
     random.shuffle(pairs)
     held, pairs = pairs[:2000], pairs[2000:]
+    held_words = {w for w, _ in held}
+    if extra: pairs += [(w, s) for w, s in extra if w.isalpha() and w not in held_words and w not in exclude]; random.shuffle(pairs)
     if tiny: pairs, held = pairs[:3000], held[:200]
     letters = "abcdefghijklmnopqrstuvwxyz'"
     sv = Vocab(letters)

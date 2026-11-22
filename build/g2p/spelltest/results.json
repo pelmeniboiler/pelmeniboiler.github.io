@@ -22,7 +22,29 @@
   }
  },
  {
+  "name": "tohru-mix",
+  "score": {
+   "nobody": 20,
+   "cmudict": 16
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
   "name": "haiku",
+  "score": {
+   "nobody": 18,
+   "cmudict": 17
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
+  "name": "tohru",
   "score": {
    "nobody": 18,
    "cmudict": 17
