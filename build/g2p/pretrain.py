@@ -14,8 +14,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cmu2slug_lib import slug, load_cmu
 from g2p_model import Vocab, G2P, train, predict, save
 
-def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None):
-    """pairs: [(word, SLUG)] to learn from instead of CMUdict through her rules (build/g2p/tohru.py)."""
+def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None, epochs=None):
+    """pairs: [(word, SLUG)] to learn from instead of CMUdict through her rules (build/g2p/tohru.py);
+    epochs: instead of 20 (8 with small)."""
     exclude = set(exclude)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print('device:', device, torch.cuda.get_device_name(0) if device == 'cuda' else '')
@@ -33,7 +34,7 @@ def pretrain(cmu_path, out, tiny=False, small=False, exclude=(), pairs=None):
     cfg = dict(d=64, heads=2, layers=1, ff=128) if tiny else dict(d=128, heads=4, layers=2, ff=512) if small else dict(d=256, heads=4, layers=3, ff=1024)
     model = G2P(len(sv.itos), len(tv.itos), **cfg).to(device)
     print(f'{len(pairs)} words, {sum(p.numel() for p in model.parameters()) / 1e6:.1f}M parameters')
-    train(model, pairs, sv, tv, epochs=1 if tiny else 8 if small else 20, batch=256 if tiny else 512, device=device)
+    train(model, pairs, sv, tv, epochs=1 if tiny else epochs or (8 if small else 20), batch=256 if tiny else 512, device=device)
     got = predict(model, [w for w, _ in held], sv, tv, device=device)
     print(f'held-out words reproduced exactly: {sum(g == s for g, (_, s) in zip(got, held)) / len(held):.0%}')
     save(out, model, sv, tv, cfg); print('saved', out)
