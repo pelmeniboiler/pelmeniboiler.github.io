@@ -10,7 +10,9 @@ function setupStartMenu() {
     }
 
     const startButton = startMenu.querySelector('.start-button');
-    const windows = document.querySelectorAll('.window');
+    // Windows, not the dialogs some tools draw as little windows inside an overlay (the dictionary
+    // manager, editor and confirmations in the Graflect tools): those open and close with their tool.
+    const windows = [...document.querySelectorAll('.window')].filter((w) => !w.closest('.ledger-modal-overlay, .modal-overlay, dialog'));
     const windowList = startMenu.querySelector('.window-list');
     let closedWindows = [];
 

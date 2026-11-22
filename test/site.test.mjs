@@ -1901,6 +1901,21 @@ try {
         ok(wide[1] <= 960 && old[1] <= 960 && same[0] === 300, `Windows: positions saved on a wider screen aren't restored on a narrower one; same size, they are (${JSON.stringify({ wide, old, same })})`);
     }
 
+    // The Graflect tools' dialogs (manage, edit, confirm, create) are drawn as little windows, but they
+    // aren't windows: they never land in the tray, and the dictionary manager still opens from its tool.
+    {
+        const c = await browser.newContext({ viewport: { width: 960, height: 428 } });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/blog/graflect/en/`, { waitUntil: 'load' });
+        await p.waitForFunction(() => document.querySelectorAll('#tray-icons .tray-icon').length);
+        const tray = await p.$$eval('#tray-icons .tray-icon', (b) => b.map((x) => x.title));
+        await p.evaluate(() => [...document.querySelectorAll('#tray-icons .tray-icon')].find((b) => /translit/.test(b.title)).click());
+        await p.click('#manage-dict-btn');
+        const shown = await p.$eval('#dictionary-manager-modal', (m) => getComputedStyle(m).display !== 'none');
+        await c.close();
+        ok(tray.length && tray.every((t) => /\.\w/.test(t)) && shown && !errs.length, `Graflect page: only real windows in the tray, and the dictionary manager still opens (${JSON.stringify({ tray, shown, errs })})`);
+    }
+
     await browser.close();
     server.close();
 }
