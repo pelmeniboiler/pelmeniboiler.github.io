@@ -1,0 +1,71 @@
+[
+ {
+  "key": "B",
+  "title": "the rules, then Kanna",
+  "model": "kanna",
+  "words": 5787,
+  "of": 6167,
+  "exact": 190,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4437,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1300,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 47,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "C",
+  "title": "Kanna before CMUdict",
+  "model": "kanna",
+  "words": 5822,
+  "of": 6167,
+  "exact": 204,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4436,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1353,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 47,
+    "of": 222
+   }
+  }
+ },
+ {
+  "key": "D",
+  "title": "Kanna alone",
+  "model": "kanna",
+  "words": 5784,
+  "of": 6167,
+  "exact": 159,
+  "lines": 419,
+  "groups": {
+   "hers": {
+    "right": 4376,
+    "of": 4549
+   },
+   "cmu": {
+    "right": 1353,
+    "of": 1831
+   },
+   "unknown": {
+    "right": 47,
+    "of": 222
+   }
+  }
+ }
+]

@@ -22,6 +22,17 @@
   }
  },
  {
+  "name": "tohru2",
+  "score": {
+   "nobody": 23,
+   "cmudict": 19
+  },
+  "of": {
+   "nobody": 40,
+   "cmudict": 40
+  }
+ },
+ {
   "name": "tohru-mix",
   "score": {
    "nobody": 20,
