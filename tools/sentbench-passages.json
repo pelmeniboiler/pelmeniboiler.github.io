@@ -1,0 +1,98 @@
+{
+ "note": "The sentence bench (build/g2p/sentbench.py): passages Wendy spells blind on /tools/sentbench.html after the contestants have sealed their answers. G-d is never written out, in English or Hebrew.",
+ "passages": [
+  {
+   "id": "eyre",
+   "title": "Jane Eyre: Thornfield, on the leads",
+   "source": "Charlotte Brontë, Jane Eyre, chapter 12 (Project Gutenberg); one cut between the lines",
+   "lines": [
+    "Anybody may blame me who likes, when I add further, that, now and then, when I took a walk by myself in the grounds; when I went down to the gates and looked through them along the road; or when, while Adèle played with her nurse, and Mrs. Fairfax made jellies in the storeroom, I climbed the three staircases, raised the trap-door of the attic, and having reached the leads, looked out afar over sequestered field and hill, and along dim sky-line—that then I longed for a power of vision which might overpass that limit.",
+    "When thus alone, I not unfrequently heard Grace Poole’s laugh: the same peal, the same low, slow ha! ha! which, when first heard, had thrilled me."
+   ]
+  },
+  {
+   "id": "derech",
+   "title": "Tefilat HaDerech, interlinear",
+   "source": "Hebrew: Daat Siddur Ashkenaz (public domain), with the Yaakov verses said after it; English: a phrase-by-phrase gloss written for this bench",
+   "lines": [
+    "יְהִי רָצוֹן מִלְּפָנֶיךָ — May it be Your will,",
+    "יי אֱלֹקֵינוּ וֵאלֹקֵי אֲבוֹתֵינוּ — Hashem, our G-d and the G-d of our fathers,",
+    "שֶׁתּוֹלִיכֵנוּ לְשָׁלוֹם — that You lead us in peace,",
+    "וְתַצְעִידֵנוּ לְשָׁלוֹם — and step us forward in peace,",
+    "וְתַדְרִיכֵנוּ לְשָׁלוֹם — and guide us in peace,",
+    "וְתִסְמְכֵנוּ לְשָׁלוֹם — and hold us up in peace,",
+    "וְתַגִּיעֵנוּ לִמְחוֹז חֶפְצֵנוּ — and bring us to where we long to be,",
+    "לְחַיִּים וּלְשִׂמְחָה וּלְשָׁלוֹם — for life, and for joy, and for peace.",
+    "וְתַצִּילֵנוּ מִכַּף כָּל אוֹיֵב וְאוֹרֵב — Save us from the hand of every enemy and ambusher,",
+    "וְלִסְטִים וְחַיּוֹת רָעוֹת בַּדֶּרֶךְ — robbers and wild beasts on the way,",
+    "וּמִכָּל מִינֵי פֻּרְעָנֻיּוֹת — and from every kind of calamity",
+    "הַמִּתְרַגְּשׁוֹת לָבוֹא לָעוֹלָם — that stirs to come into the world.",
+    "וְתִתְּנֵנוּ לְחֵן וּלְחֶסֶד וּלְרַחֲמִים — Grant us grace, kindness and mercy",
+    "בְּעֵינֶיךָ וּבְעֵינֵי כָל רֹאֵינוּ — in Your eyes and in the eyes of all who see us,",
+    "כִּי קֵל שׁוֹמֵעַ תְּפִלָּה וְתַחֲנוּן אַתָּה — for You are a G-d who hears prayer and pleading.",
+    "בָּרוּךְ אַתָּה יי שׁוֹמֵעַ תְּפִלָּה — Blessed are You, Hashem, who hears prayer.",
+    "וְיַעֲקֹב הָלַךְ לְדַרְכּוֹ — And Yaakov went on his way,",
+    "וַיִּפְגְּעוּ בוֹ מַלְאֲכֵי אֱלֹקִים — and angels of G-d met him.",
+    "וַיֹּאמֶר יַעֲקֹב כַּאֲשֶׁר רָאָם — And Yaakov said when he saw them,",
+    "מַחֲנֵה אֱלֹקִים זֶה — “This is G-d’s camp,”",
+    "וַיִּקְרָא שֵׁם הַמָּקוֹם הַהוּא מַחֲנָיִם — and he called the name of that place Machanayim."
+   ]
+  },
+  {
+   "id": "eco",
+   "title": "Foucault’s Pendulum: the breaking of the vessels",
+   "source": "Umberto Eco, Foucault’s Pendulum, tr. William Weaver; one cut between the paragraphs",
+   "lines": [
+    "“But the lights of the Sefirot must be gathered in vessels that can contain their splendor without shattering.",
+    "The vessels destined to receive Keter, Hokhmah, and Binah withstood their magnificence, but for the lower Sefirot, from Hesed to Yesod, light was exhaled too strongly in a single burst, and the vessels broke.",
+    "Fragments of light were spilled into the universe, and gross matter was thus born.”",
+    "“There’s a way back in, actually,” Diotallevi said.",
+    "“All emanates from G-d, in the contraction of simsum.",
+    "The problem is to bring about tikkun, the restoration of Adam Qadmon.",
+    "Then we will rebuild everything in the balanced structure of the parzufim, the faces—or, rather, forms—that will take the place of the Sefirot.",
+    "The ascension of the soul is like a cord of silk that enables devout intention, groping in the darkness, to find the path to the light.",
+    "And so the world constantly strives, by combining the letters of the Torah, to regain its natural form, to emerge from its horrible confusion.”"
+   ]
+  },
+  {
+   "id": "calvino",
+   "title": "Invisible Cities",
+   "source": "Italo Calvino, Invisible Cities, tr. William Weaver",
+   "lines": [
+    "Cities, like dreams, are made of desires and fears, even if the thread of their discourse is secret, their rules are absurd, their perspectives deceitful, and everything conceals something else."
+   ]
+  },
+  {
+   "id": "nabokov",
+   "title": "Invitation to a Beheading",
+   "source": "Vladimir Nabokov, Invitation to a Beheading",
+   "lines": [
+    "“And yet I have been fashioned so painstakingly,” thought Cincinnatus as he wept in the darkness.",
+    "“The curvature of my spine has been calculated so well, so mysteriously.",
+    "I feel, tightly rolled up in my calves, so many miles that I could yet run in my lifetime.",
+    "My head is so comfortable …”"
+   ]
+  },
+  {
+   "id": "mishima",
+   "title": "Confessions of a Mask",
+   "source": "Yukio Mishima, Confessions of a Mask, tr. Meredith Weatherby",
+   "lines": [
+    "Could this have been love?",
+    "Grant it to be one form of love, for even though at first glance it seemed to retain its pristine form forever, simply repeating that form over and over again, it too had its own unique sort of debasement and decay.",
+    "And it was a debasement more evil than that of any normal kind of love.",
+    "Indeed, of all the kinds of decay in this world, decadent purity is the most malignant."
+   ]
+  },
+  {
+   "id": "trava",
+   "title": "Trava u Doma, and a nudnik",
+   "source": "Zemlyane, Trava u Doma (two lines of the chorus); the last line written for this bench",
+   "lines": [
+    "А снится нам трава, трава у дома,",
+    "Зелёная, зелёная трава.",
+    "Stop being such a nudnik: it’s all shtuyot, and you know it, durak."
+   ]
+  }
+ ]
+}

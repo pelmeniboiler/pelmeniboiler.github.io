@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link id="dynamic-favicon" rel="icon" href="/logo/favicon.svg">
+    <script src="/scripts/theme-loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Sentence test</title>
+    <link rel="stylesheet" href="/styles/pelmeni2025.css">
+    <style>
+        /* The sentence test (build/g2p/sentbench.py): seven passages, a line at a time, each line shown in
+           its passage, spelled in SLUG with the glyphs shown as she types. Her answers stay in this browser
+           until she sends them. The models' answers were committed before hers and are never shown here. */
+        body { overflow: auto; padding: 12px 12px 56px; box-sizing: border-box; }
+        .desk { max-width: 760px; margin: 0 auto; }
+        .sheet { position: relative; border: 2px solid var(--border-color); background-color: var(--win-bg-color); color: var(--text-color); }
+        .sheet > .title-bar { cursor: var(--cur-default); }
+        .sheet > .content { padding: 12px; max-height: none; overflow: visible; }
+        .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .bar.top { padding-bottom: 10px; border-bottom: 2px solid var(--border-color); margin-bottom: 12px; }
+        .grow { flex: 1; }
+        button, input { font: inherit; color: var(--text-color); background: var(--win-bg-color); border: 2px solid var(--border-color); padding: 4px 10px; box-sizing: border-box; }
+        button { cursor: var(--cur-pointer); }
+        button[aria-current="true"] { background: var(--text-color); color: var(--win-bg-color); }
+        .ptitle { font-weight: bold; margin: 14px 0 2px; }
+        .psource { font-size: 0.85em; font-style: italic; margin-bottom: 8px; }
+        .passage { margin: 0 0 12px; padding-left: 10px; border-left: 2px solid var(--border-color); }
+        .passage p { margin: 0 0 4px; cursor: var(--cur-pointer); unicode-bidi: plaintext; }
+        .passage p.here { font-weight: bold; text-decoration: underline; text-underline-offset: 3px; }
+        .passage p.done::after { content: " ✓"; }
+        .word { font-size: 1.3em; margin: 12px 0 10px; overflow-wrap: anywhere; unicode-bidi: plaintext; }
+        /* Interlinear lines (Hebrew — English): two columns, the Hebrew on the right, as in a Schottenstein. */
+        .il { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5em; }
+        .il > [dir="rtl"] { text-align: right; }
+        .passage p.il.done::after { content: none; }
+        .passage p.il.done > [dir="ltr"]::after { content: " ✓"; }
+        #slug { width: 100%; font-family: monospace; font-size: 1.4em; padding: 8px; }
+        .glyphs { font-size: 2.6em; min-height: 1.6em; margin: 10px 0 4px; overflow-wrap: anywhere; }
+        .hint { font-size: 0.9em; }
+        .list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 16px; padding-top: 12px; border-top: 2px solid var(--border-color); }
+        .list button { padding: 1px 6px; font-size: 0.85em; }
+        .list button.done::after { content: " ✓"; }
+        details.gh { margin-top: 12px; }
+        details.gh .row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        details.gh input { flex: 1 1 14em; }
+    </style>
+</head>
+<body>
+<div class="desk">
+    <section class="sheet" aria-labelledby="st-title">
+        <div class="title-bar"><span class="title" id="st-title">✎ sentence.test</span></div>
+        <div class="content">
+            <p>Spell each line the way you’d say it, in SLUG, in context, Hebrew and Russian included. Keep the line’s punctuation and dashes. A word you’d keep in Latin goes in ‹›. Your answers stay in this browser until you send them; the models answered before you and you won’t see their answers here.</p>
+            <div class="bar top">
+                <span id="count" class="grow" aria-live="polite"></span>
+                <button id="back">← Back</button>
+                <button id="next">Next →</button>
+            </div>
+            <div class="ptitle" id="ptitle"></div>
+            <div class="psource" id="psource"></div>
+            <div class="passage" id="passage"></div>
+            <div class="word" id="word" dir="auto"></div>
+            <label for="slug" class="hint" id="hint">This line in SLUG (Enter for the next line)</label>
+            <input id="slug" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <div class="glyphs" id="glyphs" aria-label="In Graflect"></div>
+            <div class="list" id="list" role="group" aria-label="The passages"></div>
+            <div class="bar" style="margin-top: 14px">
+                <span id="status" class="grow" aria-live="polite"></span>
+                <button id="download">Download</button>
+                <button id="send">Send my answers</button>
+            </div>
+            <details class="gh">
+                <summary>GitHub (shared with sofrut.ii)</summary>
+                <div class="row">
+                    <input id="gh-token" type="password" placeholder="GitHub token" autocomplete="off" aria-label="GitHub token">
+                    <input id="gh-repo" placeholder="owner/repository" aria-label="Repository">
+                </div>
+            </details>
+        </div>
+    </section>
+</div>
+<script src="/scripts/blog/demos/graflect-data.js"></script>
+<script>
+(() => {
+    const $ = (id) => document.getElementById(id);
+    const KEY = 'pelmeniboiler-sentbench', GH = 'pelmeniboiler-sofrut2-github', FILE = 'build/g2p/sentbench/wendy.json';
+    const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (_) { return d; } };
+    const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) { /* full or blocked */ } };
+    // SLUG → glyphs, as the queue (tools/gt.html) and build/gt-eval.mjs read it: longest match; "·" marks a
+    // boundary between glyphs that would otherwise read as one; "yu" is yü; ‹Latin› stays Latin.
+    const glyphOf = {}; for (const [g, s] of Object.entries(slugMap)) if (s.trim()) glyphOf[s] = g;
+    glyphOf.yu = glyphOf['yü'];
+    const KEYS = Object.keys(glyphOf).sort((a, b) => b.length - a.length);
+    function toGlyphs(text) {
+        let out = '', i = 0;
+        while (i < text.length) {
+            const ch = text[i];
+            if (ch === '‹') { const e = text.indexOf('›', i); const j = e < 0 ? text.length : e; out += text.slice(i + 1, j); i = j + 1; continue; }
+            if (ch === '·') { i++; continue; }
+            if (/[\s/]/.test(ch)) { out += ch === '/' ? ' / ' : ch; i++; continue; }
+            const k = KEYS.find((x) => text.startsWith(x, i));
+            if (k) { out += glyphOf[k]; i += k.length; } else { out += ch; i++; }
+        }
+        return out;
+    }
+    let words = [], at = 0, text = {}, passages = [];
+    const state = () => readJSON(KEY, { answers: {}, at: 0 });
+    const answers = () => state().answers;
+    const keep = () => { const s = state(); const v = $('slug').value.trim(); if (v) s.answers[words[at]] = v; else delete s.answers[words[at]]; s.at = at; writeJSON(KEY, s); };
+    // "Hebrew — English" is one interlinear line: two columns, each in its own direction.
+    function render(el, line) {
+        const m = line.match(/^([\u0590-\u05ff][^—]*?) — (.*)$/);
+        if (!m) { el.textContent = line; el.dir = 'auto'; return; }
+        const he = document.createElement('span'), en = document.createElement('span');
+        he.dir = 'rtl'; he.lang = 'he'; he.textContent = m[1]; en.dir = 'ltr'; en.lang = 'en'; en.textContent = m[2];
+        el.classList.add('il'); el.dir = 'ltr'; el.replaceChildren(en, he);
+    }
+    function show() {
+        const a = answers(), w = words[at], pid = w.split(':')[0], p = passages.find((x) => x.id === pid);
+        $('ptitle').textContent = p.title; $('psource').textContent = p.source;
+        $('passage').replaceChildren(...p.lines.map((l, i) => { const e = document.createElement('p'); const id = `${pid}:${i + 1}`; e.className = (id === w ? 'here' : '') + (a[id] ? ' done' : ''); render(e, l); e.addEventListener('click', () => go(words.indexOf(id))); return e; }));
+        $('word').className = 'word'; render($('word'), text[w]);
+        $('hint').textContent = $('word').classList.contains('il') ? 'This line in SLUG: the Hebrew, then the English (Enter for the next line)' : 'This line in SLUG (Enter for the next line)';
+        $('slug').value = a[w] || ''; $('glyphs').textContent = toGlyphs($('slug').value);
+        $('count').textContent = `Line ${at + 1} of ${words.length} · ${Object.keys(a).length} answered`;
+        $('back').disabled = at === 0; $('next').textContent = at === words.length - 1 ? 'Done' : 'Next →';
+        for (const b of $('list').children) { const ids = words.filter((x) => x.startsWith(b.dataset.p + ':')); b.classList.toggle('done', ids.every((x) => a[x])); b.setAttribute('aria-current', b.dataset.p === pid ? 'true' : 'false'); }
+        $('slug').focus();
+    }
+    const go = (i) => { keep(); at = Math.max(0, Math.min(words.length - 1, i)); const s = state(); s.at = at; writeJSON(KEY, s); show(); };
+    $('slug').addEventListener('input', () => { $('glyphs').textContent = toGlyphs($('slug').value); keep(); $('count').textContent = `Line ${at + 1} of ${words.length} · ${Object.keys(answers()).length} answered`; const h = $('passage').querySelector('.here'); if (h) h.classList.toggle('done', !!answers()[words[at]]); });
+    $('slug').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(at + 1); } });
+    $('back').addEventListener('click', () => go(at - 1));
+    $('next').addEventListener('click', () => go(at + 1));
+    // GitHub, shared with sofrut.ii and the queue.
+    const ghCfg = () => readJSON(GH, {});
+    (() => { const c = ghCfg(); $('gh-token').value = c.token || ''; $('gh-repo').value = c.repo || 'pelmeniboiler/pelmeniboiler.github.io'; })();
+    const saveGh = () => { const c = ghCfg(); writeJSON(GH, { ...c, token: $('gh-token').value.trim(), repo: $('gh-repo').value.trim(), base: c.base || 'main', mode: c.mode || 'pr' }); };
+    $('gh-token').addEventListener('change', saveGh); $('gh-repo').addEventListener('change', saveGh);
+    const payload = () => JSON.stringify({ note: 'Wendy’s answers to the sentence test, typed blind on /tools/sentbench.html, by line id.', answers: Object.fromEntries(words.filter((w) => answers()[w]).map((w) => [w, answers()[w]])) }, null, 1) + '\n';
+    $('download').addEventListener('click', () => {
+        keep(); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([payload()], { type: 'application/json' })); a.download = 'wendy.json'; a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000); $('status').textContent = `Saved wendy.json: put it in ${FILE.replace(/[^/]+$/, '')}.`;
+    });
+    let sending = false;
+    $('send').addEventListener('click', async () => {
+        if (sending) return; keep(); saveGh();
+        const c = ghCfg(), n = Object.keys(answers()).length;
+        if (!n) { $('status').textContent = 'Nothing answered yet.'; return; }
+        if (n < words.length && !confirm(`${words.length - n} line(s) have no answer yet. Send anyway?`)) return;
+        if (!c.token) { $('status').textContent = 'Add a GitHub token first (under GitHub).'; document.querySelector('details.gh').open = true; $('gh-token').focus(); return; }
+        sending = true; $('status').textContent = 'sending…';
+        const gh = async (p, opts = {}) => {
+            const r = await fetch(`https://api.github.com${p}`, { ...opts, headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) } });
+            const j = r.status === 204 ? null : await r.json().catch(() => null);
+            if (!r.ok) { const e = new Error((j && j.message) || `HTTP ${r.status}`); e.status = r.status; throw e; }
+            return j;
+        };
+        try {
+            const [o, nm] = c.repo.split('/'), R = `/repos/${o}/${nm}`, base = c.base || 'main';
+            const parent = (await gh(`${R}/git/ref/heads/${base}`)).object.sha;
+            const tree = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: (await gh(`${R}/git/commits/${parent}`)).tree.sha, tree: [{ path: FILE, mode: '100644', type: 'blob', content: payload() }] }) });
+            const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `Sentence test: Wendy's answers (${n} lines)`, tree: tree.sha, parents: [parent] }) });
+            await gh(`${R}/git/refs/heads/${base}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha }) });
+            $('status').textContent = `Sent ${n} answers. Tell Claude, and the models get graded.`;
+        } catch (e) {
+            $('status').textContent = e.status === 401 ? '✗ GitHub refused the token'
+                : e.status === 404 ? '✗ GitHub found no such repository, or the token can’t see it'
+                : e.status === 403 ? '✗ the token isn’t allowed to do that (it needs Contents: read and write)'
+                : e instanceof TypeError ? '✗ couldn’t reach GitHub' : `✗ ${e.message}`;
+        } finally { sending = false; }
+    });
+    fetch('/tools/sentbench-passages.json', { cache: 'no-cache' }).then((r) => r.json()).then((d) => {
+        passages = d.passages;
+        for (const p of passages) p.lines.forEach((l, i) => { const id = `${p.id}:${i + 1}`; words.push(id); text[id] = l; });
+        at = Math.min(state().at || 0, words.length - 1);
+        for (const p of passages) { const b = document.createElement('button'); b.textContent = p.title; b.dataset.p = p.id; b.addEventListener('click', () => go(words.indexOf(`${p.id}:1`))); $('list').append(b); }
+        show();
+    }).catch(() => { $('status').textContent = 'Couldn’t load the passages.'; });
+})();
+</script>
+<div id="settings-module-placeholder"></div>
+<script src="/scripts/module-loader.js" defer></script>
+</body>
+</html>
