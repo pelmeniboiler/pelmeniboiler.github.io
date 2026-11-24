@@ -206,3 +206,8 @@
 #gallery-window .content ol {
     list-style: decimal;
 }
+
+/* A sketch drawn in sofrut.ii: lines and words in the text colour. */
+figure.sketch { margin: 15px 0; }
+figure.sketch svg { display: block; width: 100%; max-width: 640px; height: auto; margin: 0 auto; color: var(--text-color); }
+figure.sketch text { font-family: var(--font-body); }

@@ -1217,7 +1217,8 @@ try {
             const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('.addph')]);
             await chooser.setFiles({ name: 'receipt.png', mimeType: 'image/png', buffer: shot });
             await page.waitForFunction(() => document.querySelector('.thumb img')?.naturalWidth > 0);
-            const dated = /^added \d/.test(await page.getAttribute('.thumb', 'title'));
+            // (read in the page: the site's tooltip lifts a title off whatever the mouse rests on, which only the page's own scripts still see)
+            const dated = /^added \d/.test(await page.$eval('.thumb', (e) => e.getAttribute('title')));
             await page.click('#bshare');
             await page.waitForFunction(() => /photo\)/.test(document.querySelector('#sharefile')?.textContent || ''));
             const note = await page.textContent('#sharebody');
@@ -1840,6 +1841,86 @@ try {
         await c.close();
         ok(/<abbr title="Vilna Gaon">GRA<\/abbr>/.test(across) && /<a href="https:\/\/example.com\/m">manual<\/a>/.test(across) && (across.match(/<i>/g) || []).length === 2 && /<\/i><\/p><p><i>/.test(across) && !/<(p|h2)\b[^>]*>[^<]*<(b|i)>[^<]*<p>/.test(nested) && /<aside>one<br>two<\/aside>/.test(nested) && errs.length === 0,
             `Sofrut II: formatting across paragraphs, dialogs keep the selection, nested blocks unwrapped (${JSON.stringify({ across: across.slice(0, 220), nested })})`);
+    }
+
+    // Sofrut II: File → Open takes a published post from the repository (mocked with the sources here) and,
+    // left alone, writes back the very same files; an edit changes only what was edited; a sketch goes in as an SVG.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('dialog', (d) => d.accept());
+        const SRC = process.cwd();
+        await c.route('https://api.github.com/**', async (route) => {
+            const m = new URL(route.request().url()).pathname.match(/\/contents\/(.+)$/);
+            const f = m && path.join(SRC, decodeURIComponent(m[1]));
+            const body = f && f.startsWith(SRC) ? await fs.readFile(f).catch(() => null) : null;
+            route.fulfill({ status: body ? 200 : 404, headers: { 'access-control-allow-origin': '*' }, body: body || '{}' });
+        });
+        await p.goto(`${BASE}/tools/sofrut2.html`, { waitUntil: 'load' });
+        await p.keyboard.press('Escape');
+        await p.waitForFunction(() => document.querySelectorAll('#kw-pool .chip').length > 0, null, { timeout: 5000 }).catch(() => {});
+        const posts = JSON.parse(await fs.readFile(path.join(ROOT, 'blog/blog-manifest.json'), 'utf-8')).filter((x) => x.translationSource && x.slug);
+        const open = async (i) => {
+            await p.click('#doc'); await p.keyboard.press('Control+O');
+            await p.click(`#open-list button[data-i="${i}"]`);
+            await p.waitForFunction(() => document.querySelector('#pub-status').textContent !== 'opening…');
+        };
+        const files = async () => { await p.click('.menubar .top:has-text("View")'); await p.click('[data-act=files]'); const o = { html: await p.inputValue('#out-html'), json: await p.inputValue('#out-json'), notes: await p.inputValue('#out-notes') }; await p.keyboard.press('Escape'); return o; };
+        const differ = [];
+        for (let i = 0; i < posts.length; i++) {
+            await open(i);
+            const o = await files(), pre = posts[i].translationSource;
+            const same = o.html === await fs.readFile(path.join(SRC, 'blog', posts[i].filename), 'utf-8')
+                && o.json === await fs.readFile(path.join(SRC, 'localization', `${pre}.json`), 'utf-8')
+                && o.notes === await fs.readFile(path.join(SRC, 'localization/notes', `${pre}.json`), 'utf-8').catch(() => '');
+            if (!same) differ.push(posts[i].slug);
+        }
+        ok(posts.length > 0 && !differ.length && !errs.length, `Sofrut II: every published post opens and, left alone, writes back byte for byte (${posts.length} posts${differ.length ? `; differ: ${differ.join(', ')}` : ''}${errs.length ? `; ${errs[0]}` : ''})`);
+
+        // An edit: a paragraph changed, one deleted, one added, a sketch drawn.
+        const pi = posts.findIndex((x) => x.translationSource === 'yssttuph');
+        await open(pi);
+        const before = JSON.parse(await fs.readFile(path.join(SRC, 'localization/yssttuph.json'), 'utf-8'));
+        const ro = await p.$eval('#slug', (e) => e.readOnly);
+        await p.evaluate(() => {
+            document.querySelector('#doc [data-key="yssttuph_p3"]').remove();
+            const p2 = document.querySelector('#doc [data-key="yssttuph_p2"]'), r = document.createRange();
+            r.selectNodeContents(p2); r.collapse(false); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+        });
+        await p.keyboard.type(' Edited.'); await p.keyboard.press('Enter'); await p.keyboard.type('A new paragraph.');
+        await p.click('#tb button[data-name="Sketch"]');
+        const b = await (await p.$('#sk')).boundingBox();
+        await p.mouse.move(b.x + 40, b.y + b.height - 40); await p.mouse.down();
+        for (let k = 1; k <= 12; k++) await p.mouse.move(b.x + 40 + k * 40, b.y + b.height - 40 - k * 20);
+        await p.mouse.up();
+        await p.click('#sk-tools [data-tool=text]'); await p.mouse.click(b.x + 300, b.y + 60); await p.keyboard.type('peak'); await p.keyboard.press('Enter');
+        await p.keyboard.press('Control+Z'); await p.keyboard.press('Control+Shift+Z'); // the pad's own undo, not the article's
+        await p.click('#dlg-sketch .bar [data-close]');
+        const o = await files(), j = JSON.parse(o.json);
+        const sketch = /<figure class="sketch" data-sketch=""><svg [^>]*viewBox="0 0 640 \d+"[^>]*><path d="M[^"]+"><\/path><text [^>]*>peak<\/text><\/svg><\/figure>/.test(o.html);
+        const newKey = Object.keys(j.en).find((k) => j.en[k] === 'A new paragraph.');
+        const untouched = Object.keys(before.en).filter((k) => !['yssttuph_p2', 'yssttuph_p3'].includes(k)).every((k) => j.en[k] === before.en[k]);
+        ok(ro && sketch && /Edited\.$/.test(j.en.yssttuph_p2) && !('yssttuph_p3' in j.en) && !('yssttuph_p3' in (j.gt || {})) && newKey && !(newKey in before.en) && untouched
+            && o.html.includes('<meta name="pubDate" content="2026-11-18T00:00:00Z">') && !errs.length,
+            `Sofrut II: an opened post's edit changes only what was edited; a deleted block's key goes in every language; a new one gets a fresh key; a sketch is an SVG (${JSON.stringify({ ro, sketch, newKey, untouched, errs })})`);
+        await c.close();
+    }
+
+    // The site's tooltip: a title shows beside the cursor in the theme's colours instead of the system's; the
+    // title comes off while the pointer is on it (page scripts still read it) and goes back when it leaves.
+    {
+        const c = await browser.newContext({ viewport: { width: 1280, height: 860 }, serviceWorkers: 'block' });
+        const p = await c.newPage();
+        await p.goto(`${BASE}/tools/sofrut2.html`, { waitUntil: 'load' });
+        await p.keyboard.press('Escape');
+        const sel = '#tb button[data-name="Bold"]', bb = await (await p.$(sel)).boundingBox();
+        await p.mouse.move(bb.x + 8, bb.y + 8); await p.waitForTimeout(600);
+        const on = await p.evaluate((s) => { const t = document.querySelector('.tip'), e = document.querySelector(s), r = t && t.getBoundingClientRect(), cs = t && getComputedStyle(t);
+            return { shown: !!t && !t.hidden, text: t && t.textContent, left: r && Math.round(r.left), raw: Element.prototype.hasAttribute.call(e, 'title') && e.outerHTML.includes('title='), read: e.title, color: cs && cs.color, bg: cs && cs.backgroundColor }; }, sel);
+        await p.mouse.move(bb.x + 8, bb.y + 300); await p.waitForTimeout(50);
+        const off = await p.evaluate((s) => ({ hidden: document.querySelector('.tip').hidden, back: document.querySelector(s).outerHTML.includes('title=') }), sel);
+        ok(on.shown && /^Bold/.test(on.text) && on.left >= bb.x + 8 + 14 && !on.raw && /^Bold/.test(on.read) && on.color !== on.bg && off.hidden && off.back,
+            `Tooltip: the site's own, beside the cursor, and the title is back when the pointer leaves (${JSON.stringify({ on, off })})`);
+        await c.close();
     }
 
     // type.ime on the Graflect article: space opens the chooser and it stays open (a disabled editor used to

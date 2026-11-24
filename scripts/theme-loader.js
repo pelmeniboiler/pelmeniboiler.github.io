@@ -152,6 +152,14 @@
         });
     }
 
+    // The site's own tooltips in place of the system's (see tooltip.js). Started
+    // here, on its own, because this script is the one every page has.
+    {
+        const s = document.createElement('script');
+        s.src = '/scripts/tooltip.js';
+        (document.head || document.documentElement).appendChild(s);
+    }
+
     // The Liquid Glass theme's real refraction needs an SVG displacement filter
     // present in the document (CSS `backdrop-filter: url(#…)` references it). Inject
     // it once, hidden, on every page. Inert unless the theme references it.

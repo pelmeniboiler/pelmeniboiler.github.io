@@ -22,6 +22,7 @@ const PRECACHE = [
     '/scripts/notify-bell.js',
     '/scripts/zman-clock.js',
     '/scripts/emoji.js',
+    '/scripts/tooltip.js',
     '/logo/favicon.svg',
     '/logo/shzh.svg',
     '/manifest.json',
