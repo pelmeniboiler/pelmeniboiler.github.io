@@ -1977,6 +1977,29 @@ try {
             `Spelling test: a word at a time, glyphs as she types, kept across a reload, downloadable (${JSON.stringify({ first, second, resumed, glyphs, count, saved: saved.answers, words, errs })})`);
     }
 
+    // The sentence test: a line at a time, shown in its passage (Hebrew lines read right to left), glyphs
+    // as she types, kept across a reload and downloadable; and the passages never write G-d out.
+    {
+        const c = await browser.newContext({ viewport: { width: 1000, height: 800 }, acceptDownloads: true });
+        const p = await c.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+        await p.goto(`${BASE}/tools/sentbench.html`, { waitUntil: 'load' }); await p.waitForFunction(() => document.getElementById('word').textContent);
+        const first = await p.textContent('#word'), title = await p.textContent('#ptitle');
+        await p.fill('#slug', 'enībxdī mē blēm mī'); const glyphs = await p.textContent('#glyphs');
+        await p.press('#slug', 'Enter'); const second = await p.textContent('#word'), here = await p.textContent('#passage p.here');
+        await p.click('#list button:nth-child(2)'); const hebrew = await p.$eval('#passage p [lang="he"]', (e) => getComputedStyle(e).direction);
+        await p.reload({ waitUntil: 'load' }); await p.waitForFunction(() => document.getElementById('word').textContent);
+        const count = await p.textContent('#count');
+        const [dl] = await Promise.all([p.waitForEvent('download'), p.click('#download')]);
+        const saved = JSON.parse(await fs.readFile(await dl.path(), 'utf8'));
+        const passages = JSON.parse(await fs.readFile(path.join(ROOT, 'tools/sentbench-passages.json'), 'utf8')).passages;
+        const all = passages.flatMap((x) => x.lines).join('\n');
+        const written = all.match(/\bGods?\b/g) || [], name = all.normalize('NFD').replace(/[֑-ׇ]/g, '').match(/יהוה|(?<![א-ת])ו?[הבלמכ]?אלה(?:ים|ינו|י|יך|יכם)(?![א-ת])/g) || [];
+        await c.close();
+        ok(/Jane Eyre/.test(title) && first.startsWith('Anybody') && here === second && /[-]/.test(glyphs) && /1 answered/.test(count) && saved.answers['eyre:1'] === 'enībxdī mē blēm mī'
+            && hebrew === 'rtl' && passages.length === 7 && !written.length && !name.length && !errs.length,
+            `Sentence test: a line at a time in its passage, Hebrew right to left, kept and downloadable, G-d never written out (${JSON.stringify({ title, first: first.slice(0, 20), here: (here || '').slice(0, 20), count, saved: saved.answers, hebrew, written, name, errs })})`);
+    }
+
     // Saved window positions come back only on a screen the size they were saved on: arranged on a wide
     // screen, they'd hang off a narrower one, so there the fresh arrangement stands.
     {

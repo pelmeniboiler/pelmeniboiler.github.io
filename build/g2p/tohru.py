@@ -21,6 +21,8 @@ import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 DIR = os.path.join(HERE, 'tohru'); sys.path.insert(0, HERE)
 N = 20000
+# She never writes G-d out, so these are never in Tohru's lists or lessons.
+NAME = {'god', "god's", 'goddamn', 'godly'}
 
 def hers_for_teacher():
     """Her words (articles and dictionary), minus the spelling test's words, and the ones she keeps in Latin."""
@@ -34,7 +36,7 @@ def main():
     if cmd == 'words':
         from wordfreq import top_n_list
         h, keep, test = hers_for_teacher()
-        known = set(h) | set(keep) | test | {w.replace("'", '') for w in h}
+        known = set(h) | set(keep) | test | {w.replace("'", '') for w in h} | NAME
         out = []
         for w in top_n_list('en', 200000):
             if re.fullmatch(r'[a-z]{2,}', w) and w not in known: out.append(w)
@@ -55,7 +57,7 @@ def main():
         d = sys.argv[2]; ws = open(os.path.join(DIR, 'words.txt')).read().split(); got = {}
         for f in sorted(os.listdir(os.path.join(d, 'answers'))):
             got.update({k.lower(): clean(v) for k, v in json.load(open(os.path.join(d, 'answers', f), encoding='utf-8')).items()})
-        teacher = {w: got[w] for w in ws if got.get(w)}
+        teacher = {w: got[w] for w in ws if got.get(w) and w not in NAME}
         json.dump({'note': 'Opus’s spellings, in SLUG, of the most common English words she hasn’t written (tohru.py).', 'words': teacher},
                   open(os.path.join(DIR, 'teacher.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
         print(f'{len(teacher)} of {len(ws)} words spelled; missing {len(ws) - len(teacher)}')
@@ -63,9 +65,9 @@ def main():
         from pretrain import pretrain
         from cmu2slug_lib import load_cmu, slug
         teacher = json.load(open(os.path.join(DIR, 'teacher.json'), encoding='utf-8'))['words']
-        pairs = list(teacher.items())
+        pairs = [(w, x) for w, x in teacher.items() if w not in NAME]
         cmu = load_cmu(sys.argv[2])
-        if '--mix' in sys.argv: pairs += [(w, slug(p)) for w, p in cmu.items() if w not in teacher]
+        if '--mix' in sys.argv: pairs += [(w, slug(p)) for w, p in cmu.items() if w not in teacher and w not in NAME]
         _, _, test = hers_for_teacher()
         # As many updates as Kanna had (20 epochs of CMUdict): 20,000 words alone need about 7 times the epochs.
         # --weight N: Opus's words N times over (with --mix, 5 makes them count about as much as CMUdict's 106,000).

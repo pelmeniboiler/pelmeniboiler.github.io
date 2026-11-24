@@ -10,7 +10,6 @@ family
 number
 city
 days
-god
 government
 group
 public
@@ -5925,7 +5924,6 @@ fossil
 founding
 freight
 generating
-goddamn
 guides
 honesty
 inappropriate
@@ -18716,7 +18714,6 @@ gals
 germain
 gertrude
 gloucestershire
-godly
 golfers
 graeme
 groin
