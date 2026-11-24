@@ -52,6 +52,8 @@
             font-size: 17px; line-height: 1; min-width: 32px; height: 30px; padding: 0 4px; cursor: var(--cur-pointer, pointer);
         }
         .tb button.on, .tb button:hover, .tb button:focus-visible, .sk-tools button.on, .sk-tools button:hover, .sk-tools button:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
+        /* A letter where a picture would say less: Italic is an italic serif I. */
+        .tb .glyph { font-family: var(--font-body); font-style: italic; font-weight: bold; font-size: 20px; }
         .tb .sep, .sk-tools .sep { width: 2px; background: var(--text-color); margin: 0 3px; }
 
         /* The page being written. Looks like an article. */
@@ -622,7 +624,7 @@
         ['📋', 'Bulleted list', () => listCmd('insertUnorderedList'), 'mod+shift+8'], ['🔢', 'Numbered list', () => listCmd('insertOrderedList'), 'mod+shift+7'],
         ['〰️', 'Divider', () => insertBlock('<hr><p><br></p>'), 'mod+alt+H'], ['📊', 'Table', () => insertBlock('<table><tbody><tr><th><br></th><th><br></th></tr><tr><td><br></td><td><br></td></tr></tbody></table><p><br></p>')],
         null,
-        ['🅱️', 'Bold', () => toggleInline('b'), 'mod+B'], ['🪶', 'Italic', () => toggleInline('i'), 'mod+I'], ['❌', 'Strikethrough', () => toggleInline('s'), 'mod+shift+X'],
+        ['🅱️', 'Bold', () => toggleInline('b'), 'mod+B'], ['<i class="glyph">I</i>', 'Italic', () => toggleInline('i'), 'mod+I'], ['❌', 'Strikethrough', () => toggleInline('s'), 'mod+shift+X'],
         ['➕', 'Inserted (edit)', () => toggleInline('ins')], ['🗑️', 'Deleted (edit)', () => toggleInline('del')],
         ['💻', 'Code', () => toggleInline('code'), 'mod+E'], ['⌨️', 'Key', () => toggleInline('kbd'), 'mod+alt+K'],
         ['⬇️', 'Subscript', () => toggleInline('sub'), 'mod+,'], ['⬆️', 'Superscript', () => toggleInline('sup'), 'mod+.'],
