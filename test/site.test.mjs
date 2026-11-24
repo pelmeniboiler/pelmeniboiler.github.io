@@ -1920,6 +1920,19 @@ try {
         const off = await p.evaluate((s) => ({ hidden: document.querySelector('.tip').hidden, back: document.querySelector(s).outerHTML.includes('title=') }), sel);
         ok(on.shown && /^Bold/.test(on.text) && on.left >= bb.x + 8 + 14 && !on.raw && /^Bold/.test(on.read) && on.color !== on.bg && off.hidden && off.back,
             `Tooltip: the site's own, beside the cursor, and the title is back when the pointer leaves (${JSON.stringify({ on, off })})`);
+        // From the keyboard: Tab onto a titled button shows its label under it; Escape puts it away; the mouse takes over when it moves.
+        await p.evaluate(() => document.querySelector('#tb button[data-name="Table"]').focus());
+        await p.keyboard.press('Tab');
+        const key = await p.evaluate((s) => { const t = document.querySelector('.tip'), r = t.getBoundingClientRect(), b = document.querySelector(s).getBoundingClientRect();
+            return { focused: document.activeElement === document.querySelector(s), shown: !t.hidden, text: t.textContent, under: r.top >= b.bottom && r.top - b.bottom < 10, left: Math.round(r.left - b.left) }; }, sel);
+        await p.keyboard.press('Escape');
+        const esc = await p.evaluate(() => document.querySelector('.tip').hidden);
+        await p.keyboard.press('Tab'); // the next button
+        const next = await p.evaluate(() => { const t = document.querySelector('.tip'); return !t.hidden && t.textContent; });
+        await p.mouse.move(bb.x + 8, bb.y + 8, { steps: 3 }); await p.waitForTimeout(600);
+        const mouse = await p.evaluate(() => { const t = document.querySelector('.tip'); return !t.hidden && t.textContent; });
+        ok(key.focused && key.shown && /^Bold/.test(key.text) && key.under && key.left === 0 && esc && /^Italic/.test(next) && /^Bold/.test(mouse),
+            `Tooltip: from the keyboard, under what has focus; Escape hides it; the mouse takes over (${JSON.stringify({ key, esc, next, mouse })})`);
         await c.close();
     }
 
