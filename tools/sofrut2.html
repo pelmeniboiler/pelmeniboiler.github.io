@@ -47,12 +47,12 @@
 
         /* Tag bar: one emoji per tag; the name is in the tooltip. */
         .tb { display: flex; flex-wrap: wrap; gap: 3px; padding: 5px 6px; border-bottom: 2px solid var(--text-color); }
-        .tb button {
+        .tb button, .sk-tools button {
             border: 2px solid var(--text-color); background: var(--win-bg-color); color: var(--text-color);
             font-size: 17px; line-height: 1; min-width: 32px; height: 30px; padding: 0 4px; cursor: var(--cur-pointer, pointer);
         }
-        .tb button.on, .tb button:hover, .tb button:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
-        .tb .sep { width: 2px; background: var(--text-color); margin: 0 3px; }
+        .tb button.on, .tb button:hover, .tb button:focus-visible, .sk-tools button.on, .sk-tools button:hover, .sk-tools button:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
+        .tb .sep, .sk-tools .sep { width: 2px; background: var(--text-color); margin: 0 3px; }
 
         /* The page being written. Looks like an article. */
         #doc-wrap { overflow: auto; display: flex; flex-direction: column; }
@@ -81,6 +81,13 @@
         /* A translator note: shown here, kept out of the article, saved beside the English. */
         #doc span[data-tl] { text-decoration: underline wavy; text-underline-offset: 3px; cursor: help; }
         #doc:empty::before { content: attr(data-empty); }
+        /* Kept as is: what an opened post has that the editor doesn't write (a drawn figure, a demo), shown as the post shows it. */
+        #doc > div[data-raw] { border: 2px dotted var(--text-color); margin: 12px 0; padding: 4px; overflow: auto; }
+        /* A sketch: click to draw on it again. */
+        #doc > div[data-raw]:has(> figure[data-sketch]) { border-style: dashed; cursor: var(--cur-pointer); }
+        #doc figure[data-sketch] { margin: 0; }
+        figure.sketch svg, #sk { display: block; width: 100%; max-width: 640px; height: auto; margin: 0 auto; color: var(--text-color); }
+        figure.sketch text, #sk text { font-family: var(--font-body); }
         #src { display: none; border: none; resize: none; padding: 10px; min-height: 320px; white-space: pre; font-family: monospace; font-size: 12px; background: var(--win-bg-color); color: var(--text-color); }
         .pane-doc.source #doc-wrap { display: none; } .pane-doc.source #src { display: block; }
         .status { display: flex; gap: 12px; flex-wrap: wrap; border-top: 2px solid var(--text-color); padding: 3px 8px; font-size: 13px; }
@@ -113,6 +120,15 @@
         .chip.on, .chip:hover, .chip:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
         .datebtn { text-align: left; cursor: var(--cur-pointer); }
         #slug-warn, #prefix-warn, .hint { font-size: 13px; }
+        .posts button { display: flex; justify-content: space-between; gap: 16px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--text-color); background: none; color: inherit; font: inherit; padding: 6px 4px; cursor: var(--cur-pointer, pointer); }
+        .posts button:hover, .posts button:focus-visible { background: var(--text-color); color: var(--win-bg-color); outline: none; }
+        .posts time { white-space: nowrap; }
+        /* The sketch pad */
+        .sk-tools { display: flex; flex-wrap: wrap; gap: 3px; }
+        .sk-tools .sep { align-self: stretch; }
+        #sk-wrap { position: relative; border: 2px solid var(--text-color); margin: 8px 0; }
+        #sk { max-width: none; background: var(--win-bg-color); touch-action: none; cursor: var(--cur-default); }
+        #sk-text { position: absolute; width: 14em; padding: 2px 4px; }
         .shortcuts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; }
         .shortcuts dt { font-family: monospace; } .shortcuts dd { margin: 0; }
         /* The site's calendar (as in the CT125 manual), never the browser's. */
@@ -140,6 +156,7 @@
                 <div class="m"><button class="top" type="button" aria-haspopup="true">File</button>
                     <div class="menu" role="menu">
                         <button type="button" data-act="new">New…</button>
+                        <button type="button" data-act="open">Open… <span class="k" data-keys="mod+O"></span></button>
                         <button type="button" data-act="save">Save draft <span class="k" data-keys="mod+S"></span></button>
                         <hr>
                         <button type="button" data-act="publish">Publish to GitHub</button>
@@ -230,6 +247,28 @@
     </div>
 </div>
 
+<!-- A published post, to edit -->
+<div class="dlg" id="dlg-open" hidden role="dialog" aria-modal="true" aria-labelledby="open-title">
+    <div class="title-bar"><span class="title" id="open-title">📂 open</span><button class="close-btn" type="button" data-close>&times;</button></div>
+    <div class="body"><div class="posts" id="open-list"></div></div>
+</div>
+
+<!-- The sketch pad: draw a figure as you want it; a note for Claude says what to make of it -->
+<div class="dlg wide" id="dlg-sketch" hidden role="dialog" aria-modal="true" aria-labelledby="sk-title">
+    <div class="title-bar"><span class="title" id="sk-title">✏️ sketch</span><button class="close-btn" type="button" data-close>&times;</button></div>
+    <div class="body">
+        <div class="sk-tools" id="sk-tools" role="toolbar" aria-label="Drawing">
+            <button type="button" data-tool="pen" title="Pen">✏️</button><button type="button" data-tool="line" title="Line">╱</button><button type="button" data-tool="arrow" title="Arrow">↗</button><button type="button" data-tool="box" title="Box">▭</button><button type="button" data-tool="ellipse" title="Ellipse">◯</button><button type="button" data-tool="text" title="Text">🔤</button><button type="button" data-tool="erase" title="Eraser">🧽</button>
+            <span class="sep"></span>
+            <button type="button" data-sk="undo" title="Undo">↶</button><button type="button" data-sk="redo" title="Redo">↷</button><button type="button" data-sk="clear" title="Clear">🗑️</button>
+            <span class="sep"></span>
+            <button type="button" data-h="320">2:1</button><button type="button" data-h="427">3:2</button><button type="button" data-h="640">1:1</button>
+        </div>
+        <div id="sk-wrap"><svg id="sk" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 427" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Sketch"></svg><input type="text" id="sk-text" hidden aria-label="Text" spellcheck="false"></div>
+        <div class="bar"><button class="chip" type="button" data-close>done</button></div>
+    </div>
+</div>
+
 <!-- Keyboard shortcuts -->
 <div class="dlg" id="dlg-keys" hidden role="dialog" aria-modal="true" aria-labelledby="keys-title">
     <div class="title-bar"><span class="title" id="keys-title">⌨ keys</span><button class="close-btn" type="button" data-close>&times;</button></div>
@@ -244,7 +283,9 @@
 
 <script>
 (function () {
-    const $ = (id) => document.getElementById(id);
+    // The editor's own elements, looked up once: an opened post can have elements with the same ids.
+    const UI = new Map([...document.querySelectorAll('[id]')].map((e) => [e.id, e]));
+    const $ = (id) => UI.get(id) || document.getElementById(id);
     const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     const doc = $('doc'), src = $('src');
@@ -258,7 +299,7 @@
     // ---------- dialogs and menus ----------
     let lastFocus = null, lastSel = null;
     // A dialog remembers the editor's selection: focusing the editor again would otherwise drop it at the start.
-    function openDlg(id) { lastFocus = document.activeElement; lastSel = lastRange && lastRange.cloneRange(); closeMenus(); const d = $(id); d.hidden = false; (d.querySelector('input, select, textarea, button:not([data-close])') || d).focus(); }
+    function openDlg(id) { lastFocus = document.activeElement; lastSel = lastRange && lastRange.cloneRange(); closeMenus(); const d = $(id); d.hidden = false; (d.querySelector('input:not([hidden]), select, textarea, button:not([data-close])') || d).focus(); }
     function closeDlg(d) {
         d.hidden = true;
         if (!lastFocus || !document.contains(lastFocus)) return;
@@ -341,10 +382,11 @@
     $('title').addEventListener('input', autoFill);
     $('slug').addEventListener('input', () => { $('slug').dataset.touched = '1'; checkSlug(); });
     $('prefix').addEventListener('input', () => { $('prefix').dataset.touched = '1'; checkSlug(); });
-    const slugTaken = () => { const s = slugify($('slug').value); return posts.some((p) => p.slug === s); };
+    const slugTaken = () => { const s = slugify($('slug').value); return !(opened && s === opened.slug) && posts.some((p) => p.slug === s); };
     function checkSlug() {
         $('slug-warn').textContent = !slugify($('slug').value) ? (($('title').value.trim() ? '⚠ needs Latin letters or digits' : '')) : slugTaken() ? '⚠ a post with this slug exists' : '';
-        $('prefix-warn').textContent = usedPrefixes.has(slugify($('prefix').value).replace(/-/g, '')) ? '⚠ already used' : '';
+        const pre = slugify($('prefix').value).replace(/-/g, '');
+        $('prefix-warn').textContent = !(opened && pre === opened.prefix) && usedPrefixes.has(pre) ? '⚠ already used' : '';
     }
     const showName = () => { $('doc-name').textContent = $('title').value.trim() || 'untitled'; $('doc-h1').textContent = $('title').value.trim(); $('doc-desc').textContent = $('desc').value.trim(); };
     $('desc').addEventListener('input', () => showName());
@@ -406,6 +448,8 @@
         }
     }
     const unwrap = (el) => el.replaceWith(...el.childNodes);
+    // A block's English as it is written out: its markup, without the translator notes' spans.
+    const blockHtml = (el) => { const c = el.cloneNode(true); c.querySelectorAll('span[data-tl]').forEach(unwrap); return c.innerHTML.replace(/<br>\s*$/, '').trim(); };
     // Gone entirely, never unwrapped: their text is not article text.
     const DROP = new Set(['SCRIPT', 'STYLE', 'META', 'LINK', 'TITLE', 'NOSCRIPT', 'TEMPLATE', 'OBJECT', 'EMBED', 'SVG', 'MATH', 'CANVAS', 'VIDEO', 'AUDIO', 'FORM', 'INPUT', 'BUTTON', 'SELECT', 'TEXTAREA', 'HEAD']);
     const safeUrl = (u) => /^(https?:|mailto:|\/|#|\.{0,2}\/?[\w-])/i.test((u || '').trim()) && !/^\s*(javascript|data|vbscript):/i.test(u || '');
@@ -416,9 +460,20 @@
         doc.replaceChildren(...t.content.childNodes);
         if (!doc.children.length) doc.innerHTML = '<p><br></p>';
     }
+    // A kept block: markup the editor leaves exactly as it is (a sketch, or what an opened post
+    // has that the editor doesn't write). Only ever a top-level block.
+    const isRaw = (n) => !!n && n.nodeType === 1 && n.tagName === 'DIV' && n.hasAttribute('data-raw');
+    const inRaw = (n, root = doc) => { for (let e = n.parentNode; e && e !== root; e = e.parentNode) if (isRaw(e)) return true; return false; };
     function clean(root, final) {
+        for (const r of [...root.querySelectorAll('div[data-raw]')]) {
+            if (inRaw(r, root)) continue;
+            if (r.parentNode !== root) { let top = r; while (top.parentNode !== root) top = top.parentNode; top.after(r); }
+            for (const a of [...r.attributes]) if (a.name !== 'data-raw') r.removeAttribute(a.name);
+            r.setAttribute('contenteditable', 'false');
+        }
         for (const el of [...root.querySelectorAll('*')]) {
             if (!root.contains(el)) continue;
+            if (isRaw(el) || inRaw(el, root)) continue;
             if (DROP.has(el.tagName.toUpperCase())) { el.remove(); continue; }
             if (el.tagName === 'DIV' && el.parentNode === root) { const p = document.createElement('p'); p.append(...el.childNodes); el.replaceWith(p); continue; }
             if (el.tagName === 'STRIKE') { const s = document.createElement('s'); s.append(...el.childNodes); el.replaceWith(s); continue; }
@@ -431,7 +486,7 @@
         }
         if (final) {
             // The caret's footholds go, and with them tags left empty.
-            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); const texts = [];
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (t) => (inRaw(t, root) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) }); const texts = [];
             while (walker.nextNode()) texts.push(walker.currentNode);
             texts.forEach((t) => {
                 if (t.data.includes(ZW)) t.data = t.data.split(ZW).join('');
@@ -439,14 +494,14 @@
                 if (t.nextSibling && t.nextSibling.nodeType === 1) t.data = t.data.replace(/\u00A0$/, ' ');
                 if (t.previousSibling && t.previousSibling.nodeType === 1) t.data = t.data.replace(/^\u00A0/, ' ');
             });
-            for (const el of [...root.querySelectorAll(FORMATS.join(','))]) if (!el.textContent && !el.querySelector('img')) el.remove();
+            for (const el of [...root.querySelectorAll(FORMATS.join(','))]) if (!inRaw(el, root) && !el.textContent && !el.querySelector('img')) el.remove();
         }
         lift(root);
         // A block inside a text block or inside formatting (pasted or typed source) is unwrapped,
         // with a line break where it ended. Lists inside list items are fine.
         const NEST = 'p,h2,h3,h4,pre,aside,blockquote,ul,ol,table,figure,hr,iframe';
         for (const el of [...root.querySelectorAll(NEST)].reverse()) {
-            if (!root.contains(el) || el.parentNode === root) continue;
+            if (!root.contains(el) || el.parentNode === root || inRaw(el, root)) continue;
             const up = el.parentElement;
             if ((el.tagName === 'UL' || el.tagName === 'OL') && up.closest('li')) continue;
             if (up.closest('td, th') && !/^(TABLE|FIGURE|IFRAME)$/.test(el.tagName)) { if (el.tagName === 'P') { if (el.nextSibling) el.after(document.createElement('br')); unwrap(el); } continue; }
@@ -456,7 +511,7 @@
         }
         for (const n of [...root.childNodes]) {
             if (n.nodeType === 3 && n.data.replace(ZW, '').trim()) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
-            else if (n.nodeType === 1 && !BLOCKS.has(n.tagName)) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
+            else if (n.nodeType === 1 && !BLOCKS.has(n.tagName) && !isRaw(n)) { const p = document.createElement('p'); n.replaceWith(p); p.append(n); }
         }
         return root;
     }
@@ -477,7 +532,7 @@
         restore();
         let blocks = selectedBlocks();
         if (!blocks.length) { const b = document.createElement('p'); b.innerHTML = '<br>'; doc.append(b); blocks = [b]; }
-        blocks = blocks.filter((b) => !['UL', 'OL', 'TABLE', 'FIGURE', 'HR', 'IMG', 'IFRAME'].includes(b.tagName));
+        blocks = blocks.filter((b) => !['UL', 'OL', 'TABLE', 'FIGURE', 'HR', 'IMG', 'IFRAME'].includes(b.tagName) && !isRaw(b));
         if (!blocks.length) return;
         // The same block again turns it back into a paragraph (all of them, if all already are).
         const same = blocks.every((b) => (note ? b.hasAttribute('data-note') : b.tagName === tag.toUpperCase() && !b.hasAttribute('data-note')));
@@ -573,7 +628,7 @@
         ['⬇️', 'Subscript', () => toggleInline('sub'), 'mod+,'], ['⬆️', 'Superscript', () => toggleInline('sup'), 'mod+.'],
         ['🏷️', 'Abbreviation', abbr], ['📅', 'Date', timeTag, 'mod+alt+D'], ['🧽', 'Remove formatting', removeFormats, 'mod+\\'],
         null,
-        ['🔗', 'Link', link, 'mod+K'], ['🏞️', 'Image', image], ['🖼️', 'Figure with caption', figure], ['🎬', 'Video', video],
+        ['🔗', 'Link', link, 'mod+K'], ['🏞️', 'Image', image], ['🖼️', 'Figure with caption', figure], ['🎬', 'Video', video], ['✏️', 'Sketch', sketch, 'mod+alt+S'],
         null,
         ['🌐', 'Note for translators (kept out of the article)', tlNote, 'mod+alt+T'],
         ['🤖', 'Note for Claude (kept out of the article)', () => setBlock('p', true), 'mod+alt+N'],
@@ -652,6 +707,154 @@
         const url = v && youtube(v.url);
         if (url) insertBlock(`<iframe src="${esc(url)}" title="${esc(v.title || 'Video')}"></iframe><p><br></p>`);
     }
+    // ---------- sketches ----------
+    // Drawn here, kept in the post as an SVG in the text colour. Mostly for a
+    // note for Claude to go with: "make this chart properly".
+    const SVG_NS = 'http://www.w3.org/2000/svg', sk = $('sk'), skText = $('sk-text');
+    let skTool = 'pen', skPast = [], skFuture = [], skH = 427, skDraw = null, skEdit = null;
+    const r1 = (v) => Math.round(v * 10) / 10;
+    const skPoint = (e) => { const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(sk.getScreenCTM().inverse()); return [r1(p.x), r1(p.y)]; };
+    const skMake = (tag, attrs) => { const el = document.createElementNS(SVG_NS, tag); for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v); sk.append(el); return el; };
+    const skSnap = () => { skPast.push(sk.innerHTML); if (skPast.length > 200) skPast.shift(); skFuture.length = 0; };
+    const skUndo = () => { skCommitText(); if (skPast.length) { skFuture.push(sk.innerHTML); sk.innerHTML = skPast.pop(); } };
+    const skRedo = () => { if (skFuture.length) { skPast.push(sk.innerHTML); sk.innerHTML = skFuture.pop(); } };
+    const skSetTool = (t) => { skTool = t; document.querySelectorAll('#sk-tools [data-tool]').forEach((b) => b.classList.toggle('on', b.dataset.tool === t)); };
+    const skSetH = (h) => { skH = h; sk.setAttribute('viewBox', `0 0 640 ${h}`); document.querySelectorAll('#sk-tools [data-h]').forEach((b) => b.classList.toggle('on', +b.dataset.h === h)); };
+    // A freehand line through its points, smoothed with the midpoints as the ends of each curve.
+    function smooth(pts) {
+        const [x0, y0] = pts[0];
+        if (pts.length < 3) { const [x1, y1] = pts[pts.length - 1]; return `M${x0} ${y0}L${x1} ${y1}`; }
+        let d = `M${x0} ${y0}`;
+        for (let i = 1; i < pts.length - 1; i++) d += `Q${pts[i][0]} ${pts[i][1]} ${r1((pts[i][0] + pts[i + 1][0]) / 2)} ${r1((pts[i][1] + pts[i + 1][1]) / 2)}`;
+        const [xl, yl] = pts[pts.length - 1];
+        return `${d}L${xl} ${yl}`;
+    }
+    function arrow(x1, y1, x2, y2) {
+        const a = Math.atan2(y2 - y1, x2 - x1), L = 16, h = (s) => `${r1(x2 - L * Math.cos(a + s))} ${r1(y2 - L * Math.sin(a + s))}`;
+        return `M${x1} ${y1}L${x2} ${y2}M${h(0.45)}L${x2} ${y2}L${h(-0.45)}`;
+    }
+    function skShape(a, b) {
+        const [x1, y1] = a, [x2, y2] = b, el = skDraw.el;
+        if (skTool === 'line') { el.setAttribute('x2', x2); el.setAttribute('y2', y2); }
+        else if (skTool === 'arrow') el.setAttribute('d', arrow(x1, y1, x2, y2));
+        else if (skTool === 'box') { el.setAttribute('x', Math.min(x1, x2)); el.setAttribute('y', Math.min(y1, y2)); el.setAttribute('width', r1(Math.abs(x2 - x1))); el.setAttribute('height', r1(Math.abs(y2 - y1))); }
+        else if (skTool === 'ellipse') { el.setAttribute('cx', r1((x1 + x2) / 2)); el.setAttribute('cy', r1((y1 + y2) / 2)); el.setAttribute('rx', r1(Math.abs(x2 - x1) / 2)); el.setAttribute('ry', r1(Math.abs(y2 - y1) / 2)); }
+    }
+    // The eraser takes whatever it touches, with a generous reach.
+    function skErase(p) {
+        const pt = new DOMPoint(p[0], p[1]);
+        for (const el of [...sk.children]) {
+            let hit;
+            if (el.localName === 'text') { const b = el.getBBox(); hit = p[0] >= b.x - 6 && p[0] <= b.x + b.width + 6 && p[1] >= b.y - 6 && p[1] <= b.y + b.height + 6; }
+            else if (el.isPointInStroke) { el.style.strokeWidth = '18'; hit = el.isPointInStroke(pt); el.style.strokeWidth = ''; }
+            if (hit) el.remove();
+        }
+    }
+    // Text: typed into a box on the pad at the click; Enter (or clicking away) puts it down.
+    function skOpenText(e, existing) {
+        skCommitText();
+        const wrap = $('sk-wrap').getBoundingClientRect();
+        let x, y;
+        if (existing) { const b = existing.getBoundingClientRect(); x = b.left; y = b.top + b.height / 2; } else { x = e.clientX; y = e.clientY; }
+        skEdit = { at: skPoint({ clientX: x, clientY: y }), el: existing || null };
+        skText.hidden = false; skText.value = existing ? existing.textContent : '';
+        skText.style.left = `${Math.max(0, Math.min(x - wrap.left, wrap.width - skText.offsetWidth))}px`;
+        skText.style.top = `${y - wrap.top - skText.offsetHeight / 2}px`;
+        skText.focus();
+    }
+    function skCommitText() {
+        if (!skEdit) return;
+        const v = skText.value.trim(), { at, el } = skEdit;
+        skEdit = null; skText.hidden = true;
+        if (el ? v === el.textContent : !v) return;
+        skSnap();
+        if (el) { if (v) el.textContent = v; else el.remove(); return; }
+        skMake('text', { x: at[0], y: r1(at[1] + 7), 'font-size': 20, fill: 'currentColor', stroke: 'none' }).textContent = v;
+    }
+    skText.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); skCommitText(); }
+        else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); skEdit = null; skText.hidden = true; }
+    });
+    skText.addEventListener('blur', () => setTimeout(skCommitText));
+    sk.addEventListener('pointerdown', (e) => {
+        if (e.button > 0) return;
+        e.preventDefault();
+        if (skTool === 'text') { skOpenText(e, e.target.closest && e.target.closest('text')); return; }
+        skCommitText();
+        const p = skPoint(e), before = sk.innerHTML;
+        sk.setPointerCapture(e.pointerId);
+        if (skTool === 'erase') { skDraw = { erase: true, before }; skErase(p); return; }
+        const el = skTool === 'pen' ? skMake('path', { d: smooth([p]) })
+            : skTool === 'line' ? skMake('line', { x1: p[0], y1: p[1], x2: p[0], y2: p[1] })
+            : skTool === 'arrow' ? skMake('path', { d: '' })
+            : skTool === 'box' ? skMake('rect', {})
+            : skMake('ellipse', {});
+        skDraw = { el, start: p, pts: [p], before };
+        if (skTool !== 'pen' && skTool !== 'line') skShape(p, p);
+    });
+    sk.addEventListener('pointermove', (e) => {
+        if (!skDraw) return;
+        const p = skPoint(e);
+        if (skDraw.erase) { skErase(p); return; }
+        if (skTool === 'pen') {
+            const [lx, ly] = skDraw.pts[skDraw.pts.length - 1];
+            if (Math.hypot(p[0] - lx, p[1] - ly) < 2.5) return;
+            skDraw.pts.push(p); skDraw.el.setAttribute('d', smooth(skDraw.pts));
+        } else skShape(skDraw.start, p);
+    });
+    const skEnd = (e) => {
+        if (!skDraw) return;
+        const d = skDraw; skDraw = null;
+        if (!d.erase && skTool !== 'pen') {
+            const p = skPoint(e);
+            if (Math.hypot(p[0] - d.start[0], p[1] - d.start[1]) < 3) d.el.remove(); // a click, not a shape
+        }
+        if (sk.innerHTML !== d.before) { skPast.push(d.before); if (skPast.length > 200) skPast.shift(); skFuture.length = 0; }
+    };
+    sk.addEventListener('pointerup', skEnd);
+    sk.addEventListener('pointercancel', skEnd);
+    $('sk-tools').addEventListener('click', (e) => {
+        const b = e.target.closest('button'); if (!b) return;
+        if (b.dataset.tool) skSetTool(b.dataset.tool);
+        else if (b.dataset.h) skSetH(+b.dataset.h);
+        else if (b.dataset.sk === 'undo') skUndo();
+        else if (b.dataset.sk === 'redo') skRedo();
+        else if (b.dataset.sk === 'clear' && sk.children.length) { skCommitText(); skSnap(); sk.innerHTML = ''; }
+    });
+    const sketchHtml = () => `<figure class="sketch" data-sketch=""><svg xmlns="${SVG_NS}" viewBox="0 0 640 ${skH}" role="img" aria-label="Sketch" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${sk.innerHTML}</svg></figure>`;
+    // Opens the pad on a sketch (or a blank one) → its figure's markup, or '' if it was cleared.
+    // Closing the pad keeps the drawing; undo in the editor takes it back.
+    function sketchPad(fig) {
+        return new Promise((resolve) => {
+            const old = fig && fig.querySelector('svg');
+            const h = old ? +(old.getAttribute('viewBox') || '').trim().split(/[\s,]+/)[3] : 0;
+            skSetH([320, 427, 640].includes(h) ? h : (h > 0 ? h : 427));
+            sk.innerHTML = old ? old.innerHTML : '';
+            skPast = []; skFuture = []; skDraw = null; skEdit = null; skText.hidden = true;
+            if (!fig) skSetTool('pen'); else skSetTool(skTool);
+            const d = $('dlg-sketch');
+            const observer = new MutationObserver(() => {
+                if (!d.hidden) return;
+                observer.disconnect(); skCommitText();
+                resolve(sk.children.length ? sketchHtml() : '');
+            });
+            openDlg('dlg-sketch'); observer.observe(d, { attributes: true, attributeFilter: ['hidden'] });
+        });
+    }
+    async function sketch() {
+        const html = await sketchPad(null);
+        if (html) insertBlock(`<div data-raw="" contenteditable="false">${html}</div><p><br></p>`);
+    }
+    // A sketch in the document: click it to draw on it again.
+    doc.addEventListener('click', async (e) => {
+        const fig = e.target.closest('figure[data-sketch]'), block = fig && fig.parentNode;
+        if (!isRaw(block) || block.parentNode !== doc) return;
+        const html = await sketchPad(fig);
+        snap();
+        if (html) block.innerHTML = html; else { block.remove(); if (!doc.children.length) doc.innerHTML = '<p><br></p>'; }
+        changed();
+    });
+
     // Keys: Tab moves between table cells and grows the table; ⌘/Ctrl B and I use the switches.
     doc.addEventListener('keydown', (e) => {
         const i = TAGS.findIndex((t) => t && t[3] && matchKeys(e, t[3]));
@@ -669,6 +872,11 @@
     // Anywhere on the page: undo/redo (ours, see below), save, source.
     document.addEventListener('keydown', (e) => {
         if (e.target.closest && e.target.closest('.dlg input, .dlg textarea')) return;
+        if (!$('dlg-sketch').hidden) {
+            if (matchKeys(e, 'mod+Z')) { e.preventDefault(); skUndo(); } else if (matchKeys(e, 'mod+shift+Z') || (!MAC && matchKeys(e, 'mod+Y'))) { e.preventDefault(); skRedo(); }
+            return;
+        }
+        if (matchKeys(e, 'mod+O')) { e.preventDefault(); ACTIONS.open(); return; }
         if (matchKeys(e, 'mod+Z') || matchKeys(e, 'mod+shift+Z') || (!MAC && matchKeys(e, 'mod+Y'))) {
             if (document.activeElement === src) return; // the textarea keeps its own undo
             e.preventDefault(); (matchKeys(e, 'mod+Z') ? undo : redo)();
@@ -715,7 +923,7 @@
     function toggleSource() {
         const pane = document.querySelector('.pane-doc');
         snap();
-        if (pane.classList.contains('source')) importHtml(src.value); else { clean(doc, true); src.value = pretty(doc.innerHTML); }
+        if (pane.classList.contains('source')) importHtml(src.value); else { clean(doc, true); src.value = [...doc.childNodes].map((n) => (isRaw(n) ? n.outerHTML : n.nodeType === 1 ? pretty(n.outerHTML) : n.textContent)).join('\n'); }
         pane.classList.toggle('source');
         changed();
     }
@@ -724,10 +932,10 @@
 
     // ---------- draft ----------
     function save() {
-        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, desc: $('desc').value, slug: $('slug').value, prefix: $('prefix').value, date: dateVal(), author: $('author').value, kw: [...selectedKw] })); } catch (_) { /* full or blocked */ }
+        try { localStorage.setItem(DRAFT, JSON.stringify({ html: currentHtml(), title: $('title').value, desc: $('desc').value, slug: $('slug').value, prefix: $('prefix').value, date: dateVal(), author: $('author').value, kw: [...selectedKw], opened })); } catch (_) { /* full or blocked */ }
     }
     function changed() {
-        const words = (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim().match(/\S+/g) || []).length;
+        const words = ([...doc.children].filter((b) => !isRaw(b)).map((b) => b.textContent).join(' ').replace(new RegExp(ZW, 'g'), '').trim().match(/\S+/g) || []).length;
         const notes = doc.querySelectorAll('span[data-tl]').length;
         $('stats').textContent = `${doc.children.length} blocks · ${words} words${notes ? ` · ${notes} translator note${notes === 1 ? '' : 's'}` : ''}`;
         save();
@@ -742,71 +950,281 @@
             (d.kw || []).forEach((k) => addChip(k, true));
             if (d.slug) $('slug').dataset.touched = '1'; if (d.prefix) $('prefix').dataset.touched = '1';
             if (d.title && (!d.slug || !d.prefix)) autoFill();
+            if (d.opened && d.opened.html) setOpened(d.opened);
         }
     } catch (_) { /* no draft */ }
     if (!doc.children.length) doc.innerHTML = '<p><br></p>';
     showName();
+    const hasContent = () => !!(doc.textContent.replace(new RegExp(ZW, 'g'), '').trim() || doc.querySelector('div[data-raw], img, iframe, hr'));
     function newDoc() {
-        if (doc.textContent.replace(new RegExp(ZW, 'g'), '').trim() && !confirm('Start a new article? This draft will be cleared.')) return;
-        snap(); doc.innerHTML = '<p><br></p>'; src.value = '';
+        if (hasContent() && !confirm('Start a new article? This draft will be cleared.')) return;
+        snap(); doc.innerHTML = '<p><br></p>'; src.value = ''; setOpened(null);
         ['title', 'desc', 'slug', 'prefix'].forEach((id) => { $(id).value = ''; delete $(id).dataset.touched; });
         [...selectedKw].forEach((k) => addChip(k, false));
         setDate(); $('pub-status').textContent = '';
         changed(); checkSlug(); showName(); openDlg('dlg-props');
     }
 
+    // ---------- open a published post ----------
+    // The post's own files are read from the repository (not the built site,
+    // which the build has rewritten). What the editor writes it takes apart into
+    // blocks; everything else in the article is kept, byte for byte, as a kept
+    // block, and so is everything outside the article. Publishing writes the
+    // article back into the same file and the English back into the same JSON,
+    // leaving the other languages and the keys the editor doesn't own alone.
+    let opened = null;
+    function setOpened(o) {
+        opened = o;
+        ['slug', 'prefix'].forEach((id) => { $(id).readOnly = !!o; });
+        checkSlug();
+    }
+    const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
+    // The top-level pieces of HTML source from `i`, as written, up to the tag that closes their parent.
+    // Each piece keeps the whitespace before it (`pre`), so it can go back exactly where it was.
+    function pieces(s, i) {
+        const out = [];
+        let depth = 0, start = 0, last = i;
+        const push = (st, end, extra) => { const pre = s.slice(last, st); out.push({ ...extra, pre: /^\s*$/.test(pre) ? pre : '', str: s.slice(st, end) }); last = end; };
+        while (i < s.length) {
+            const lt = s.indexOf('<', i);
+            if (lt < 0) break;
+            const txt = s.slice(i, lt);
+            if (depth === 0 && txt.trim()) push(i + txt.length - txt.trimStart().length, lt - (txt.length - txt.trimEnd().length), { text: true });
+            if (s.startsWith('<!--', lt)) {
+                const e = s.indexOf('-->', lt + 4), end = e < 0 ? s.length : e + 3;
+                if (depth === 0) push(lt, end, { comment: true });
+                i = end; continue;
+            }
+            if (s[lt + 1] === '/') {
+                const end = s.indexOf('>', lt) + 1 || s.length;
+                if (depth === 0) return { out, end: lt };
+                if (--depth === 0) push(start, end);
+                i = end; continue;
+            }
+            const m = /^<([a-zA-Z][\w:-]*)/.exec(s.slice(lt, lt + 80));
+            if (!m) { i = lt + 1; continue; }
+            let j = lt + m[0].length, q = null;
+            for (; j < s.length; j++) { const c = s[j]; if (q) { if (c === q) q = null; } else if (c === '"' || c === "'") q = c; else if (c === '>') break; }
+            const end = j + 1, name = m[1].toLowerCase();
+            if (depth === 0) start = lt;
+            if (VOID.has(name) || s[j - 1] === '/') { if (depth === 0) push(lt, end); i = end; continue; }
+            if (name === 'script' || name === 'style' || name === 'textarea') {
+                const c = s.toLowerCase().indexOf(`</${name}`, end), ce = c < 0 ? s.length : s.indexOf('>', c) + 1;
+                if (depth === 0) push(lt, ce);
+                i = ce; continue;
+            }
+            depth++; i = end;
+        }
+        return { out, end: s.length };
+    }
+    // Where the article's content starts and ends in a post's source.
+    function articleSpan(s) {
+        const m = /<article\b[^>]*>/i.exec(s);
+        if (!m) return null;
+        const start = m.index + m[0].length, { out, end } = pieces(s, start);
+        return { start, end, out };
+    }
+    // The nav list, if it is the one the editor writes (the title, then a link per heading).
+    function navSpan(s, prefix) {
+        const nav = /<nav\b[^>]*id="nav-window"[^>]*>/i.exec(s); if (!nav) return null;
+        const ul = /<ul>/i.exec(s.slice(nav.index)); if (!ul) return null;
+        const start = nav.index + ul.index + ul[0].length, end = s.indexOf('</ul>', start);
+        if (end < 0) return null;
+        const inner = s.slice(start, end), P = prefix.replace(/[^\w]/g, '');
+        const links = [...inner.matchAll(new RegExp(`<li><a href="#([^"]*)" data-key="(${P}_nav_[^"]+)"></a></li>`, 'g'))];
+        const keys = links.map((x) => x[2]), ids = Object.fromEntries(links.map((x) => [decode(x[1]), x[2]]));
+        const h1 = new RegExp(`<h1 data-key="${P}_nav_title"></h1>`).test(inner);
+        const rest = inner.replace(new RegExp(`<h1 data-key="${P}_nav_title"></h1>`), '').replace(new RegExp(`<li><a href="#[^"]*" data-key="${P}_nav_[^"]+"></a></li>`, 'g'), '');
+        return rest.trim() ? null : { start, end, keys, ids, h1 };
+    }
+    const decode = (h) => { const t = document.createElement('textarea'); t.innerHTML = h; return t.value; };
+    function loadPost(slug, html, json, notes, newline = true) {
+        const page = new DOMParser().parseFromString(html, 'text/html');
+        const meta = (n) => { const m = page.querySelector(`meta[name="${n}"]`); return m ? m.getAttribute('content') || '' : ''; };
+        const prefix = meta('translation-source');
+        if (!prefix) throw new Error('the page names no translation-source');
+        const en = (json && json.en) || {}, art = articleSpan(html);
+        if (!art) throw new Error('the page has no article');
+        const owned = new Set([`${prefix}_title`]), out = [], raws = [], left = {}, orig = {};
+        let hadDesc = false, h1 = null;
+        const raw = (pc) => { raws.push(pc.pre + pc.str); out.push(`<div data-raw="">${pc.str}</div>`); };
+        const only = (el, ok) => [...el.attributes].every((a) => ok.includes(a.name));
+        const empty = (el) => !el.innerHTML.trim();
+        // A block's English with its translator notes put back on their phrases.
+        const withNotes = (h, key) => {
+            const list = (notes && notes[key]) || [];
+            if (!list.length) return h;
+            const t = document.createElement('template'); t.innerHTML = h;
+            for (const n of list) {
+                const w = t.content.ownerDocument.createTreeWalker(t.content, NodeFilter.SHOW_TEXT);
+                let done = false;
+                while (!done && w.nextNode()) {
+                    const tn = w.currentNode, at = tn.data.indexOf(n.text);
+                    if (at < 0 || (tn.parentElement && tn.parentElement.closest('span[data-tl]'))) continue;
+                    const r = t.content.ownerDocument.createRange(); r.setStart(tn, at); r.setEnd(tn, at + n.text.length);
+                    const sp = t.content.ownerDocument.createElement('span'); sp.setAttribute('data-tl', n.note); r.surroundContents(sp); done = true;
+                }
+                if (!done) (left[key] = left[key] || []).push(n); // kept for the notes file all the same
+            }
+            return t.innerHTML;
+        };
+        const plainImg = (el) => el.tagName === 'IMG' && only(el, ['src', 'alt', 'data-alt-key', 'class', 'style']) && (el.getAttribute('data-alt-key') || '') in en
+            && ['', 'article-image'].includes(el.getAttribute('class') || '') && ['', 'max-height: 300px;'].includes((el.getAttribute('style') || '').trim()) && safeUrl(el.getAttribute('src'));
+        const imgSig = (el) => `${el.getAttribute('data-alt-key')}|${el.getAttribute('src')}`;
+        const imgHtml = (el) => { owned.add(el.getAttribute('data-alt-key')); return `<img src="${esc(el.getAttribute('src'))}" alt="${esc(en[el.getAttribute('data-alt-key')])}" data-alt-key="${esc(el.getAttribute('data-alt-key'))}">`; };
+        for (const pc of art.out) {
+            const was = pc.pre + pc.str;
+            if (pc.comment) { const m = pc.str.match(/^<!--\s*note for Claude:\s*([\s\S]*?)\s*-->$/); if (m) out.push(`<p data-note="">${esc(m[1])}</p>`); else raw(pc); continue; }
+            if (pc.text) { raw(pc); continue; }
+            const t = document.createElement('template'); t.innerHTML = pc.str;
+            const el = t.content.firstElementChild;
+            if (!el || t.content.childNodes.length !== 1) { raw(pc); continue; }
+            const tag = el.tagName, key = el.getAttribute('data-key') || '', tg = tag.toLowerCase();
+            if (tag === 'H1' && el.id === 'title' && !h1) { h1 = was; continue; }
+            if (key === `${prefix}_desc` && tag === 'P' && empty(el) && !hadDesc) { hadDesc = true; owned.add(key); orig[`p|${key}`] = was; continue; }
+            if (key in en && key && !owned.has(key) && empty(el) && /^(P|ASIDE|BLOCKQUOTE|UL|OL|TABLE)$/.test(tag) && only(el, ['data-key'])) {
+                owned.add(key); orig[`${tg}|${key}`] = was; out.push(`<${tg} data-key="${esc(key)}">${withNotes(en[key], key)}</${tg}>`); continue;
+            }
+            if (key in en && key && !owned.has(key) && empty(el) && /^H[234]$/.test(tag) && only(el, ['data-key', 'id']) && el.id) {
+                owned.add(key); orig[`${tg}|${key}|${el.id}`] = was; out.push(`<${tg} data-key="${esc(key)}" id="${esc(el.id)}">${withNotes(en[key], key)}</${tg}>`); continue;
+            }
+            if (tag === 'PRE' && !el.attributes.length && [...el.children].every((c) => c.tagName === 'CODE' && !c.attributes.length && !c.children.length) && el.children.length <= 1) { out.push(`<pre>${esc(el.textContent)}</pre>`); continue; }
+            if (tag === 'HR' && !el.attributes.length) { out.push('<hr>'); continue; }
+            if (plainImg(el) && !owned.has(el.getAttribute('data-alt-key'))) { orig[`img|${imgSig(el)}`] = was; out.push(imgHtml(el)); continue; }
+            if (tag === 'FIGURE' && !el.attributes.length && el.children.length === 2 && plainImg(el.children[0]) && el.children[1].tagName === 'FIGCAPTION' && only(el.children[1], ['data-key']) && (el.children[1].getAttribute('data-key') || '') in en && empty(el.children[1])
+                && !owned.has(el.children[1].getAttribute('data-key')) && !owned.has(el.children[0].getAttribute('data-alt-key'))) {
+                const ck = el.children[1].getAttribute('data-key'); owned.add(ck); orig[`fig|${imgSig(el.children[0])}|${ck}`] = was;
+                out.push(`<figure>${imgHtml(el.children[0])}<figcaption data-key="${esc(ck)}">${withNotes(en[ck], ck)}</figcaption></figure>`); continue;
+            }
+            raw(pc); // a drawn figure, a demo, an iframe, anything with attributes of its own: as written
+        }
+        const nav = navSpan(html, prefix);
+        if (nav) { if (nav.h1) owned.add(`${prefix}_nav_title`); nav.keys.forEach((k) => owned.add(k)); }
+        // In the editor, cleaned as it will be when it's written out, so that what
+        // hasn't been touched can be told apart and written back as it was.
+        importHtml(out.join('')); clean(doc, true);
+        const kept = [...doc.children].filter(isRaw).map((b, i) => [b.innerHTML, raws[i]]);
+        const same = {}, headText = {};
+        doc.querySelectorAll('[data-key]').forEach((el) => { const k = el.getAttribute('data-key'); if (k in en && !isRaw(el) && !inRaw(el)) same[k] = [blockHtml(el), en[k]]; });
+        doc.querySelectorAll('img[data-alt-key]').forEach((el) => { const k = el.getAttribute('data-alt-key'); if (k in en && !inRaw(el)) same[k] = [el.getAttribute('alt') || '', en[k]]; });
+        [...doc.children].forEach((el) => { if (/^H[23]$/.test(el.tagName) && el.id) headText[el.id] = el.textContent.trim(); });
+        past.length = 0; future.length = 0;
+        const title = decode(en[`${prefix}_title`] || page.title || ''), desc = meta('description') || decode((en[`${prefix}_desc`] || '').replace(/<[^>]+>/g, ''));
+        const date = (meta('pubDate').match(/^\d{4}-\d\d-\d\d/) || [''])[0], author = meta('author') || $('author').value.trim() || 'Wendy Zhulkovsky', kw = meta('keywords').split(',').map((k) => k.trim()).filter(Boolean);
+        $('title').value = title; $('desc').value = desc; $('slug').value = slug; $('prefix').value = prefix;
+        $('slug').dataset.touched = '1'; $('prefix').dataset.touched = '1';
+        setDate(date); if (author) $('author').value = author;
+        [...selectedKw].forEach((k) => addChip(k, false)); kw.forEach((k) => addChip(k, true));
+        setOpened({ slug, prefix, html, json, notes: notes || null, owned: [...owned], kept, left, hadDesc, h1, orig, same, headText, nav: nav ? { ids: nav.ids, h1: nav.h1 } : null, newline, meta: { title, desc, date, author, kw: kw.join(', ') } });
+        showName(); changed();
+    }
+    // A file from the repository, as committed (the token, if there is one, for a private repository).
+    async function repoFile(path, optional) {
+        const c = ghCfg(), repo = /^[\w.-]+\/[\w.-]+$/.test(c.repo || '') ? c.repo : 'pelmeniboiler/pelmeniboiler.github.io';
+        const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(c.base || 'main')}`,
+            { cache: 'no-store', headers: { Accept: 'application/vnd.github.raw+json', 'X-GitHub-Api-Version': '2022-11-28', ...(c.token ? { Authorization: `Bearer ${c.token}` } : {}) } });
+        if (r.status === 404 && optional) return null;
+        if (!r.ok) { const e = new Error(`${path}: HTTP ${r.status}`); e.status = r.status; throw e; }
+        return r.text();
+    }
+    async function openPost(p) {
+        if (hasContent() && !confirm(`Open “${p.title}”? This draft will be replaced.`)) return;
+        closeDlg($('dlg-open'));
+        const st = $('pub-status'); st.textContent = 'opening…';
+        try {
+            const file = p.filename || `${p.slug}.html`, prefix = p.translationSource;
+            const [html, json, notes] = await Promise.all([repoFile(`blog/${file}`), repoFile(`localization/${prefix}.json`), repoFile(`localization/notes/${prefix}.json`, true)]);
+            loadPost(file.replace(/\.html$/, ''), html, JSON.parse(json), notes ? JSON.parse(notes) : null, json.endsWith('\n'));
+            st.textContent = '';
+            doc.focus(); placeCaret(doc.firstElementChild || doc);
+        } catch (e) {
+            st.textContent = e.status === 403 || e.status === 429 ? '✗ GitHub is limiting requests: add a token (File → GitHub settings)'
+                : e instanceof TypeError ? '✗ couldn’t reach GitHub' : `✗ couldn’t open it: ${e.message}`;
+        }
+    }
+    function openList() {
+        $('open-list').innerHTML = posts.filter((p) => p.translationSource && p.slug)
+            .map((p, i) => `<button type="button" data-i="${i}"><span>${esc(p.title || p.slug)}</span><time>${p.date ? esc(fmtDate(isoDay(new Date(p.date)))) : ''}</time></button>`).join('');
+        openDlg('dlg-open');
+    }
+    $('open-list').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) openPost(posts.filter((p) => p.translationSource && p.slug)[+b.dataset.i]); });
+
     // ---------- the two files ----------
     function generate() {
         if (document.querySelector('.pane-doc').classList.contains('source')) toggleSource();
         clean(doc, true);
         const title = $('title').value.trim() || 'Untitled';
-        const slug = slugify($('slug').value) || 'untitled';
-        const prefix = slugify($('prefix').value).replace(/-/g, '') || 'untitled';
+        const slug = opened ? opened.slug : slugify($('slug').value) || 'untitled';
+        const prefix = opened ? opened.prefix : slugify($('prefix').value).replace(/-/g, '') || 'untitled';
         const author = $('author').value.trim() || 'Wendy Zhulkovsky';
         const iso = `${dateVal()}T00:00:00Z`, desc = $('desc').value.trim();
         const en = {}, notes = {}, used = new Set(), body = [], nav = [];
         // A block's English without its translator notes; the notes go to their own file.
         const textOf = (el, key) => {
-            const c = el.cloneNode(true);
-            c.querySelectorAll('span[data-tl]').forEach((s) => { (notes[key] = notes[key] || []).push({ text: s.textContent, note: s.getAttribute('data-tl') }); unwrap(s); });
-            return c.innerHTML.replace(/<br>\s*$/, '').trim();
+            el.querySelectorAll('span[data-tl]').forEach((s) => { (notes[key] = notes[key] || []).push({ text: s.textContent, note: s.getAttribute('data-tl') }); });
+            return blockHtml(el);
         };
         const mkId = (s) => { const b = slugify(s) || 'sec'; let id = b, i = 2; while (used.has(id)) id = `${b}-${i++}`; used.add(id); return id; };
         const n = { p: 0, aside: 0, quote: 0, list: 0, table: 0, cap: 0, alt: 0 };
         const taken = new Set([...doc.querySelectorAll('[data-key], [data-alt-key]')].flatMap((e) => [e.getAttribute('data-key'), e.getAttribute('data-alt-key')]).filter(Boolean));
+        // A new block never takes a key the post has had: its translations would come with it.
+        if (opened) Object.values(opened.json).forEach((t) => Object.keys(t || {}).forEach((k) => taken.add(k)));
+        const baseEn = (opened && opened.json.en) || {}, same = (f, v) => opened && opened.meta[f] === v;
+        const kept = new Map(opened ? opened.kept : []);
         const seen = new Set();
         const keyFor = (el, attr, make) => { let k = el.getAttribute(attr); if (!k || seen.has(k)) { do { k = make(); } while (taken.has(k) || seen.has(k)); } seen.add(k); return k; };
         const img = (el) => { const k = keyFor(el, 'data-alt-key', () => `${prefix}_alt${++n.alt}`); en[k] = el.getAttribute('alt') || ''; return `<img src="${esc(el.getAttribute('src') || '')}" alt="${esc(en[k])}" data-alt-key="${k}" class="article-image" style="max-height: 300px;">`; };
-        en[`${prefix}_win_gallery_title`] = `▤ ${prefix}.article`;
-        en[`${prefix}_title`] = esc(title); // text, not markup: the site puts these in with innerHTML
-        en[`${prefix}_nav_title`] = esc(title);
+        // An opened post keeps its own wording where nothing has changed.
+        const keep = (k, v, unchanged) => { en[k] = unchanged && k in baseEn ? baseEn[k] : v; };
+        const has = (k) => !opened || k in baseEn;
+        if (has(`${prefix}_win_gallery_title`)) keep(`${prefix}_win_gallery_title`, `▤ ${prefix}.article`, true);
+        keep(`${prefix}_title`, esc(title), same('title', title)); // text, not markup: the site puts these in with innerHTML
+        const navH1 = !opened || (opened.nav && opened.nav.h1);
+        if (navH1) keep(`${prefix}_nav_title`, esc(title), same('title', title));
         // The description is the italic first paragraph (the blog list and translations read it from there).
-        if (desc) en[`${prefix}_desc`] = `<i>${esc(desc)}</i>`;
+        const descP = !!desc && (!opened || opened.hadDesc || !same('desc', desc));
+        if (descP) keep(`${prefix}_desc`, `<i>${esc(desc)}</i>`, same('desc', desc));
         const I = '            ';
+        // A block that is as it was in an opened post goes back exactly as it was written there.
+        const orig = (opened && opened.orig) || {};
+        const line = (sig, markup) => (sig in orig ? orig[sig].replace(/^\n/, '') : I + markup);
+        const imgOut = (im) => { const m = img(im); return [`${m.match(/data-alt-key="([^"]*)"/)[1]}|${im.getAttribute('src')}`, m]; };
         for (const el of doc.children) {
             const text = el.textContent.trim();
-            const keyed = (tag, make) => { const key = keyFor(el, 'data-key', make); en[key] = textOf(el, key); body.push(`${I}<${tag} data-key="${key}"></${tag}>`); };
+            const keyed = (tag, make) => { const key = keyFor(el, 'data-key', make); en[key] = textOf(el, key); body.push(line(`${tag}|${key}`, `<${tag} data-key="${key}"></${tag}>`)); };
             if (el.hasAttribute('data-note')) { if (text) body.push(`${I}<!-- note for Claude: ${text.replace(/--/g, '—')} -->`); continue; }
+            if (isRaw(el)) { const h = el.innerHTML; if (h.trim()) body.push(kept.has(h) ? kept.get(h).replace(/^\n/, '') : I + h.trim()); continue; }
             switch (el.tagName) {
                 case 'H2': case 'H3': case 'H4': { if (!text) break; const lv = el.tagName[1]; let id = el.id && !used.has(el.id) ? el.id : mkId(text); used.add(id);
                     const hk = keyFor(el, 'data-key', () => `${prefix}_h${lv}_${id}`);
-                    en[hk] = textOf(el, hk); body.push(`${I}<h${lv} id="${id}" data-key="${hk}"></h${lv}>`);
-                    if (lv !== '4') { en[`${prefix}_nav_${id}`] = lv === '2' ? `<strong>&ensp;${text}</strong>` : `&emsp;&emsp;${text}`; nav.push(`                <li><a href="#${id}" data-key="${prefix}_nav_${id}"></a></li>`); }
+                    en[hk] = textOf(el, hk); body.push(line(`h${lv}|${hk}|${id}`, `<h${lv} id="${id}" data-key="${hk}"></h${lv}>`));
+                    if (lv !== '4' && (!opened || opened.nav)) {
+                        // The nav's wording stays the post's own while the heading reads as it did.
+                        const nk = (opened && opened.nav.ids[id]) || `${prefix}_nav_${id}`;
+                        en[nk] = opened && nk in baseEn && opened.headText[id] === text ? baseEn[nk] : lv === '2' ? `<strong>&ensp;${text}</strong>` : `&emsp;&emsp;${text}`;
+                        nav.push(`                <li><a href="#${id}" data-key="${nk}"></a></li>`);
+                    }
                     break; }
-                case 'P': { const only = el.children.length === 1 && el.firstElementChild.tagName === 'IMG' && !text; if (only) body.push(`${I}${img(el.firstElementChild)}`); else if (text) keyed('p', () => `${prefix}_p${++n.p}`); break; }
+                case 'P': { const only = el.children.length === 1 && el.firstElementChild.tagName === 'IMG' && !text; if (only) { const [sg, m] = imgOut(el.firstElementChild); body.push(line(`img|${sg}`, m)); } else if (text) keyed('p', () => `${prefix}_p${++n.p}`); break; }
                 case 'ASIDE': if (text) keyed('aside', () => `${prefix}_aside${++n.aside}`); break;
                 case 'BLOCKQUOTE': if (text) keyed('blockquote', () => `${prefix}_quote${++n.quote}`); break;
                 case 'UL': case 'OL': if (text) keyed(el.tagName.toLowerCase(), () => `${prefix}_list${++n.list}`); break;
                 case 'TABLE': if (text) keyed('table', () => `${prefix}_table${++n.table}`); break;
                 case 'PRE': body.push(`${I}<pre><code>${esc(el.textContent)}</code></pre>`); break; // code is not translated
                 case 'HR': body.push(`${I}<hr>`); break;
-                case 'IMG': body.push(`${I}${img(el)}`); break;
+                case 'IMG': { const [sg, m] = imgOut(el); body.push(line(`img|${sg}`, m)); break; }
                 case 'IFRAME': body.push(`${I}<iframe width="560" height="315" src="${esc(el.getAttribute('src'))}" title="${esc(el.getAttribute('title') || 'Video')}" frameborder="0"\n${I}    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"\n${I}    allowfullscreen style="display: block; margin: 20px auto;"></iframe>`); break;
                 case 'FIGURE': { const im = el.querySelector('img'), cap = el.querySelector('figcaption'); if (!im) break; const k = cap ? keyFor(cap, 'data-key', () => `${prefix}_cap${++n.cap}`) : `${prefix}_cap${++n.cap}`; en[k] = cap ? textOf(cap, k) : '';
-                    body.push(`${I}<figure>\n${I}    ${img(im)}\n${I}    <figcaption data-key="${k}"></figcaption>\n${I}</figure>`); break; }
+                    const [sg, m] = imgOut(im);
+                    body.push(line(`fig|${sg}|${k}`, `<figure>\n${I}    ${m}\n${I}    <figcaption data-key="${k}"></figcaption>\n${I}</figure>`)); break; }
             }
         }
-        const html = `<!DOCTYPE html>
+        // English that reads as it did keeps the post's own spelling of it (its entities, say).
+        if (opened) for (const [k, [was, base]] of Object.entries(opened.same || {})) if (en[k] === was) en[k] = base;
+        if (opened) for (const [k, list] of Object.entries(opened.left || {})) if (k in en) notes[k] = (notes[k] || []).concat(list);
+        const h1Line = !opened ? `${I}<h1 id="title" data-key="${prefix}_title"></h1>` : opened.h1 ? (same('title', title) ? opened.h1.replace(/^\n/, '') : `${I}<h1 id="title" data-key="${prefix}_title"></h1>`) : null;
+        const articleBody = [h1Line, descP ? line(`p|${prefix}_desc`, `<p data-key="${prefix}_desc"></p>`) : null, ...body].filter((x) => x !== null).join('\n');
+        let html = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -843,8 +1261,7 @@ ${nav.join('\n')}
         <div class="title-bar"><span class="title" data-key="${prefix}_win_gallery_title">▤ ${prefix}.article</span><button
                 class="close-btn">&times;</button></div>
         <article class="content">
-            <h1 id="title" data-key="${prefix}_title"></h1>${desc ? `\n${I}<p data-key="${prefix}_desc"></p>` : ''}
-${body.join('\n')}
+${articleBody}
         </article>
     </main>
     <div id="settings-module-placeholder"></div>
@@ -855,13 +1272,42 @@ ${body.join('\n')}
 
 </html>
 `;
-        const json = JSON.stringify({ en }, null, 2) + '\n';
-        const notesJson = Object.keys(notes).length ? JSON.stringify(notes, null, 2) + '\n' : '';
+        let json = JSON.stringify({ en }, null, 2) + '\n';
+        let notesJson = Object.keys(notes).length ? JSON.stringify(notes, null, 2) + '\n' : '';
+        if (opened) {
+            // The same file, with the article (and the nav and the meta tags that changed) written back in place.
+            let h = opened.html;
+            const art = articleSpan(h), tail = h.slice(art.start, art.end).match(/\s*$/)[0];
+            h = h.slice(0, art.start) + '\n' + articleBody + tail + h.slice(art.end);
+            const nv = opened.nav && navSpan(h, prefix);
+            if (nv) { const t = h.slice(nv.start, nv.end).match(/\s*$/)[0]; h = h.slice(0, nv.start) + [navH1 ? `\n                <h1 data-key="${prefix}_nav_title"></h1>` : '', ...nav.map((x) => `\n${x}`)].join('') + t + h.slice(nv.end); }
+            const setMeta = (name, v) => {
+                const re = new RegExp(`(<meta\\s+name="${name}"\\s+content=")[^"]*("[^>]*>)`, 'i');
+                if (re.test(h)) h = v ? h.replace(re, (_, a, b) => a + esc(v) + b) : h.replace(new RegExp(`\\n?[ \\t]*<meta\\s+name="${name}"[^>]*>`, 'i'), '');
+                else if (v) h = h.replace(/([ \t]*)<title>/i, (m, sp) => `${sp}<meta name="${name}" content="${esc(v)}">\n${m}`);
+            };
+            const kws = [...selectedKw].join(', ');
+            if (!same('title', title)) h = h.replace(/<title>[\s\S]*?<\/title>/i, () => `<title>${esc(title)}</title>`);
+            if (!same('desc', desc)) setMeta('description', desc);
+            if (!same('author', author)) setMeta('author', author);
+            if (!same('date', dateVal())) setMeta('pubDate', iso);
+            if (!same('kw', kws)) setMeta('keywords', kws);
+            html = h;
+            // The English the editor writes replaces the post's; a key it no longer writes goes, in every language.
+            const gone = new Set(opened.owned.filter((k) => !(k in en))), all = {};
+            for (const [lang, t] of Object.entries(opened.json)) { all[lang] = {}; for (const [k, v] of Object.entries(t || {})) if (!gone.has(k)) all[lang][k] = v; }
+            all.en = Object.assign(all.en || {}, en);
+            json = JSON.stringify(all, null, 2) + (opened.newline === false ? '' : '\n');
+            const allNotes = {};
+            for (const [k, v] of Object.entries(opened.notes || {})) if (!opened.owned.includes(k)) allNotes[k] = v;
+            Object.assign(allNotes, notes);
+            notesJson = Object.keys(allNotes).length ? JSON.stringify(allNotes, null, 2) + '\n' : '';
+        }
         $('out-html').value = html; $('out-json').value = json; $('out-notes').value = notesJson;
         $('out-html-name').textContent = `${slug}.html`; $('out-json-name').textContent = $('out-notes-name').textContent = `${prefix}.json`;
         $('notes-field').hidden = !notesJson;
         changed();
-        return { html, json, notesJson, slug, prefix, title };
+        return { html, json, notesJson, slug, prefix, title, hadNotes: !!(opened && opened.notes) };
     }
     document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => { const el = $(btn.dataset.copy); el.select(); if (navigator.clipboard) navigator.clipboard.writeText(el.value).catch(() => {}); }));
     function download() {
@@ -890,7 +1336,7 @@ ${body.join('\n')}
         if (!c.token) { openGithub(); return; }
         if (!$('title').value.trim() || !slugify($('slug').value) || !slugify($('prefix').value)) { openDlg('dlg-props'); checkSlug(); return; }
         if (!/^[\w.-]+\/[\w.-]+$/.test(c.repo || '')) { openGithub(); return; }
-        if (slugTaken() && !confirm('A post with this slug already exists. Publishing replaces its files. Continue?')) return;
+        if (slugTaken() && !confirm('A post with this slug already exists. Publishing replaces its files. Continue?')) return; // (not the post that was opened)
         const status = $('pub-status'); status.textContent = 'publishing…'; publishing = true;
         const gh = async (path, opts = {}) => {
             const r = await fetch(`https://api.github.com${path}`, { ...opts, headers: { Authorization: `Bearer ${c.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) } });
@@ -910,13 +1356,15 @@ ${body.join('\n')}
             const tree = await gh(`${R}/git/trees`, { method: 'POST', body: JSON.stringify({ base_tree: (await gh(`${R}/git/commits/${parent}`)).tree.sha, tree: [
                 { path: `blog/${f.slug}.html`, mode: '100644', type: 'blob', content: f.html },
                 { path: `localization/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.json },
-                ...(f.notesJson ? [{ path: `localization/notes/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.notesJson }] : [])] }) });
-            const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `Post: ${f.title}`, tree: tree.sha, parents: [parent] }) });
+                ...(f.notesJson ? [{ path: `localization/notes/${f.prefix}.json`, mode: '100644', type: 'blob', content: f.notesJson }]
+                    : f.hadNotes ? [{ path: `localization/notes/${f.prefix}.json`, mode: '100644', type: 'blob', sha: null }] : [])] }) });
+            const verb = opened ? 'Edit' : 'Post';
+            const commit = await gh(`${R}/git/commits`, { method: 'POST', body: JSON.stringify({ message: `${verb}: ${f.title}`, tree: tree.sha, parents: [parent] }) });
             await gh(`${R}/git/refs/heads/${branch}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha }) });
             let url = commit.html_url || `https://github.com/${o}/${n}/commit/${commit.sha}`;
             if (c.mode !== 'direct') {
                 let pr;
-                try { pr = await gh(`${R}/pulls`, { method: 'POST', body: JSON.stringify({ title: `Post: ${f.title}`, head: branch, base, body: 'Written in sofrut.ii.' }) }); }
+                try { pr = await gh(`${R}/pulls`, { method: 'POST', body: JSON.stringify({ title: `${verb}: ${f.title}`, head: branch, base, body: 'Written in sofrut.ii.' }) }); }
                 catch (e) { if (e.status !== 422) throw e; pr = (await gh(`${R}/pulls?head=${encodeURIComponent(`${o}:${branch}`)}&state=open`))[0]; }
                 if (pr) url = pr.html_url;
             }
@@ -931,14 +1379,14 @@ ${body.join('\n')}
 
     // ---------- menu actions ----------
     const ACTIONS = {
-        new: newDoc, publish, download, github: openGithub,
+        new: newDoc, open: openList, publish, download, github: openGithub,
         props: () => openDlg('dlg-props'),
         source: toggleSource,
         files: () => { generate(); openDlg('dlg-files'); },
         undo, redo,
         save: () => { save(); const st = $('pub-status'); if (!publishing) { st.textContent = 'draft saved'; setTimeout(() => { if (st.textContent === 'draft saved') st.textContent = ''; }, 1500); } },
         keys: () => {
-            const rows = TAGS.filter((x) => x && x[3]).map((x) => [x[3], x[1].replace(/ \(.*$/, '')]).concat([['mod+Z', 'Undo'], ['mod+shift+Z', 'Redo'], ['mod+S', 'Save draft'], ['mod+/', 'Source'], ['Tab', 'Next table cell (adds a row at the end)'], ['Escape', 'Close a dialog, menu or calendar'], ['F10', 'Menus (then arrows)']]);
+            const rows = TAGS.filter((x) => x && x[3]).map((x) => [x[3], x[1].replace(/ \(.*$/, '')]).concat([['mod+Z', 'Undo'], ['mod+shift+Z', 'Redo'], ['mod+O', 'Open a post'], ['mod+S', 'Save draft'], ['mod+/', 'Source'], ['Tab', 'Next table cell (adds a row at the end)'], ['Escape', 'Close a dialog, menu or calendar'], ['F10', 'Menus (then arrows)']]);
             $('keys-list').innerHTML = rows.map(([k, n]) => `<dt>${esc(/\+/.test(k) ? keyLabel(k) : k)}</dt><dd>${esc(n)}</dd>`).join('');
             openDlg('dlg-keys');
         },
