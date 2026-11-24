@@ -10,6 +10,10 @@
 // leaves, a key is pressed or a button goes down (so nothing that saves or
 // copies the page in that moment sees it missing). Touch is left alone:
 // browsers show no tooltips for it.
+//
+// From the keyboard, the same label shows for whatever Tab, or one of the
+// site's own keys (W, the menus' arrows…), moves focus to: under it, since
+// there is no cursor to sit beside. Escape or the mouse moving puts it away.
 (() => {
     if (window.__pelmeniTip) return;
     window.__pelmeniTip = true;
@@ -18,11 +22,13 @@
     const WARM = 600;   // ms after a label hides during which the next shows at once
     // Beside the cursor: every cursor in the set ends within 15px right of its hotspot.
     const RIGHT = 18, DOWN = 2, LEFT = 12, EDGE = 4;
+    const BELOW = 4; // from the keyboard: this far under (or over) the focused element
 
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const lifted = new Map();  // element → its title text, while lifted
     let host = null, text = '', tip = null, timer = 0, warmUntil = 0, dismissed = false, shown = false;
     let x = 0, y = 0, frame = 0;
+    let anchor = null, byKey = false; // the focused element a label is showing for; the last thing done was a key
 
     // While a title is lifted, scripts still read it where it was.
     const E = Element.prototype, get = E.getAttribute, has = E.hasAttribute;
@@ -89,8 +95,15 @@
         frame = 0;
         if (!tip || tip.hidden) return;
         const w = tip.offsetWidth, h = tip.offsetHeight;
-        let left = x + RIGHT, top = y + DOWN;
-        if (left + w > innerWidth - EDGE) left = x - LEFT - w;
+        let left, top;
+        if (anchor) {
+            const r = anchor.getBoundingClientRect();
+            left = Math.min(r.left, innerWidth - EDGE - w); top = r.bottom + BELOW;
+            if (top + h > innerHeight - EDGE) top = r.top - BELOW - h;
+        } else {
+            left = x + RIGHT; top = y + DOWN;
+            if (left + w > innerWidth - EDGE) left = x - LEFT - w;
+        }
         left = Math.max(EDGE, left);
         top = Math.max(EDGE, Math.min(top, innerHeight - EDGE - h));
         tip.style.left = `${left}px`;
@@ -98,7 +111,7 @@
     }
     function show() {
         timer = 0;
-        if (!host || dismissed || !text || !document.body) return;
+        if ((!host && !anchor) || dismissed || !text || !document.body) return;
         if (!tip || !tip.isConnected) make();
         if (tip.textContent !== text) tip.textContent = text;
         tip.hidden = false;
@@ -114,7 +127,7 @@
     function leave() {
         hide();
         putBack();
-        host = null; text = ''; dismissed = false;
+        host = null; anchor = null; text = ''; dismissed = false;
     }
     function enter(el) {
         host = el; text = own(el); dismissed = false;
@@ -124,17 +137,26 @@
     }
 
     const eink = () => document.documentElement.classList.contains('eink-mode');
+    // The mouse takes over from the keyboard only when it really moves (not when the page scrolls under it).
+    const mouseMoved = (e) => {
+        const moved = e.clientX !== x || e.clientY !== y;
+        x = e.clientX; y = e.clientY;
+        if (moved) { byKey = false; if (anchor) { hide(); anchor = null; text = ''; } }
+        return moved;
+    };
     document.addEventListener('pointerover', (e) => {
         if (e.pointerType === 'touch') return;
-        x = e.clientX; y = e.clientY;
+        if (!mouseMoved(e) && anchor) return;
         const el = owner(e.target);
         if (el === host) return;
         leave();
         if (el) enter(el);
     }, true);
     document.addEventListener('pointermove', (e) => {
-        if (e.pointerType === 'touch' || !host) return;
-        x = e.clientX; y = e.clientY;
+        if (e.pointerType === 'touch') return;
+        // (Back from the keyboard, the pointer may already be on something titled: take it up from here.)
+        if (!host) { if (mouseMoved(e)) { const el = owner(e.target); if (el) enter(el); } return; }
+        mouseMoved(e);
         if (!lifted.size || (host.namespaceURI !== SVG_NS && hasTitle(host))) {
             // Put back by a key or a click, or retitled by a script: lift it again.
             lift(host);
@@ -150,7 +172,25 @@
     document.addEventListener('pointerdown', dismiss, true);
     document.addEventListener('keydown', dismiss, true);
     addEventListener('wheel', dismiss, { capture: true, passive: true });
-    addEventListener('scroll', () => { if (shown) dismiss(); }, true);
+    addEventListener('scroll', () => { if (anchor) { if (!frame) frame = requestAnimationFrame(place); } else if (shown) dismiss(); }, true);
+    addEventListener('resize', () => { if (anchor && !frame) frame = requestAnimationFrame(place); });
+
+    // The keyboard.
+    document.addEventListener('keydown', (e) => {
+        byKey = true;
+        if (e.key === 'Escape' && anchor) { hide(); anchor = null; text = ''; }
+    }, true);
+    document.addEventListener('pointerdown', () => { byKey = false; }, true);
+    document.addEventListener('focusin', (e) => {
+        const el = e.target;
+        if (!byKey || !el || el.nodeType !== 1 || el === anchor) return;
+        const t = own(el); // its own title: a container's would describe the container, not this
+        leave();
+        if (!t) return;
+        anchor = el; text = t;
+        show();
+    }, true);
+    document.addEventListener('focusout', (e) => { if (e.target === anchor) { hide(); anchor = null; text = ''; } }, true);
     addEventListener('blur', leave);
     document.addEventListener('visibilitychange', () => { if (document.hidden) leave(); });
     addEventListener('pagehide', putBack);
